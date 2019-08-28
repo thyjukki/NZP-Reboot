@@ -441,7 +441,10 @@ void() PlayerSpawn =
 	self.max_health = self.health = 100;
 
 	//custom weapon stuff (we want to put this here so we can send the info to the client with an entity)
-	nzd_defineweapon(self);
+	// DISGUSTING.
+	//nzd_defineweapon(self);
+
+	//centerprint(self, ftos(CustomWeapons[0].magSize));
 	
 	entity who = find(world,classname,"player");
 	while(who != self && !self.playernum)

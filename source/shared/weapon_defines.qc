@@ -1,3 +1,47 @@
+/*
+	Structs are MAGICAL!
+*/
+var struct {
+	string name;
+	int magSize;
+	int reserveSize;
+	string vmodel;
+	string vmodel2;
+	string gmodel;
+	int isDual;
+	int firetype;
+	int damage;
+	int shotcount;
+	int penetration;
+	int spread;
+	int fdelay;
+	int rdelay;
+	int walkspeed;
+	string firesound;
+	int skin;
+	int recoil;
+	int recoil;
+	int crossmin;
+	int crossmax;
+	int lowmag;
+	int lowreserve;
+	vector flash;
+	int flashsize;
+	int papWpn;
+	vector adsofs;
+} CustomWeapons[] =
+{
+
+};
+
+// so we know whether to use normal values or pull from our struct!
+float(float wep) isCustomWeapon =
+{
+	if (wep >= 70)
+		return TRUE;
+
+	return FALSE;
+}
 
 string(float wep) GetWeaponName =
 {
@@ -105,14 +149,6 @@ string(float wep) GetWeaponName =
 			return "Bouncing Betty";
     	case W_TESLA:
       		return "Wunderwaffe DG-2";
-		case W_CUSTOM1:
-			return W_CUSTOMNAME[0];
-		case W_CUSTOM2:
-			return W_CUSTOMNAME[1];
-		case W_CUSTOM3:
-			return W_CUSTOMNAME[2];
-		case W_CUSTOM4:
-			return W_CUSTOMNAME[3];
 		default:
 			return " ";
 	}
@@ -219,14 +255,6 @@ float(float wep) GetFiretype =
 		case W_TYPE:
 		case W_SAMURAI:
 			return 0;
-		case W_CUSTOM1:
-			return W_CFIRETYPE[0];
-		case W_CUSTOM2:
-			return W_CFIRETYPE[1];
-		case W_CUSTOM3:
-			return W_CFIRETYPE[2];
-		case W_CUSTOM4:
-			return W_CFIRETYPE[3];
     }
 
     return 0;
@@ -234,6 +262,10 @@ float(float wep) GetFiretype =
 
 float(float wep) getWeaponMag =
 {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[0].magSize;
+	}
 
 	switch (wep)
 	{
@@ -326,14 +358,6 @@ float(float wep) getWeaponMag =
 			return 30;
 		case W_SAMURAI:
 			return 60;
-		case W_CUSTOM1:
-			return W_CMAG[0];
-		case W_CUSTOM2:
-			return W_CMAG[1];
-		case W_CUSTOM3:
-			return W_CMAG[2];
-		case W_CUSTOM4:
-			return W_CMAG[3];
 	}
 	return 0;
 }
@@ -434,14 +458,6 @@ float(float wep) getWeaponAmmo =
 			return 160;
 		case W_SAMURAI:
 			return 220;
-		case W_CUSTOM1:
-			return W_CRESERVE[0];
-		case W_CUSTOM2:
-			return W_CRESERVE[1];
-		case W_CUSTOM3:
-			return W_CRESERVE[2];
-		case W_CUSTOM4:
-			return W_CRESERVE[3];
 	}
 	return 0;
 }
@@ -540,14 +556,6 @@ float(float wep) getWeaponDamage =
 			return 100;
 		case W_SAMURAI:
 			return 200;
-		case W_CUSTOM1:
-			return W_CDMG[0];
-		case W_CUSTOM2:
-			return W_CDMG[1];
-		case W_CUSTOM3:
-			return W_CDMG[2];
-		case W_CUSTOM4:
-			return W_CDMG[3];
     }
 
     return 0;
@@ -568,14 +576,6 @@ float(float wep) GetWeaponShotcount =
 			return 8;
 		case W_GUT:
 			return 10;
-		case W_CUSTOM1:
-			return W_CSHOTCOUNT[0];
-		case W_CUSTOM2:
-			return W_CSHOTCOUNT[1];
-		case W_CUSTOM3:
-			return W_CSHOTCOUNT[2];
-		case W_CUSTOM4:
-			return W_CSHOTCOUNT[3];
 	}
 
     return 1;
@@ -689,22 +689,6 @@ float(float wep, float penetration_times) getWeaponPenetration =
 			if (penetration_times >= 2)
 				return 0;
 			return 0.8;
-		case W_CUSTOM1:
-			if (penetration_times >= W_CBODYPEN[0])
-				return 0;
-			return W_CPENETRATION[0];
-		case W_CUSTOM2:
-			if (penetration_times >= W_CBODYPEN[1])
-				return 0;
-			return W_CPENETRATION[1];
-		case W_CUSTOM3:
-			if (penetration_times >= W_CBODYPEN[2])
-				return 0;
-			return W_CPENETRATION[2];
-		case W_CUSTOM4:
-			if (penetration_times >= W_CBODYPEN[3])
-				return 0;
-			return W_CPENETRATION[3];
 		default:
 			return 0;
     }
@@ -850,14 +834,6 @@ float(float wep) GetWeaponSpread =
 			break;
 		case W_M14:
 			Weapon_Spread = 5;
-		case W_CUSTOM1:
-			Weapon_Spread = W_CSPREAD[0];
-		case W_CUSTOM2:
-			Weapon_Spread = W_CSPREAD[1];
-		case W_CUSTOM3:
-			Weapon_Spread = W_CSPREAD[2];
-		case W_CUSTOM4:
-			Weapon_Spread = W_CSPREAD[3];
 		break;
 	}
 
@@ -1050,26 +1026,6 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 2.3;
 			else if (delaytype == FIRE)
 				return 0.065;
-		case W_CUSTOM1:
-			if (delaytype == RELOAD)
-				return W_CRDELAY[0];
-			else if (delaytype == FIRE)
-				return W_CFDELAY[0];
-		case W_CUSTOM2:
-			if (delaytype == RELOAD)
-				return W_CRDELAY[1];
-			else if (delaytype == FIRE)
-				return W_CFDELAY[1];
-		case W_CUSTOM3:
-			if (delaytype == RELOAD)
-				return W_CRDELAY[2];
-			else if (delaytype == FIRE)
-				return W_CFDELAY[2];
-		case W_CUSTOM4:
-			if (delaytype == RELOAD)
-				return W_CRDELAY[3];
-			else if (delaytype == FIRE)
-				return W_CFDELAY[3];
     }
 
     return 0;
@@ -1104,14 +1060,6 @@ float GetWeaponWalkSpeed (float weapontype)
 			return 0.75;
 		case W_FIW:
 			return 0.85;
-		case W_CUSTOM1:
-			return W_CWALKSPD[0];
-		case W_CUSTOM2:
-			return W_CWALKSPD[1];
-		case W_CUSTOM3:
-			return W_CWALKSPD[2];
-		case W_CUSTOM4:
-			return W_CWALKSPD[3];
 	}
 }
 
@@ -1174,14 +1122,6 @@ vector GetWeaponADSPos(float wep) {
 		case W_M2:
 		case W_FIW:
 			return [0, 0.89, 0.82];
-		case W_CUSTOM1:
-			return W_CADS[0];
-		case W_CUSTOM2:
-			return W_CADS[1];
-		case W_CUSTOM3:
-			return W_CADS[2];
-		case W_CUSTOM4:
-			return W_CADS[3];
 		default:
 			return [0, 0, 0];
 	}
@@ -2076,146 +2016,6 @@ float(float wep, float frametype, optional float z) GetFrame =
 					return 27;
 			}
 			break;
-		case W_CUSTOM1:
-			switch (frametype)
-			{
-				case FIRE_START:
-					return W_C1FRAMES[0];
-				case FIRE_END:
-					return W_C1FRAMES[1];
-				case RELOAD_START:
-					return W_C1FRAMES[2];
-				case RELOAD_END:
-					return W_C1FRAMES[3];
-				case SPRINT_IN_START:
-					return W_C1FRAMES[4];
-				case SPRINT_IN_END:
-					return W_C1FRAMES[5];
-				case SPRINT_OUT_START:
-					return W_C1FRAMES[6];
-				case SPRINT_OUT_END:
-					return W_C1FRAMES[7];
-				case TAKE_OUT_START:
-					return W_C1FRAMES[8];
-				case TAKE_OUT_END:
-					return W_C1FRAMES[9];
-				case PUT_OUT_START:
-					return W_C1FRAMES[10];
-				case PUT_OUT_END:
-					return W_C1FRAMES[11];
-				case RELOAD_CANCEL:
-					return W_C1FRAMES[12];
-				case AIM_IN_END:
-					return W_C1FRAMES[13];
-				case AIM_IN_START:
-					return W_C1FRAMES[14];
-			}
-			break;
-		case W_CUSTOM2:
-			switch (frametype)
-			{
-				case FIRE_START:
-					return W_C2FRAMES[0];
-				case FIRE_END:
-					return W_C2FRAMES[1];
-				case RELOAD_START:
-					return W_C2FRAMES[2];
-				case RELOAD_END:
-					return W_C2FRAMES[3];
-				case SPRINT_IN_START:
-					return W_C2FRAMES[4];
-				case SPRINT_IN_END:
-					return W_C2FRAMES[5];
-				case SPRINT_OUT_START:
-					return W_C2FRAMES[6];
-				case SPRINT_OUT_END:
-					return W_C2FRAMES[7];
-				case TAKE_OUT_START:
-					return W_C2FRAMES[8];
-				case TAKE_OUT_END:
-					return W_C2FRAMES[9];
-				case PUT_OUT_START:
-					return W_C2FRAMES[10];
-				case PUT_OUT_END:
-					return W_C2FRAMES[11];
-				case RELOAD_CANCEL:
-					return W_C2FRAMES[12];
-				case AIM_IN_END:
-					return W_C2FRAMES[13];
-				case AIM_IN_START:
-					return W_C2FRAMES[14];
-			}
-			break;
-		case W_CUSTOM3:
-			switch (frametype)
-			{
-				case FIRE_START:
-					return W_C3FRAMES[0];
-				case FIRE_END:
-					return W_C3FRAMES[1];
-				case RELOAD_START:
-					return W_C3FRAMES[2];
-				case RELOAD_END:
-					return W_C3FRAMES[3];
-				case SPRINT_IN_START:
-					return W_C3FRAMES[4];
-				case SPRINT_IN_END:
-					return W_C3FRAMES[5];
-				case SPRINT_OUT_START:
-					return W_C3FRAMES[6];
-				case SPRINT_OUT_END:
-					return W_C3FRAMES[7];
-				case TAKE_OUT_START:
-					return W_C3FRAMES[8];
-				case TAKE_OUT_END:
-					return W_C3FRAMES[9];
-				case PUT_OUT_START:
-					return W_C3FRAMES[10];
-				case PUT_OUT_END:
-					return W_C3FRAMES[11];
-				case RELOAD_CANCEL:
-					return W_C3FRAMES[12];
-				case AIM_IN_END:
-					return W_C3FRAMES[13];
-				case AIM_IN_START:
-					return W_C3FRAMES[14];
-			}
-			break;
-		case W_CUSTOM4:
-			switch (frametype)
-			{
-				case FIRE_START:
-					return W_C4FRAMES[0];
-				case FIRE_END:
-					return W_C4FRAMES[1];
-				case RELOAD_START:
-					return W_C4FRAMES[2];
-				case RELOAD_END:
-					return W_C4FRAMES[3];
-				case SPRINT_IN_START:
-					return W_C4FRAMES[4];
-				case SPRINT_IN_END:
-					return W_C4FRAMES[5];
-				case SPRINT_OUT_START:
-					return W_C4FRAMES[6];
-				case SPRINT_OUT_END:
-					return W_C4FRAMES[7];
-				case TAKE_OUT_START:
-					return W_C4FRAMES[8];
-				case TAKE_OUT_END:
-					return W_C4FRAMES[9];
-				case PUT_OUT_START:
-					return W_C4FRAMES[10];
-				case PUT_OUT_END:
-					return W_C4FRAMES[11];
-				case RELOAD_CANCEL:
-					return W_C4FRAMES[12];
-				case AIM_IN_END:
-					return W_C4FRAMES[13];
-				case AIM_IN_START:
-					return W_C4FRAMES[14];
-			}
-			break;
 	}
 
     return 0;
@@ -2384,26 +2184,6 @@ string(float wep, float gorvmodel) GetWeaponModel =
 				return ("models/weapons/bk/g_bk.mdl");
 			else
 				return ("models/weapons/bk/v_bk.mdl");
-		case W_CUSTOM1:
-			if (gorvmodel)
-				return W_CGMODEL[0];
-			else 
-				return W_CVMODEL[0];
-		case W_CUSTOM2:
-			if (gorvmodel)
-				return W_CGMODEL[1];
-			else 
-				return W_CVMODEL[1];
-		case W_CUSTOM3:
-			if (gorvmodel)
-				return W_CGMODEL[2];
-			else 
-				return W_CVMODEL[2];
-		case W_CUSTOM4:
-			if (gorvmodel)
-				return W_CGMODEL[3];
-			else 
-				return W_CVMODEL[3];
     }
 
     return ("");
@@ -2481,14 +2261,6 @@ string(float wep) GetWeaponSound =
 		case W_TYPE:
     	case W_SAMURAI:
 			return "sounds/weapons/type100/shoot.wav";
-		case W_CUSTOM1:
-			return W_CFIRESOUND[0];
-		case W_CUSTOM2:
-			return W_CFIRESOUND[1];
-		case W_CUSTOM3:
-			return W_CFIRESOUND[2];
-		case W_CUSTOM4:
-			return W_CFIRESOUND[3];
     }
 
     return "";
@@ -2500,14 +2272,6 @@ float(float wep) IsDualWeapon = {
 			return 1;
 		case W_SNUFF:
 			return 1;
-		case W_CUSTOM1:
-			return W_CDUAL[0];
-		case W_CUSTOM2:
-			return W_CDUAL[1];
-		case W_CUSTOM3:
-			return W_CDUAL[2];
-		case W_CUSTOM4:
-			return W_CDUAL[3];
 		default:
 			return 0;
 	}
@@ -2519,14 +2283,6 @@ string(float wep) GetLeftWeaponModel = {
 			return "models/weapons/m1911/v_biatch_left.mdl";
 		case W_SNUFF:
 			return "models/weapons/sawnoff/v_snuff_left.mdl";
-		case W_CUSTOM1:
-			return W_CVMODEL2[0];
-		case W_CUSTOM2:
-			return W_CVMODEL2[1];
-		case W_CUSTOM3:
-			return W_CVMODEL2[2];
-		case W_CUSTOM4:
-			return W_CVMODEL2[3];
 		default:
 			return "";
 	}
@@ -2556,10 +2312,6 @@ float(float wep) IsPapWeapon = {
 		case W_SPATZ:
 		case W_GUT:
 		case W_SAMURAI:
-		case W_CPAPWEP[0]:
-			return 1;
-		case W_CPAPWEP[2]:
-			return 1;
 		default:
 			return 0;
 	}
@@ -2571,14 +2323,6 @@ float(float wep) GetWepSkin = {
 			return 0;
 		case W_SNUFF:
 			return 0;
-		case W_CUSTOM1:
-			return W_CSKIN[0];
-		case W_CUSTOM2:
-			return W_CSKIN[1];
-		case W_CUSTOM3:
-			return W_CSKIN[2];
-		case W_CUSTOM4:
-			return W_CSKIN[3];
 		default:
 			if (IsPapWeapon(wep)) {
 				return 1;
@@ -2703,10 +2447,6 @@ float(float wep)  EqualPapWeapon =
 			return W_BIATCH;
 		case W_M14:
 			return W_M14;
-		case W_CUSTOM1:
-			return W_CPAPWEP[0];
-		case W_CUSTOM3:
-			return W_CPAPWEP[2];
 		default:
 			return wep;
 	}
@@ -3013,50 +2753,6 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 				sound (self ,5, "sounds/weapons/colt/slide.wav", 1, ATTN_NORM);
 			}
 			break;
-		case W_CUSTOM1:
-			if (curweaponframe == W_C1XSNDFRAME[0]) {
-				sound (self ,5, W_C1XTRASND[0], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C1XSNDFRAME[1]) {
-				sound (self ,5, W_C1XTRASND[1], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C1XSNDFRAME[2]) {
-				sound (self ,5, W_C1XTRASND[2], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C1XSNDFRAME[3]) {
-				sound (self ,5, W_C1XTRASND[3], 1, ATTN_NORM);
-			}
-			break;
-		case W_CUSTOM2:
-			if (curweaponframe == W_C2XSNDFRAME[0]) {
-				sound (self ,5, W_C2XTRASND[0], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C2XSNDFRAME[1]) {
-				sound (self ,5, W_C2XTRASND[1], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C2XSNDFRAME[2]) {
-				sound (self ,5, W_C2XTRASND[2], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C2XSNDFRAME[3]) {
-				sound (self ,5, W_C2XTRASND[3], 1, ATTN_NORM);
-			}
-			break;
-		case W_CUSTOM3:
-			if (curweaponframe == W_C3XSNDFRAME[0]) {
-				sound (self ,5, W_C2XTRASND[0], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C3XSNDFRAME[1]) {
-				sound (self ,5, W_C2XTRASND[1], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C3XSNDFRAME[2]) {
-				sound (self ,5, W_C2XTRASND[2], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C3XSNDFRAME[3]) {
-				sound (self ,5, W_C2XTRASND[3], 1, ATTN_NORM);
-			}
-			break;
-		case W_CUSTOM4:
-			if (curweaponframe == W_C4XSNDFRAME[0]) {
-				sound (self ,5, W_C2XTRASND[0], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C4XSNDFRAME[1]) {
-				sound (self ,5, W_C2XTRASND[1], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C4XSNDFRAME[2]) {
-				sound (self ,5, W_C2XTRASND[2], 1, ATTN_NORM);
-			} else if (curweaponframe == W_C4XSNDFRAME[3]) {
-				sound (self ,5, W_C2XTRASND[3], 1, ATTN_NORM);
-			}
-			break;
 	}
 }
 
@@ -3238,18 +2934,6 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/type100/boltpull.wav");
 			precache_sound("sounds/weapons/type100/shoot.wav");
 			break;
-		case W_CUSTOM1:
-			precache_sound(W_CFIRESOUND[0]);
-			break;
-		case W_CUSTOM2:
-			precache_sound(W_CFIRESOUND[1]);
-			break;
-		case W_CUSTOM3:
-			precache_sound(W_CFIRESOUND[2]);
-			break;
-		case W_CUSTOM4:
-			precache_sound(W_CFIRESOUND[3]);
-			break;
 	}
 }
 
@@ -3395,18 +3079,6 @@ float(float wep) getWeaponRecoilReturn =
 		case W_TESLA:
 			return 1813;
 			break;
-		case W_CUSTOM1:
-			return W_CRECOIL[0];
-			break;
-		case W_CUSTOM2:
-			return W_CRECOIL[1];
-			break;
-		case W_CUSTOM3:
-			return W_CRECOIL[2];
-			break;
-		case W_CUSTOM4:
-			return W_CRECOIL[3];
-			break;
 	}
 	return 0;
 }
@@ -3509,18 +3181,6 @@ float(float weapon, float stance) CrossHairWeapon =
 			break;
 		case W_TESLA:
 			sprd = 0;
-			break;
-		case W_CUSTOM1:
-			sprd = W_CCROSSMIN[0];
-			break;
-		case W_CUSTOM2:
-			sprd = W_CCROSSMIN[1];
-			break;
-		case W_CUSTOM3:
-			sprd = W_CCROSSMIN[2];
-			break;
-		case W_CUSTOM4:
-			sprd = W_CCROSSMIN[3];
 			break;
 		default:
 			sprd = 0;
@@ -3641,18 +3301,6 @@ float(float weapon, float stance) CrossHairMaxSpread =
 		case W_TESLA:
 			sprd = 0;
 			break;
-		case W_CUSTOM1:
-			sprd = W_CCROSSMAX[0];
-			break;
-		case W_CUSTOM2:
-			sprd = W_CCROSSMAX[1];
-			break;
-		case W_CUSTOM3:
-			sprd = W_CCROSSMAX[2];
-			break;
-		case W_CUSTOM4:
-			sprd = W_CCROSSMAX[3];
-			break;
 		default:
 			sprd = 0;
 			break;
@@ -3723,14 +3371,6 @@ int(int weapon, int type) GetLowAmmo = // determine what ammo value you should h
 		case W_WIDDER: if (type) return 4; else return 30;
 		case W_KILLU: if (type) return 2; else return 20;
 		case W_TESLA: if (type) return 1; else return 6;
-		#ifndef PSP //warnings on psp..?
-		#ifndef NX
-		case W_CUSTOM1: if (type) return W_CLOWMAG[0]; else return W_CLOWRES[0];
-		case W_CUSTOM2: if (type) return W_CLOWMAG[1]; else return W_CLOWRES[1];
-		case W_CUSTOM3: if (type) return W_CLOWMAG[2]; else return W_CLOWRES[2];
-		case W_CUSTOM4: if (type) return W_CLOWMAG[3]; else return W_CLOWRES[3];
-		#endif
-		#endif
 		case 0: if (type) return -1; else return -1;
 		default: return 0;
 	}

@@ -895,7 +895,7 @@ noref void() CSQC_Parse_Event =
 			float flashsize = readbyte();
 			string v2 = readstring();
 			float isd = readbyte();
-			W_CUSTOMNAME[wepnum] = wepname;
+			/*W_CUSTOMNAME[wepnum] = wepname;
 			W_CVMODEL[wepnum] = wvmodel;
 			W_CMAG[wepnum] = mag;
 			W_CRESERVE[wepnum] = reserve;
@@ -904,7 +904,7 @@ noref void() CSQC_Parse_Event =
 			W_CADS[wepnum] = cads;
 			W_CFLASHSIZE[wepnum] = flashsize;
 			W_CVMODEL2[wepnum] = v2;
-			W_CDUAL[wepnum] = isd;
+			W_CDUAL[wepnum] = isd;*/
 			break;
 		case EVENT_HUDUPDATE:
 			G_HUD = readstring();
