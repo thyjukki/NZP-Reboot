@@ -444,7 +444,7 @@ void() PlayerSpawn =
 	// DISGUSTING.
 	//nzd_defineweapon(self);
 
-	centerprint(self, CustomWeapons[0].vmodel);
+	//centerprint(self, CustomWeapons[0].vmodel);
 	
 	entity who = find(world,classname,"player");
 	while(who != self && !self.playernum)

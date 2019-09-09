@@ -372,6 +372,16 @@ void(float dist) Window_Walk =
 	}
 };
 
+//
+// kind of a shoddy fix, but essentially what we do to fix
+// issues with zomb ents colliding with each other during hopping
+// is make sure we wait a bit longer before freeing the window for
+// another usage.
+//
+void() free_window =
+{
+	self.usedent = world;
+}
 
 void(float dist) Window_Hop =
 {
@@ -423,15 +433,20 @@ void(float dist) Window_Hop =
 			self.tries++;
 			self.chase_time = time + 0.2;
 			if(self.tries > 10) {
-				self.goalentity.usedent = world;//free up the window if we've been waiting to hop
+				// wait enough time before freeing window, to give time for zomb to move.
+				self.goalentity.think = free_window;
+				self.goalentity.nextthink = time + 0.5;
+				//self.goalentity.usedent = world;//free up the window if we've been waiting to hop
 			}
 		}
 	}
 	
 	if(self.hop_step == 6) {
 		self.outside = FALSE;
-		self.goalentity.usedent = world;//free up the window, we're done hopping it
+		//self.goalentity.usedent = world;//free up the window, we're done hopping it
 		//self.used = 0;
+		self.goalentity.think = free_window;
+		self.goalentity.nextthink = time + 0.5;
 		self.goalentity = world;
 		self.enemy = find_new_enemy(self);
 		//self.th_die();
