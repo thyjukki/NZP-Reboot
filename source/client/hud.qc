@@ -101,13 +101,13 @@ void() HUD_AmmoString =
 		}
 
 		if (ammoloop == 0) {
-			ammoopac -= 0.003;
+			ammoopac -= frametime;
 			if (ammoopac < 0.5) {
 				ammoopac = 0.5;
 				ammoloop = 1;
 			}
 		} else {
-			ammoopac += 0.003;
+			ammoopac += frametime;
 			if (ammoopac >= 1) {
 				ammoopac = 1;
 				ammoloop = 0;
@@ -175,8 +175,8 @@ void(float pwidth, float width, float height) PointUpdate =
 			drawstring([pwidth - pmwidth[i], 0.725*height - pmheight[i], 0], finalam[i], [0.022*width, 0.022*width, 0], POINTCOLOR, 1, 1);
 		}
 
-		pmwidth[i] += changew[i];
-		pmheight[i] += changeh[i];
+		pmwidth[i] += changew[i] * (frametime*375);
+		pmheight[i] += changeh[i] * (frametime*375);
 	}
 }
 
@@ -289,18 +289,18 @@ void(float width, float height) HUD_Rounds =
 		pwidth = (width - stringwidth("Round", 0, [0.030*width, 0.030*width, 0]))/2;
 		drawstring([pwidth, 0.35*height, 0], "Round", [0.030*width, 0.030*width, 0], [1, rcolor, rcolor], ralpha, 1);
 
-		rcolor -= 0.0008;
+		rcolor -= frametime/2.5;
 		if (rcolor < 0) {
 			rcolor = 0;
-			ralpha -= 0.0008;
+			ralpha -= frametime/2.5;
 			if (ralpha > 0) {
-				localpha += 0.005;
+				localpha += frametime*0.4;
 				if (localpha > 1)
 					localpha = 1;
 			}
 			if (ralpha < 0) {
 				ralpha = 0;
-				localpha -= 0.005;
+				localpha -= frametime*0.4;
 				if (localpha < 0)
 					localpha = 0;
 			}
@@ -314,7 +314,7 @@ void(float width, float height) HUD_Rounds =
 
 	if (rounds_change == 1)//this is the rounds icon at the middle of the screen
 	{
-		alphabling = alphabling + 1;
+		alphabling = alphabling + (frametime*500);
 
 		if (alphabling < 0)
 			alphabling = 0;
@@ -332,8 +332,8 @@ void(float width, float height) HUD_Rounds =
 				
 		drawpic([round_center_x + round_center_x_offset,round_center_y + round_center_y_offset,0], sb_round[0], [roundwidth,roundheight, 1], [107/255,(1/255),0], 1);
 		
-		round_center_x = round_center_x - (((229/108)*2 - 0.2)*(width/480)/8);
-		round_center_y = round_center_y + ((2*(height/272))/8);
+		round_center_x = round_center_x - (((229/108)*2 - 0.2)*(width/480)/8) * (frametime*250);
+		round_center_y = round_center_y + ((2*(height/272))/8) * (frametime*250);
 		if (round_center_x <= (5/480)*height)
 			round_center_x = (5/480)*height;
 		if (round_center_y >= (220/272)*height)
@@ -357,7 +357,7 @@ void(float width, float height) HUD_Rounds =
 		for (i = 0; i < 3; i = i + 1)
 		{
 			if (color_shift[i] < color_shift_end[i])
-				color_shift[i] = color_shift[i] + color_shift_steps[i];
+				color_shift[i] = color_shift[i] + color_shift_steps[i]*(frametime*100);
 
 			if (color_shift[i] >= color_shift_end[i])
 				color_shift[i] = color_shift_end[i];
@@ -495,7 +495,7 @@ void(float width, float height) HUD_Rounds =
 	else if (rounds_change == 5)//blink white
 	{
 		if (blinking > 0)
-			blinking = blinking - 10;
+			blinking = blinking - (frametime*5000);
 		if (blinking < 0)
 			blinking = 0;
 		if (rounds > 0 && rounds < 11)
@@ -626,7 +626,7 @@ void(float width, float height) HUD_Rounds =
 			for (i = 0; i < 3; i = i + 1)
 			{
 				color_shift[i] = 255;
-				color_shift_steps[i] = (color_shift[i] - color_shift_end[i])/60;
+				color_shift_steps[i] = (color_shift[i] - color_shift_end[i])*(frametime*1.5);
 			}
 			color_shift_init = 1;
 		}
@@ -995,13 +995,13 @@ void() Draw_Crosshair =
 		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE))) {
 			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE));
 		} else {
-			cur_spread += 0.5;
+			cur_spread += (frametime*250);
 		}
 	} else {
 		croshhairmoving = 0;
 		
 		if (cur_spread > 0)
-			cur_spread -= 0.5;
+			cur_spread -= (frametime*250);
 		else 
 			cur_spread = 0;
 	}	
@@ -1193,9 +1193,9 @@ void(float width, float height) HUD_ScrollText = {
 
 	drawstring([x, scrollheight*height, 0], scrolltext, [0.015*width, 0.015*width, 0], [1, 1, 1], scrollopacity, 1); //low
 	if (scrollheight > 0.70) {
-		scrollheight -= 0.0002;
+		scrollheight -= frametime/10;
 		if (scrollopacity > 0)
-			scrollopacity -= 0.002;
+			scrollopacity -= frametime;
 	} else {
 		stext = 0;
 	}
@@ -1223,13 +1223,13 @@ void(float width, float height) HUD_Achievements = {
 	drawpic([0.005*width,achimgheight*height,0], achievementimg[activeachievement], [0.16*width, 0.08*width, 0], [1,1,1], 1);
 
 	if (achtime <= 120) {
-		achheight += 0.0003;
-		achdheight += 0.0003;
-		achimgheight += 0.0003;
+		achheight += (frametime*0.15);
+		achdheight += (frametime*0.15);
+		achimgheight += (frametime*0.15);
 	} else {
-		achheight -= 0.0003;
-		achdheight -= 0.0003;
-		achimgheight -= 0.0003;
+		achheight -= (frametime*0.15);
+		achdheight -= (frametime*0.15);
+		achimgheight -= (frametime*0.15);
 		if (achdheight <= -0.13) {
 			achinit = 0;
 			activeachievement = -1;
@@ -1243,7 +1243,7 @@ void(float width, float height) HUD_Achievements = {
 			achimgheight = 0.01;
 		}
 
-		achtime += 0.05;
+		achtime += (frametime*25);
 	}
 }
 

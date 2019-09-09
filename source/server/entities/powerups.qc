@@ -307,24 +307,26 @@ void(vector where, float type) Spawn_Powerup =
 
 	//#ifdef PSP
 	new_powerup.effects = EF_GREEN;
+	new_powerup.effects = new_powerup.effects | EF_FULLBRIGHT;
 	//#endif
 	//new_powerup.effects = new_powerup.effects | EF_BRIGHTLIGHT;
 	
 	//=================== Sparkle Effects =====================
-	#ifndef PC
+	
 	entity twlt_Sparkle;
 	twlt_Sparkle = spawn();
 	new_powerup.owner = twlt_Sparkle; //just a reference so power up can delete the sparkle later on
 	
 	setorigin(twlt_Sparkle,where);
+	#ifndef PC
 	setmodel(twlt_Sparkle,"progs/Sprites/sprkle.spr");
-	
+	#endif
 	twlt_Sparkle.think = sparkle_think;
 	twlt_Sparkle.nextthink = time + 0.1;
 	sound(twlt_Sparkle,CHAN_VOICE,"sounds/pu/powerup.wav",0.6,ATTN_NORM);
 	
 	sound(new_powerup,CHAN_AUTO,"sounds/pu/drop.wav",1,ATTN_NONE);
-	#endif
+	
 	//========================================================
 	t = random();
 

@@ -1739,7 +1739,8 @@ void() CheckPlayer =
 {
 	CheckPowerups(self);
 	CheckRevive(self);
-	
+
+	// FIXME - can't do frame independent stance changing.. ofs starts spazzing..
 	if (self.view_ofs_z > self.new_ofs_z) {
 			self.changestance = true;
 			self.view_ofs_z = self.view_ofs_z - 1.5;

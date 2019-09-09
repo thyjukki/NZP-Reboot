@@ -845,7 +845,7 @@ void() Zombie_Death =
 	
 	if(self.outside == FALSE)
 	{
-		//Spawn_Powerup(self.origin + '0 0 12', 0);
+		Spawn_Powerup(self.origin + '0 0 12', 0);
 		if (totalpowerups < 4)
 		{
 			if (total_powerup_points >= powerup_activate)
