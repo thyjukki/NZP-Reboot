@@ -126,17 +126,17 @@ void() HUD_AmmoString =
 *******************/
 
 //disgusting, find a way to store all of these changes into ONE array
-float changeam[10];
-float changew[10];
-float changeh[10];
-float pmwidth[10];
-float pmheight[10];
-string finalam[10];
+float changeam[20];
+float changew[20];
+float changeh[20];
+float pmwidth[20];
+float pmheight[20];
+string finalam[20];
 float lastchanged;
 
 void(float amount) RegisterPointChange =
 {
-	if (lastchanged == 10)
+	if (lastchanged == 20)
 		lastchanged = 0;
 
 	changeam[lastchanged] = amount;
@@ -162,7 +162,7 @@ void(float pwidth, float width, float height) PointUpdate =
 {
 	vector POINTCOLOR;
 
-	for (float i = 0; i < 10; i++) {
+	for (float i = 0; i < 20; i++) {
 		if (changeam[i] > 0) {
 			POINTCOLOR = TEXT_ORANGE;
 			finalam[i] = strcat("+", ftos(changeam[i]));
@@ -172,7 +172,7 @@ void(float pwidth, float width, float height) PointUpdate =
 		}
 
 		if (changeam[i] != 0 && pmwidth[i] < g_width*0.05) {
-			drawstring([pwidth - pmwidth[i], 0.725*height - pmheight[i], 0], finalam[i], [0.015*width, 0.015*width, 0], POINTCOLOR, 1, 1);
+			drawstring([pwidth - pmwidth[i], 0.725*height - pmheight[i], 0], finalam[i], [0.022*width, 0.022*width, 0], POINTCOLOR, 1, 1);
 		}
 
 		pmwidth[i] += changew[i];

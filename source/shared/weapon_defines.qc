@@ -3,31 +3,34 @@
 */
 var struct {
 	string name;
-	int magSize;
-	int reserveSize;
+	float magSize;
+	float reserveSize;
 	string vmodel;
 	string vmodel2;
 	string gmodel;
-	int isDual;
-	int firetype;
-	int damage;
-	int shotcount;
-	int penetration;
-	int spread;
-	int fdelay;
-	int rdelay;
-	int walkspeed;
+	float isDual;
+	float firetype;
+	float nonpap;
+	float pap;
+	float ispap;
+	float damage;
+	float shotcount;
+	float bodypen;
+	float penetration;
+	float spread;
+	float fdelay;
+	float rdelay;
+	float walkspeed;
 	string firesound;
-	int skin;
-	int recoil;
-	int recoil;
-	int crossmin;
-	int crossmax;
-	int lowmag;
-	int lowreserve;
+	float skin;
+	float recoil;
+	float crossmin;
+	float crossmax;
+	float lowmag;
+	float lowreserve;
 	vector flash;
-	int flashsize;
-	int papWpn;
+	float flashsize;
+	float papWpn;
 	vector adsofs;
 } CustomWeapons[] =
 {
@@ -45,6 +48,10 @@ float(float wep) isCustomWeapon =
 
 string(float wep) GetWeaponName =
 {
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].name;
+	}
+
 	switch (wep)
 	{
 		case W_COLT:
@@ -180,6 +187,10 @@ string(float perk) GetPerkName =
 float(float wep) GetFiretype =
 {
 
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].firetype;
+	}
+
 	switch (wep)
 	{
 		case W_COLT:
@@ -264,7 +275,7 @@ float(float wep) getWeaponMag =
 {
 
 	if (isCustomWeapon(wep)) {
-		return CustomWeapons[0].magSize;
+		return CustomWeapons[wep - 70].magSize;
 	}
 
 	switch (wep)
@@ -364,6 +375,10 @@ float(float wep) getWeaponMag =
 
 float(float wep) getWeaponAmmo =
 {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].reserveSize;
+	}
 
 	switch (wep)
 	{
@@ -466,6 +481,10 @@ float(float wep) getWeaponAmmo =
 float(float wep) getWeaponDamage =
 {
 
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].damage;
+	}
+
 	switch (wep)
 	{
 		case W_COLT:
@@ -563,6 +582,10 @@ float(float wep) getWeaponDamage =
 
 float(float wep) GetWeaponShotcount =
 {
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].shotcount;
+	}
+
 	switch(wep)
 	{
 		case W_DB:
@@ -585,6 +608,14 @@ float(float wep, float penetration_times) getWeaponPenetration =
 {
 	if (!penetration_times)
 		return 2;
+
+	if (isCustomWeapon(wep)) {
+		if (penetration_times >= CustomWeapons[wep - 70].bodypen)
+			return 0;
+
+		return CustomWeapons[wep - 70].penetration;
+	}
+
 	switch (wep)
 	{
 		case W_COLT:
@@ -697,6 +728,11 @@ float(float wep, float penetration_times) getWeaponPenetration =
 float(float wep) GetWeaponSpread =
 {
 	float Weapon_Spread, Total_Spread;
+
+	if (isCustomWeapon(wep)) {
+		Weapon_Spread = CustomWeapons[wep - 70].spread;
+	}
+
 	switch (wep)
 	{
 		case W_COLT:
@@ -843,6 +879,13 @@ float(float wep) GetWeaponSpread =
 
 float(float wep, float delaytype) getWeaponDelay =
 {
+
+	if (isCustomWeapon(wep)) {
+		if (delaytype == RELOAD)
+			return CustomWeapons[wep - 70].rdelay;
+		else if (delaytype == FIRE)
+			return CustomWeapons[wep - 70].fdelay;
+	}
 
 	switch (wep)
 	{
@@ -1033,6 +1076,11 @@ float(float wep, float delaytype) getWeaponDelay =
 
 float GetWeaponWalkSpeed (float weapontype)
 {
+
+	if (isCustomWeapon(weapontype)) {
+		return CustomWeapons[weapontype - 70].walkspeed;
+	}
+
 	switch(weapontype) {
 		default: return 1;
 		case W_KAR: 
@@ -1064,6 +1112,11 @@ float GetWeaponWalkSpeed (float weapontype)
 }
 
 vector GetWeaponADSPos(float wep) {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].adsofs;
+	}
+
 	switch (wep) {
 		case W_COLT:
 			return [-2.99, 2.77, 0.92];
@@ -2023,6 +2076,14 @@ float(float wep, float frametype, optional float z) GetFrame =
 
 string(float wep, float gorvmodel) GetWeaponModel =
 {
+
+	if (isCustomWeapon(wep)) {
+		if (gorvmodel)
+			return CustomWeapons[wep - 70].gmodel;
+		else
+			return CustomWeapons[wep - 70].vmodel;
+	}
+
 	switch (wep)
 	{
 		case W_COLT:
@@ -2191,6 +2252,11 @@ string(float wep, float gorvmodel) GetWeaponModel =
 
 string(float wep) GetWeaponSound =
 {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].firesound;
+	}
+
 	switch (wep)
 	{
 		case W_BIATCH:
@@ -2267,6 +2333,11 @@ string(float wep) GetWeaponSound =
 }
 
 float(float wep) IsDualWeapon = {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].isDual;
+	}
+
 	switch(wep) {
 		case W_BIATCH:
 			return 1;
@@ -2278,6 +2349,11 @@ float(float wep) IsDualWeapon = {
 }
 
 string(float wep) GetLeftWeaponModel = {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].vmodel2;
+	}
+
 	switch(wep) {
 		case W_BIATCH:
 			return "models/weapons/m1911/v_biatch_left.mdl";
@@ -2289,6 +2365,11 @@ string(float wep) GetLeftWeaponModel = {
 }
 
 float(float wep) IsPapWeapon = {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].ispap;
+	}
+
 	switch(wep) {
 		case W_BIATCH:
 		case W_ARMAGEDDON:
@@ -2318,6 +2399,11 @@ float(float wep) IsPapWeapon = {
 }
 
 float(float wep) GetWepSkin = {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].skin;
+	}
+
 	switch(wep) {
 		case W_BIATCH:
 			return 0;
@@ -2335,6 +2421,10 @@ float(float wep) GetWepSkin = {
 
 float(float wep)  EqualNonPapWeapon = 
 {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].nonpap;
+	}
 
 	switch (wep) {
 		case W_BIATCH:
@@ -2395,6 +2485,10 @@ float(float wep)  EqualNonPapWeapon =
 }
 float(float wep)  EqualPapWeapon = 
 {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].pap;
+	}
 
 	switch (wep) {
 		case W_COLT:
@@ -2759,6 +2853,11 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 
 void(float weptype) precache_extra =
 {
+
+	if (isCustomWeapon(weptype)) {
+		precache_model(CustomWeapons[weptype - 70].vmodel);
+	}
+
 	switch (weptype) {
 		case W_COLT:
 		case W_BIATCH:
@@ -2939,6 +3038,11 @@ void(float weptype) precache_extra =
 
 float(float wep) getWeaponRecoilReturn =
 {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].recoil;
+	}
+
 	switch (wep)
 	{
 		case W_COLT:
@@ -3085,7 +3189,13 @@ float(float wep) getWeaponRecoilReturn =
 
 float(float weapon, float stance) CrossHairWeapon =
 {
+
 	float sprd;
+
+	if (isCustomWeapon(weapon)) {
+		sprd = CustomWeapons[weapon - 70].crossmin;
+	}
+
 	switch(weapon)
 	{
 		case W_COLT:
@@ -3205,6 +3315,11 @@ float(float weapon, float stance) CrossHairWeapon =
 float(float weapon, float stance) CrossHairMaxSpread =
 {
 	float sprd;
+
+	if (isCustomWeapon(weapon)) {
+		return CustomWeapons[weapon - 70].crossmax;
+	}
+
 	switch(weapon)
 	{
 		case W_COLT:
@@ -3322,8 +3437,13 @@ float(float weapon, float stance) CrossHairMaxSpread =
 	}
 }
 
-int(int weapon, int type) GetLowAmmo = // determine what ammo value you should have that turns shells red
+int(float weapon, float type) GetLowAmmo = // determine what ammo value you should have that turns shells red
 {
+
+	if (isCustomWeapon(weapon)) {
+		if (type) return CustomWeapons[weapon - 70].lowmag; else return CustomWeapons[weapon - 70].lowreserve;
+	}
+
 	switch (weapon)
 	{
 		case W_COLT: if (type) return 2; else return 16; 
@@ -3630,6 +3750,10 @@ vector (float wep) GetWeaponFlash_Offset =
 }
 
 float (float wep) GetWeaponFlash_Size = {
+
+	if (isCustomWeapon(wep)) {
+		return CustomWeapons[wep - 70].flashsize;
+	}
 
 	switch(wep) {
 		case W_COLT:

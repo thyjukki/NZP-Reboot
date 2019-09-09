@@ -114,7 +114,7 @@ void() crawler_die3		=[	2,		SUB_Null] 	{self.frame = 39;self.nextthink = time + 
 
 //======================== Climb Over Barricade ====================
 //40-70
-void() crawler_climbBarricade1	=[	0,		crawler_climbBarricade2] 	{setorigin(self,self.goalorigin);self.zoom = 1;self.frame = 40;Zombie_Think();};
+void() crawler_climbBarricade1	=[	0,		crawler_climbBarricade2] 	{self.movetype = MOVETYPE_STEP;self.zoom = 1;self.frame = 40;Zombie_Think();};
 void() crawler_climbBarricade2	=[	1,		crawler_climbBarricade3] 	{self.frame = 41;	moveforwardalittle(0);Zombie_Think();};
 void() crawler_climbBarricade3	=[	2,		crawler_climbBarricade4] 	{self.frame = 42;	moveforwardalittle(0);Zombie_Think();};
 void() crawler_climbBarricade4	=[	3,		crawler_climbBarricade5] 	{self.frame = 43;	moveforwardalittle(1);Zombie_Think();};
@@ -144,7 +144,7 @@ void() crawler_climbBarricade27	=[	26,		crawler_climbBarricade28] 	{self.frame =
 void() crawler_climbBarricade28	=[	27,		crawler_climbBarricade29] 	{self.frame = 67;	moveforwardalittle(1);Zombie_Think();};
 void() crawler_climbBarricade29	=[	28,		crawler_climbBarricade30] 	{self.frame = 68;	moveforwardalittle(1);Zombie_Think();};
 void() crawler_climbBarricade30	=[	29,		crawler_climbBarricade31] 	{self.frame = 69;	moveforwardalittle(1);Zombie_Think();};
-void() crawler_climbBarricade31	=[	30,		SUB_Null] 	{self.frame = 70;	setorigin(self,self.goalentity.hop_spot); self.zoom = 1;self.state = 0;self.hop_step = 6; self.th_walk();Zombie_Think();};
+void() crawler_climbBarricade31	=[	30,		SUB_Null] 	{self.frame = 70;	self.movetype = MOVETYPE_WALK; self.zoom = 1;self.state = 0;self.hop_step = 6; self.th_walk();Zombie_Think();};
 
 //======================== Crawler Fall =============================
 //71 - 77

@@ -171,8 +171,7 @@ void() powerup_flash =
 		self.nextthink = time + 0.15;
 		if(self.flashtime < time)
 		{
-			setmodel(self,"");
-			setmodel(self.owner,"");
+			// moto - we used to setmodel blank here too, but it caused errors with the sprite.
 			remove(self.owner);
 			remove(self);
 			return;
@@ -213,6 +212,8 @@ void() powerup_touch =
 	if(other.classname == "player")
 	{
 		sound(self.owner,CHAN_VOICE,"sounds/pu/pickup.wav",1,ATTN_NONE);
+
+		//centerprint(other, ftos(self.zombie_drop_id));
 		
 		if(self.zombie_drop_id == 1)
 		{
@@ -292,7 +293,7 @@ float last_pu;
 void(vector where, float type) Spawn_Powerup =
 {
 	entity new_powerup;
-	float t, am, carp, perk;
+	float t, total_powerups, id;
 
 	new_powerup = spawn();
 	new_powerup.origin = where;
@@ -304,12 +305,13 @@ void(vector where, float type) Spawn_Powerup =
 	setsize (new_powerup, VEC_HULL_MIN, VEC_HULL_MAX);
 	new_powerup.movetype = MOVETYPE_NONE;
 
-	#ifdef PSP
+	//#ifdef PSP
 	new_powerup.effects = EF_GREEN;
-	#endif
+	//#endif
 	//new_powerup.effects = new_powerup.effects | EF_BRIGHTLIGHT;
 	
 	//=================== Sparkle Effects =====================
+	#ifndef PC
 	entity twlt_Sparkle;
 	twlt_Sparkle = spawn();
 	new_powerup.owner = twlt_Sparkle; //just a reference so power up can delete the sparkle later on
@@ -322,45 +324,55 @@ void(vector where, float type) Spawn_Powerup =
 	sound(twlt_Sparkle,CHAN_VOICE,"sounds/pu/powerup.wav",0.6,ATTN_NORM);
 	
 	sound(new_powerup,CHAN_AUTO,"sounds/pu/drop.wav",1,ATTN_NONE);
+	#endif
 	//========================================================
 	t = random();
 
-	//SO MUCH PRETTIER AHHHHHHH - moto
+	// Specific Power-Ups (for dogs)
 	if (type) {
 		setmodel(new_powerup, getPowerupModel(type));
 		new_powerup.zombie_drop_id = type;
 	} else {
-		am = 5;
+		//
+		// Instead of making weird checks to change our divisible number, let's just
+		// check all of that stuff afterwards, to avoid any bad math/logic..
+		//
 
+		total_powerups = 5; // nuke, insta, 2x, maxammo
+
+		// determine id
+		for (float i = 1; i < total_powerups + 1; i++) {
+			if (t > (i/total_powerups)) {
+				id = i;
+			}
+		}
+
+		// check if we are elligible for a carpenter, and if so see if we want it. (override)
 		if (total_windows_down >= 5) {
-			am++;
-			carp = true;
+			t = random();
+
+			if (t > (1/3)) {
+				id = 5;
+			}
 		}
 
-		if (G_PERKPOWER) {
-			am++;
-			perk = true;
+		// another elligibility check for the perk drop
+		if (G_PERKPOWER && rounds >= 15) {
+			t = random();
+
+			if (t > (1/10)) {
+				id = 6;
+			}
 		}
 
-		if (t < (1/am)) {
-			setmodel(new_powerup, getPowerupModel(1));
-			new_powerup.zombie_drop_id = 1;
-		} else if (t < (2/am)) {
-			setmodel(new_powerup, getPowerupModel(2));
-			new_powerup.zombie_drop_id = 2;
-		} else if (t < (3/am)) {
-			setmodel(new_powerup, getPowerupModel(3));
-			new_powerup.zombie_drop_id = 3;
-		} else if (t < (4/am)) {
-			setmodel(new_powerup, getPowerupModel(4));
-			new_powerup.zombie_drop_id = 4;
-		} else if (t < (5/am) && am > 5 && carp) {
-			setmodel(new_powerup, getPowerupModel(5));
-			new_powerup.zombie_drop_id = 5;
-		} else if (t < (6/am) && am == 6 && perk) {
-			setmodel(new_powerup, getPowerupModel(6));
-			new_powerup.zombie_drop_id = 6;
+		// failsafe in case my logic is still horrible
+		if (id == 0 || id > 7) {
+			id = 3;
 		}
+
+		// finally, assign the id and model to our id.
+		setmodel(new_powerup, getPowerupModel(id));
+		new_powerup.zombie_drop_id = id;
 	}
 	
 	last_pu = new_powerup.zombie_drop_id;

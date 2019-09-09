@@ -7,6 +7,8 @@ weapon
     gmodel: "models/ai/dog.mdl"
     ads: '-4, 0, -6.5'
     firetype: 3
+    ispap: 0
+    nonpap: 0
     pap: 71
     dmg: 0
     shotcount: 5

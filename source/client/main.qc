@@ -123,13 +123,13 @@ void() Update_Vmodel =
 	//Walk bob
 	if (getstatf(STAT_WEAPONZOOM)) { //ADS bob
 		weapon_bob_factor_x = 0;
-		weapon_bob_factor_y = 0.8;
-		weapon_bob_factor_z = 0.4;
-		weapon_bob_factor_z_coef = 0.2;
+		weapon_bob_factor_y = 0.4;
+		weapon_bob_factor_z = 0.2;
+		weapon_bob_factor_z_coef = 0.1;
 		
-		dampening_factor_x = 0.2*sin(time*weapon_bob_factor_x);
-		dampening_factor_y = 0.2*cos(time*weapon_bob_factor_y);
-		dampening_factor_z = 0.2*sin(time*weapon_bob_factor_z);
+		dampening_factor_x = 0.1*sin(time*weapon_bob_factor_x);
+		dampening_factor_y = 0.1*cos(time*weapon_bob_factor_y);
+		dampening_factor_z = 0.1*sin(time*weapon_bob_factor_z);
 	} else if (K_FORWARDDOWN || K_BACKDOWN || K_LEFTDOWN || K_RIGHTDOWN && !getstatf(STAT_WEAPONZOOM)) {	
 		weapon_bob_factor_x = 8;
 		weapon_bob_factor_y = 8;
