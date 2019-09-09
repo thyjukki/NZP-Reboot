@@ -274,7 +274,7 @@ void() PlayerPostThink =
 		self.lastsound_time = time - 0.15;
 	}
 
-	centerprint(self, ftos(self.stamina));
+	//centerprint(self, ftos(self.stamina));
 	
 	#ifdef PC
 	//footsteps
