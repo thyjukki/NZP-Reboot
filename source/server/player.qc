@@ -273,6 +273,8 @@ void() PlayerPostThink =
 			sound(self, CHAN_BODY, "sounds/player/land.wav", 1, 1.75);
 		self.lastsound_time = time - 0.15;
 	}
+
+	centerprint(self, ftos(self.stamina));
 	
 	#ifdef PC
 	//footsteps
@@ -341,9 +343,9 @@ void() PlayerPostThink =
 		// Have to choose from PSP and PC here since frametime is a lot different...
 		#ifdef PC
 		if (self.perks & P_STAMIN) {
-			self.stamina = self.stamina - (0.05*fabs(sin(time)));
+			self.stamina = self.stamina - (0.05*fabs(sin(frametime*110)));
 		} else {
-			self.stamina = self.stamina - (0.1*fabs(sin(time)));
+			self.stamina = self.stamina - (0.1*fabs(sin(frametime*110)));
 		}
 		#else
 		if (self.perks & P_STAMIN) {
@@ -360,7 +362,7 @@ void() PlayerPostThink =
 		#ifndef PC
 		self.stamina = self.stamina + 10*frametime;
 		#else 
-		self.stamina = self.stamina + (0.1*fabs(sin(time)));
+		self.stamina = self.stamina + (0.1*fabs(sin(frametime*75)));
 		#endif
 		if (self.stamina > 3) {
 			self.stamina = 3;
