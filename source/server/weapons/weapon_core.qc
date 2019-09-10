@@ -909,6 +909,85 @@ void(float side) W_FireGrenade =
 	setorigin(nade, nade.origin);
 }
 
+//
+// RAY GUN - modified from patch <3
+//
+
+void() RayBulletExplode =
+{
+	DamgageExplode (self, self.owner, 1800, 1800, 64);//we want A SMALL radius of explosion
+
+	// MOTO - FTE explosions are.. large, let's flash instead.
+	
+	#ifdef PC
+	te_smallflash(self.origin);
+	#else
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
+	#endif
+	
+	SUB_Remove ();
+};
+
+void() velocity_increase_ray =
+{
+	if (!other.solid || other.solid == SOLID_TRIGGER)
+		if (other != world)
+			return;
+				
+	if (other == self.owner)
+		return;
+				
+	if (other.solid == SOLID_NOT) {
+		RayBulletExplode();
+	}
+
+	self.velocity = self.velocity*1.5;
+		
+	RayBulletExplode();
+};
+
+void() W_FireRay =
+{
+	local entity porter;
+
+	porter = spawn();
+	porter.owner = self;
+	porter.movetype = MOVETYPE_FLY;
+	porter.solid = SOLID_BBOX;
+
+	makevectors(self.v_angle);
+
+	porter.velocity = v_forward*2000;
+	porter.avelocity = '0 0 0';
+
+	porter.angles = vectoangles(porter.velocity);
+	porter.angles_z += (porter.angles_z + 180 < 360)? 180 : -180;
+	porter.angles = vectoangles(v_forward);
+
+	porter.v_angle = '0 0 200';
+
+	porter.touch = velocity_increase_ray;
+	setmodel(porter, "progs/shark.mdl");
+	setsize(porter, '0 0 0', '0 0 0');
+	porter.origin = self.origin + self.view_ofs;
+	porter.origin += v_forward * 0;
+
+	if (self.weapon == W_PORTER) {
+		porter.effects = EF_RED;
+	} else {
+		porter.effects = EF_GREEN;
+	}
+
+	setorigin(porter, porter.origin);
+
+	self.animend = ReturnWeaponModel;
+	self.callfuncat = 0;
+}
+
 
 void(float side) W_Fire =
 {
@@ -1031,10 +1110,11 @@ void(float side) W_Fire =
 			}
 			self.semi2 = TRUE;
 		}
-	}
-
-	if (firetype == 3)
+	} else if (firetype == 3) {
 		W_FireGrenade(side);
+	} else if (firetype == 4) {
+		W_FireRay();
+	}
 		
 	FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
 
@@ -1084,7 +1164,8 @@ void(float side) W_Fire =
 
 	// REFORMAT THIS 
 	#ifndef PC
-	self.effects = self.effects | EF_MUZZLEFLASH;
+	if (self.weapon != W_RAY && self.weapon != W_PORTER)
+		self.effects = self.effects | EF_MUZZLEFLASH;
 	#else 
 	// psp takes care of this in engine
 	if (self.perks & P_DEAD)
@@ -1157,17 +1238,19 @@ void () W_Knife =
 		/* naievil (FIXME) add weapon decal here */
 	
 		#ifdef PC
-		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
-		WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
-		WriteEntity(MSG_MULTICAST, self);
-		WriteCoord(MSG_MULTICAST, org_x);
-		WriteCoord(MSG_MULTICAST, org_y);
-		WriteCoord(MSG_MULTICAST, org_z);
-		WriteCoord(MSG_MULTICAST, trace_plane_normal_x);
-		WriteCoord(MSG_MULTICAST, trace_plane_normal_y);
-		WriteCoord(MSG_MULTICAST, trace_plane_normal_z);
-		WriteEntity(MSG_MULTICAST, hit_ent);
-		multicast(trace_endpos, MULTICAST_PHS);
+		if (self.weapon != W_RAY && self.weapon != W_PORTER) {
+			WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+			WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
+			WriteEntity(MSG_MULTICAST, self);
+			WriteCoord(MSG_MULTICAST, org_x);
+			WriteCoord(MSG_MULTICAST, org_y);
+			WriteCoord(MSG_MULTICAST, org_z);
+			WriteCoord(MSG_MULTICAST, trace_plane_normal_x);
+			WriteCoord(MSG_MULTICAST, trace_plane_normal_y);
+			WriteCoord(MSG_MULTICAST, trace_plane_normal_z);
+			WriteEntity(MSG_MULTICAST, hit_ent);
+			multicast(trace_endpos, MULTICAST_PHS);
+		}	
 		#else
 		#ifdef PSP
 		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
