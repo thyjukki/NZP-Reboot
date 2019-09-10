@@ -597,7 +597,9 @@ vector VEC_VIEW_OFS = '0 0 32';
 #define	VEC_HULL2_MAX  '32 32 64'
 
 .string fog;
+#ifndef NX
 string world_fog;
+#endif
 
 .float button3;
 .float button4;

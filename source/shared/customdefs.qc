@@ -177,8 +177,10 @@ float invertfloat(float input) {
 }
 
 //elements
+#ifndef NX
 string G_HUD;
 float G_HUDHOR;
+#endif
 
 // custom weapon defs
 // now 90% slimmed down

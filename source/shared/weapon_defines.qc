@@ -3437,7 +3437,7 @@ float(float weapon, float stance) CrossHairMaxSpread =
 	}
 }
 
-int(float weapon, float type) GetLowAmmo = // determine what ammo value you should have that turns shells red
+float(float weapon, float type) GetLowAmmo = // determine what ammo value you should have that turns shells red
 {
 
 	if (isCustomWeapon(weapon)) {
