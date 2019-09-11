@@ -59,7 +59,11 @@ sys_socket_t UDP_Init (void)
 	{
 		buff[MAXHOSTNAMELEN - 1] = 0;
 #ifdef __SWITCH__
-		myAddr = htonl(gethostid());
+		// gethostid() returns 127.0.0.1 in the wrong byteorder if we're not
+		// connected to the internet, otherwise our local IP in correct order
+		myAddr = gethostid();
+		if (myAddr == 0x7f000001)
+			myAddr = htonl(myAddr);
 #else
 #ifdef PLATFORM_OSX
 		// ericw -- if our hostname ends in ".local" (a macOS thing),

@@ -204,6 +204,7 @@ static void SetMesaConfig (void)
 
 static qboolean InitEGL (NWindow *input_win)
 {
+
 	// Connect to the EGL default display
 	s_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 	if (!s_display)
@@ -220,6 +221,8 @@ static qboolean InitEGL (NWindow *input_win)
 		Sys_Error("Could not set API! error: %d", eglGetError());
 		goto _fail1;
 	}
+
+
 
 	// Get an appropriate EGL framebuffer configuration
 	EGLConfig config;
@@ -239,8 +242,10 @@ static qboolean InitEGL (NWindow *input_win)
 		goto _fail1;
 	}
 
+
 	// Create an EGL window surface
 	s_surface = eglCreateWindowSurface(s_display, config, input_win, NULL);
+	
 	if (!s_surface)
 	{
 		Sys_Error("Surface creation failed! error: %d", eglGetError());
@@ -253,6 +258,7 @@ static qboolean InitEGL (NWindow *input_win)
 		EGL_NONE
 	};
 
+
 	// Create an EGL rendering context
 	s_context = eglCreateContext(s_display, config, EGL_NO_CONTEXT, ctxAttributeList);
 	if (!s_context)
@@ -261,8 +267,11 @@ static qboolean InitEGL (NWindow *input_win)
 		goto _fail2;
 	}
 
+
 	// Connect the context to the surface
 	eglMakeCurrent(s_display, s_surface, s_surface, s_context);
+
+
 	return true;
 
 _fail2:

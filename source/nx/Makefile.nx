@@ -82,7 +82,7 @@ SOURCEFILES	:=\
 	nxsrc/gl_screen.c \
 	nxsrc/gl_sky.c \
 	nxsrc/gl_warp.c \
-	nxsrc/gl_videgl.c \
+	nxsrc/gl_vidsdl.c \
 	nxsrc/gl_hud.c \
 	nxsrc/gl_draw.c \
 	nxsrc/image.c \

@@ -176,6 +176,8 @@ float PlayStepSound(void)
 
 float speed_reduce (int weapontype);
 
+#define VBOB_VAL 6.2
+
 float V_CalcVBob(float speed, float which)
 {
 	float bob = 0;
@@ -193,20 +195,20 @@ float V_CalcVBob(float speed, float which)
 	if(sprint == 1)
 	{
 		if(which == 0)
-			bob = speed * 8.6 * (1/sprint) * sin((cl.time * 12.5 * sprint));//10
+			bob = speed * VBOB_VAL * (1/sprint) * sin((cl.time * 12.5 * sprint));//10
 		else if(which == 1)
-			bob = speed * 8.6 * (1/sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//5
+			bob = speed * VBOB_VAL * (1/sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//5
 		else if(which == 2)
-			bob = speed * 8.6 * (1/sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//5
+			bob = speed * VBOB_VAL * (1/sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//5
 	}
 	else
 	{
 		if(which == 0)
-			bob = speed * 8.6 * (1/sprint) *  cos((cl.time * 6.25 * sprint));
+			bob = speed * VBOB_VAL * (1/sprint) *  cos((cl.time * 6.25 * sprint));
 		else if(which == 1)
-			bob = speed * 8.6 * (1/sprint) * cos((cl.time * 12.5 * sprint));
+			bob = speed * VBOB_VAL * (1/sprint) * cos((cl.time * 12.5 * sprint));
 		else if(which == 2)
-			bob = speed * 8.6 * (1/sprint) * cos((cl.time * 6.25 * sprint));
+			bob = speed * VBOB_VAL * (1/sprint) * cos((cl.time * 6.25 * sprint));
 	}
 
 
@@ -239,9 +241,9 @@ float V_CalcBob (float speed,float which)//0 = regular, 1 = side bobbing
 
 	//12.048 -> 4.3 = 100 -> 36ish, so replace 100 with 36
 	if(which == 0)
-		bob = cl_bobup.value * 36 * speed * (sprint * sprint) * sin((cl.time * 12.5 * sprint));//Pitch Bobbing 10
+		bob = cl_bobup.value * 24 * speed * (sprint * sprint) * sin((cl.time * 12.5 * sprint));//Pitch Bobbing 10
 	else if(which == 1)
-		bob = cl_bobside.value * 36 * speed * (sprint * sprint * sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//Yaw Bobbing 5
+		bob = cl_bobside.value * 24 * speed * (sprint * sprint * sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//Yaw Bobbing 5
 
 	return bob;
 }

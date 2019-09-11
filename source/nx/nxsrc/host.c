@@ -891,6 +891,7 @@ void Host_Init (void)
 		CL_Init ();
 	}
 
+
 	Hunk_AllocName (0, "-HOST_HUNKLEVEL-");
 	host_hunklevel = Hunk_LowMark ();
 

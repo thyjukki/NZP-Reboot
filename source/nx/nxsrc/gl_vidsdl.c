@@ -41,6 +41,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <OpenGL/OpenGL.h>
 #endif
 
+#ifdef __SWITCH__
+#include "glad/glad.h"
+#endif
+
 #define MAX_MODE_LIST	600 //johnfitz -- was 30
 #define MAX_BPPS_LIST	5
 #define MAX_RATES_LIST	20
@@ -181,9 +185,6 @@ static unsigned short vid_sysgamma_blue[256];
 static qboolean	gammaworks = false;	// whether hw-gamma works
 static int fsaa;
 
-int		texture_mode = GL_LINEAR;
-int		texture_extension_number = 1;
-
 /*
 ================
 VID_Gamma_SetGamma -- apply gamma correction
@@ -301,8 +302,6 @@ static void VID_Gamma_Init (void)
 	Cvar_SetCallback (&vid_gamma, VID_Gamma_f);
 	Cvar_SetCallback (&vid_contrast, VID_Gamma_f);
 
-	Build_Gamma_Table();
-	
 	if (gl_glsl_gamma_able)
 		return;
 
@@ -614,15 +613,26 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 
 	q_snprintf(caption, sizeof(caption), "QuakeSpasm " QUAKESPASM_VER_STRING);
 
+#ifdef __SWITCH__
+	/* Force GL 3.2 compatibility profile */
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+#endif
+
 #if defined(USE_SDL2)
 	/* Create the window if needed, hidden */
 	if (!draw_context)
 	{
+#ifdef __SWITCH__
+		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
+		draw_context = SDL_CreateWindow (caption, 0, 0, width, height, flags);
+#else
 		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
 
 		if (vid_borderless.value)
 			flags |= SDL_WINDOW_BORDERLESS;
-		
+
 		draw_context = SDL_CreateWindow (caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		if (!draw_context) { // scale back fsaa
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
@@ -637,6 +647,8 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 			SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
 			draw_context = SDL_CreateWindow (caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		}
+#endif
+
 		if (!draw_context)
 			Sys_Error ("Couldn't create window");
 
@@ -647,15 +659,18 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 		previous_display = SDL_GetWindowDisplayIndex(draw_context);
 	}
 
+#ifndef __SWITCH__
 	/* Ensure the window is not fullscreen */
 	if (VID_GetFullscreen ())
 	{
 		if (SDL_SetWindowFullscreen (draw_context, 0) != 0)
 			Sys_Error("Couldn't set fullscreen state mode");
 	}
+#endif
 
 	/* Set window size and display mode */
 	SDL_SetWindowSize (draw_context, width, height);
+#ifndef __SWITCH__
 	if (previous_display >= 0)
 		SDL_SetWindowPosition (draw_context, SDL_WINDOWPOS_CENTERED_DISPLAY(previous_display), SDL_WINDOWPOS_CENTERED_DISPLAY(previous_display));
 	else
@@ -674,12 +689,18 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 	}
 
 	SDL_ShowWindow (draw_context);
+#endif
 
 	/* Create GL context if needed */
 	if (!gl_context) {
 		gl_context = SDL_GL_CreateContext(draw_context);
 		if (!gl_context)
 			Sys_Error("Couldn't create GL context");
+#ifdef __SWITCH__
+		/* Load OpenGL functions */
+		if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
+			Sys_Error("Couldn't load GL function pointers: %s\n", SDL_GetError());
+#endif
 	}
 
 	gl_swap_control = true;
@@ -1619,6 +1640,8 @@ void	VID_Init (void)
 
 	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
+	Con_Printf("NUMBE OF DISPLAYS %d\n", SDL_GetNumVideoDisplays());
+
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 		Sys_Error("Couldn't init SDL video: %s", SDL_GetError());
 
@@ -2259,12 +2282,12 @@ static void VID_MenuDraw (void)
 	y = 4;
 
 	// plaque
-	// p = Draw_CachePic ("gfx/qplaque.lmp");
-	// M_DrawTransPic (16, y, p);
+	//p = Draw_CachePic ("gfx/qplaque.lmp");
+	//M_DrawTransPic (16, y, p);
 
 	//p = Draw_CachePic ("gfx/vidmodes.lmp");
-	// p = Draw_CachePic ("gfx/p_option.lmp");
-	// M_DrawPic ( (320-p->width)/2, y, p);
+	//p = Draw_CachePic ("gfx/p_option.lmp");
+	//M_DrawPic ( (320-p->width)/2, y, p);
 
 	y += 28;
 
@@ -2337,4 +2360,3 @@ static void VID_Menu_f (void)
 	VID_Menu_RebuildBppList ();
 	VID_Menu_RebuildRateList ();
 }
-

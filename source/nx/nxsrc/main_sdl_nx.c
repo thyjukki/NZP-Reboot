@@ -38,12 +38,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define SDL_REQUIREDVERSION	(SDL_VERSIONNUM(SDL_MIN_X,SDL_MIN_Y,SDL_MIN_Z))
 #define SDL_NEW_VERSION_REJECT	(SDL_VERSIONNUM(3,0,0))
 
-Framebuffer fb;
-
-static void Sys_AtExit (void)
+void userAppInit (void)
 {
-	socketExit ();
-	SDL_Quit();
+	socketInitializeDefault();
+}
+
+void userAppExit (void)
+{
+	if (SDL_WasInit(0))
+		SDL_Quit();
+	socketExit();
 }
 
 static void Sys_InitSDL (void)
@@ -67,155 +71,11 @@ static void Sys_InitSDL (void)
 	{
 		Sys_Error("Couldn't init SDL: %s", SDL_GetError());
 	}
-	atexit(Sys_AtExit);
 }
 
 #define DEFAULT_MEMORY (256 * 1024 * 1024) // ericw -- was 72MB (64-bit) / 64MB (32-bit)
 
 static quakeparms_t	parms;
-
-/*
- * ===========================================================================
- * Launcher
- * ===========================================================================
- */
-
-#define QBASEDIR "/switch/nzportable"
-
-static inline int IsDir(const char *path)
-{
-	DIR *dir = opendir(path);
-	if (dir) { closedir(dir); return 1; }
-	return 0;
-}
-
-static void SelectModRedraw(int selected, int nmods, char mods[][128])
-{
-	int i;
-
-	consoleClear();
-	printf("\n	Select game directory");
-	printf("\n	=====================");
-	printf("\n\n");
-
-	for (i = 0; i < nmods; ++i) {
-		if (selected == i)
-			printf(" >  %s\n", mods[i]);
-		else
-			printf("	%s\n", mods[i]);
-	}
-
-	printf("\n\nDPAD to select, A to confirm\n");
-}
-
-static int SelectMod(int nmods, char mods[][128])
-{
-	int selected;
-	u64 keys, oldkeys;
-
-	// naievil -- FIXME restore default settings for gfx
-	// gfxInitDefault(); -- DONE
-	NWindow* win = nwindowGetDefault();
-	framebufferCreate(&fb, win, 1280, 720, PIXEL_FORMAT_RGBA_8888, 2);
-	framebufferMakeLinear(&fb);
-
-	consoleInit(NULL);
-
-	oldkeys = keys = 0;
-	selected = 0;
-
-	SelectModRedraw(selected, nmods, mods);
-
-	while (appletMainLoop()) {
-		hidScanInput();
-		keys = hidKeysDown(CONTROLLER_P1_AUTO);
-
-		if (keys & KEY_A) {
-			break;
-		} else if ((keys & KEY_DOWN) && !(oldkeys & KEY_DOWN)) {
-			selected = (selected == nmods - 1) ? 0 : selected + 1;
-			SelectModRedraw(selected, nmods, mods);
-		} else if ((keys & KEY_UP) && !(oldkeys & KEY_UP)) {
-			selected = (selected == 0) ? nmods - 1 : selected - 1;
-			SelectModRedraw(selected, nmods, mods);
-		}
-
-		// naievil -- FIXME restore flushing and swapping buffers
-		// gfxFlushBuffers();
-		// gfxSwapBuffers();
-		framebufferEnd(&fb);
-
-		oldkeys = keys;
-	}
-
-	consoleExit(NULL);
-	// gfxExit(); -- DONE
-	//framebufferClose(&fb);
-
-	return selected;
-}
-
-int Q_main(int argc, char *argv[]);
-
-int main(int argc, char *argv[])
-{
-	static char *args[16];
-	static char fullpath[1024];
-	static char mods[20][128];
-	int nargs, i, nmods, havebase;
-	DIR *dir;
-	struct dirent *d;
-
-	// just in case
-	if (argc <= 0) {
-		nargs = 1;
-		args[0] = "nzportable.nro";
-	} else {
-		nargs = argc;
-		for (i = 0; i < argc && i < 8; ++i)
-			args[i] = argv[i];
-	}
-
-	// check for mods
-
-	nmods = 0;
-
-	dir = opendir(QBASEDIR);
-	if (!dir) Sys_Error("could not open `" QBASEDIR "`");
-
-	havebase = 0;
-	while ((d = readdir(dir))) {
-		if (!d->d_name || d->d_name[0] == '.') continue;
-
-		snprintf(fullpath, sizeof(fullpath)-1, QBASEDIR "/%s", d->d_name);
-		if (!IsDir(fullpath)) continue;
-
-		if (!havebase && !strncasecmp(d->d_name, "nzp", 3))
-			havebase = 1;
-
-		strncpy(mods[nmods], d->d_name, 127);
-		if (++nmods >= 20) break; 
-	}
-
-	closedir(dir);
-
-	if (!havebase)
-		Sys_Error("base game directory `nzp` not found in `%s`", QBASEDIR);
-
-	// show a simple select menu if there's multiple mods
-
-	if (nmods > 1) {
-		i = SelectMod(nmods, mods);
-		if (strncasecmp(mods[i], "nzp", 3)) {
-			args[nargs++] = "-game";
-			args[nargs++] = mods[i];
-		}
-	}
-
-	args[nargs] = NULL;
-
-	return Q_main(nargs, (char **)args);
-}
 
 // returns in megabytes
 static int MemAvailable(void)
@@ -235,27 +95,64 @@ static int MemAvailable(void)
 	return mb;
 }
 
-int Q_main(int argc, char *argv[])
+static int	fake_argc;
+static char	*fake_argv[MAX_NUM_ARGVS + 1];
+static char	autoload_game[64];
+
+// checks for launch.rc in cwd and if it's there reads the gamedir from it
+static void CheckAutoload(void)
 {
-	int		t;
+	FILE *rc = fopen("launch.rc", "r");
+	if (!rc) return;
+	fscanf(rc, "%63s", autoload_game);
+	fclose(rc);
+
+	// don't do -game id1, it doesn't load quakespasm.pak then
+	if (!autoload_game[0] || !strcasecmp(autoload_game, "nzp"))
+		return;
+
+	if (fake_argc >= MAX_NUM_ARGVS) return;
+
+	fake_argv[fake_argc++] = "-game";
+	fake_argv[fake_argc++] = autoload_game;
+}
+
+int main(int argc, char *argv[])
+{
+	int		t, need_autoload;
 	double		time, oldtime, newtime;
 
-	socketInitializeDefault ();
 #ifdef DEBUG
 	nxlinkStdio ();
 #endif
 
+	// make a copy of argv to inject args into it later
+	// also check if we need to autoload the previously played mod
+	need_autoload = 1;
+	fake_argc = 1;
+	fake_argv[0] = argv[0];
+	for (t = 1; t < argc; ++t)
+	{
+		if (t >= MAX_NUM_ARGVS) break;
+		if (!strncmp(argv[t], "-game", 5))
+			need_autoload = 0;
+		fake_argv[t] = argv[t];
+		fake_argc++;
+	}
+
+	// if there's no -game arg, try to do that via injecting -game into argv
+	if (need_autoload)
+		CheckAutoload();
+
 	host_parms = &parms;
 	parms.basedir = ".";
 
-	parms.argc = argc;
-	parms.argv = argv;
+	parms.argc = fake_argc;
+	parms.argv = fake_argv;
 
 	parms.errstate = 0;
 
 	COM_InitArgv(parms.argc, parms.argv);
-
-	isDedicated = (COM_CheckParm("-dedicated") != 0);
 
 	Sys_InitSDL ();
 
@@ -280,7 +177,7 @@ int Q_main(int argc, char *argv[])
 	Sys_Printf("GLQuake %1.2f (c) id Software\n", GLQUAKE_VERSION);
 	Sys_Printf("FitzQuake %1.2f (c) John Fitzgibbons\n", FITZQUAKE_VERSION);
 	Sys_Printf("FitzQuake SDL port (c) SleepwalkR, Baker\n");
-	Sys_Printf("QuakeSpasm " QUAKESPASM_VER_STRING " (c) Ozkan Sezer, Eric Wasylishen & others\n");
+	Sys_Printf("NZPortable " QUAKESPASM_VER_STRING " (c) Ozkan Sezer, Eric Wasylishen & others\n");
 	Sys_Printf("Available memory: %d MB\n", mem_mb);
 	Sys_Printf("Allocated %d MB for mem base\n", parms.memsize);
 
@@ -341,4 +238,3 @@ int Q_main(int argc, char *argv[])
 
 	return 0;
 }
-
