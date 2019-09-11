@@ -1110,13 +1110,12 @@ void(float side) W_Fire =
 			}
 			self.semi2 = TRUE;
 		}
+		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
 	} else if (firetype == 3) {
 		W_FireGrenade(side);
 	} else if (firetype == 4) {
 		W_FireRay();
 	}
-		
-	FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
 
 
 	//Play weapon animation and sound

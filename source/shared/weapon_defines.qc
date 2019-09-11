@@ -266,6 +266,8 @@ float(float wep) GetFiretype =
 		case W_TYPE:
 		case W_SAMURAI:
 			return 0;
+		case W_TESLA:
+			return 5;
     }
 
     return 0;
