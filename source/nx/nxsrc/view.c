@@ -176,7 +176,7 @@ float PlayStepSound(void)
 
 float speed_reduce (int weapontype);
 
-#define VBOB_VAL 6.2
+#define VBOB_VAL 5.2
 
 float V_CalcVBob(float speed, float which)
 {
@@ -253,7 +253,7 @@ float V_CalcBob (float speed,float which)//0 = regular, 1 = side bobbing
 
 
 cvar_t	v_centermove = {"v_centermove", "0.15", CVAR_NONE};
-cvar_t	v_centerspeed = {"v_centerspeed","500", CVAR_NONE};
+cvar_t	v_centerspeed = {"v_centerspeed","400", CVAR_NONE};
 
 
 void V_StartPitchDrift (void)
