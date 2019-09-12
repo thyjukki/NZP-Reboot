@@ -1057,6 +1057,10 @@ void(float side) W_Fire =
     soundname = GetWeaponSound(self.weapon);
 	delay = getWeaponDelay(self.weapon, FIRE);
 
+	// Double Tap 2.0
+	if (self.perks & P_DOUBLE)
+		shotcount *= 2;
+
 	switch(self.stance) {
 		case 2:
 			sprdstance = 0;
@@ -1096,6 +1100,8 @@ void(float side) W_Fire =
 	if (self.downed)
 		playdownfire();
 
+	// MOTO - should probably reorganize this whole firetype chunk in the future..
+
 	//Fire weapons
 	if (firetype == 1 || firetype == 3)
 	{
@@ -1113,12 +1119,13 @@ void(float side) W_Fire =
 
 		if (firetype == 3) {
 			W_FireGrenade(side);
-		} else {
-			FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
 		}
 	} else if (firetype == 4) {
 		W_FireRay();
 	}
+
+	if (firetype == 1 || firetype == 0)
+		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
 
 
 	//Play weapon animation and sound
