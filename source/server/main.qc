@@ -111,10 +111,17 @@ void() precaches =
 	precache_model ("progs/Sprites/revive_white.spr");
 	
 	precache_model ("models/ai/zfull.mdl");
-	precache_model ("models/ai/zb#.mdl");
 	precache_model ("models/ai/zal(.mdl");
 	precache_model ("models/ai/zar(.mdl");
+
+	// fte doesn't like models with hashes
+	#ifndef PC
 	precache_model ("models/ai/zh^.mdl");
+	precache_model ("models/ai/zb#.mdl");
+	#else
+	precache_model ("models/ai/zbod.mdl");
+	precache_model ("models/ai/zhead.mdl");
+	#endif
 	
 	precache_model ("models/ai/zcfull.mdl");
 	precache_model ("models/ai/zbc#.mdl");
