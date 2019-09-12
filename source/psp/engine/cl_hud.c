@@ -111,7 +111,7 @@ void HUD_Init (void)
 
 	sb_moneyback = Draw_CachePic ("gfx/hud/moneyback");
 	instapic = Draw_CachePic ("gfx/hud/in_kill");
-	x2pic = Draw_CachePic ("gfx/hud/");
+	x2pic = Draw_CachePic ("gfx/hud/2x");
 
 	revivepic = Draw_CachePic ("gfx/hud/revive");
 	jugpic = Draw_CachePic ("gfx/hud/jug");
