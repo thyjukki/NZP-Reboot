@@ -2395,6 +2395,7 @@ float(float wep) IsPapWeapon = {
 		case W_SPATZ:
 		case W_GUT:
 		case W_SAMURAI:
+			return 1;
 		default:
 			return 0;
 	}
