@@ -1603,7 +1603,10 @@ void touch_pap() {
 			#endif
 
 			self = tempe;
-			reset_pap();
+
+			// because PaP broke itself
+			self.think = reset_pap;
+			self.nextthink = time + 0.1;
 		}
 	}
 }	
