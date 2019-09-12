@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <dirent.h>
 
 extern cvar_t	waypoint_mode;
+extern cvar_t	in_aimassist;
 
 extern int loadingScreen;
 extern int ShowBlslogo;
@@ -1327,6 +1328,7 @@ enum
 	OPT_ALWAYSMLOOK,
 	OPT_LOOKSPRING,
 	OPT_LOOKSTRAFE,
+	OPT_AIMASSIST,
 //#ifdef _WIN32
 //	OPT_USEMOUSE,
 //#endif
@@ -1443,6 +1445,10 @@ void M_AdjustSliders (int dir)
 	case OPT_LOOKSTRAFE:	// lookstrafe
 		Cvar_Set ("lookstrafe", lookstrafe.value ? "0" : "1");
 		break;
+
+	case OPT_AIMASSIST:
+		Cvar_Set ("in_aimassist", in_aimassist.value ? "0" : "1");
+		break;
 	}
 }
 
@@ -1557,6 +1563,10 @@ void M_Options_Draw (void)
 	// OPT_LOOKSTRAFE:
 	M_Print (16, 32 + 8*OPT_LOOKSTRAFE,	"            Lookstrafe");
 	M_DrawCheckbox (220, 32 + 8*OPT_LOOKSTRAFE, lookstrafe.value);
+
+	// OPT_AIMASSIST:
+	M_Print (16, 32 + 8*OPT_AIMASSIST,	"            Aim Assist");
+	M_DrawCheckbox (220, 32 + 8*OPT_AIMASSIST, in_aimassist.value);
 
 	// OPT_VIDEO:
 	if (vid_menudrawfn)

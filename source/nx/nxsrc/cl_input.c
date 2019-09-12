@@ -477,11 +477,50 @@ void CL_BaseMove (usercmd_t *cmd)
 
 }
 
+int infront(edict_t *ent1, edict_t *ent2)
+{
+	vec3_t vec;
+	float dot;
+	VectorSubtract(ent2->v.origin,ent1->v.origin,vec);
+	VectorNormalize(vec);
+
+	vec3_t temp_angle,temp_forward,temp_right,temp_up;
+	VectorCopy(cl.viewangles,temp_angle);
+
+	AngleVectors(temp_angle,temp_forward,temp_right,temp_up);
+
+	dot = DotProduct(vec,temp_forward);
+	if(dot > 0.98)
+	{
+		return 1;
+	}
+	return 0;
+}
+
+int EN_Find(int num,char *string)
+{
+	edict_t *ed;
+
+	int e;
+	e = num;
+
+	for(e++; e < sv.num_edicts; e++)
+	{
+		ed = EDICT_NUM(e);
+		if(ed->free)
+			continue;
+		
+		if(!strcmp(PR_GetString(ed->v.classname),string))
+		{
+			return e;
+		}
+	}
+	return 0;
+}
 
 void CL_Aim_Snap(void)
 {
-	Con_Printf("Hey dummy, aim snap doesn't work yet!");
-	/*
+	
 	edict_t *z,*bz,*player;
 	int znum;
 	trace_t trace;
@@ -530,10 +569,12 @@ void CL_Aim_Snap(void)
 				}
 			}
 		}
-		if (cl.perks & 64)
+		if (cl.perks & 64) {
 		  	znum = EN_Find(znum,"ai_zombie_head");
-    	else
+		} else {
       		znum = EN_Find(znum,"ai_zombie");
+    	}
+    	
 		z = EDICT_NUM(znum);
 	}
 
@@ -553,7 +594,6 @@ void CL_Aim_Snap(void)
 
 		VectorCopy(distVec,cl.viewangles);
 	}
-	*/
 }
 
 /*

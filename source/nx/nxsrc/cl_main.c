@@ -64,6 +64,8 @@ entity_t		*cl_visedicts[MAX_VISEDICTS];
 
 extern cvar_t	r_lerpmodels, r_lerpmove; //johnfitz
 
+extern cvar_t   in_aimassist;
+
 /*
 =====================
 CL_ClearState
@@ -798,6 +800,7 @@ void CL_Init (void)
 	Cvar_RegisterVariable (&lookspring);
 	Cvar_RegisterVariable (&lookstrafe);
 	Cvar_RegisterVariable (&sensitivity);
+	Cvar_RegisterVariable (&in_aimassist);
 	
 	Cvar_RegisterVariable (&cl_alwaysrun);
 
