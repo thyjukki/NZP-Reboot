@@ -836,6 +836,9 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	if (ent->v.weaponframe)
 		bits |= SU_WEAPONFRAME;
 
+	if (ent->v.weaponskin)
+		bits |= SU_WEAPONSKIN;
+
 //	if (ent->v.weapon)
 		bits |= SU_WEAPON;
 
@@ -883,6 +886,8 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 
 	if (bits & SU_WEAPONFRAME)
 		MSG_WriteByte (msg, ent->v.weaponframe);
+	if (bits & SU_WEAPONSKIN)
+		MSG_WriteByte (msg, ent->v.weaponskin);
 	if (bits & SU_WEAPON)
 		MSG_WriteByte (msg, SV_ModelIndex(PR_GetString(ent->v.weaponmodel)));
 
@@ -902,6 +907,11 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	MSG_WriteByte (msg, ent->v.x2_icon);
 	MSG_WriteByte (msg, ent->v.insta_icon);
 	MSG_WriteByte (msg, ent->v.progress_bar);
+
+	MSG_WriteByte (msg, SV_ModelIndex(PR_GetString(ent->v.weapon2model)));
+	MSG_WriteByte (msg, ent->v.weapon2skin);
+	MSG_WriteByte (msg, ent->v.weapon2frame);
+	MSG_WriteByte (msg, ent->v.currentmag2);
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)

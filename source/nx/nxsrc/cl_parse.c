@@ -924,6 +924,11 @@ void CL_ParseClientdata (void)
 	else
 		cl.stats[STAT_WEAPONFRAME] = 0;
 
+	if (bits & SU_WEAPONSKIN)
+		cl.stats[STAT_WEAPONSKIN] = MSG_ReadByte ();
+	else
+		cl.stats[STAT_WEAPONSKIN] = 0;
+
 	if (bits & SU_WEAPON)
 		i = MSG_ReadByte ();
 	else
@@ -1012,6 +1017,22 @@ void CL_ParseClientdata (void)
 	i = MSG_ReadByte ();
 	if (cl.progress_bar != i)
 		cl.progress_bar = i;
+
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_WEAPON2] != i)
+		cl.stats[STAT_WEAPON2] = i;
+
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_WEAPON2SKIN] != i)
+		cl.stats[STAT_WEAPON2SKIN] = i;
+
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_WEAPON2FRAME] != i)
+		cl.stats[STAT_WEAPON2FRAME] = i;
+
+	i = MSG_ReadByte ();
+	if (cl.stats[STAT_CURRENTMAG2] != i)
+		cl.stats[STAT_CURRENTMAG2] = i;
 
 
 	//johnfitz -- PROTOCOL_FITZQUAKE

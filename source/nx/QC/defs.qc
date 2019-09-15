@@ -106,10 +106,14 @@ void            end_sys_globals;
 .float          kills;
 .float          weapon;
 .string         weaponmodel;
+.string         weapon2model;
 .float          weaponframe;
+.float          weapon2frame;
 .float          currentammo;
 .float          currentmag;
 .float			zoom;
+.float          weaponskin;
+.float          weapon2skin;
 .float          primary_grenades;
 .float          secondary_grenades;
 .float          grenades;
@@ -165,8 +169,9 @@ void            end_sys_globals;
 .float           insta_icon;
 .string			Weapon_Name_Touch;
 .vector			ADS_Offset;
-.vector 			Flash_Offset;
+.vector         Flash_Offset;
 .float 			Flash_Size;
+.float          currentmag2;
 void            end_sys_fields; 
 
 /*
@@ -613,7 +618,6 @@ string world_fog;
 .vector		Flash_Offset;
 .float 		Flash_Size;
 .string 	Weapon_Name;
-.float      currentmag2;
 
 .float currentHitBoxSetup;
 .vector		bbmins, bbmaxs;		// Used for zombie hitboxes

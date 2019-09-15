@@ -91,10 +91,14 @@ typedef struct
 	float	kills;	
 	float	weapon;
 	string_t	weaponmodel;
+	string_t    weapon2model;
 	float	weaponframe;
+	float   weapon2frame;
 	float	currentammo;
 	float	currentmag;
 	float 	zoom;
+	float   weaponskin;
+	float   weapon2skin;
 	float	primary_grenades;
 	float	secondary_grenades;
 	float	grenades;
@@ -155,6 +159,7 @@ typedef struct
 	vec3_t 		ADS_Offset;
 	vec3_t  Flash_Offset;
 	float   Flash_Size;
+	float   currentmag2;
 } entvars_t;
 
 #define PROGHEADER_CRC 5927

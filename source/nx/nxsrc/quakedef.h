@@ -111,6 +111,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	STAT_WEAPONFRAME	5
 #define	STAT_CURRENTMAG		6
 #define	STAT_ZOOM		    7
+#define	STAT_WEAPONSKIN		8
 #define	STAT_GRENADES		9
 #define	STAT_ACTIVEWEAPON	10
 #define	STAT_ROUNDS         11

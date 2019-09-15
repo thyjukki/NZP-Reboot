@@ -780,6 +780,34 @@ void R_DrawViewModel (void)
 }
 
 /*
+=============
+R_DrawView2Model -- johnfitz -- gutted
+=============
+*/
+void R_DrawView2Model (void)
+{
+	if (!r_drawviewmodel.value || !r_drawentities.value || chase_active.value)
+		return;
+
+	if (cl.items & IT_INVISIBILITY || cl.stats[STAT_HEALTH] <= 0)
+		return;
+
+	currententity = &cl.viewent2;
+	if (!currententity->model)
+		return;
+
+	//johnfitz -- this fixes a crash
+	if (currententity->model->type != mod_alias)
+		return;
+	//johnfitz
+
+	// hack the depth range to prevent view model from poking into walls
+	glDepthRange (0, 0.3);
+	R_DrawAliasModel (currententity);
+	glDepthRange (0, 1);
+}
+
+/*
 ================
 R_EmitWirePoint -- johnfitz -- draws a wireframe cross shape for point entities
 ================
@@ -1119,6 +1147,8 @@ void R_RenderScene (void)
 	Fog_DisableGFog (); //johnfitz
 
 	R_DrawViewModel (); //johnfitz -- moved here from R_RenderView
+
+	R_DrawView2Model ();
 
 	R_ShowTris (); //johnfitz
 

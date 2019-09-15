@@ -220,6 +220,7 @@ typedef struct
 	int			num_entities;	// held in cl_entities array
 	int			num_statics;	// held in cl_staticentities array
 	entity_t	viewent;			// the gun model
+	entity_t	viewent2;			// the second gun model
 
 	int			cdtrack, looptrack;	// cd audio
 

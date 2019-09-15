@@ -775,6 +775,12 @@ void CalcGunAngle (void)
 	cl.viewent.angles[PITCH] -= v_idlescale.value * sin(cl.time*v_ipitch_cycle.value) * v_ipitch_level.value;
 	cl.viewent.angles[YAW] -= v_idlescale.value * sin(cl.time*v_iyaw_cycle.value) * v_iyaw_level.value;
 
+	cl.viewent2.angles[ROLL] = cl.viewent.angles[ROLL] -= v_idlescale.value * sinf(cl.time*v_iroll_cycle.value * 2) * v_iroll_level.value;
+	cl.viewent2.angles[PITCH] = cl.viewent.angles[PITCH] -= v_idlescale.value * sinf(cl.time*v_ipitch_cycle.value * 2) * v_ipitch_level.value;
+	cl.viewent2.angles[YAW] = cl.viewent.angles[YAW] -= v_idlescale.value * sinf(cl.time*v_iyaw_cycle.value * 2) * v_iyaw_level.value;
+
+	
+
 	//Evaluating total offset
 	CWeaponRot[PITCH] -= cl.viewent.angles[PITCH];
 	CWeaponRot[YAW] += cl.viewent.angles[YAW];
@@ -860,17 +866,19 @@ V_CalcIntermissionRefdef
 */
 void V_CalcIntermissionRefdef (void)
 {
-	entity_t	*ent, *view;
+	entity_t	*ent, *view, *view2;
 	float		old;
 
 // ent is the player model (visible when out of body)
 	ent = &cl_entities[cl.viewentity];
 // view is the weapon model (only visible from inside body)
 	view = &cl.viewent;
+	view2 = &cl.viewent2;
 
 	VectorCopy (ent->origin, r_refdef.vieworg);
 	VectorCopy (ent->angles, r_refdef.viewangles);
 	view->model = NULL;
+	view2->model = NULL;
 
 // allways idle in intermission
 	old = v_idlescale.value;
@@ -1089,9 +1097,7 @@ void V_CalcRefdef (void)
 	ent = &cl_entities[cl.viewentity];
 // view is the weapon model (only visible from inside body)
 	view = &cl.viewent;
-
-	// Naievil -- Fixme
-	//view2 = &cl.viewent2;
+	view2 = &cl.viewent2;
 
 	ent->angles[YAW] = cl.viewangles[YAW];
 	ent->angles[PITCH] = -cl.viewangles[PITCH];	
@@ -1250,11 +1256,10 @@ void V_CalcRefdef (void)
 	//view->skinnum = cl.stats[STAT_WEAPONSKIN]; // naievil -- fixme
 	view->colormap = vid.colormap;
 
-	// Naievil -- fixme
-	//view2->model = cl.model_precache[cl.stats[STAT_WEAPON2]];
-	//view2->frame = cl.stats[STAT_WEAPON2FRAME];
-	//view2->skinnum = cl.stats[STAT_WEAPON2SKIN];
-	//view2->colormap = vid.colormap;
+	view2->model = cl.model_precache[cl.stats[STAT_WEAPON2]];
+	view2->frame = cl.stats[STAT_WEAPON2FRAME];
+	view2->skinnum = cl.stats[STAT_WEAPON2SKIN];
+	view2->colormap = vid.colormap;
 
 	//blubs's punchangle interpolation
 	lastPunchAngle[0] += (cl.punchangle[0] - lastPunchAngle[0]) * 0.5;
@@ -1288,14 +1293,12 @@ else
 	//if (chase_active.value)
 	//	Chase_Update ();
 
-	// naievil -- fixme
-	//view2->origin[0] = view->origin[0];
-	// view2->origin[1] = view->origin[1];
-	// view2->origin[2] = view->origin[2];
-
-	// view2->angles[0] = view->angles[0];
-	// view2->angles[1] = view->angles[1];
-	// view2->angles[2] = view->angles[2];
+	view2->origin[0] = view->origin[0];
+    view2->origin[1] = view->origin[1];
+    view2->origin[2] = view->origin[2];   
+    view2->angles[0] = view->angles[0];
+    view2->angles[1] = view->angles[1];
+    view2->angles[2] = view->angles[2];
 }
 
 /*
