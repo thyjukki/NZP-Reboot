@@ -3,7 +3,9 @@ void(float what) play_sound_z;
 void() path_corner_touch =
 {
 	self.origin_z = self.origin_z + 32;
+	self.head.origin_z = self.origin_z + 5;
 	setorigin(self, self.origin);
+	setorigin(self.head, self.head.origin);
 	self.classname = "path_corner";
 	self.movetype = MOVETYPE_NONE;
 	self.solid = SOLID_NOT;
@@ -156,7 +158,7 @@ void(float dist, vector vec) do_walk_to_vec =
 	new_velocity = normalize(vec - self.origin) * dist * 10;
 	
 	new_velocity_z = self.velocity_z;
-	self.velocity = new_velocity;
+	self.velocity = self.head.velocity = new_velocity;
 };
 
 void(float dist) do_walk =

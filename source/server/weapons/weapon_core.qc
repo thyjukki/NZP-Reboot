@@ -680,10 +680,13 @@ void() LungeKnifeHit =
 
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
+
+	self.solid = SOLID_BBOX;
 	if (self.weapon == W_BK)
 		traceline (source, source + v_forward*80*1.2, 0, self); // naievil -- added some extra length
 	else
 		traceline (source, source + v_forward*64*1.2, 0, self); // naievil -- ^^
+	self.solid = SOLID_SLIDEBOX;
 	
 	org = trace_endpos - v_forward*3; // naievil -- changed to factor of 3 from 4
 	
@@ -1057,6 +1060,10 @@ void(float side) W_Fire =
     soundname = GetWeaponSound(self.weapon);
 	delay = getWeaponDelay(self.weapon, FIRE);
 
+	// Double Tap 2.0
+	if (self.perks & P_DOUBLE)
+		shotcount *= 2;
+
 	switch(self.stance) {
 		case 2:
 			sprdstance = 0;
@@ -1096,6 +1103,8 @@ void(float side) W_Fire =
 	if (self.downed)
 		playdownfire();
 
+	// MOTO - should probably reorganize this whole firetype chunk in the future..
+
 	//Fire weapons
 	if (firetype == 1 || firetype == 3)
 	{
@@ -1110,11 +1119,18 @@ void(float side) W_Fire =
 			}
 			self.semi2 = TRUE;
 		}
-		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
-	} else if (firetype == 3) {
-		W_FireGrenade(side);
+
+		if (firetype == 3) {
+			W_FireGrenade(side);
+		}
 	} else if (firetype == 4) {
 		W_FireRay();
+	}
+
+	if (firetype == 1 || firetype == 0) {
+		self.solid = SOLID_BBOX;
+		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
+		self.solid = SOLID_SLIDEBOX;
 	}
 
 

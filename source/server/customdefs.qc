@@ -414,3 +414,8 @@ float sndActivCnt;
 .float tpTimer;
 .float isTimed;
 .entity host;
+
+
+#ifdef PC
+.entity head;
+#endif
