@@ -160,15 +160,14 @@ float PlayStepSound(void)
 			break;
 	}
 
-	// if(sound == 1)
- //        S_StartSound (cl.viewentity, 4, cl_sfx_step[0], vec3_origin, 1, 1);
-	// else if(sound == 2)
- //        S_StartSound (cl.viewentity, 4, cl_sfx_step[1], vec3_origin, 1, 1);
-	// else if(sound == 3)
- //        S_StartSound (cl.viewentity, 4, cl_sfx_step[2], vec3_origin, 1, 1);
-	// else if(sound == 4)
- //        S_StartSound (cl.viewentity, 4, cl_sfx_step[3], vec3_origin, 1, 1);
-	// naievil -- fixme
+	 if(sound == 1)
+         S_StartSound (cl.viewentity, 4, cl_sfx_step[0], vec3_origin, 1, 1);
+	 else if(sound == 2)
+         S_StartSound (cl.viewentity, 4, cl_sfx_step[1], vec3_origin, 1, 1);
+	 else if(sound == 3)
+         S_StartSound (cl.viewentity, 4, cl_sfx_step[2], vec3_origin, 1, 1);
+	 else if(sound == 4)
+         S_StartSound (cl.viewentity, 4, cl_sfx_step[3], vec3_origin, 1, 1);
 
 	lastSound = sound;
 	return sound;
