@@ -1,7 +1,7 @@
 // Dummys that should be here
 void GiveAchievement(float ach, entity who, optional float single) = {};
 float spawn_a_dogA() = {return 0;};
-
+void print(string s) = {};
 
 float tracemove(vector start, vector min, vector max, vector end, float nomonsters, entity forent) = {return 0;};
 
@@ -13,7 +13,6 @@ void(vector o, vector d, float color, float count) particle = {};
 #define EF_ORANGELIGHT 0
 #define EF_PURPLELIGHT 0
 
-float(entity zombie, float which, entity limb) updateLimb		= {return 0;}
 #define MOVE_HITMODEL 0
 
 void() LoadWaypointData = {};

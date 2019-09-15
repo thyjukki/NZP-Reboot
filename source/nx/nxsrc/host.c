@@ -823,6 +823,31 @@ void Host_Frame (float time)
 	Con_Printf ("serverprofile: %2i clients %2i msec\n",  c,  m);
 }
 
+void Preload (void)
+{
+	Mod_ForName ("models/player.mdl", true);
+
+	Mod_ForName ("models/ai/zb#.mdl",true);
+	Mod_ForName ("models/ai/zal(.mdl",true);
+	Mod_ForName ("models/ai/zar(.mdl",true);
+	Mod_ForName ("models/ai/zh^.mdl",true);
+	Mod_ForName ("models/ai/zbc#.mdl",true);
+	Mod_ForName ("models/ai/zalc(.mdl",true);
+	Mod_ForName ("models/ai/zarc(.mdl",true);
+	Mod_ForName ("models/ai/zhc^.mdl",true);
+
+	Mod_ForName ("models/ai/zfull.mdl",true);
+	Mod_ForName ("models/ai/zcfull.mdl",true);
+
+	Mod_ForName ("models/VModels/v_knife.mdl", true);
+	Mod_ForName ("models/VModels/v_colt.mdl", true);
+	Mod_ForName ("models/Misc/instakill!.mdl", true);
+	Mod_ForName ("models/Misc/maxammo!.mdl", true);
+	Mod_ForName ("models/Misc/nuke!.mdl", true);
+	Mod_ForName ("models/Misc/carpenter!.mdl", true);
+	Mod_ForName ("models/Misc/x2!.mdl", true);
+}
+
 /*
 ====================
 Host_Init
@@ -890,6 +915,7 @@ void Host_Init (void)
 		HUD_Init ();
 		CL_Init ();
 	}
+	Preload();
 
 
 	Hunk_AllocName (0, "-HOST_HUNKLEVEL-");

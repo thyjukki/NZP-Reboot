@@ -1040,7 +1040,7 @@ void ED_LoadFromFile (const char *data)
 	Con_DPrintf ("%i entities inhibited\n", inhibit);
 }
 
-
+func_t	EndFrame;
 /*
 ===============
 PR_LoadProgs
@@ -1049,6 +1049,7 @@ PR_LoadProgs
 void PR_LoadProgs (void)
 {
 	int			i;
+	dfunction_t	*f;
 
 	// flush the non-C variable lookup cache
 	for (i = 0; i < GEFV_CACHESIZE; i++)
@@ -1148,6 +1149,11 @@ void PR_LoadProgs (void)
 	// properly aligned
 	pr_edict_size += sizeof(void *) - 1;
 	pr_edict_size &= ~(sizeof(void *) - 1);
+
+	EndFrame = 0;
+
+	if ((f = ED_FindFunction ("EndFrame")) != NULL)
+		EndFrame = (func_t)(f - pr_functions);
 }
 
 

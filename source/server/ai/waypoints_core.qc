@@ -235,7 +235,7 @@ void () Link_Waypoints =
 	float i;
 	entity tempe;
 	for	(i = 0; i < MAX_WAY_TARGETS; i++) {
-		#ifndef PSP
+		#ifdef PC
 		tempe = findfloat (world, waynum, active_way.targets[i]);
 		#else 
 		tempe = find (world, waynum, active_way.targets[i]);
@@ -369,7 +369,7 @@ void() Save_Waypoints
 		fputs(file, " [\n");
 		for (i = 0; i < MAX_WAY_TARGETS; i++) {
 			if (dway.targets[i] != "") {
-				#ifndef PSP
+				#ifdef PC
 				tempe = findfloat (world, waynum, dway.targets[i]);
 				#else 
 				tempe = find (world, waynum, dway.targets[i]);

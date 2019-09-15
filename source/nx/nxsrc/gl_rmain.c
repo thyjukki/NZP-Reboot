@@ -649,16 +649,18 @@ void R_DrawEntitiesOnList (qboolean alphapass) //johnfitz -- added parameter
 		{
 			// Naiveil -- fixme
 			//R_DrawNullModel();
+			Con_Printf("Model is null! %s\n", currententity->model->name);
 			continue;
 		}
 
 
 		specChar = currententity->model->name[strlen(currententity->model->name)-5];
-		
-		if(specChar == '(' || specChar == '^')//skip heads and arms: it's faster to do this than a strcmp...
-		{
-			continue;
-		}
+
+		// naievil -- skip this and hack in through qc 
+		//if(specChar == '(' || specChar == '^')//skip heads and arms: it's faster to do this than a strcmp...
+		//{
+		//	continue;
+		//}
 
 		doZHack = 0;
 		if(specChar == '#')

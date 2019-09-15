@@ -1189,6 +1189,29 @@ static void PF_Remove (void)
 }
 
 
+/*
+=================
+PF_updateLimb
+
+updates zombies limb
+
+PF_updateLimb(zombieent, value. limbent)
+=================
+*/
+void PF_updateLimb (void)
+{
+	int		limb;
+	int		zombieent, limbent;
+
+	zombieent = G_EDICTNUM(OFS_PARM0);
+	limb = G_FLOAT(OFS_PARM1);
+	limbent = G_EDICTNUM(OFS_PARM2);
+	MSG_WriteByte (&sv.reliable_datagram,   svc_limbupdate);
+	MSG_WriteByte (&sv.reliable_datagram,  limb);
+	MSG_WriteShort (&sv.reliable_datagram,  zombieent);
+	MSG_WriteShort (&sv.reliable_datagram,  limbent);
+}
+
 // entity (entity start, .string field, string match) find = #5;
 static void PF_Find (void)
 {
@@ -3023,7 +3046,7 @@ static builtin_t pr_builtin[] =
 	PF_traceoff,
 	PF_eprint,			// void(entity e) debug print an entire entity
 	PF_walkmove,		// float(float yaw, float dist) walkmove
-	PF_Fixme,			// float(float yaw, float dist) walkmove
+	PF_updateLimb,		// #33
 	PF_droptofloor,		// #34
 	PF_lightstyle, 		// #35
 	PF_rint,			// #36

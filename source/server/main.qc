@@ -302,7 +302,7 @@ void() SpectatorConnect =
 	bprint(PRINT_HIGH, " has joined the spectators.\n");
 }
 
-#ifdef PSP
+#ifndef PC
 void() RelinkZombies =
 {
 	entity ent,ent2;

@@ -1329,7 +1329,7 @@ void(entity where) spawn_a_zombieB =
 	szombie.head.deadflag = 1;
 	szombie.larm.deadflag = 1;
 	szombie.rarm.deadflag = 1;
-	
+
 	//setmodel(szombie, "models/ai/zspr.spr");
 	setmodel(szombie.head, "models/ai/zh^.mdl");
 	setmodel(szombie.rarm, "models/ai/zar(.mdl");

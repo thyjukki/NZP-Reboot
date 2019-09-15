@@ -1453,8 +1453,8 @@ void SV_Physics_Step (edict_t *ent)
 
 		if ( (int)ent->v.flags & FL_ONGROUND )	// just hit ground
 		{
-			if (hitsound)
-				SV_StartSound (ent, 0, "demon/dland2.wav", 255, 1);
+			//if (hitsound)
+			//	SV_StartSound (ent, 0, "demon/dland2.wav", 255, 1);
 		}
 	}
 
@@ -1527,6 +1527,16 @@ void SV_Physics (void)
 			SV_Physics_Toss (ent);
 		else
 			Sys_Error ("SV_Physics: bad movetype %i", (int)ent->v.movetype);
+	}
+
+	if (EndFrame)
+	{
+		// let the progs know that the frame has ended
+		pr_global_struct->self = EDICT_TO_PROG(sv.edicts);
+		pr_global_struct->other = EDICT_TO_PROG(sv.edicts);
+		pr_global_struct->time = sv.time;
+		PR_ExecuteProgram (EndFrame);
+
 	}
 
 	if (pr_global_struct->force_retouch)

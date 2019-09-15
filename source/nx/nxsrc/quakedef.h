@@ -399,6 +399,8 @@ extern int		current_skill;	// skill level for currently loaded level (in case
 
 extern qboolean		isDedicated;
 
+extern func_t	EndFrame;
+
 extern int		minimum_memory;
 
 #define ISUNDERWATER(x) ((x) == CONTENTS_WATER || (x) == CONTENTS_SLIME || (x) == CONTENTS_LAVA)

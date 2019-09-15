@@ -47,6 +47,7 @@ typedef struct
 	int	msg_entity;
 	func_t	main;
 	func_t	StartFrame;
+	func_t  EndFrame;
 	func_t	PlayerPreThink;
 	func_t	PlayerPostThink;
 	func_t	ClientKill;

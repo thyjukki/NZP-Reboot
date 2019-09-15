@@ -532,7 +532,7 @@ void(vector org, vector vel, float damage) SpawnBlood =
 	#else
 	particle (org, vel*0.1, 73, damage*2);
 	#endif
-	
+
 	f = find (world, classname, "player");
 	f.hitcount = f.hitcount + 1;
 };

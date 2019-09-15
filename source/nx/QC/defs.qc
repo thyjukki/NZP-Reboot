@@ -65,6 +65,7 @@ float           trace_inwater;
 entity          msg_entity;                             // destination of single entity writes
 void()          main;                                   // only for testing
 void()          StartFrame;
+void()          EndFrame;
 void()          PlayerPreThink;
 void()          PlayerPostThink;
 void()          ClientKill;
@@ -505,6 +506,7 @@ void() traceon                                          				    = #29;          
 void() traceoff                                         				    = #30;
 void(entity e) eprint                          							    = #31;          // prints an entire edict
 float(float yaw, float dist) walkmove   								    = #32;  // returns TRUE or FALSE
+float(entity zombie, float which, entity limb) updateLimb		            = #33;
 float(float yaw, float dist) droptofloor 								    = #34;  // TRUE if landed on floor
 void(float style, string value) lightstyle 								    = #35;
 float(float v) rint                                     				    = #36;          // round to nearest int
@@ -627,4 +629,18 @@ entity windows[32];
 float wincnt;
 
 .float recoil_delay;
+
+float pow(float base, float n) = {
+	float temp = base;
+	if (n == 0) {
+		return 1;
+	} else {
+		while (n > 0) {
+			temp = temp * base;
+			n = n - 1;
+		}
+		return temp;
+	}
+	return 0;
+};
 
