@@ -542,7 +542,7 @@ float() SetUpGoalDummy =
 	
 	return 1;//because we can't actually know if it was good or not... yet
 };
-
+//RESUME
 void() PathfindToEnemy =
 {
 	float path_success;
