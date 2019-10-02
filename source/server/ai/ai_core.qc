@@ -3,9 +3,7 @@ void(float what) play_sound_z;
 void() path_corner_touch =
 {
 	self.origin_z = self.origin_z + 32;
-	self.head.origin_z = self.origin_z + 5;
 	setorigin(self, self.origin);
-	setorigin(self.head, self.head.origin);
 	self.classname = "path_corner";
 	self.movetype = MOVETYPE_NONE;
 	self.solid = SOLID_NOT;
@@ -19,7 +17,8 @@ void() path_corner_touch =
 		bprint(PRINT_HIGH, self.targetname);
 		bprint(PRINT_HIGH, " has no target!\n");
 	}
-};
+}
+
 //We want the path corner to drop to the ground and then we set it up 32 units so it's exact
 void() path_corner =
 {
@@ -34,7 +33,7 @@ void() path_corner =
 void removeZombie();
 void() Respawn = 
 {
-	Current_Zombies = Current_Zombies - 1;
+	Current_Zombies--;
 	removeZombie();
 };
 
@@ -45,6 +44,8 @@ entity(entity blarg) find_new_enemy =
 	local float bestdist;
 	local float dist;
 	bestdist = 10000;
+
+    // FIXME - change to hellhound for old/unreleased Demo map support?
 	if(self.classname == "ai_zombie" || self.classname == "ai_dog") {
 		player = find(world,classname,"monkey");
 		if(player) {
@@ -75,7 +76,6 @@ entity(entity blarg) find_new_enemy =
 	bprint(PRINT_HIGH, "Error: Find_New_Enemy returns world! \n");
 	return world;
 };
-
 
 float() avoid_zombies =
 {
@@ -158,7 +158,7 @@ void(float dist, vector vec) do_walk_to_vec =
 	new_velocity = normalize(vec - self.origin) * dist * 10;
 	
 	new_velocity_z = self.velocity_z;
-	self.velocity = self.head.velocity = new_velocity;
+	self.velocity = new_velocity;
 };
 
 void(float dist) do_walk =
@@ -166,12 +166,19 @@ void(float dist) do_walk =
 	do_walk_to_vec(dist,self.goalentity.origin);
 };
 
-
 void(float dist) walk_to_window =
 {
 	do_walk_to_vec(dist,self.goalorigin);
 };
 
+// unused
+void(vector org, float scale) interpolateToVector =
+{
+	self.origin_x += (org_x - self.origin_x) * scale;
+	self.origin_y += (org_y - self.origin_y) * scale;
+	setorigin(self,self.origin);
+	self.zoom = 1;//value to let engine know to not check for collisions
+}
 
 float(vector where) nearby = 
 {
@@ -455,56 +462,6 @@ void(float dist) Window_Hop =
 		self.th_walk();
 	}
 }
-//RESUME
-void() PathfindToEnemy =
-{
-	float pathresult;
-	pathresult = Do_Pathfind(self,self.enemy);
-	self.way_cur = 0;
-	if(pathresult != -1)
-	{
-		//self.goaldummy.origin = Get_First_Waypoint(self,self.origin,VEC_HULL_MIN,VEC_HULL_MAX);
-		self.goalway = pathresult;
-		setorigin(self.goaldummy,waypoints[self.goalway].org);
-		self.goalentity = self.goaldummy;
-		self.chase_time = time + 7;
-	}
-	else if(self.goalway == -1)
-	{
-		self.goalentity = self.enemy;
-		self.chase_time = time + 6;
-	}
-	else
-	{
-		bprint(PRINT_HIGH, "FirstPathfind Failure\n");
-	}
-}
-
-void() NextPathfindToEnemy {
-	self.way_cur++;
-
-	if (self.way_cur < 40 && self.way_path[self.way_cur] != -1) {
-		self.goalway = self.way_path[self.way_cur];
-		setorigin(self.goaldummy,waypoints[self.goalway-1].org);
-	} else {
-		self.way_cur = 0;
-	}
-}
-
-#ifndef PSP
-//
-float(vector start, vector min, vector max, vector end, float nomonsters, entity forent) tracemove
-{
-	//was tracebox
-	traceline(start,end,nomonsters,forent);
-	
-	if(trace_ent == forent || trace_endpos == end) {
-		return 1;
-	} else {	
-		return 0;	
-	}		
-}
-#endif
 
 float() TryWalkToEnemy =
 {
@@ -520,6 +477,105 @@ float() TryWalkToEnemy =
 	}		
 };
 
+#ifndef PC
+float() SetUpGoalDummy =
+{
+	self.goaldummy.origin = Get_Waypoint_Near(self);
+	setorigin(self.goaldummy,self.goaldummy.origin);
+	self.goalentity = self.goaldummy;
+	if (self.goalentity)
+	{
+		//setmodel(self.goalentity, "progs/Props/teddy.mdl");//on  waypoint
+		//if (cvar("developer"))
+	}
+	else
+		bprint(PRINT_HIGH, "Could not find waypoint for zombie\n");
+	
+	return 1;//because we can't actually know if it was good or not... yet
+};
+#endif
+
+void() PathfindToEnemy =
+{
+	float path_result;
+	float path_failure;
+
+	//just to stop any warns.
+	path_failure = 0;
+
+	#ifndef PC
+	path_result = Do_Pathfind_psp(self, self.enemy);
+	#else
+	path_result = Do_Pathfind(self, self.enemy);
+	#endif
+
+	//FIXME - further test if this can equate to 0 in FTE..
+	if (path_result >= 1) {
+
+		#ifndef PC
+		self.goaldummy.origin = Get_First_Waypoint(self, self.origin, VEC_HULL_MIN, VEC_HULL_MAX);
+		setorigin(self.goaldummy, self.goaldummy.origin);
+		path_failure = path_result;
+		#else
+		self.goalway = path_result;
+		setorigin(self.goaldummy,waypoints[self.goalway].org);
+		path_failure = self.goalway;
+		#endif
+
+		self.goalentity = self.goaldummy;
+		self.chase_time = time + 7;
+		
+	} else if (path_failure == -1) {
+		self.goalentity = self.enemy;
+		self.chase_time = time + 6;
+	} else {
+		#ifdef PC
+		bprint(PRINT_HIGH, "FirstPathfind Failure\n");
+		#endif
+	}
+}
+
+void() NextPathfindToEnemy {
+	// same as PathfindToEnemy on non-FTE platforms
+	#ifndef PC
+	float path_success;
+	path_success = Do_Pathfind_psp(self,self.enemy);
+	if(path_success ==1) {
+		self.goaldummy.origin = Get_Next_Waypoint(self,self.origin,VEC_HULL_MIN,VEC_HULL_MAX);
+		setorigin(self.goaldummy,self.goaldummy.origin);
+		self.goalentity = self.goaldummy;
+		self.chase_time = time + 7;
+	} else if(path_success == -1){
+		self.goalentity = self.enemy;
+		self.chase_time = time + 6;
+	} else {
+		bprint(PRINT_HIGH, "NextPathfind Failure\n");		// this lags like hell
+	}
+	#else
+	self.way_cur++;
+
+	if (self.way_cur < 40 && self.way_path[self.way_cur] != -1) {
+		self.goalway = self.way_path[self.way_cur];
+		setorigin(self.goaldummy,waypoints[self.goalway-1].org);
+	} else {
+		self.way_cur = 0;
+	}
+	#endif
+}
+
+#ifdef PC
+float(vector start, vector min, vector max, vector end, float nomonsters, entity forent) tracemove
+{
+	//was tracebox
+	traceline(start,end,nomonsters,forent);
+	
+	if(trace_ent == forent || trace_endpos == end) {
+		return 1;
+	} else {	
+		return 0;	
+	}		
+}
+#endif
 
 void(float dist) Inside_Walk = {
 	if(self.enemy_timeout < time || self.enemy == world) {
@@ -565,7 +621,11 @@ void(float dist) Inside_Walk = {
 	//============ GoalDummy is Target ============
 	if(self.goalentity == self.goaldummy) {
 		if(nearby(self.goaldummy.origin)) {
+			#ifndef PC
+			NextPathfindToEnemy();
+			#else
 			PathfindToEnemy();
+			#endif
 		}
 
 		if(self.chase_time < time) {
@@ -619,7 +679,6 @@ void(float dist) Zombie_Walk =  {
 	}
 	do_walk(dist);
 }
-
 
 void() Zombie_AI = {
 	//dist = 0;

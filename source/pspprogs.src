@@ -28,7 +28,7 @@ server/weapons/frames_core.qc
 server/weapons/weapon_core.qc
 server/entities/powerups.qc
 
-psp/QC/ai/ai_core.qc
+server/ai/ai_core.qc
 psp/QC/ai/waypoints_func.qc
 psp/QC/ai/waypoints_core.qc
 psp/QC/ai/zombie_core.qc
