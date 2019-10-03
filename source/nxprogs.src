@@ -31,7 +31,7 @@ server/entities/powerups.qc
 server/ai/ai_core.qc
 psp/QC/ai/waypoints_func.qc
 psp/QC/ai/waypoints_core.qc
-psp/QC/ai/zombie_core.qc
+server/ai/zombie_core.qc
 psp/QC/ai/crawler_core.qc
 
 server/items.qc

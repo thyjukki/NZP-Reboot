@@ -537,11 +537,13 @@ void(vector org, vector vel, float damage) SpawnBlood =
 	f.hitcount = f.hitcount + 1;
 };
 
-#ifndef PC
 void(vector where) spawn_gibs = {
-	particle(where, where, 225, 1);
+	#ifndef PC
+	particle(where, where*0.1, 225, 1);
+	#else
+	te_blood(where, where, 1);
+	#endif
 }
-#endif
 
 
 void Parse_Damage () = // DO NOT TOUCH
@@ -549,17 +551,17 @@ void Parse_Damage () = // DO NOT TOUCH
 	entity ent;
 	float total_dmg;
 
-	#ifndef PC
 	entity body_ent;
 	float head_hit, headoff;
-	#endif
+
+	//warn
+	head_hit = 0;
 
 	ent = findfloat (world, washit, 1);
 
 	while (ent) {
 		if (ent.classname != "radio" && ent.classname != "explosive_barrel") {
-			
-			#ifndef PC
+
 			if (ent.classname == "ai_zombie_head")
 				head_hit = 1;
 			
@@ -594,7 +596,7 @@ void Parse_Damage () = // DO NOT TOUCH
 					
 					body_ent.bleedingtime = time + 2;
 					headoff = 1;
-					updateLimb (body_ent.head.owner, 0, world);
+					//updateLimb (body_ent.head.owner, 0, world);
 				}
 				
 				body_ent.head.washit = 0;
@@ -615,7 +617,7 @@ void Parse_Damage () = // DO NOT TOUCH
 					body_ent.larm.solid = SOLID_NOT;
 					setmodel(body_ent.larm,"");
 					body_ent.larm.frame = 0;
-					updateLimb (body_ent.larm.owner, 1, world);
+					//updateLimb (body_ent.larm.owner, 1, world);
 				}
 
 				body_ent.larm.washit = 0;
@@ -635,7 +637,7 @@ void Parse_Damage () = // DO NOT TOUCH
 					body_ent.rarm.solid = SOLID_NOT;
 					setmodel(body_ent.rarm,"");
 					body_ent.rarm.frame = 0;
-					updateLimb (body_ent.rarm.owner, 2, world);
+					//updateLimb (body_ent.rarm.owner, 2, world);
 				}
 
 				body_ent.rarm.washit = 0;
@@ -656,15 +658,12 @@ void Parse_Damage () = // DO NOT TOUCH
 			else
 				DamageHandler(body_ent,self, total_dmg, S_NORMAL);
 			
+			#ifndef PC
 			body_ent.washit = 0;
 			body_ent.hitamount = 0;
 			#else
-			total_dmg = ent.hitamount;
-			//Clear hit
 			ent.washit = 0;
 			ent.hitamount = 0;
-			
-			DamageHandler(ent,self, total_dmg, S_NORMAL);
 			#endif
 
 		}
@@ -2074,7 +2073,7 @@ void () Weapon_Logic =
 	
 	if (self.button6 && !self.semiknife)
 	{ 
-		#ifdef PSP
+		#ifndef PC
 		if (self.sprinting) {
 			dolphin_dive();
 			return;

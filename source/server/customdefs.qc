@@ -415,7 +415,11 @@ float sndActivCnt;
 .float isTimed;
 .entity host;
 
-
+// GIBBING
 #ifdef PC
+.entity larm;
+.entity rarm;
 .entity head;
+.vector	bbmins, bbmaxs;	
+.float currentHitBoxSetup;
 #endif

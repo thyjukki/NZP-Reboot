@@ -111,17 +111,10 @@ void() precaches =
 	precache_model ("progs/Sprites/revive_white.spr");
 	
 	precache_model ("models/ai/zfull.mdl");
-	precache_model ("models/ai/zal(.mdl");
-	precache_model ("models/ai/zar(.mdl");
-
-	// fte doesn't like models with hashes
-	#ifndef PC
-	precache_model ("models/ai/zh^.mdl");
-	precache_model ("models/ai/zb#.mdl");
-	#else
+	precache_model ("models/ai/zlarm.mdl");
+	precache_model ("models/ai/zrarm.mdl");
 	precache_model ("models/ai/zbod.mdl");
 	precache_model ("models/ai/zhead.mdl");
-	#endif
 	
 	precache_model ("models/ai/zcfull.mdl");
 	precache_model ("models/ai/zbc#.mdl");
@@ -262,9 +255,7 @@ void() worldspawn =
 {
 	precaches();
 
-	#ifndef PSP
-	#ifndef NX 		// Keep this here, we shouldn't have these on anything but PC...
-					// or just define PC....
+	#ifdef PC
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
 	clientstat(STAT_CURRENTMAG2, EV_FLOAT, currentmag2);
 	clientstat(STAT_POINTS, EV_FLOAT, points);
@@ -282,7 +273,6 @@ void() worldspawn =
 	clientstat(STAT_PLAYERNUM, EV_FLOAT, playernum);		// literally useless but will be kept in case
 	clientstat(STAT_PLAYERSTANCE, EV_FLOAT, stance);
 	#endif
-	#endif 
 	
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
@@ -309,12 +299,16 @@ void() SpectatorConnect =
 	bprint(PRINT_HIGH, " has joined the spectators.\n");
 }
 
-#ifndef PC
 void() RelinkZombies =
 {
 	entity ent,ent2;
 	local float i;
 	local vector min, max;
+
+
+	//warn
+	ent = ent2 = world;
+
 	while ((ent = find (ent, classname, "ai_zombie")))
 	{
 		if(ent.currentHitBoxSetup == 0)//empty bbox, we don't care to update
@@ -363,4 +357,3 @@ void() EndFrame =
 {
 	RelinkZombies();
 };
-#endif
