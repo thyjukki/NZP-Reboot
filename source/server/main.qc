@@ -117,10 +117,10 @@ void() precaches =
 	precache_model ("models/ai/zhead.mdl");
 	
 	precache_model ("models/ai/zcfull.mdl");
-	precache_model ("models/ai/zbc#.mdl");
-	precache_model ("models/ai/zalc(.mdl");
-	precache_model ("models/ai/zarc(.mdl");
-	precache_model ("models/ai/zhc^.mdl");
+	precache_model ("models/ai/zcbod.mdl");
+	precache_model ("models/ai/zclarm.mdl");
+	precache_model ("models/ai/zcrarm.mdl");
+	precache_model ("models/ai/zchead.mdl");
 	
 	precache_model ("models/ai/dog.mdl");
 

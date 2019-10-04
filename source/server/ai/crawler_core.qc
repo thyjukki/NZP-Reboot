@@ -23,7 +23,7 @@ void() crawler_footstep
 }
 
 //14-28
-void()	zombie_crawl1		=[	0,		zombie_crawl2	] 	{Zombie_Walk(2.955); self.frame = 14;Zombie_Think();};
+void()	zombie_crawl1		=[	0,		zombie_crawl2	] 	{Zombie_Walk(2.955);SetZombieHitBox(CRAWLER_BBOX);/*if(freeze_time < time)*/ self.frame = 14;Zombie_Think();};
 void()	zombie_crawl2		=[	1,		zombie_crawl3	] 	{Zombie_Walk(3.841); self.frame = 15;Zombie_Think();};
 void()	zombie_crawl3		=[	2,		zombie_crawl4	] 	{Zombie_Walk(0.886); self.frame = 16;Zombie_Think();};
 void()	zombie_crawl4		=[	3,		zombie_crawl5	] 	{Zombie_Walk(1.871); self.frame = 17;Zombie_Think();};
@@ -41,7 +41,7 @@ void()	zombie_crawl15		=[	14,		Crawler_Walk_Setup	] 	{Zombie_Walk(2.856); self.f
 
 //====================== Zombie To Crawler =======================
 //0-4
-void() crawlerify1		=[	0,		crawlerify2	] 	{self.frame = 0;Zombie_Think();};
+void() crawlerify1		=[	0,		crawlerify2	] 	{SetZombieHitBox(CRAWLER_BBOX); self.frame = 0;Zombie_Think();};
 void() crawlerify2		=[	1,		crawlerify3	] 	{self.frame = 1;Zombie_Think();};
 void() crawlerify3		=[	2,		crawlerify4	] 	{self.frame = 2;Zombie_Think();};
 void() crawlerify4		=[	3,		crawlerify5	] 	{self.frame = 3;Zombie_Think();crawler_footstep();crawler_footstep();};//hit floor
@@ -49,7 +49,7 @@ void() crawlerify5		=[	4,		Crawler_Walk_Setup	] 	{self.frame = 4;Zombie_Think();
 
 //====================== Crawler Idle ==============================
 //4-13
-void() crawler_idle1		=[	0,		crawler_idle2	] 	{Zombie_Walk(0); self.frame = 4;Zombie_Think();};
+void() crawler_idle1		=[	0,		crawler_idle2	] 	{SetZombieHitBox(CRAWLER_BBOX);Zombie_Walk(0); self.frame = 4;Zombie_Think();};
 void() crawler_idle2		=[	1,		crawler_idle3	] 	{Zombie_Walk(0); self.frame = 5;Zombie_Think();};
 void() crawler_idle3		=[	2,		crawler_idle4	] 	{Zombie_Walk(0); self.frame = 6;Zombie_Think();};
 void() crawler_idle4		=[	3,		crawler_idle5	] 	{Zombie_Walk(0); self.frame = 7;Zombie_Think();};
@@ -61,7 +61,7 @@ void() crawler_idle9		=[	8,		crawler_idle10	] 	{Zombie_Walk(0); self.frame = 12;
 void() crawler_idle10		=[	9,		crawler_idle1	] 	{Zombie_Walk(0); self.frame = 13;Zombie_Think();};
 //===================== Crawler Attack ===========================
 //29-36
-void() crawler_atk1		=[	0,		crawler_atk2] 	{self.frame = 29;Zombie_Think();};
+void() crawler_atk1		=[	0,		crawler_atk2] 	{SetZombieHitBox(CRAWLER_BBOX);self.frame = 29;Zombie_Think();};
 void() crawler_atk2		=[	1,		crawler_atk3] 	{self.frame = 30;Zombie_Think();};
 void() crawler_atk3		=[	2,		crawler_atk4] 	{self.frame = 31;Zombie_Think();};
 void() crawler_atk4		=[	3,		crawler_atk5] 	{self.frame = 32;zombie_attack2();Zombie_Think();};
@@ -94,7 +94,7 @@ void(float which) crawler_attack_choose =
 };
 
 
-void() crawler_da1		=[	0,		crawler_da2	] 	{crawler_attack_choose(0); self.frame = 4;Zombie_Think();};
+void() crawler_da1		=[	0,		crawler_da2	] 	{SetZombieHitBox(CRAWLER_BBOX);crawler_attack_choose(0); self.frame = 4;Zombie_Think();};
 void() crawler_da2		=[	1,		crawler_da3	] 	{crawler_attack_choose(0); self.frame = 5;Zombie_Think();};
 void() crawler_da3		=[	2,		crawler_da4	] 	{crawler_attack_choose(0); self.frame = 6;Zombie_Think();};
 void() crawler_da4		=[	3,		crawler_da5	] 	{crawler_attack_choose(0); self.frame = 7;Zombie_Think();};
@@ -102,13 +102,13 @@ void() crawler_da5		=[	4,		crawler_da6	] 	{crawler_attack_choose(0); self.frame 
 void() crawler_da6		=[	5,		crawler_da7	] 	{crawler_attack_choose(0); self.frame = 9;Zombie_Think();};
 void() crawler_da7		=[	6,		crawler_da8	] 	{crawler_attack_choose(0); self.frame = 10;Zombie_Think();};
 void() crawler_da8		=[	7,		crawler_da9	] 	{crawler_attack_choose(0); self.frame = 11;Zombie_Think();};
-void() crawler_da9		=[	8,		crawler_da10] 	{crawler_attack_choose(0); self.frame = 12;Zombie_Think();};
+void() crawler_da9		=[	8,		crawler_da10	] 	{crawler_attack_choose(0); self.frame = 12;Zombie_Think();};
 void() crawler_da10		=[	9,		crawler_da1	] 	{crawler_attack_choose(0); self.frame = 13;Zombie_Think();};
 
 
 //====================== Crawler Death ============================
 //37-39
-void() crawler_die1		=[	0,		crawler_die2] 	{self.frame = 37;};
+void() crawler_die1		=[	0,		crawler_die2] 	{SetZombieHitBox(CRAWLER_BBOX);self.frame = 37;};
 void() crawler_die2		=[	1,		crawler_die3] 	{self.frame = 38;};
 void() crawler_die3		=[	2,		SUB_Null] 	{self.frame = 39;self.nextthink = time + 3;self.think = removeZombie; addmoney(other, 60, true); if (crawler_num > 0) {crawler_num = crawler_num - 1;}};
 
@@ -148,7 +148,7 @@ void() crawler_climbBarricade31	=[	30,		SUB_Null] 	{self.frame = 70;	self.movety
 
 //======================== Crawler Fall =============================
 //71 - 77
-void() crawler_fall1		=[	0,		crawler_fall2] 	{self.fall = TRUE;CheckLand();self.frame=71;Zombie_Think();};
+void() crawler_fall1		=[	0,		crawler_fall2] 	{SetZombieHitBox(CRAWLER_BBOX);self.fall = TRUE;CheckLand();self.frame=71;Zombie_Think();};
 void() crawler_fall2		=[	1,		crawler_fall3] 	{self.fall = TRUE;CheckLand();self.frame=72;Zombie_Think();};
 void() crawler_fall3		=[	2,		crawler_fall4] 	{self.fall = TRUE;CheckLand();self.frame=73;Zombie_Think();};
 void() crawler_fall4		=[	3,		crawler_fall5] 	{self.fall = TRUE;CheckLand();self.frame=74;Zombie_Think();};
@@ -157,7 +157,7 @@ void() crawler_fall6		=[	5,		crawler_fall7] 	{self.fall = TRUE;CheckLand();self.
 void() crawler_fall7		=[	6,		crawler_fall1] 	{self.fall = TRUE;CheckLand();self.frame=77;Zombie_Think();};
 //======================== Crawler Land ============================
 //77-86
-void() crawler_land1		=[	0,		crawler_land2] 	{self.frame=77;Zombie_Think();};
+void() crawler_land1		=[	0,		crawler_land2] 	{SetZombieHitBox(CRAWLER_BBOX);self.frame=77;Zombie_Think();};
 void() crawler_land2		=[	1,		crawler_land3] 	{self.frame=78;Zombie_Think();};
 void() crawler_land3		=[	2,		crawler_land4] 	{self.frame=79;Zombie_Think();};
 void() crawler_land4		=[	3,		crawler_land5] 	{self.frame=80;Zombie_Think();};
@@ -170,7 +170,7 @@ void() crawler_land10		=[	9,		Crawler_Walk_Setup] 	{self.frame=86;Zombie_Think()
 //======================== Crawler Rip Board =======================
 //103-126
 
-void() crawler_rip_board1		=[	0,		crawler_rip_board2] 	{self.frame=103;Zombie_Think();};
+void() crawler_rip_board1		=[	0,		crawler_rip_board2] 	{SetZombieHitBox(CRAWLER_BBOX);self.frame=103;Zombie_Think();};
 void() crawler_rip_board2		=[	1,		crawler_rip_board3] 	{self.frame=104;Zombie_Think();};
 void() crawler_rip_board3		=[	2,		crawler_rip_board4] 	{self.frame=105;Zombie_Think();};
 void() crawler_rip_board4		=[	3,		crawler_rip_board5] 	{self.frame=106;Zombie_Think();};
@@ -217,22 +217,22 @@ void(entity who) makeCrawler =
 	//who.th_grabledge = zombie_grabledge1;
 	//who.th_diewunder = die_wunder1;
 	
-	setmodel(who,"models/ai/zcfull.mdl");
-	/*if(who.head.deadflag)
+	setmodel(who,"models/ai/zcbod.mdl");
+	if(who.head.deadflag)
 	{
-		setmodel(who.head,"progs/ai/zhc^.mdl");
+		setmodel(who.head,"models/ai/zchead.mdl");
 		//updateLimb (who, 0, world);
 	}
 	if(who.larm.deadflag)
 	{
-		setmodel(who.larm,"progs/ai/zalc(.mdl");
+		setmodel(who.larm,"models/ai/zclarm.mdl");
 		//updateLimb (who, 1, world);
 	}
 	if(who.rarm.deadflag)
 	{
-		setmodel(who.rarm,"progs/ai/zarc(.mdl");
+		setmodel(who.rarm,"models/ai/zcrarm.mdl");
 		//updateLimb (who, 2, world);
-	}*/
+	}
 	who.crawling = 1;
 	
 	setsize(who,'-8 -8 -32','8 8 -15');
