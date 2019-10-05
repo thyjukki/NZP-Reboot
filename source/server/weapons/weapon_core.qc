@@ -18,13 +18,8 @@ void() ReturnWeaponModel =
 
 .float scopetime;
 
-/*
-	MotoLegacy - continue special ADS.. FIXME
-*/
 void() W_AimIn =
 {
-	float zoomvar;
-	float startframe, endframe;
 	if (IsDualWeapon(self.weapon) ||
 		self.zoom ||
 		self.reload_delay > time ||
@@ -36,25 +31,14 @@ void() W_AimIn =
 		
 	#ifndef PC
 	self.ADS_Offset = GetWeaponADSOfs_PSP(self.weapon);
-	zoomvar = 2;
 	#endif
-
-	zoomvar = 1;
 	
 	if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
 	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
-		self.zoom = zoomvar;
+		self.zoom = 2;
 		self.scopetime = time + 0.3;
 	} else {
-		self.zoom = 1;
-	}
-
-	//special weapons
-	if (self.weapon == W_RAY || self.weapon == W_TYPE) {
-		startframe = GetFrame(self.weapon, AIM_IN_START, self.zoom);
-		endframe = GetFrame(self.weapon, AIM_IN_END, self.zoom);
-		Set_W_Frame(startframe, endframe, 0, 0, ZOOM, SUB_Null, GetWeaponModel(self.weapon, 0), false, S_RIGHT);
 		self.zoom = 1;
 	}
 	
@@ -65,7 +49,6 @@ void() W_AimIn =
 
 void() W_AimOut =
 {
-	float startframe, endframe;
 	if (!self.zoom ||
 		self.new_anim_stop || 
 		self.sprinting) {
@@ -80,13 +63,6 @@ void() W_AimOut =
 	#ifndef PC
 	self.zoom = 0;
 	#endif
-
-	//special weapons
-	if (self.weapon == W_RAY || self.weapon == W_TYPE) {
-		startframe = GetFrame(self.weapon, AIM_OUT_START, self.zoom);
-		endframe = GetFrame(self.weapon, AIM_OUT_END, self.zoom);
-		Set_W_Frame(startframe, endframe, 0, 0, ZOOM, SUB_Null, GetWeaponModel(self.weapon, 0), false, S_RIGHT);
-	}
 	
 	if (!self.downed)
 		playout();
@@ -1136,13 +1112,6 @@ void(float side) W_Fire =
 	//Play weapon animation and sound
 	startframe = GetFrame(self.weapon,FIRE_START);
 	endframe = GetFrame(self.weapon,FIRE_END);
-
-	if (self.zoom) {
-		if (self.weapon == W_RAY || self.weapon == W_TYPE) { //special weapons
-			startframe = GetFrame(self.weapon, AIM_FIRE_START);
-			endframe = GetFrame(self.weapon, AIM_FIRE_END);
-		}
-	}
 	
 
 	if (self.perks & P_DOUBLE) {

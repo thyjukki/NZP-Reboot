@@ -1032,9 +1032,9 @@ float(float wep, float delaytype) getWeaponDelay =
 		case W_RAY:
 		case W_PORTER:
 			if (delaytype == RELOAD)
-				return 3.1;
+				return 2.75;
 			else if (delaytype == FIRE)
-				return 0.331;
+				return 0.35;
 		case W_SAWNOFF:
 			if (delaytype == RELOAD)
 				return 2.8;
@@ -1177,6 +1177,9 @@ vector GetWeaponADSPos(float wep) {
 		case W_M2:
 		case W_FIW:
 			return [0, 0.89, 0.82];
+		case W_RAY:
+		case W_PORTER:
+			return [-1.50, 6.40, 0.87];
 		default:
 			return [0, 0, 0];
 	}
@@ -1229,7 +1232,7 @@ vector GetWeaponADSOfs_PSP(float wep) =
 			return [-14800, 6000, 0];
 		case W_RAY:
 		case W_PORTER:
-			return [0, -2700, 0];
+			return [-12700, 2086.9, 0];
 		case W_GEWEHR:
 		case W_COMPRESSOR:
 			return [-6550, 4400, 0];
@@ -1266,27 +1269,13 @@ vector GetWeaponADSOfs_PSP(float wep) =
 
 float(float wep, float frametype, optional float z) GetFrame =
 {
-	if (frametype == BASE_FRAME) {
-		switch(z) {
-			case 3:
-				frametype = SPRINT_IN_END;
-				break;
-			case 1:
-				if (wep == W_RAY || wep == W_PANZER || wep == W_TYPE || wep == W_PORTER || wep == W_LONGINUS || wep == W_SAMURAI)
-          			frametype = AIM_IN_END;
-				else
-					return 0;
-
-		}
-	}
-
 	switch (wep)
 	{
 		case W_COLT:
 			switch (frametype)
 			{
 				case FIRE_START:
-				#ifdef PSP
+				#ifndef PC
 					return 1;
 				#else 
 					return 0;
@@ -1934,45 +1923,31 @@ float(float wep, float frametype, optional float z) GetFrame =
 			switch (frametype)
 			{
 				case FIRE_START:
-					return 1;
-				case FIRE_END:
 					return 3;
+				case FIRE_END:
+					return 7;
 				case RELOAD_START:
-					return 4;
+					return 9;
 				case RELOAD_END:
-					return 30;
+					return 54;
 				case SPRINT_IN_START:
-					return 42;
+					return 60;
 				case SPRINT_IN_END:
-					return 42;
+					return 64;
 				case SPRINT_OUT_START:
-					return 42;
+					return 70;
 				case SPRINT_OUT_END:
-					return 42;
+					return 73;
 				case TAKE_OUT_START:
-					return 42;
+					return 57;
 				case TAKE_OUT_END:
-					return 42;
+					return 59;
 				case PUT_OUT_START:
-					return 42;
+					return 54;
 				case PUT_OUT_END:
-					return 42;
+					return 56;
 				case RELOAD_CANCEL:
-					return 16;
-				case AIM_IN_START:
-					return 30;
-				case AIM_IN_END:
-					return 34;
-				case AIM_LOOP:
-					return 35;
-				case AIM_OUT_START:
 					return 36;
-				case AIM_OUT_END:
-					return 40;
-				case AIM_FIRE_START:
-					return 34;
-				case AIM_FIRE_END:
-					return 35;
 			}
 			break;
 		case W_STG:
@@ -2807,13 +2782,13 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 			break;
 		case W_RAY:
 		case W_PORTER:
-			if (curweaponframe == 7) {
+			if (curweaponframe == 14) {
 				sound (self ,5, "sounds/weapons/raygun/open.wav", 1, ATTN_NORM);
-			} else if (curweaponframe == 12) {
+			} else if (curweaponframe == 23) {
 				sound (self ,5, "sounds/weapons/raygun/out.wav", 1, ATTN_NORM);
-			} else if (curweaponframe == 21) {
+			} else if (curweaponframe == 36) {
 				sound (self ,5, "sounds/weapons/raygun/in.wav", 1, ATTN_NORM);
-			} else if (curweaponframe == 26) {
+			} else if (curweaponframe == 45) {
 				sound (self ,5, "sounds/weapons/raygun/close.wav", 1, ATTN_NORM);
 			}
 			break;
