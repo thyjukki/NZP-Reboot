@@ -1,6 +1,7 @@
 //
 //	Main.qc - mostly functions that will be called from the engine and are expected to exist
 //
+void() LightStyles_setup;
 void() SUB_Remove = {remove(self);}
 
 //called when starting server/loading the map
@@ -254,6 +255,7 @@ void() precaches =
 void() worldspawn =
 {
 	precaches();
+	LightStyles_setup();
 
 	#ifdef PC
 	clientstat(STAT_CURRENTMAG, EV_FLOAT, currentmag);
