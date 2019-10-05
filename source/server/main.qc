@@ -249,17 +249,6 @@ void() precaches =
 	precache_sound ("sounds/pu/nuke.wav");
 	precache_sound ("sounds/pu/powerup.wav");
 	precache_sound ("sounds/pu/drop.wav");
-
-	//fuck
-	precache_model("models/weapons/ray/g_ray.mdl");
-	precache_model("models/weapons/ray/v_ray.mdl");
-	precache_sound("sounds/weapons/raygun/shoot.wav");
-	precache_sound("sounds/weapons/raygun/open.wav");
-	precache_sound("sounds/weapons/raygun/out.wav");
-	precache_sound("sounds/weapons/raygun/in.wav");
-	precache_sound("sounds/weapons/raygun/close.wav");
-	precache_sound("sounds/weapons/raygun/shoot.wav");
-	precache_model ("progs/shark.mdl");
 }
 
 //called when map loaded
@@ -296,7 +285,7 @@ void() worldspawn =
 	G_STARTPOINTS = 500;
 	G_STARTROUND = 1;
 	G_PRONEPOINTS = 0;
-	G_STARTWEAPON[0] = W_RAY;
+	G_STARTWEAPON[0] = W_COLT;
 	G_STARTWEAPON[1] = 8;
 	G_STARTWEAPON[2] = 32;
 	G_WORLDTEXT = 1;
