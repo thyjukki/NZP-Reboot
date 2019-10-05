@@ -344,12 +344,13 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 				}
 				else
 				{
-					if (attacker.classname == "player" && (victim.health - damage)> 0)
-					addmoney(attacker, 10, 1);
+					if (attacker.classname == "player" && (victim.health - damage) > 0)
+						addmoney(attacker, 10, 1);
 				}
 			}
-			else
-				victim.th_die();	
+			// MOTO - explosives seem to work fine without, but with will cause counter and QC errors..
+			//else
+			//	victim.th_die();	
 				
 			if (victim.health <= 0)
 				addmoney(attacker, 60, 1);
