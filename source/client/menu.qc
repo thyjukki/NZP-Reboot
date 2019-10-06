@@ -318,7 +318,7 @@ var struct
 	//Solo
 	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, null, MENU_SINGLE},
 	{[0.025, 0.225, 0], "Warehouse", -1, menu_loadwh, null, MENU_SINGLE},
-	/*{[0.025, 0.300, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE},*/
+	//{[0.025, 0.300, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE},
 
 	//Pause
 	{[0.025, 0.500, 0], "Resume", -1, menu_resume, null, MENU_PAUSE},
@@ -533,10 +533,32 @@ void() Draw_Extra_Controls =
 	}
 }
 
+float page;
+string custom_map_name[10];
+float custom_map_index[10];
 void() Draw_Extra_Customs =
 {
-	string maps = con_getset("echo f", "echo f");
-	drawstring([0.025*g_width, 0.375*g_height, 0], maps, [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+	// get all .BSPs in the maps folder
+	searchhandle maps = search_begin("maps/*.bsp", 0, 0);
+	// the amount of maps in the folder
+	//float mapcount = search_getsize(maps);
+
+	// the number of maps in the last page < 10
+	//float remain = mapcount % 10;
+
+	float a;
+
+	//if (a < 10)
+	//	a = mapcount;
+	//else
+		a = 10;
+
+	for(float i = a; i < a; i++) {
+		custom_map_name[a] = search_getfilename(maps, a);
+		drawstring([0.025*g_width, 0.375*g_height, 0], custom_map_name[a], [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+	}
+
+	//drawstring([0.025*g_width, 0.375*g_height, 0], ftos(remain), [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
 }
 
 void() Draw_Menu =

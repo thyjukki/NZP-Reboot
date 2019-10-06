@@ -969,6 +969,7 @@ void() W_FireRay =
 
 void(entity who) FindNewTeslaTarget;
 
+// Spawn a clone in the place of lightning'd zombies.
 void(vector org, float frame, vector ang) SpawnLightningClone =
 {
 	local entity clone;
@@ -986,6 +987,7 @@ void(vector org, float frame, vector ang) SpawnLightningClone =
 
 	centerprint(self, strcat("kills left: ", ftos(self.teslacount)));
 
+	// If we can chain more, try to look for another zombie
 	if (self.teslacount > 0) {
 		FindNewTeslaTarget(clone);
 	} else {
@@ -993,6 +995,7 @@ void(vector org, float frame, vector ang) SpawnLightningClone =
 	}
 }
 
+// Remove zombie, add money, request clone spawn.
 void(entity hit_ent) LightningHit =
 {
 	//we do a hacky thing here: spawn a clone, kill zomb, and use the clone to
@@ -1013,10 +1016,10 @@ void(entity hit_ent) LightningHit =
 
 	Current_Zombies -= 1;
 	
-	//DamageHandler (hit_ent, other, 10000, S_TESLA);
 	addmoney(self, 50, true);
 };
 
+// Look for a zombie in radius to chain to, if one's not there, we can start killing.
 void(entity who) FindNewTeslaTarget =
 {
 	local entity ent, newtarg;
@@ -1038,7 +1041,7 @@ void(entity who) FindNewTeslaTarget =
 
 	// couldn't find a new target
 	if (newtarg == world) {
-		// tell all of our clones the death clock is ticking
+		// TODO: tell all of our clones the death clock is ticking
 		self.teslacount = 2;
 		return;
 	}
@@ -1046,6 +1049,7 @@ void(entity who) FindNewTeslaTarget =
 	LightningHit(newtarg);
 }
 
+// Initial Zombie impact, creds to Naievil/UP
 void(vector p1, vector p2, entity from, float damage) LightningDamage =
 {
 	local entity            e1, e2;
@@ -1089,6 +1093,7 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 	}
 };
 
+// Fire lightning out of the gun
 void() W_FireTesla =
 {
 	local vector source;

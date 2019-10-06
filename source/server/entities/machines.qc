@@ -855,15 +855,16 @@ void() Float_Decrease =
 void() findboxspot =
 {	
 	entity newspot;
-	float box = random(boxCount);
+	float box = rint(random(boxCount));
 
 	newspot = boxLocations[box];
 
-	//make sure the box doesn't spawn in the same place
-	if (newspot == self.owner) {
-		newspot = boxLocations[box + 1];
+	// make sure our spot is valid
+	while(newspot == world || newspot == self.owner) {
+		box = rint(random(boxCount));
+		newspot = boxLocations[box];
 	}
-	
+
 	self.owner.model = "progs/Misc/teddy.mdl";
 	self.owner.frame = 1;
 	setmodel(self.owner, self.owner.model);
@@ -891,6 +892,7 @@ void() findboxspot =
 	newspot.classname = "mystery";
 	setorigin(newspot, newspot.origin);
 	setmodel (newspot, "models/machines/mystery.mdl");
+	newspot.frame = 0;
 	setsize (newspot, VEC_HULL2_MIN, VEC_HULL2_MAX);
 }
 
@@ -925,7 +927,7 @@ void() Float_Change =
 	{
 		tpspot = find(world, classname, "mystery_box_tp_spot");
 		if (tpspot && self.owner.spins >= 3) {
-				teddygen = random();
+				teddygen = /*random()*/1;
 			}
 			else
 				teddygen = 0;
