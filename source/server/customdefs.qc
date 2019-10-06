@@ -175,6 +175,7 @@ entity lastzombie;
 .vector idlebox;
 .vector hop_spot;//used for windows (zombies hop to these)
 .vector goalorigin;
+.float teslacount;
 float crawler_num;
 //==== Reference Vars ====
 #define 	WWINDOW		1

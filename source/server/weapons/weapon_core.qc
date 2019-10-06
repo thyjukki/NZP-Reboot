@@ -857,7 +857,8 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 
 		count++;
 	}
-	Parse_Damage();
+	if (self.weapon != W_TESLA)
+		Parse_Damage();
 
 }
 
@@ -964,6 +965,146 @@ void() W_FireRay =
 
 	self.animend = ReturnWeaponModel;
 	self.callfuncat = 0;
+}
+
+void(entity who) FindNewTeslaTarget;
+
+void(vector org, float frame, vector ang) SpawnLightningClone =
+{
+	local entity clone;
+
+	clone = spawn();
+
+	setmodel(clone, "models/machines/juggernog.mdl");
+	setorigin(clone, org);
+
+	clone.angles = ang;
+
+	clone.classname = "tesla_clone";
+
+	self.teslacount--;
+
+	centerprint(self, strcat("kills left: ", ftos(self.teslacount)));
+
+	if (self.teslacount > 0) {
+		FindNewTeslaTarget(clone);
+	} else {
+		self.teslacount = 20;
+	}
+}
+
+void(entity hit_ent) LightningHit =
+{
+	//we do a hacky thing here: spawn a clone, kill zomb, and use the clone to
+	//dictate our next target. zom's think function is waay too much to handle lol
+	hit_ent.classname = "dead_zombie";
+
+	SpawnLightningClone(hit_ent.origin, hit_ent.frame, hit_ent.angles);
+
+	if (hit_ent.head) {
+		remove(hit_ent.head);
+	} if (hit_ent.larm) {
+		remove(hit_ent.larm);
+	} if (hit_ent.rarm) {
+		remove(hit_ent.rarm);
+	}
+
+	remove(hit_ent);
+
+	Current_Zombies -= 1;
+	
+	//DamageHandler (hit_ent, other, 10000, S_TESLA);
+	addmoney(self, 50, true);
+};
+
+void(entity who) FindNewTeslaTarget =
+{
+	local entity ent, newtarg;
+	ent = findradius(who.origin, 200);
+		
+	while(ent != world)
+	{
+		if (ent.classname == "ai_zombie") {
+			newtarg = ent;
+			#ifdef PC
+			te_lightning2(who, who.origin, newtarg.origin);
+			#endif
+		}
+		ent = ent.chain;
+		
+		if (newtarg != world)
+			ent = world;
+	}
+
+	// couldn't find a new target
+	if (newtarg == world) {
+		// tell all of our clones the death clock is ticking
+		self.teslacount = 2;
+		return;
+	}
+
+	LightningHit(newtarg);
+}
+
+void(vector p1, vector p2, entity from, float damage) LightningDamage =
+{
+	local entity            e1, e2;
+	local vector            f;
+	entity hit_ent;
+	
+	f = p2 - p1;
+	normalize (f);
+	f_x = 0 - f_y;
+	f_y = f_x;
+	f_z = 0;
+	f = f*16;
+
+	e1 = e2 = world;
+
+	//traceline (p1, p2, false, self);
+	
+	hit_ent = trace_ent;
+
+	if (hit_ent.classname == "ai_zombie_head" || hit_ent.classname == "ai_zombie_larm" || hit_ent.classname == "ai_zombie_rarm")
+		hit_ent = hit_ent.owner;
+
+	if (trace_ent.takedamage)
+	{
+		LightningHit (hit_ent);
+	}
+	e1 = trace_ent;
+	
+	traceline (p1 + f, p2 + f, FALSE, self);
+	if (trace_ent != e1 && trace_ent.takedamage)
+	{
+		LightningHit (hit_ent);
+	}
+	e2 = trace_ent;
+	
+
+	traceline (p1 - f, p2 - f, FALSE, self);
+	if (trace_ent != e1 && trace_ent != e2 && trace_ent.takedamage)
+	{
+		LightningHit (hit_ent);
+	}
+};
+
+void() W_FireTesla =
+{
+	local vector source;
+
+	makevectors (self.v_angle);
+	source = self.origin + self.view_ofs;
+
+	self.solid = SOLID_BBOX;
+	FireTrace(1, 0, 0);
+	self.solid = SOLID_SLIDEBOX;
+
+	#ifdef PC
+	te_lightning2(self, self.origin, trace_endpos);
+	#endif
+
+	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30);
 }
 
 
@@ -1100,6 +1241,8 @@ void(float side) W_Fire =
 		}
 	} else if (firetype == 4) {
 		W_FireRay();
+	} else if (firetype == 5) {
+		W_FireTesla();
 	}
 
 	if (firetype == 1 || firetype == 0) {

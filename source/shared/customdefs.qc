@@ -86,7 +86,8 @@ const float EVENT_HUDUPDATE = 33;
 #define W_MP5          54
 #define W_M14          55
 
-#define W_TESLA  56
+#define W_TESLA  	   56
+#define W_DG3    	   57
 
 //Custom Weapons
 //FIXME - use array?
@@ -138,6 +139,7 @@ const float EVENT_HUDUPDATE = 33;
 #define S_ZOMBIE	4
 #define S_EXPLOSIVE	5
 #define S_ZAPPER	6
+#define S_TESLA 	7
 
 //Perk types
 #define 	P_JUG		1

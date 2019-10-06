@@ -371,6 +371,10 @@ float(float wep) getWeaponMag =
 			return 30;
 		case W_SAMURAI:
 			return 60;
+		case W_TESLA:
+			return 3;
+		case W_DG3:
+			return 6;
 	}
 	return 0;
 }
@@ -475,6 +479,10 @@ float(float wep) getWeaponAmmo =
 			return 160;
 		case W_SAMURAI:
 			return 220;
+		case W_TESLA:
+			return 15;
+		case W_DG3:
+			return 32;
 	}
 	return 0;
 }
@@ -1071,6 +1079,12 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 2.3;
 			else if (delaytype == FIRE)
 				return 0.065;
+		case W_TESLA:
+			if (delaytype == RELOAD)
+				return 4;
+			else if (delaytype == FIRE)
+				return 1;
+			break;
     }
 
     return 0;
@@ -2046,6 +2060,38 @@ float(float wep, float frametype, optional float z) GetFrame =
 					return 27;
 			}
 			break;
+		case W_TESLA:
+		case W_DG3:
+			switch (frametype)
+			{
+				case FIRE_START:
+					return 1;
+				case FIRE_END:
+					return 5;
+				case RELOAD_START:
+					return 5;
+				case RELOAD_END:
+					return 47;
+				case SPRINT_IN_START:
+					return 78;
+				case SPRINT_IN_END:
+					return 80;
+				case SPRINT_OUT_START:
+					return 80;
+				case SPRINT_OUT_END:
+					return 83;
+				case TAKE_OUT_START:
+					return 80;
+				case TAKE_OUT_END:
+					return 83;
+				case PUT_OUT_START:
+					return 77;
+				case PUT_OUT_END:
+					return 80;
+				case RELOAD_CANCEL:
+					return 16;
+			}
+			break;
 	}
 
     return 0;
@@ -2212,6 +2258,7 @@ string(float wep, float gorvmodel) GetWeaponModel =
 			return ("models/weapons/grenade/g_grenade.mdl");
 		case W_BETTY:
 			return ("models/weapons/grenade/g_betty.mdl");
+		case W_DG3:
 		case W_TESLA:
 			if (gorvmodel)
 				return ("models/weapons/tesla/g_tesla.mdl");
@@ -2304,6 +2351,9 @@ string(float wep) GetWeaponSound =
 		case W_TYPE:
     	case W_SAMURAI:
 			return "sounds/weapons/type100/shoot.wav";
+		case W_TESLA:
+		case W_DG3:
+      		return "sounds/weapons/tesla/shoot.wav";
     }
 
     return "";
@@ -2457,6 +2507,8 @@ float(float wep)  EqualNonPapWeapon =
 			return W_CUSTOM1;
 		case W_CUSTOM4:
 			return W_CUSTOM3;
+		case W_DG3:
+			return W_TESLA;
 		default:
 			return 0;
 	}
@@ -2516,7 +2568,7 @@ float(float wep)  EqualPapWeapon =
 		case W_MP5:
 			return W_MP5;
 		case W_TESLA:
-			return W_BIATCH;
+			return W_DG3;
 		case W_M14:
 			return W_M14;
 		default:
@@ -2825,6 +2877,20 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 				sound (self ,5, "sounds/weapons/colt/slide.wav", 1, ATTN_NORM);
 			}
 			break;
+		case W_TESLA:
+		case W_DG3:
+			if (curweaponframe == 10)
+				sound (self ,5, "sounds/weapons/tesla/switchoff.wav", 1, ATTN_NORM);
+			else if (curweaponframe == 16)
+				sound (self ,5, "sounds/weapons/tesla/pulllever.wav", 1, ATTN_NORM);
+			else if (curweaponframe == 22)
+				sound (self ,5, "sounds/weapons/tesla/glassbreak.wav", 1, ATTN_NORM);
+			else if (curweaponframe == 29)
+				sound (self ,5, "sounds/weapons/tesla/clipin.wav", 1, ATTN_NORM);
+			else if (curweaponframe == 32)
+				sound (self ,5, "sounds/weapons/tesla/clipoff.wav", 1, ATTN_NORM);
+			else if (curweaponframe == 41)
+				sound (self ,5, "sounds/weapons/tesla/switchon.wav", 1, ATTN_NORM);
 	}
 }
 
@@ -3010,6 +3076,15 @@ void(float weptype) precache_extra =
 			precache_sound("sounds/weapons/type100/magin.wav");
 			precache_sound("sounds/weapons/type100/boltpull.wav");
 			precache_sound("sounds/weapons/type100/shoot.wav");
+			break;
+		case W_TESLA:
+		case W_DG3:
+			precache_sound("sounds/weapons/tesla/switchoff.wav");
+			precache_sound("sounds/weapons/tesla/pulllever.wav");
+			precache_sound("sounds/weapons/tesla/glassbreak.wav");
+			precache_sound("sounds/weapons/tesla/clipin.wav");
+			precache_sound("sounds/weapons/tesla/clipoff.wav");
+			precache_sound("sounds/weapons/tesla/switchon.wav");
 			break;
 	}
 }
