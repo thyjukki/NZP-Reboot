@@ -499,7 +499,7 @@ void() PlayerSpawn =
 	self.secondary_grenades = -1;		// shows that we both don't have betties AND shouldn't draw the image onscreen
 
 	if (!self.points)
-		addmoney(self, 133769, 0);
+		addmoney(self, G_STARTPOINTS, 0);
 
 	local entity test = find(world, classname, "mystery_box_tp_spot");
 

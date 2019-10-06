@@ -318,7 +318,7 @@ var struct
 	//Solo
 	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, null, MENU_SINGLE},
 	{[0.025, 0.225, 0], "Warehouse", -1, menu_loadwh, null, MENU_SINGLE},
-	//{[0.025, 0.300, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE},
+	{[0.025, 0.300, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE},
 
 	//Pause
 	{[0.025, 0.500, 0], "Resume", -1, menu_resume, null, MENU_PAUSE},
@@ -362,7 +362,7 @@ var struct
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 33;
+const float BUTTONS_COUNT = 34;
 float lastActive;
 
 
@@ -546,16 +546,22 @@ void() Draw_Extra_Customs =
 	// the number of maps in the last page < 10
 	//float remain = mapcount % 10;
 
+	/*
+
+	0.025, 0.175, 0], "Solo", -1, menu_single, null, MENU_MAIN},
+	{[0.025, 0.225,
+	*/
+
 	float a;
 
 	//if (a < 10)
 	//	a = mapcount;
 	//else
-		a = 10;
+	a = 9;
 
-	for(float i = a; i < a; i++) {
-		custom_map_name[a] = search_getfilename(maps, a);
-		drawstring([0.025*g_width, 0.375*g_height, 0], custom_map_name[a], [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+	for(float i = 0; i < a; i++) {
+		custom_map_name[i] = search_getfilename(maps, i);
+		drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_name[a], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
 	}
 
 	//drawstring([0.025*g_width, 0.375*g_height, 0], ftos(remain), [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
