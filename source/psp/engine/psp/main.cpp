@@ -53,8 +53,13 @@ extern	char **com_argv;
 
 void Sys_ReadCommandLineFile (char* netpath);
 
+/*
+	MOTO - Can't go above heap of 10MB on PHAT models.. which is an issue, in theory 
+	we should be able to cap at a heap size 14MB.. oh well.
+*/
+
 #define printf	pspDebugScreenPrintf
-#define MIN_HEAP_MB	14
+#define MIN_HEAP_MB	6
 #define MAX_HEAP_MB (PSP_HEAP_SIZE_MB-1)
 
 namespace quake
@@ -79,7 +84,7 @@ namespace quake
 		// darkduke/IPQ's recommended heap size
 		static size_t  heapSize	= 34 * 1024 * 1024;
 	#else
-		static size_t  heapSize	= 13 * 1024 * 1024;
+		static size_t  heapSize	= 10 * 1024 * 1024;
 	#endif // KERNEL_MODE
 #endif // PSP_SOFTWARE_VIDEO
 

@@ -29,7 +29,9 @@ struct qsockaddr
 
 #define	NET_NAMELEN			64
 
-#define NET_MAXMESSAGE		8192
+// HACK HACK HACK - certain maps will hit this limit.. no clue why.. so let's just
+// double it lol
+#define NET_MAXMESSAGE		8192/*16384*/
 #define NET_HEADERSIZE		(2 * sizeof(unsigned int))
 #define NET_DATAGRAMSIZE	(MAX_DATAGRAM + NET_HEADERSIZE)
 
