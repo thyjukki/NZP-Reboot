@@ -1,0 +1,128 @@
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSPLIBSDIR = $(PSPSDK)/..
+
+TARGET = nzportable
+
+PSP_EBOOT_TITLE = Nazi Zombies Portable Reboot
+
+PSP_EBOOT_ICON	= pics/icon.png
+PSP_EBOOT_SND0	= pics/snd0.at3
+PSP_EBOOT_PIC1	= pics/pic.png
+
+PSP_FW_VERSION=660
+
+#MODE=-DKERNEL_MODE
+
+
+BUILD_PRX = 1
+
+COMMON_OBJS = \
+	battery.o \
+	input.o \
+	main.o \
+	math.o \
+	sound.o \
+	system.o \
+	module.o \
+	network.o \
+	network_psp.o \
+	gethost.o \
+	fnmatch.o \
+	cd.o \
+	mp3.o \
+	Random.o \
+	\
+	../chase.o \
+	../cl_demo.o \
+	../cl_input.o \
+	../cl_main.o \
+	../cl_parse.o \
+	../cl_tent.o \
+	../cl_slist.o \
+      ../cmd.o \
+	../common.o \
+	../console.o \
+	../crc.o \
+	../cvar.o \
+	../host.o \
+	../host_cmd.o \
+	../keys.o \
+	../mathlib.o \
+	../menu.o \
+	../net_dgrm.o \
+	../net_loop.o \
+	../net_main.o \
+	../net_vcr.o \
+	../pr_cmds.o \
+	../pr_edict.o \
+	../pr_exec.o \
+	../snd_dma.o \
+	../snd_mem.o \
+	../snd_mix.o \
+	../cl_hud.o \
+	../sv_main.o \
+	../sv_move.o \
+	../sv_phys.o \
+	../sv_user.o \
+	../view.o \
+	../wad.o \
+	../world.o \
+	../zone.o \
+	../crypter.o
+
+HARDWARE_VIDEO_ONLY_OBJS = \
+    wad3.o \
+	clipping.o \
+	vram.o \
+    video_hardware.o \
+    video_hardware_resample.o \
+    video_hardware_images.o \
+    video_hardware_fullbright.o \
+    video_hardware_hlmdl.o \
+    video_hardware_draw.o \
+    video_hardware_entity_fragment.o \
+    video_hardware_QMB.o \
+    video_hardware_decals_QMB.o \
+    video_hardware_part.o \
+    video_hardware_light.o \
+    video_hardware_main.o \
+    video_hardware_mesh.o \
+    video_hardware_mhex2.o \
+    video_hardware_misc.o \
+    video_hardware_model.o \
+    video_hardware_screen.o \
+    video_hardware_surface.o \
+    video_hardware_warp.o \
+    video_hardware_fog.o \
+    video_hardware_dxtn.o
+HARDWARE_VIDEO_ONLY_FLAGS = -DPSP_HARDWARE_VIDEO
+
+
+
+OBJS = $(COMMON_OBJS) $(HARDWARE_VIDEO_ONLY_OBJS)
+
+
+#LIBS = -lpspaudiolib -lpspaudio -lpspgum -lpspgu -lpsprtc -lpsppower -lpspwlan -lstdc++ -lm
+
+GU_LIBS	= -lpspgum_vfpu -lpspvfpu -lpspgu -lpspvram
+AUDIO_LIBS	= -lpspaudiolib -lpspaudio -lpspmp3 m33libs/libpspaudiocodec.a m33libs/libpspkubridge.a
+
+MISC_LIBS	= -lpsprtc -lpsppower -lpsphprm -ljpeg m33libs/libpng.a m33libs/libz.a
+NET_LIBS    = -lpspwlan -lpspnet_adhoc -lpspnet_adhocctl
+STD_LIBS	= -lstdc++ -lm -lc
+LIBS		= $(GU_LIBS) $(AUDIO_LIBS) $(MISC_LIBS) $(STD_LIBS) $(NET_LIBS)
+
+CFLAGS = -ffast-math -O3 -G0 -Wall -Did386="0" -DPSP $(MODE) $(HARDWARE_VIDEO_ONLY_FLAGS) -DSWIZZLE32 -DPSP_MP3_HWDECODE -DFULLBRIGHT -DHL_RENDER -Wno-strict-aliasing
+CXXFLAGS = -fno-rtti -Wcast-qual -Wno-write-strings -Wno-sign-compare -Wno-strict-aliasing
+ASFLAGS = $(CFLAGS) -c
+
+include $(PSPSDK)/lib/build.mak
+
+ifneq ($(VS_PATH),)
+CC       = vs-psp-gcc
+CXX      = vs-psp-g++
+endif
+
+install: EBOOT.PBP
+	mv EBOOT.PBP ../../../../psp/nzportable/
+	@echo DONE

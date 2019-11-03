@@ -9,6 +9,10 @@ PSP_EBOOT_ICON	= pics/icon.png
 PSP_EBOOT_SND0	= pics/snd0.at3
 PSP_EBOOT_PIC1	= pics/pic.png
 
+PSP_FW_VERSION=660
+
+PSP_LARGE_MEMORY = 1
+
 #MODE=-DKERNEL_MODE
 
 
@@ -110,7 +114,7 @@ NET_LIBS    = -lpspwlan -lpspnet_adhoc -lpspnet_adhocctl
 STD_LIBS	= -lstdc++ -lm -lc
 LIBS		= $(GU_LIBS) $(AUDIO_LIBS) $(MISC_LIBS) $(STD_LIBS) $(NET_LIBS)
 
-CFLAGS = -ffast-math -O3 -G0 -Wall -Did386="0" -DPSP $(MODE) $(HARDWARE_VIDEO_ONLY_FLAGS) -DSWIZZLE32 -DPSP_MP3_HWDECODE -DFULLBRIGHT -DHL_RENDER -Wno-strict-aliasing
+CFLAGS = -ffast-math -O3 -G0 -Wall -Did386="0" -DPSP $(MODE) $(HARDWARE_VIDEO_ONLY_FLAGS) -DSWIZZLE32 -DSLIM -DPSP_MP3_HWDECODE -DFULLBRIGHT -DHL_RENDER -Wno-strict-aliasing
 CXXFLAGS = -fno-rtti -Wcast-qual -Wno-write-strings -Wno-sign-compare -Wno-strict-aliasing
 ASFLAGS = $(CFLAGS) -c
 
@@ -122,5 +126,5 @@ CXX      = vs-psp-g++
 endif
 
 install: EBOOT.PBP
-	mv EBOOT.PBP ../../../../psp/nzportable/
+	mv EBOOT.PBP ../../../../psp/nzportable/EBOOT2000.PBP
 	@echo DONE

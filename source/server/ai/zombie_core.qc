@@ -1398,15 +1398,8 @@ void(entity where) spawn_a_zombieB =
 	
 	local float tex;
 	tex = random();
+
 	szombie.skin = 0;
-	if(tex < 0.25)
-		szombie.skin = 0;
-	else if(tex < 0.5)
-		szombie.skin = 1;
-	else if(tex < 0.75)
-		szombie.skin = 2;
-	else if(tex <= 1)
-		szombie.skin = 3;
 		
 	
 	//====================================

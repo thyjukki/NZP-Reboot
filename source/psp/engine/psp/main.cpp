@@ -54,7 +54,7 @@ extern	char **com_argv;
 void Sys_ReadCommandLineFile (char* netpath);
 
 #define printf	pspDebugScreenPrintf
-#define MIN_HEAP_MB	6
+#define MIN_HEAP_MB	14
 #define MAX_HEAP_MB (PSP_HEAP_SIZE_MB-1)
 
 namespace quake
@@ -69,16 +69,17 @@ namespace quake
 #ifdef PSP_SOFTWARE_VIDEO
 	#ifdef SLIM
 		// How big a heap to allocate.
-		static size_t  heapSize	= 17 * 1024 * 1024;
+		static size_t  heapSize	= 16 * 1024 * 1024;
 	#else
 		static size_t  heapSize	= 17 * 1024 * 1024;
 	#endif // KERNEL_MODE
 #else
 	#ifdef SLIM
 		// How big a heap to allocate.
-		static size_t  heapSize	= 23 * 1024 * 1024;
+		// darkduke/IPQ's recommended heap size
+		static size_t  heapSize	= 34 * 1024 * 1024;
 	#else
-		static size_t  heapSize	= 10 * 1024 * 1024;
+		static size_t  heapSize	= 13 * 1024 * 1024;
 	#endif // KERNEL_MODE
 #endif // PSP_SOFTWARE_VIDEO
 
@@ -88,7 +89,6 @@ namespace quake
 		// Is the PSP in suspend mode?
 		static volatile bool	suspended		= false;
 
-//#ifdef KERNEL_MODE
 		static int exitCallback(int arg1, int arg2, void* common)
 		{
 			// Signal the main thread to stop.
