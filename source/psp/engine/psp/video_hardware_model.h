@@ -27,6 +27,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "../modelgen.h"
 #include "../spritegn.h"
 
+#ifdef PSP_VFPU
+#include <pspmath.h>
+#endif
+
 
 /*
 
@@ -356,6 +360,7 @@ typedef struct {
 	maliasframedesc_t	frames[1];	// variable sized
 } aliashdr_t;
 
+// MOTO - ADQuake has MAXALIASVERTS set to 5120.. why?
 #define	MAXALIASVERTS	2048
 #define	MAXALIASFRAMES	256
 #define	MAXALIASTRIS	2048

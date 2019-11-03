@@ -21,6 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+/*#ifdef PSP_VFPU
+#include <pspmath.h>
+#endif*/
+
 /*
 
 entities never clip against themselves, or their owner

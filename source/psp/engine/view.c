@@ -22,6 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include <pspgu.h>
 
+#ifdef PSP_VFPU
+#include <pspmath.h>
+#endif
+
 sfx_t			*cl_sfx_step[4];
 
 /*
@@ -325,7 +329,11 @@ void V_DriftPitch (void)
 // don't count small mouse motion
 	if (cl.nodrift)
 	{
+		#ifdef PSP_VFPU
+		if ( vfpu_fabsf(cl.cmd.forwardmove) < cl_forwardspeed)
+		#else
 		if ( fabsf(cl.cmd.forwardmove) < cl_forwardspeed)
+		#endif
 			cl.driftmove = 0;
 		else
 			cl.driftmove += host_frametime;

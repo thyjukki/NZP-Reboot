@@ -28,6 +28,10 @@ extern "C"
 #include "../quakedef.h"
 }
 
+#ifdef PSP_VFPU
+#include <pspmath.h>
+#endif
+
 extern int LIGHTMAP_BYTES;
 
 #include "clipping.hpp"
@@ -113,7 +117,11 @@ void R_AddDynamicLights (msurface_t *surf)
 		rad = cl_dlights[lnum].radius;
 		dist = DotProduct (cl_dlights[lnum].origin, surf->plane->normal) -
 				surf->plane->dist;
+		#ifdef PSP_VFPU
+		rad -= vfpu_fabsf(dist);
+		#else
 		rad -= fabsf(dist);
+		#endif
 		minlight = cl_dlights[lnum].minlight;
 		if (rad < minlight)
 			continue;
@@ -1784,9 +1792,15 @@ static void BuildSurfaceDisplayList (msurface_t *fa)
 
 			// skip co-linear points
 			#define COLINEAR_EPSILON 0.001
+			#if PSP_VFPU
+			if ((vfpu_fabsf( v1[0] - v2[0] ) <= COLINEAR_EPSILON) &&
+				(vfpu_fabsf( v1[1] - v2[1] ) <= COLINEAR_EPSILON) &&
+				(vfpu_fabsf( v1[2] - v2[2] ) <= COLINEAR_EPSILON))
+			#else
 			if ((fabsf( v1[0] - v2[0] ) <= COLINEAR_EPSILON) &&
 				(fabsf( v1[1] - v2[1] ) <= COLINEAR_EPSILON) &&
 				(fabsf( v1[2] - v2[2] ) <= COLINEAR_EPSILON))
+			#endif
 			{
 				for (j = i + 1; j < lnumverts; ++j)
 				{

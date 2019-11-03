@@ -22,6 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <math.h>
 #include "quakedef.h"
 
+#ifdef PSP_VFPU
+#include <pspmath.h>
+#endif
+
 void Sys_Error (char *error, ...);
 
 vec3_t vec3_origin = {0,0,0};
@@ -33,6 +37,59 @@ vec3_t _mathlib_temp_vec1, _mathlib_temp_vec2, _mathlib_temp_vec3;
 
 
 /*-----------------------------------------------------------------*/
+
+float rsqrt( float number )
+{
+#ifdef PSP_VFPU
+	float d;
+    __asm__ (  //from official pspsdk by sony
+		".set			push\n"					// save assember option
+		".set			noreorder\n"			// suppress reordering
+		"lv.s			s000, %1\n"				// s000 = s
+		"vrsq.s			s000, s000\n"			// s000 = 1 / sqrt(s000)
+		"sv.s			s000, %0\n"				// d    = s000
+		".set			pop\n"					// restore assember option
+		: "=m"(d)
+		: "m"(number)
+	);
+	return d;
+#else
+	int	i;
+	float	x, y;
+
+	if( number == 0.0f )
+		return 0.0f;
+
+	x = number * 0.5f;
+	i = *(int *)&number;	// evil floating point bit level hacking
+	i = 0x5f3759df - (i >> 1);	// what the fuck?
+	y = *(float *)&i;
+	y = y * (1.5f - (x * y * y));	// first iteration
+
+	return y;
+#endif
+}
+
+/*
+=================
+SinCos
+=================
+*/
+void SinCos( float radians, float *sine, float *cosine )
+{
+	#ifdef PSP_VFPU
+	vfpu_sincos(radians,sine,cosine);
+	#else
+	__asm__ volatile (
+		"mtv      %2, S002\n"
+		"vcst.s   S003, VFPU_2_PI\n"
+		"vmul.s   S002, S002, S003\n"
+		"vrot.p   C000, S002, [s, c]\n"
+		"mfv      %0, S000\n"
+		"mfv      %1, S001\n"
+	: "=r"(*sine), "=r"(*cosine): "r"(radians));
+	#endif
+}
 
 void ProjectPointOnPlane( vec3_t dst, const vec3_t p, const vec3_t normal )
 {
@@ -68,10 +125,18 @@ void PerpendicularVector( vec3_t dst, const vec3_t src )
 	*/
 	for ( pos = 0, i = 0; i < 3; i++ )
 	{
+		#ifdef PSP_VFPU
+		if ( vfpu_fabsf( src[i] ) < minelem )
+		#else
 		if ( fabsf( src[i] ) < minelem )
+		#endif
 		{
 			pos = i;
+			#ifdef PSP_VFPU	
+			minelem = vfpu_fabsf( src[i] );
+			#else
 			minelem = fabsf( src[i] );
+			#endif
 		}
 	}
 	tempvec[0] = tempvec[1] = tempvec[2] = 0.0F;
@@ -130,10 +195,17 @@ void RotatePointAroundVector( vec3_t dst, const vec3_t dir, const vec3_t point, 
 	memset( zrot, 0, sizeof( zrot ) );
 	zrot[0][0] = zrot[1][1] = zrot[2][2] = 1.0F;
 
+	#ifdef PSP_VFPU
+	zrot[0][0] = vfpu_cosf( DEG2RAD( degrees ) );
+	zrot[0][1] = vfpu_sinf( DEG2RAD( degrees ) );
+	zrot[1][0] = -vfpu_sinf( DEG2RAD( degrees ) );
+	zrot[1][1] = vfpu_cosf( DEG2RAD( degrees ) );
+	#else
 	zrot[0][0] = cosf( DEG2RAD( degrees ) );
 	zrot[0][1] = sinf( DEG2RAD( degrees ) );
 	zrot[1][0] = -sinf( DEG2RAD( degrees ) );
 	zrot[1][1] = cosf( DEG2RAD( degrees ) );
+	#endif
 
 	R_ConcatRotations( m, zrot, tmpmat );
 	R_ConcatRotations( tmpmat, im, rot );
@@ -291,12 +363,20 @@ void vectoangles (vec3_t vec, vec3_t ang)
 	}
 	else
 	{
+		#ifdef PSP_VFPU
+		yaw = vec[0] ? (vfpu_atan2f(vec[1], vec[0]) * 180 / M_PI) : (vec[1] > 0) ? 90 : 270;
+		#else
 		yaw = vec[0] ? (atan2(vec[1], vec[0]) * 180 / M_PI) : (vec[1] > 0) ? 90 : 270;
+		#endif
 		if (yaw < 0)
 			yaw += 360;
-
+		#ifdef PSP_VFPU
+		forward = vfpu_sqrtf (vec[0] * vec[0] + vec[1] * vec[1]);
+		pitch = vfpu_atan2f (vec[2], forward) * 180 / M_PI;
+		#else
 		forward = sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
 		pitch = atan2 (vec[2], forward) * 180 / M_PI;
+		#endif
 		if (pitch < 0)
 			pitch += 360;
 	}
@@ -310,16 +390,31 @@ void AngleVectors (vec3_t angles, vec3_t forward, vec3_t right, vec3_t up)
 {
 	float		angle;
 	float		sr, sp, sy, cr, cp, cy;
-
+	
 	angle = angles[YAW] * (M_PI*2 / 360);
+	#ifdef PSP_VFPU
+	sy = vfpu_sinf(angle);
+	cy = vfpu_cosf(angle);
+	#else
 	sy = sinf(angle);
 	cy = cosf(angle);
+	#endif
 	angle = angles[PITCH] * (M_PI*2 / 360);
+	#ifdef PSP_VFPU
+	sp = vfpu_sinf(angle);
+	cp = vfpu_cosf(angle);
+	#else
 	sp = sinf(angle);
 	cp = cosf(angle);
+	#endif
 	angle = angles[ROLL] * (M_PI*2 / 360);
+	#ifdef PSP_VFPU
+	sr = vfpu_sinf(angle);
+	cr = vfpu_cosf(angle);
+	#else
 	sr = sinf(angle);
 	cr = cosf(angle);
+	#endif
 
 	forward[0] = cp*cy;
 	forward[1] = cp*sy;
@@ -334,10 +429,11 @@ void AngleVectors (vec3_t angles, vec3_t forward, vec3_t right, vec3_t up)
 
 float VectorLength (vec3_t v)
 {
-	float	length;
-
-	length = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
-	return sqrt(length);
+	#ifdef PSP_VFPU
+	return vfpu_sqrtf(DotProduct(v, v));
+	#else
+	return sqrtf(DotProduct(v, v));
+	#endif
 }
 
 int VectorCompare (vec3_t v1, vec3_t v2)
@@ -394,19 +490,31 @@ void CrossProduct (vec3_t v1, vec3_t v2, vec3_t cross)
 
 vec_t Length(vec3_t v)
 {
+	#ifdef PSP_VFPU
+	return vfpu_sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+	#else
 	return sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+	#endif
 }
 
 float VecLength2(vec3_t v1, vec3_t v2)
 {
 	vec3_t k;
 	VectorSubtract(v1, v2, k);
+	#ifdef PSP_VFPU
+	return vfpu_sqrtf(k[0]*k[0] + k[1]*k[1] + k[2]*k[2]);
+	#else
 	return sqrt(k[0]*k[0] + k[1]*k[1] + k[2]*k[2]);
+	#endif
 }
 
 float VectorNormalize (vec3_t v)
 {
+	#ifdef PSP_VFPU
+	float length = vfpu_sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+	#else
 	float length = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+	#endif
 	if (length)
 	{
 		const float ilength = 1.0f / length;
@@ -414,7 +522,7 @@ float VectorNormalize (vec3_t v)
 		v[1] *= ilength;
 		v[2] *= ilength;
 	}
-
+		
 	return length;
 
 }

@@ -18,6 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 // mathlib.h
+#ifdef PSP_VFPU
+#include <pspmath.h>
+#endif
 
 typedef float vec_t;
 typedef vec_t vec2_t[2];

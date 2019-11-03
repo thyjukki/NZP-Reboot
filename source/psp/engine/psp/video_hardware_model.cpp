@@ -1629,7 +1629,11 @@ float RadiusFromBounds (vec3_t mins, vec3_t maxs)
 
 	for (i=0 ; i<3 ; i++)
 	{
+		#ifdef PSP_VFPU
+		corner[i] = vfpu_fabsf(mins[i]) > vfpu_fabsf(maxs[i]) ? vfpu_fabsf(mins[i]) : vfpu_fabsf(maxs[i]);
+		#else
 		corner[i] = fabsf(mins[i]) > fabsf(maxs[i]) ? fabsf(mins[i]) : fabsf(maxs[i]);
+		#endif
 	}
 
 	return Length (corner);
