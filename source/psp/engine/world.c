@@ -142,7 +142,7 @@ hull_t *SV_HullForEntity (edict_t *ent, vec3_t mins, vec3_t maxs, vec3_t offset)
 			Sys_Error ("SOLID_BSP without MOVETYPE_PUSH");
 
 		model = sv.models[ (int)ent->v.modelindex ];
-
+		
 		if (!model || model->type != mod_brush)
 			Sys_Error ("MOVETYPE_PUSH with a non bsp model");
 

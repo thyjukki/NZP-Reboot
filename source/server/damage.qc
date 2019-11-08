@@ -440,35 +440,40 @@ void(entity inflictor, entity attacker, float damage2, float mindamage, float ra
 	{
 		if(ent.classname == "player")
 		{
-      if (ent.perks & P_FLOP)
-        final_damage = 0;
-      else
-      {
-        final_damage = radius - vlen(inflictor.origin - ent.origin);
-        if(final_damage < 0)
-          continue;
-        
-        if (final_damage > radius * 0.6)
-          final_damage = 100;
-          
-          if (final_damage < other.health)
-          {
-            addmoney(self, 10, 0);
-          }
-          else if (final_damage > other.health)
-          {
-              addmoney(self, 60, 0);
-              }
-        else
-        {
-          final_damage /= radius;
-          final_damage *= 60;
-        }
-        DamageHandler (attacker, attacker, final_damage, S_EXPLOSIVE);
-    }
+			if (ent.perks & P_FLOP)
+				final_damage = 0;
+			else
+			{
+				final_damage = radius - vlen(inflictor.origin - ent.origin);
+
+				if(final_damage < 0)
+					continue;
+			
+				if (final_damage > radius * 0.6)
+					final_damage = 100;
+			
+				if (final_damage < other.health)
+				{
+					addmoney(self, 10, 0);
+				}
+				else if (final_damage > other.health)
+				{
+					addmoney(self, 60, 0);
+				}
+				else
+				{
+					final_damage /= radius;
+					final_damage *= 60;
+				}
+				DamageHandler (attacker, attacker, final_damage, S_EXPLOSIVE);
+			}
 		}
 		else if (ent.takedamage && ent.classname != "ai_zombie_head" && ent.classname != "ai_zombie_larm" && ent.classname != "ai_zombie_rarm")
 		{			
+			// verify we aren't doin anything with a bmodel
+			if (ent.solid == SOLID_BSP || ent.movetype == MOVETYPE_PUSH)
+				return;
+
 			r = rounds;
 			multi = 1.07;
 			while(r > 0)
@@ -478,9 +483,9 @@ void(entity inflictor, entity attacker, float damage2, float mindamage, float ra
 			}
 			
 			if (mindamage == 75)
-        final_damage = (200 * multi) + 185;
-      else
-        final_damage = (mindamage + damage2)/2;
+				final_damage = (200 * multi) + 185;
+				else
+				final_damage = (mindamage + damage2)/2;
 			
 			if (final_damage > 0)
 			{
