@@ -336,6 +336,7 @@
 		25: "Grenade"
 		26: "Betty"
 	]
+	model(studio) : "World Model" : "progs/GModels/"
 ]
 @PointClass  base(Appearflags, Targetname) color(114 224 172) studio("models/props/barrel_m.mdl") = explosive_barrel : "Barrel that can explode when shot at" 
 [
@@ -380,6 +381,7 @@
 		27: "Betty"
 	]
 	cost(integer) : "Cost" : 0
+	cost2(integer) : "Ammo Cost" : 0
 	target(target_destination) : "Target" 
 ]
 
