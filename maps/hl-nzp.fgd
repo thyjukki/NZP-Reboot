@@ -179,76 +179,59 @@
 @PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(107 29 20) studio("models/machines/juggernog.mdl") = 
 	perk_juggernog : "Juggernog" 
 [
-	spawnflags(Flags) =
-	[
-		1 : "Random location" : 0
-		2 : "Switch location" : 0
-	]
+
 ]
 @PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(131 63 148) studio("models/machines/flopper.mdl") = 
 	perk_flopper : "Phd-Flopper" 
 [
-	spawnflags(Flags) =
-	[
-		1 : "Random location" : 0
-		2 : "Switch location" : 0
-	]
+
 ]
 
 @PointClass size(-16 -16 -32, 16 16 40) base(Item, Appearflags) color(214 203 1) studio("models/machines/double_tap.mdl") = 
 	perk_double : "Double Tap Root Beer"  
 [
-	spawnflags(Flags) =
-	[
-		1 : "Random location" : 0
-		2 : "Switch location" : 0
-	]
+
 ]
 @PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/speed_cola.mdl") = 
 	perk_speed : "Speed Cola" 
 [
-	spawnflags(Flags) =
-	[
-		1 : "Random location" : 0
-		2 : "Switch location" : 0
-	]
+
 ]
 @PointClass size(-16 -16 -32, 16 16 32) base(Item, Appearflags) color(129 172 254) studio("models/machines/quick_revive.mdl") = 
 	perk_revive : "quick revive" 
 [
-	spawnflags(Flags) =
-	[
-		1 : "Random location" : 0
-		2 : "Switch location" : 0
-	]
+
 ]
 @PointClass size(-24 -24 -32, 24 24 48) base(Item, Appearflags) color(254 198 65) studio("models/machines/staminup.mdl") = 
 	perk_staminup : "Stamin Up" 
 [
-	spawnflags(Flags) =
-	[
-		1 : "Random location" : 0
-		2 : "Switch location" : 0
-	]
+
 ]
 
 @PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 35 10) studio("models/machines/deadshot.mdl") = 
 	perk_deadshot : "Deadshot Daiquiri" 
 [
-	spawnflags(Flags) =
-	[
-		1 : "Random location" : 0
-		2 : "Switch location" : 0
-	]
+
 ]
 
 @PointClass size(-32 -32 -32, 32 32 56) base(Item, Appearflags) color(125 196 187) studio("models/machines/pap.mdl") = 
 	perk_pap : "Pack-A-Punch" 
 [	
+
+]
+
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/speed_cola.mdl") = 
+	perk_random : "Random Perk-a-Cola" 
+[
 	spawnflags(Flags) =
 	[
-		1 : "random round place" : 0
-		2 : "Random use place" : 0
+		1 : "Enable Quick Revive" : 1
+		2 : "Enable Jugger-Nog" : 1
+		4 : "Enable Speed Cola" : 1
+		8 : "Enable Double Tap" : 1
+		16: "Enable PhD Flopper" : 1
+		32: "Enable Stamin-Up" : 1
+		64: "Enable Deadshot Daiquiri" : 1
 	]
 ]
 //

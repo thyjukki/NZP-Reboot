@@ -2,6 +2,7 @@
 //	Player.qc - Various stuff done for the player, including per-frame functions like PlayerPreThink and PlayerPostThink, also client specific stuff like PutClientInServer etc.
 //
 void(vector where, float type) Spawn_Powerup;
+void() perk_random;
 
 // player animations
 
@@ -500,8 +501,6 @@ void() PlayerSpawn =
 
 	if (!self.points)
 		addmoney(self, G_STARTPOINTS, 0);
-
-	local entity test = find(world, classname, "mystery_box_tp_spot");
 
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
 

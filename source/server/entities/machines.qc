@@ -873,6 +873,8 @@ void() findboxspot =
 	self.owner.angles_y -= 90;
 	
 	newspot.angles_y += 90;
+
+	#ifndef PC
 	if (!(self.owner.spawnflags & 2))
 	{
 		local entity g;
@@ -882,6 +884,7 @@ void() findboxspot =
 		setorigin(g,newspot.origin);
 		g.angles = newspot.angles;
 	}
+	#endif
 	
 	remove(self);      // remove teddy
 	
@@ -928,9 +931,10 @@ void() Float_Change =
 		tpspot = find(world, classname, "mystery_box_tp_spot");
 		if (tpspot && self.owner.spins >= 3) {
 				teddygen = /*random()*/1;
-			}
-			else
-				teddygen = 0;
+		} else {
+			teddygen = 0;
+			//bprint(PRINT_HIGH, "no spots\n");
+		}
 				
 		self.velocity = '0 0 0';
 		
@@ -1410,6 +1414,7 @@ void() mystery_box =
 	setmodel (self, "models/machines/mystery.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	
+	#ifndef PC
 	if (!(self.spawnflags & 2))
 	{
 		//self.effects = EF_BLUELIGHT;
@@ -1420,6 +1425,7 @@ void() mystery_box =
 		setorigin(g,self.origin);
 		g.angles = self.angles;
 	}
+	#endif
 
 	self.touch = mystery_touch;
 	boxOrigin = self.origin;
@@ -1637,6 +1643,96 @@ void() perk_pap =
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_pap";
 	self.touch = touch_pap;
+}
+
+// Sorta ugly function but whatever
+void() perk_random =
+{
+	float i;
+	float foundperk;
+	
+	// remove perks from our selection if they already exist
+	// ugly ugly
+	if ((find(world,classname,"perk_revive") && (self.spawnflags & 1))) {
+		self.spawnflags -= self.spawnflags & 1;
+	}
+	if ((find(world,classname,"perk_juggernog") && (self.spawnflags & 2))) {
+		self.spawnflags -= self.spawnflags & 2;
+	}
+	if ((find(world,classname,"perk_speed") && (self.spawnflags & 4))) {
+		self.spawnflags -= self.spawnflags & 4;
+	}
+	if ((find(world,classname,"perk_double") && (self.spawnflags & 8))) {
+		self.spawnflags -= self.spawnflags & 8;
+	}
+	if ((find(world,classname,"perk_flopper") && (self.spawnflags & 16))) {
+		self.spawnflags -= self.spawnflags & 16;
+	}
+	if ((find(world,classname,"perk_staminup") && (self.spawnflags & 32))) {
+		self.spawnflags -= self.spawnflags & 32;
+	}
+	if ((find(world,classname,"perk_deadshot") && (self.spawnflags & 64))) {
+		self.spawnflags -= self.spawnflags & 64;
+	}
+
+	// obj error because there are no possible perks for us to obtain
+	if (self.spawnflags == 0) {
+		objerror("No available Perks to choose from!");
+	}
+
+	foundperk = false;
+	while (foundperk == false) {
+		i = random();
+		// Quick Revive
+		if (i < (1/7) && (self.spawnflags & 1)) {
+			if !(find(world, classname, "perk_revive")) {
+				perk_revive();
+				foundperk = true;
+			}
+		}
+		// Jugger-Nog 
+		else if (i < (2/7) && (self.spawnflags & 2)) {
+			if !(find(world, classname, "perk_juggernog")) {
+				perk_juggernog();
+				foundperk = true;
+			}
+		}
+		// Speed Cola
+		else if (i < (3/7) && (self.spawnflags & 4)) {
+			if !(find(world, classname, "perk_speed")) {
+				perk_speed();
+				foundperk = true;
+			}
+		}
+		// Double Tap
+		else if (i < (4/7) && (self.spawnflags & 8)) {
+			if !(find(world, classname, "perk_double")) {
+				perk_double();
+				foundperk = true;
+			}
+		}
+		// PhD Flopper
+		else if (i < (5/7) && (self.spawnflags & 16)) {
+			if !(find(world, classname, "perk_flopper")) {
+				perk_flopper();
+				foundperk = true;
+			}
+		}
+		// Stamin-Up
+		else if (i < (6/7) && (self.spawnflags & 32)) {
+			if !(find(world, classname, "perk_staminup")) {
+				perk_staminup();
+				foundperk = true;
+			}
+		}
+		// Deadshot Daiquiri
+		else if (i < 1 && (self.spawnflags & 64)) {
+			if (!find(world, classname, "perk_deadshot")) {
+				perk_deadshot();
+				foundperk = true;
+			}
+		}
+	}
 }
 
 void() item_revive =

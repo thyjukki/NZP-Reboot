@@ -155,12 +155,8 @@ void() use_wall_weapon =
 }
 
 void() weapon_wall =
-{
-	string temps;
-	
+{	
 	precache_model ("models/misc/chalk.mdl");
-	//temps = GetWeaponModel(self.sequence + 1, 1);
-	//precache_model (temps);
 
 	setmodel (self, "models/misc/chalk.mdl");
 	self.skin = 0;
