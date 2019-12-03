@@ -901,7 +901,7 @@ void() findboxspot =
 
 void() remove_box =
 {
-	setmodel(self.owner.goaldummy, "");
+	//setmodel(self.owner.goaldummy, "");
 	self.owner.frame = 0;	// set box frame
 	makevectors(self.angles);
 	self.velocity = v_up*100;
@@ -929,8 +929,8 @@ void() Float_Change =
 	if (self.wait <= time)
 	{
 		tpspot = find(world, classname, "mystery_box_tp_spot");
-		if (tpspot && self.owner.spins >= 3) {
-				teddygen = /*random()*/1;
+		if (tpspot && self.owner.spins > 3) {
+				teddygen = random();
 		} else {
 			teddygen = 0;
 			//bprint(PRINT_HIGH, "no spots\n");
@@ -938,7 +938,7 @@ void() Float_Change =
 				
 		self.velocity = '0 0 0';
 		
-		if (!teddygen || teddygen < 0.9) {		//teddy gen threshold, high means less chance
+		if (!teddygen || teddygen < 0.7) {		//teddy gen threshold, high means less chance
 			self.owner.boxstatus = 2;
 			self.weapon = r;
 			self.nextthink = time + 5;

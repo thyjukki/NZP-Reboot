@@ -1,6 +1,6 @@
 general {
 "maxprogs" "64"
-"numentities" "497"
+"numentities" "470"
 }
 progs 0 {
 "filename" "qwprogs.dat"
@@ -14,49 +14,52 @@ stacktrace {
 		"startframe"	"0"
 		"endframe"	"0"
 		"modelname"	""
-		ofs11762 754596 // 0.000000
+		ofs11770 739296 // 0.000000
 	}
 	"0:SV_RunClientCommand" //server/player.qc
 	{
 	}
 }
 globals 0 {
-"self" "242"
+"self" "234"
 "other" "1"
-"time" "16.993000"
+"time" "7.486000"
 "frametime" "0.013000"
 "mapname" "kino"
-"v_forward" "-0.998625 0.0524189 -0"
+"v_forward" "-0.978148 0.207912 0"
 "v_up" "0 0 1"
-"v_right" "0.0524189 0.998625 -0"
+"v_right" "0.207912 0.978148 0"
 "msg_entity" "1"
+"input_movevalues" "800 0 0"
 "physics_mode" "2"
-"framecount" "1269"
+"framecount" "464"
 "mappath" "maps/kino"
 "pl1" "1"
 "local_client" "1"
-"lastzombie" "369"
-"lastspawn" "255"
-"sounds_playing" "3"
 "gotdog" "1"
 "dogRound" "6"
 "dogWave" "1"
 "z_health" "150"
-"boxLocations[0]" "242"
-"boxCount" "1"
+"boxLocations[0]" "37"
+"boxLocations[1]" "40"
+"boxLocations[2]" "57"
+"boxLocations[3]" "74"
+"boxLocations[4]" "94"
+"boxLocations[5]" "125"
+"boxLocations[6]" "136"
+"boxLocations[7]" "150"
+"boxLocations[8]" "234"
+"boxCount" "9"
 "boxOrigin" "-208 -408 22"
-"total_windows_down" "2"
 "powerup_activate" "2000"
 "roundinit" "1"
 "roundtype" "1"
-"Current_Zombies" "6"
 "Total_Zombies" "6"
 "Remaining_Zombies" "6"
 "spawn_time" "9.709000"
 "delay_at_round" "2"
-"spawn_delay" "13.003000"
 "maxreward" "50"
-"rounds" "1"
+"rounds" "9"
 "rounds_change" "2"
 "world_fog" "0.00035164834 0.078431375 0.090196081 0.078431375"
 "G_STARTPOINTS" "500"
@@ -65,12 +68,11 @@ globals 0 {
 "G_STARTWEAPON[1]" "8"
 "G_STARTWEAPON[2]" "32"
 "G_WORLDTEXT" "1"
-"last_act_trigger" "266"
-"sound_perk_delay" "13.021000"
+"last_act_trigger" "258"
 }
 entity 0{
 "modelindex" "1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "worldspawn"
@@ -92,72 +94,65 @@ entity 0{
 }
 entity 1{
 "modelindex" "65"
-"absmin" "-200.861 -384.91 7.03125"
-"absmax" "-166.861 -350.91 81.0312"
+"absmin" "-175.581 -393.422 7.03125"
+"absmax" "-141.581 -359.422 81.0312"
 "movetype" "3"
 "solid" "3"
-"origin" "-183.861 -367.91 40.0312"
-"oldorigin" "-182.721 -366.938 40.0312"
-"velocity" "-81.4709 -69.4306 0"
-"angles" "-8.90991 -127.354 0.971342"
+"origin" "-158.581 -376.422 40.0312"
+"oldorigin" "-156.623 -374.948 40.0312"
+"velocity" "-139.858 -105.336 0"
+"angles" "-9.17175 -144.833 -0.240396"
 "classname" "player"
 "model" "models/player.mdl"
-"frame" "4"
+"frame" "3"
 "mins" "-16 -16 -32"
 "maxs" "16 16 40"
 "size" "32 32 72"
-"think" "0:playwalk5"
-"nextthink" "17.074003"
+"think" "0:playwalk4"
+"nextthink" "7.527000"
 "health" "100"
 "weapon" "1"
 "weaponmodel" "models/weapons/m1911/v_colt.mdl"
 "currentammo" "32"
 "view_ofs" "0 0 32"
-"v_angle" "26.7297 -127.354 0"
+"v_angle" "27.5153 -144.833 0"
 "netname" "Player"
 "flags" "4608"
 "colormap" "1"
 "max_health" "100"
 "watertype" "-1"
-"punchangle" "0.147217 0 0"
+"punchangle" "-0.171581 0 0"
 "gravity" "1"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
 "maxspeed" "175"
+"movement" "800 0 0"
 "button7" "1"
 "dimension_see" "255"
 "dimension_seen" "255"
 "Version" "1"
 "viewzoom" "1"
 "uniquespawnid" "1"
-"oldvelocity" "-86.304 -73.5494 0"
+"oldvelocity" "-139.668 -105.606 0"
 "new_ofs" "0 0 32"
-"lastsound_time" "16.574001"
+"lastsound_time" "7.127000"
 "playernum" "1"
 "stance" "2"
-"points" "67970"
-"cost" "175"
+"points" "19550"
+"cost" "69"
 "stamina" "3"
-"fire_delay" "10.617001"
-"fire_delay2" "10.617001"
-"reload_delay" "10.617001"
-"reload_delay2" "10.617001"
 "currentmag" "8"
-"weapon2model" ""
-"knife_delay" "10.617001"
 "grenades" "1"
 "secondary_grenades" "-1"
 "primary_grenades" "2"
-"anim_weapon_time" "16.993000"
-"anim_weapon2_time" "16.993000"
+"anim_weapon_time" "7.486000"
+"anim_weapon2_time" "7.486000"
 "animend" "0:SUB_Null"
 "animend2" "0:SUB_Null"
 "teslacount" "20"
-"perks" "8"
-"perk_delay" "10.617001"
-"revivesoda" "1"
 "oldz" "40.031250"
+"sprint_delay" "7.466000"
 }
 entity 2{
 "dimension_solid" "255"
@@ -223,7 +218,7 @@ entity 8{
 "uniquespawnid" "1"
 }
 entity 9{
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-200 -336 64"
 "classname" "light"
 "dimension_solid" "255"
@@ -239,7 +234,7 @@ entity 10{
 "modelindex" "100"
 "absmin" "-29 -353 -129"
 "absmax" "13 -311 -47"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-8 -332 -64"
 "angles" "0 180 0"
@@ -263,10 +258,9 @@ entity 10{
 "box3" "22 -362 -96"
 "idlebox" "52 -332 -96"
 "hop_spot" "-48 -332 -94"
-"box1owner" "359"
 }
 entity 11{
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-496 -272 -64"
 "classname" "light"
 "dimension_solid" "255"
@@ -279,7 +273,7 @@ entity 11{
 "wait" "1"
 }
 entity 12{
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-208 680 -162"
 "classname" "light"
 "dimension_solid" "255"
@@ -292,7 +286,7 @@ entity 12{
 "wait" "1"
 }
 entity 13{
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-192 1472 -122"
 "classname" "light"
 "dimension_solid" "255"
@@ -305,7 +299,7 @@ entity 13{
 "wait" "1"
 }
 entity 14{
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-192 1792 -94"
 "classname" "light"
 "dimension_solid" "255"
@@ -318,7 +312,7 @@ entity 14{
 "wait" "1"
 }
 entity 15{
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "434 -336 128"
 "classname" "light"
 "dimension_solid" "255"
@@ -334,7 +328,7 @@ entity 16{
 "modelindex" "101"
 "absmin" "-529 -185 -193"
 "absmax" "-463 -119 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-496 -152 -168"
 "angles" "0 90 0"
@@ -357,7 +351,7 @@ entity 16{
 entity 17{
 "absmin" "303 -273 -96.9688"
 "absmax" "305 -271 -94.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "304 -272 -95.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -378,7 +372,7 @@ entity 18{
 "modelindex" "103"
 "absmin" "-649 1367 -217"
 "absmax" "-583 1433 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-616 1400 -192"
 "angles" "0 90 0"
@@ -399,7 +393,7 @@ entity 18{
 entity 19{
 "absmin" "543 -217 -89"
 "absmax" "545 -215 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "544 -216 -88"
 "angles" "0 0 0"
 "classname" "spawn_zombie"
@@ -416,7 +410,7 @@ entity 19{
 entity 20{
 "absmin" "-713 -497 95"
 "absmax" "-711 -495 97"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-712 -496 96"
 "angles" "0 0 0"
 "classname" "spawn_zombie"
@@ -431,7 +425,7 @@ entity 20{
 "uniquespawnid" "1"
 }
 entity 21{
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1024 -224 72"
 "classname" "light"
 "dimension_solid" "255"
@@ -447,7 +441,7 @@ entity 22{
 "modelindex" "104"
 "absmin" "-233 -161 63"
 "absmax" "-167 -95 153"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-200 -128 88"
 "angles" "0 89 0"
@@ -469,7 +463,7 @@ entity 22{
 entity 23{
 "absmin" "1151 239 -169"
 "absmax" "1153 241 -167"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1152 240 -168"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -487,7 +481,7 @@ entity 23{
 entity 24{
 "absmin" "1039 287 -176.969"
 "absmax" "1041 289 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1040 288 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -508,7 +502,7 @@ entity 24{
 entity 25{
 "absmin" "-1041 927 -224.969"
 "absmax" "-1039 929 -222.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1040 928 -223.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -528,7 +522,7 @@ entity 25{
 entity 26{
 "absmin" "-993 831 -217"
 "absmax" "-991 833 -215"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-992 832 -216"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -547,7 +541,7 @@ entity 27{
 "modelindex" "100"
 "absmin" "-901 1023 -257"
 "absmax" "-859 1065 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-880 1044 -192"
 "classname" "window"
@@ -574,7 +568,7 @@ entity 27{
 entity 28{
 "absmin" "-362 46 54"
 "absmax" "-350 82 114"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -599,7 +593,7 @@ entity 29{
 "modelindex" "100"
 "absmin" "459 1023 -257"
 "absmax" "501 1065 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "480 1044 -192"
 "angles" "0 180 0"
@@ -627,7 +621,7 @@ entity 29{
 entity 30{
 "absmin" "608 -434 46"
 "absmax" "613 -318 155"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "zapper_field"
 "model" ""
@@ -647,7 +641,7 @@ entity 31{
 "modelindex" "107"
 "absmin" "15 -211 39"
 "absmax" "81 -145 129"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "48 -178 64"
 "angles" "0 180 0"
 "classname" "place_model"
@@ -666,7 +660,7 @@ entity 31{
 entity 32{
 "absmin" "30 -186 6"
 "absmax" "66 -174 66"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -690,7 +684,7 @@ entity 32{
 entity 33{
 "absmin" "-522 -794 -130"
 "absmax" "-510 -758 -70"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -715,7 +709,7 @@ entity 34{
 "modelindex" "112"
 "absmin" "447 399 -41"
 "absmax" "513 465 49"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "480 432 -16"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -734,7 +728,7 @@ entity 34{
 entity 35{
 "absmin" "478 414 -74"
 "absmax" "490 450 -14"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -758,7 +752,7 @@ entity 35{
 entity 36{
 "absmin" "-278 -11 -172"
 "absmax" "-118 -6 -50"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "zapper_field"
 "model" ""
@@ -775,25 +769,9 @@ entity 36{
 "uniquespawnid" "2"
 }
 entity 37{
-"modelindex" "115"
-"absmin" "-189 1911 -193"
-"absmax" "-187 1913 -191"
-"lastruntime" "16.980001"
-"origin" "-188 1912 -192"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 38{
 "absmin" "-378 -26 -202"
 "absmax" "-366 10 -134"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -808,13 +786,13 @@ entity 38{
 "drawflags" "96"
 "dimension_see" "255"
 "dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"Version" "2"
+"uniquespawnid" "2"
 "message" "Hold use to buy Bowie knife [Cost:3000]"
 "cost" "3000"
 }
-entity 39{
-"lastruntime" "16.980001"
+entity 38{
+"lastruntime" "7.473001"
 "origin" "-208 376 -162"
 "classname" "light"
 "dimension_solid" "255"
@@ -826,8 +804,8 @@ entity 39{
 "uniquespawnid" "2"
 "wait" "1"
 }
-entity 40{
-"lastruntime" "16.980001"
+entity 39{
+"lastruntime" "7.473001"
 "origin" "-200 1032 -162"
 "classname" "light"
 "dimension_solid" "255"
@@ -839,29 +817,12 @@ entity 40{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 41{
-"modelindex" "115"
-"absmin" "575 -249 71"
-"absmax" "577 -247 73"
-"lastruntime" "16.980001"
-"origin" "576 -248 72"
-"angles" "0 270 0"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "2"
-"uniquespawnid" "2"
-}
-entity 42{
+entity 40{
 "modelindex" "11"
 "absmin" "-338 1566 -10"
 "absmax" "50 1574 186"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp"
@@ -873,17 +834,17 @@ entity 42{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "42"
+"enemy" "40"
 "spawnflags" "224"
-"owner" "42"
+"owner" "40"
 "movedir" "2.65358e-017 0 -1"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
 "dimension_see" "255"
 "dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"Version" "3"
+"uniquespawnid" "3"
 "pos2" "2.89241e-015 0 -109"
 "state" "1"
 "wait" "4"
@@ -891,13 +852,13 @@ entity 42{
 "speed" "15"
 "oldmodel" "*10"
 "dmg" "2"
-"trigger_field" "347"
+"trigger_field" "339"
 }
-entity 43{
+entity 41{
 "modelindex" "100"
 "absmin" "127 1915 -209"
 "absmax" "169 1957 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "148 1936 -144"
 "angles" "0 270 0"
@@ -922,10 +883,10 @@ entity 43{
 "idlebox" "148 1996 -176"
 "hop_spot" "148 1896 -174"
 }
-entity 44{
+entity 42{
 "absmin" "-1 2143 -176.969"
 "absmax" "1 2145 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "0 2144 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -942,10 +903,10 @@ entity 44{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 45{
+entity 43{
 "absmin" "191 2159 -171"
 "absmax" "193 2161 -169"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "192 2160 -170"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -960,10 +921,10 @@ entity 45{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 46{
+entity 44{
 "absmin" "-921 247 -89"
 "absmax" "-919 249 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-920 248 -88"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -978,10 +939,10 @@ entity 46{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 47{
+entity 45{
 "absmin" "-1057 247 -96.9688"
 "absmax" "-1055 249 -94.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1056 248 -95.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -998,10 +959,10 @@ entity 47{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 48{
+entity 46{
 "absmin" "-713 -417 87.0312"
 "absmax" "-711 -415 89.0312"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-712 -416 88.0312"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -1018,8 +979,8 @@ entity 48{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 49{
-"lastruntime" "16.980001"
+entity 47{
+"lastruntime" "7.473001"
 "origin" "-832 -275 116"
 "classname" "light"
 "dimension_solid" "255"
@@ -1031,10 +992,10 @@ entity 49{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 50{
+entity 48{
 "absmin" "-481 -289 39"
 "absmax" "-479 -287 41"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-480 -288 40"
 "classname" "spawn_dog"
 "targetname" "r1"
@@ -1046,10 +1007,10 @@ entity 50{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 51{
+entity 49{
 "absmin" "431 -225 87"
 "absmax" "433 -223 89"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "432 -224 88"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -1062,10 +1023,10 @@ entity 51{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 52{
+entity 50{
 "absmin" "1031 -417 87"
 "absmax" "1033 -415 89"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1032 -416 88"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -1078,10 +1039,10 @@ entity 52{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 53{
+entity 51{
 "absmin" "223 1631 -177"
 "absmax" "225 1633 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "224 1632 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -1094,10 +1055,10 @@ entity 53{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 54{
+entity 52{
 "absmin" "-225 1759 -177"
 "absmax" "-223 1761 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-224 1760 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -1110,10 +1071,10 @@ entity 54{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 55{
+entity 53{
 "absmin" "-641 1039 -225"
 "absmax" "-639 1041 -223"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-640 1040 -224"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -1126,10 +1087,10 @@ entity 55{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 56{
+entity 54{
 "absmin" "-785 -465 -97"
 "absmax" "-783 -463 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-784 -464 -96"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -1142,10 +1103,10 @@ entity 56{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 57{
+entity 55{
 "absmin" "-1170 486 -210"
 "absmax" "-1158 522 -150"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -1166,8 +1127,8 @@ entity 57{
 "cost" "1200"
 "cost2" "600"
 }
-entity 58{
-"lastruntime" "16.980001"
+entity 56{
+"lastruntime" "7.473001"
 "origin" "-728 -448 112"
 "classname" "light"
 "dimension_solid" "255"
@@ -1179,27 +1140,10 @@ entity 58{
 "uniquespawnid" "2"
 "wait" "1"
 }
-entity 59{
-"modelindex" "115"
-"absmin" "-129 407 -209"
-"absmax" "-127 409 -207"
-"lastruntime" "16.980001"
-"origin" "-128 408 -208"
-"angles" "5 275 10"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 60{
+entity 57{
 "absmin" "751 -417 223"
 "absmax" "753 -415 225"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "752 -416 224"
 "angles" "0 90 0"
 "classname" "spawn_zombie_in"
@@ -1211,11 +1155,11 @@ entity 60{
 "drawflags" "96"
 "dimension_see" "255"
 "dimension_seen" "255"
-"Version" "2"
-"uniquespawnid" "2"
+"Version" "3"
+"uniquespawnid" "3"
 }
-entity 61{
-"lastruntime" "16.980001"
+entity 58{
+"lastruntime" "7.473001"
 "origin" "-488 -32 -144"
 "classname" "light"
 "dimension_solid" "255"
@@ -1227,11 +1171,11 @@ entity 61{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 62{
+entity 59{
 "modelindex" "118"
 "absmin" "-753 1351 -177"
 "absmax" "-687 1417 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-720 1384 -152"
 "classname" "place_model"
 "model" "progs/gmodels/g_bar.mdl"
@@ -1246,10 +1190,10 @@ entity 62{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 63{
+entity 60{
 "absmin" "-738 1382 -210"
 "absmax" "-702 1394 -150"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -1270,11 +1214,11 @@ entity 63{
 "cost" "1400"
 "cost2" "700"
 }
-entity 64{
+entity 61{
 "modelindex" "121"
 "absmin" "-329 -185 63"
 "absmax" "-263 -119 153"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-296 -152 88"
 "classname" "place_model"
 "model" "progs/props/shelf.mdl"
@@ -1289,11 +1233,11 @@ entity 64{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 65{
+entity 62{
 "modelindex" "121"
 "absmin" "-89 15 71"
 "absmax" "-23 81 161"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-56 48 96"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -1309,11 +1253,11 @@ entity 65{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 66{
+entity 63{
 "modelindex" "121"
 "absmin" "-89 -81 71"
 "absmax" "-23 -15 161"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-56 -48 96"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -1329,11 +1273,11 @@ entity 66{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 67{
+entity 64{
 "modelindex" "122"
 "absmin" "511 -353 32"
 "absmax" "577 -287 122"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "544 -320 57"
 "angles" "0 107 0"
 "classname" "place_model"
@@ -1349,11 +1293,11 @@ entity 67{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 68{
+entity 65{
 "modelindex" "122"
 "absmin" "1191 -489 31"
 "absmax" "1257 -423 121"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1224 -456 56"
 "angles" "0 130 0"
 "classname" "place_model"
@@ -1369,11 +1313,11 @@ entity 68{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 69{
+entity 66{
 "modelindex" "122"
 "absmin" "1183 -33 31"
 "absmax" "1249 33 121"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1216 0 56"
 "angles" "0 223 0"
 "classname" "place_model"
@@ -1389,11 +1333,11 @@ entity 69{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 70{
+entity 67{
 "modelindex" "123"
 "absmin" "-497 1279 -233"
 "absmax" "-431 1345 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-464 1312 -208"
 "angles" "0 291 0"
 "classname" "place_model"
@@ -1409,8 +1353,8 @@ entity 70{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 71{
-"lastruntime" "16.980001"
+entity 68{
+"lastruntime" "7.473001"
 "origin" "-200 0 112"
 "classname" "light"
 "dimension_solid" "255"
@@ -1422,23 +1366,21 @@ entity 71{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 72{
+entity 69{
 "modelindex" "100"
 "absmin" "-693 -309 55"
 "absmax" "-651 -267 137"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-672 -288 120"
 "angles" "0 0 0"
 "classname" "window"
 "model" "models/Misc/window.mdl"
-"frame" "6"
 "mins" "-20 -20 -64"
 "maxs" "20 20 16"
 "size" "40 40 80"
 "touch" "0:window_touch"
-"think" "0:SUB_Null"
-"health" "5"
+"health" "6"
 "targetname" "bi4"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -1452,10 +1394,9 @@ entity 72{
 "box3" "-702 -258 88"
 "idlebox" "-732 -288 88"
 "hop_spot" "-632 -288 90"
-"box1owner" "364"
 }
-entity 73{
-"lastruntime" "16.980001"
+entity 70{
+"lastruntime" "7.473001"
 "origin" "1028 256 -12"
 "classname" "light"
 "dimension_solid" "255"
@@ -1467,11 +1408,11 @@ entity 73{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 74{
+entity 71{
 "modelindex" "124"
 "absmin" "1143 743 127"
 "absmax" "1209 809 217"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1176 776 152"
 "classname" "place_model"
 "model" "progs/props/chandelier.mdl"
@@ -1486,8 +1427,8 @@ entity 74{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 75{
-"lastruntime" "16.980001"
+entity 72{
+"lastruntime" "7.473001"
 "origin" "1281 168 124"
 "classname" "light"
 "dimension_solid" "255"
@@ -1499,10 +1440,10 @@ entity 75{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 76{
+entity 73{
 "absmin" "767 1111 -176.969"
 "absmax" "769 1113 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "768 1112 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -1519,27 +1460,10 @@ entity 76{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 77{
-"modelindex" "115"
-"absmin" "1231 975 -195"
-"absmax" "1233 977 -193"
-"lastruntime" "16.980001"
-"origin" "1232 976 -194"
-"angles" "4 349 5"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 78{
+entity 74{
 "absmin" "591 1039 -33"
 "absmax" "593 1041 -31"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "592 1040 -32"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -1551,13 +1475,13 @@ entity 78{
 "drawflags" "96"
 "dimension_see" "255"
 "dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"Version" "2"
+"uniquespawnid" "2"
 }
-entity 79{
+entity 75{
 "absmin" "1487 623 -169"
 "absmax" "1489 625 -167"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1488 624 -168"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -1572,10 +1496,10 @@ entity 79{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 80{
+entity 76{
 "absmin" "1679 687 -176.969"
 "absmax" "1681 689 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1680 688 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -1592,10 +1516,10 @@ entity 80{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 81{
+entity 77{
 "absmin" "543 879 -40.9688"
 "absmax" "545 881 -38.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "544 880 -39.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -1612,11 +1536,11 @@ entity 81{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 82{
+entity 78{
 "modelindex" "100"
 "absmin" "1419 807 -209"
 "absmax" "1461 849 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "1440 828 -144"
 "angles" "0 180 0"
@@ -1641,11 +1565,11 @@ entity 82{
 "idlebox" "1500 828 -176"
 "hop_spot" "1400 828 -174"
 }
-entity 83{
+entity 79{
 "modelindex" "100"
 "absmin" "527 739 -73"
 "absmax" "569 781 9"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "548 760 -8"
 "angles" "0 270 0"
@@ -1670,8 +1594,8 @@ entity 83{
 "idlebox" "548 820 -40"
 "hop_spot" "548 720 -38"
 }
-entity 84{
-"lastruntime" "16.980001"
+entity 80{
+"lastruntime" "7.473001"
 "origin" "624 656 -16"
 "classname" "light"
 "dimension_solid" "255"
@@ -1683,8 +1607,8 @@ entity 84{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 85{
-"lastruntime" "16.980001"
+entity 81{
+"lastruntime" "7.473001"
 "origin" "1034 699 -107"
 "classname" "light"
 "dimension_solid" "255"
@@ -1696,11 +1620,11 @@ entity 85{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 86{
+entity 82{
 "modelindex" "125"
 "absmin" "863 463 -201"
 "absmax" "929 529 -111"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "896 496 -176"
 "angles" "0 90 0"
@@ -1720,10 +1644,10 @@ entity 86{
 "uniquespawnid" "1"
 "requirespower" "1"
 }
-entity 87{
+entity 83{
 "absmin" "511 879 -209"
 "absmax" "513 881 -207"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "512 880 -208"
 "classname" "spawn_zombie_in"
 "spawnflags" "1"
@@ -1737,8 +1661,8 @@ entity 87{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 88{
-"lastruntime" "16.980001"
+entity 84{
+"lastruntime" "7.473001"
 "origin" "840 1576 -104"
 "classname" "light"
 "dimension_solid" "255"
@@ -1750,8 +1674,8 @@ entity 88{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 89{
-"lastruntime" "16.980001"
+entity 85{
+"lastruntime" "7.473001"
 "origin" "1020 1460 -136"
 "angles" "0 0 0"
 "classname" "light"
@@ -1764,11 +1688,11 @@ entity 89{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 90{
+entity 86{
 "modelindex" "100"
 "absmin" "647 1115 -209"
 "absmax" "689 1157 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "668 1136 -144"
 "angles" "0 90 0"
@@ -1793,10 +1717,10 @@ entity 90{
 "idlebox" "668 1076 -176"
 "hop_spot" "668 1176 -174"
 }
-entity 91{
+entity 87{
 "absmin" "871 1063 -169"
 "absmax" "873 1065 -167"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "872 1064 -168"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -1811,10 +1735,10 @@ entity 91{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 92{
+entity 88{
 "absmin" "511 975 -224.969"
 "absmax" "513 977 -222.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "512 976 -223.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -1831,11 +1755,11 @@ entity 92{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 93{
+entity 89{
 "modelindex" "126"
 "absmin" "695 1279 -177"
 "absmax" "761 1345 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "728 1312 -152"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -1851,10 +1775,10 @@ entity 93{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 94{
+entity 90{
 "absmin" "726 1294 -210"
 "absmax" "738 1330 -150"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -1875,11 +1799,11 @@ entity 94{
 "cost" "1200"
 "cost2" "500"
 }
-entity 95{
+entity 91{
 "modelindex" "129"
 "absmin" "1399 663 -177"
 "absmax" "1465 729 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1432 696 -152"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -1895,10 +1819,10 @@ entity 95{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 96{
+entity 92{
 "absmin" "1422 678 -210"
 "absmax" "1434 714 -150"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -1919,10 +1843,10 @@ entity 96{
 "cost" "1000"
 "cost2" "500"
 }
-entity 97{
+entity 93{
 "absmin" "715 1566 -210"
 "absmax" "730 1706 -96"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "zapper_field"
 "model" ""
@@ -1938,25 +1862,8 @@ entity 97{
 "Version" "2"
 "uniquespawnid" "2"
 }
-entity 98{
-"modelindex" "115"
-"absmin" "927 1455 -193"
-"absmax" "929 1457 -191"
-"lastruntime" "16.980001"
-"origin" "928 1456 -192"
-"angles" "0 90 0"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 99{
-"lastruntime" "16.980001"
+entity 94{
+"lastruntime" "7.473001"
 "origin" "588 1652 -158"
 "angles" "0 0 0"
 "classname" "light"
@@ -1965,14 +1872,14 @@ entity 99{
 "drawflags" "96"
 "dimension_see" "255"
 "dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"Version" "2"
+"uniquespawnid" "2"
 "wait" "1"
 }
-entity 100{
+entity 95{
 "absmin" "743 1487 -33"
 "absmax" "745 1489 -31"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "744 1488 -32"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -1987,10 +1894,10 @@ entity 100{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 101{
+entity 96{
 "absmin" "839 1575 -176.969"
 "absmax" "841 1577 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "840 1576 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -2006,12 +1913,12 @@ entity 101{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
-"cost" "11"
+"cost" "6"
 }
-entity 102{
+entity 97{
 "absmin" "1103 383 -41"
 "absmax" "1105 385 -39"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1104 384 -40"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -2024,10 +1931,10 @@ entity 102{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 103{
+entity 98{
 "absmin" "943 591 -153"
 "absmax" "945 593 -151"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "944 592 -152"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -2040,10 +1947,10 @@ entity 103{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 104{
+entity 99{
 "absmin" "1175 839 -177"
 "absmax" "1177 841 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1176 840 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -2056,10 +1963,10 @@ entity 104{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 105{
+entity 100{
 "absmin" "1279 1583 -176.969"
 "absmax" "1281 1585 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1280 1584 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -2076,10 +1983,10 @@ entity 105{
 "Version" "2"
 "uniquespawnid" "2"
 }
-entity 106{
+entity 101{
 "absmin" "1183 1615 -169"
 "absmax" "1185 1617 -167"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1184 1616 -168"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -2094,11 +2001,11 @@ entity 106{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 107{
+entity 102{
 "modelindex" "100"
 "absmin" "1115 1407 -209"
 "absmax" "1157 1449 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "1136 1428 -144"
 "angles" "0 180 0"
@@ -2123,11 +2030,11 @@ entity 107{
 "idlebox" "1196 1428 -176"
 "hop_spot" "1096 1428 -174"
 }
-entity 108{
+entity 103{
 "modelindex" "132"
 "absmin" "595 415 -97"
 "absmax" "661 481 -7"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "628 448 -72"
 "angles" "0 4 0"
 "classname" "place_model"
@@ -2143,11 +2050,11 @@ entity 108{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 109{
+entity 104{
 "modelindex" "132"
 "absmin" "1107 639 -233"
 "absmax" "1173 705 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1140 672 -208"
 "angles" "0 148 0"
 "classname" "place_model"
@@ -2163,11 +2070,11 @@ entity 109{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 110{
+entity 105{
 "modelindex" "132"
 "absmin" "1067 695 -233"
 "absmax" "1133 761 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1100 728 -208"
 "angles" "0 7 0"
 "classname" "place_model"
@@ -2183,11 +2090,11 @@ entity 110{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 111{
+entity 106{
 "modelindex" "132"
 "absmin" "911 783 -233"
 "absmax" "977 849 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "944 816 -208"
 "classname" "place_model"
 "model" "progs/props/kino_table.mdl"
@@ -2202,11 +2109,11 @@ entity 111{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 112{
+entity 107{
 "modelindex" "132"
 "absmin" "1019 635 -233"
 "absmax" "1085 701 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1052 668 -208"
 "angles" "0 33 0"
 "classname" "place_model"
@@ -2222,11 +2129,11 @@ entity 112{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 113{
+entity 108{
 "modelindex" "132"
 "absmin" "591 671 -97"
 "absmax" "657 737 -7"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "624 704 -72"
 "angles" "0 274 0"
 "classname" "place_model"
@@ -2242,11 +2149,11 @@ entity 113{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 114{
+entity 109{
 "modelindex" "132"
 "absmin" "623 735 -69"
 "absmax" "689 801 21"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "656 768 -44"
 "angles" "0 241 270"
 "classname" "place_model"
@@ -2262,11 +2169,11 @@ entity 114{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 115{
+entity 110{
 "modelindex" "133"
 "absmin" "711 1455 -233"
 "absmax" "777 1521 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "744 1488 -208"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -2282,11 +2189,11 @@ entity 115{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 116{
+entity 111{
 "modelindex" "134"
 "absmin" "711 1511 -185"
 "absmax" "777 1577 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "744 1544 -160"
 "angles" "0 298 0"
 "classname" "place_model"
@@ -2302,11 +2209,11 @@ entity 116{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 117{
+entity 112{
 "modelindex" "134"
 "absmin" "903 1255 -185"
 "absmax" "969 1321 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "936 1288 -160"
 "angles" "0 132 0"
 "classname" "place_model"
@@ -2322,11 +2229,11 @@ entity 117{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 118{
+entity 113{
 "modelindex" "132"
 "absmin" "627 791 -93"
 "absmax" "693 857 -3"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "660 824 -68"
 "angles" "15 287 280"
 "classname" "place_model"
@@ -2342,11 +2249,11 @@ entity 118{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 119{
+entity 114{
 "modelindex" "133"
 "absmin" "659 1505 -233"
 "absmax" "725 1571 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "692 1538 -208"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -2362,11 +2269,11 @@ entity 119{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 120{
+entity 115{
 "modelindex" "134"
 "absmin" "663 1545 -185"
 "absmax" "729 1611 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "696 1578 -160"
 "angles" "0 88 0"
 "classname" "place_model"
@@ -2382,11 +2289,11 @@ entity 120{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 121{
+entity 116{
 "modelindex" "134"
 "absmin" "903 1223 -185"
 "absmax" "969 1289 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "936 1256 -160"
 "angles" "0 313 0"
 "classname" "place_model"
@@ -2402,11 +2309,11 @@ entity 121{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 122{
+entity 117{
 "modelindex" "124"
 "absmin" "15 751 -161"
 "absmax" "81 817 -71"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "48 784 -136"
 "angles" "0 147 20"
 "classname" "place_model"
@@ -2422,11 +2329,11 @@ entity 122{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 123{
+entity 118{
 "modelindex" "18"
 "absmin" "-722 1382 -162"
 "absmax" "-654 1387 -94"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*17"
 "mins" "-721 1383 -161"
@@ -2440,10 +2347,10 @@ entity 123{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 124{
+entity 119{
 "absmin" "-705 1967 -176.969"
 "absmax" "-703 1969 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-704 1968 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -2460,10 +2367,10 @@ entity 124{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 125{
+entity 120{
 "absmin" "-673 1807 -169"
 "absmax" "-671 1809 -167"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-672 1808 -168"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -2478,11 +2385,11 @@ entity 125{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 126{
+entity 121{
 "modelindex" "100"
 "absmin" "-849 1731 -209"
 "absmax" "-807 1773 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-828 1752 -144"
 "angles" "0 270 0"
@@ -2507,8 +2414,8 @@ entity 126{
 "idlebox" "-828 1812 -176"
 "hop_spot" "-828 1712 -174"
 }
-entity 127{
-"lastruntime" "16.980001"
+entity 122{
+"lastruntime" "7.473001"
 "origin" "-1024 1568 -64"
 "classname" "light"
 "dimension_solid" "255"
@@ -2520,11 +2427,11 @@ entity 127{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 128{
+entity 123{
 "modelindex" "135"
 "absmin" "-697 1711 -177"
 "absmax" "-631 1777 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-664 1744 -152"
 "classname" "place_model"
 "model" "progs/gmodels/g_betty.mdl"
@@ -2539,10 +2446,10 @@ entity 128{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 129{
+entity 124{
 "absmin" "-682 1734 -210"
 "absmax" "-646 1746 -150"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -2562,25 +2469,8 @@ entity 129{
 "message" "Hold use to buy Bouncing Betty [Cost:1000]"
 "cost" "1000"
 }
-entity 130{
-"modelindex" "115"
-"absmin" "-1369 1167 -49"
-"absmax" "-1367 1169 -47"
-"lastruntime" "16.980001"
-"origin" "-1368 1168 -48"
-"angles" "0 270 0"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 131{
-"lastruntime" "16.980001"
+entity 125{
+"lastruntime" "7.473001"
 "origin" "-1424 1632 8"
 "classname" "light"
 "dimension_solid" "255"
@@ -2588,12 +2478,12 @@ entity 131{
 "drawflags" "96"
 "dimension_see" "255"
 "dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"Version" "2"
+"uniquespawnid" "2"
 "wait" "1"
 }
-entity 132{
-"lastruntime" "16.980001"
+entity 126{
+"lastruntime" "7.473001"
 "origin" "-1240 1280 8"
 "classname" "light"
 "dimension_solid" "255"
@@ -2605,8 +2495,8 @@ entity 132{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 133{
-"lastruntime" "16.980001"
+entity 127{
+"lastruntime" "7.473001"
 "origin" "-1016 -280 -56"
 "classname" "light"
 "dimension_solid" "255"
@@ -2618,11 +2508,11 @@ entity 133{
 "uniquespawnid" "2"
 "wait" "1"
 }
-entity 134{
+entity 128{
 "modelindex" "100"
 "absmin" "-1521 1291 -217"
 "absmax" "-1479 1333 -135"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-1500 1312 -152"
 "angles" "0 270 0"
@@ -2647,10 +2537,10 @@ entity 134{
 "idlebox" "-1500 1372 -184"
 "hop_spot" "-1500 1272 -182"
 }
-entity 135{
+entity 129{
 "absmin" "-1585 -369 -176.969"
 "absmax" "-1583 -367 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1584 -368 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -2667,11 +2557,11 @@ entity 135{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 136{
+entity 130{
 "modelindex" "100"
 "absmin" "-1669 -269 -209"
 "absmax" "-1627 -227 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-1648 -248 -144"
 "angles" "0 90 0"
@@ -2696,12 +2586,12 @@ entity 136{
 "idlebox" "-1648 -308 -176"
 "hop_spot" "-1648 -208 -174"
 }
-entity 137{
+entity 131{
 "modelindex" "21"
 "absmin" "-1354 -106.001 -130"
 "absmax" "-1346 -46 -22"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp_cost"
@@ -2713,10 +2603,10 @@ entity 137{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "137"
+"enemy" "131"
 "spawnflags" "32"
 "target" "r8"
-"owner" "137"
+"owner" "131"
 "movedir" "-7.96075e-017 -1 -0"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -2740,12 +2630,12 @@ entity 137{
 "target8" "r8"
 "oldmodel" "*20"
 "dmg" "2"
-"trigger_field" "348"
+"trigger_field" "340"
 }
-entity 138{
+entity 132{
 "absmin" "-1057 -97 -97"
 "absmax" "-1055 -95 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1056 -96 -96"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -2758,10 +2648,10 @@ entity 138{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 139{
+entity 133{
 "absmin" "-1649 47 -177"
 "absmax" "-1647 49 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1648 48 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -2774,10 +2664,10 @@ entity 139{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 140{
+entity 134{
 "absmin" "-1472.5 1655 -25"
 "absmax" "-1470.5 1657 -23"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1471.5 1656 -24"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -2790,10 +2680,10 @@ entity 140{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 141{
+entity 135{
 "absmin" "-1473 1207 -25"
 "absmax" "-1471 1209 -23"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1472 1208 -24"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -2806,29 +2696,12 @@ entity 141{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 142{
-"modelindex" "115"
-"absmin" "-1329 -273 -113"
-"absmax" "-1327 -271 -111"
-"lastruntime" "16.980001"
-"origin" "-1328 -272 -112"
-"angles" "0 90 0"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 143{
+entity 136{
 "modelindex" "22"
 "absmin" "-1610 994 -210"
 "absmax" "-1494 1002 -102"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp_cost"
@@ -2840,18 +2713,18 @@ entity 143{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "143"
+"enemy" "136"
 "spawnflags" "32"
 "target" "r7"
-"owner" "143"
+"owner" "136"
 "movedir" "1 0 0"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
 "dimension_see" "255"
 "dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"Version" "2"
+"uniquespawnid" "2"
 "pos2" "113 0 0"
 "cost" "1250"
 "state" "1"
@@ -2867,13 +2740,13 @@ entity 143{
 "target8" "r7"
 "oldmodel" "*21"
 "dmg" "2"
-"trigger_field" "349"
+"trigger_field" "341"
 }
-entity 144{
+entity 137{
 "modelindex" "137"
 "absmin" "-1769 -105 -201"
 "absmax" "-1703 -39 -111"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-1736 -72 -176"
 "classname" "perk_double"
@@ -2892,11 +2765,11 @@ entity 144{
 "uniquespawnid" "1"
 "requirespower" "1"
 }
-entity 145{
+entity 138{
 "modelindex" "23"
 "absmin" "-1650 1548 44"
 "absmax" "-1510 1554 50"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*22"
 "mins" "-1649 1549 45"
@@ -2910,11 +2783,11 @@ entity 145{
 "Version" "3"
 "uniquespawnid" "3"
 }
-entity 146{
+entity 139{
 "modelindex" "121"
 "absmin" "-1737 1159 -49"
 "absmax" "-1671 1225 41"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1704 1192 -24"
 "angles" "0 180 0"
 "classname" "place_model"
@@ -2930,10 +2803,10 @@ entity 146{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 147{
+entity 140{
 "absmin" "-1921 863 -17"
 "absmax" "-1919 865 -15"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1920 864 -16"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -2948,10 +2821,10 @@ entity 147{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 148{
+entity 141{
 "absmin" "-1817 935 -24.9688"
 "absmax" "-1815 937 -22.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1816 936 -23.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -2968,11 +2841,11 @@ entity 148{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 149{
+entity 142{
 "modelindex" "100"
 "absmin" "-1781 1087 -57"
 "absmax" "-1739 1129 25"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-1760 1108 8"
 "classname" "window"
@@ -2996,10 +2869,10 @@ entity 149{
 "idlebox" "-1820 1108 -24"
 "hop_spot" "-1720 1108 -22"
 }
-entity 150{
+entity 143{
 "absmin" "-1825 1663 -169"
 "absmax" "-1823 1665 -167"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1824 1664 -168"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -3014,10 +2887,10 @@ entity 150{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 151{
+entity 144{
 "absmin" "-1649 1583 -176.969"
 "absmax" "-1647 1585 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1648 1584 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -3034,11 +2907,11 @@ entity 151{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 152{
+entity 145{
 "modelindex" "100"
 "absmin" "-1781 755 -209"
 "absmax" "-1739 797 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-1760 776 -144"
 "classname" "window"
@@ -3062,10 +2935,10 @@ entity 152{
 "idlebox" "-1820 776 -176"
 "hop_spot" "-1720 776 -174"
 }
-entity 153{
+entity 146{
 "absmin" "-1793 919 -169"
 "absmax" "-1791 921 -167"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1792 920 -168"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -3080,10 +2953,10 @@ entity 153{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 154{
+entity 147{
 "absmin" "-1881 919 -176.969"
 "absmax" "-1879 921 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1880 920 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -3100,10 +2973,10 @@ entity 154{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 155{
+entity 148{
 "absmin" "-1401 -393 -171"
 "absmax" "-1399 -391 -169"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1400 -392 -170"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -3118,10 +2991,10 @@ entity 155{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 156{
+entity 149{
 "absmin" "-1585 783 -177"
 "absmax" "-1583 785 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1584 784 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -3134,27 +3007,10 @@ entity 156{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 157{
-"modelindex" "115"
-"absmin" "-1545 439 -193"
-"absmax" "-1543 441 -191"
-"lastruntime" "16.980001"
-"origin" "-1544 440 -192"
-"angles" "0 90 0"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 158{
+entity 150{
 "absmin" "-1642 1549 -62"
 "absmax" "-1518 1554 34"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "zapper_field"
 "model" ""
@@ -3167,14 +3023,14 @@ entity 158{
 "drawflags" "96"
 "dimension_see" "255"
 "dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"Version" "2"
+"uniquespawnid" "2"
 }
-entity 159{
+entity 151{
 "modelindex" "138"
 "absmin" "879 1519 -193"
 "absmax" "945 1585 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "912 1552 -168"
 "angles" "0 0 0"
 "classname" "place_model"
@@ -3190,11 +3046,11 @@ entity 159{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 160{
+entity 152{
 "modelindex" "138"
 "absmin" "751 1711 -193"
 "absmax" "817 1777 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "784 1744 -168"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -3210,11 +3066,11 @@ entity 160{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 161{
+entity 153{
 "modelindex" "138"
 "absmin" "967 1711 -193"
 "absmax" "1033 1777 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1000 1744 -168"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -3230,11 +3086,11 @@ entity 161{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 162{
+entity 154{
 "modelindex" "138"
 "absmin" "855 1711 -193"
 "absmax" "921 1777 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "888 1744 -168"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -3250,11 +3106,11 @@ entity 162{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 163{
+entity 155{
 "modelindex" "138"
 "absmin" "1095 1655 -193"
 "absmax" "1161 1721 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1128 1688 -168"
 "angles" "0 180 0"
 "classname" "place_model"
@@ -3270,11 +3126,11 @@ entity 163{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 164{
+entity 156{
 "modelindex" "138"
 "absmin" "1095 1535 -193"
 "absmax" "1161 1601 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1128 1568 -168"
 "angles" "0 180 0"
 "classname" "place_model"
@@ -3290,11 +3146,11 @@ entity 164{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 165{
+entity 157{
 "modelindex" "138"
 "absmin" "1095 1271 -193"
 "absmax" "1161 1337 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1128 1304 -168"
 "angles" "0 180 0"
 "classname" "place_model"
@@ -3310,11 +3166,11 @@ entity 165{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 166{
+entity 158{
 "modelindex" "139"
 "absmin" "-777 1663 -185"
 "absmax" "-711 1729 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-744 1696 -160"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -3330,11 +3186,11 @@ entity 166{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 167{
+entity 159{
 "modelindex" "121"
 "absmin" "-1457 1687 -49"
 "absmax" "-1391 1753 41"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1424 1720 -24"
 "angles" "0 180 0"
 "classname" "place_model"
@@ -3350,11 +3206,11 @@ entity 167{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 168{
+entity 160{
 "modelindex" "140"
 "absmin" "-1425 1207 -193"
 "absmax" "-1359 1273 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1392 1240 -168"
 "angles" "0 184 0"
 "classname" "place_model"
@@ -3370,11 +3226,11 @@ entity 168{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 169{
+entity 161{
 "modelindex" "141"
 "absmin" "-369 -409 20"
 "absmax" "-303 -343 110"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-336 -376 45"
 "angles" "0 84 90"
 "classname" "place_model"
@@ -3390,11 +3246,11 @@ entity 169{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 170{
+entity 162{
 "modelindex" "141"
 "absmin" "-417 -401 -17"
 "absmax" "-351 -335 73"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-384 -368 8"
 "angles" "0 106 0"
 "classname" "place_model"
@@ -3410,11 +3266,11 @@ entity 170{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 171{
+entity 163{
 "modelindex" "142"
 "absmin" "-897 -401 -153"
 "absmax" "-831 -335 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-864 -368 -128"
 "angles" "0 18 0"
 "classname" "place_model"
@@ -3430,11 +3286,11 @@ entity 171{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 172{
+entity 164{
 "modelindex" "139"
 "absmin" "-617 1499 -193"
 "absmax" "-551 1565 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-584 1532 -168"
 "angles" "0 250 0"
 "classname" "place_model"
@@ -3450,11 +3306,11 @@ entity 172{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 173{
+entity 165{
 "modelindex" "143"
 "absmin" "-400.636 1566.81 -193"
 "absmax" "-334.636 1632.81 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-367.636 1599.81 -168"
 "angles" "0 259 0"
 "classname" "place_model"
@@ -3470,11 +3326,11 @@ entity 173{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 174{
+entity 166{
 "modelindex" "144"
 "absmin" "0.116001 1541.43 -193"
 "absmax" "66.116 1607.43 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "33.116 1574.43 -168"
 "angles" "0 279 0"
 "classname" "place_model"
@@ -3490,11 +3346,11 @@ entity 174{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 175{
+entity 167{
 "modelindex" "145"
 "absmin" "823 1559 -233"
 "absmax" "889 1625 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "856 1592 -208"
 "angles" "0 259 0"
 "classname" "place_model"
@@ -3510,11 +3366,11 @@ entity 175{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 176{
+entity 168{
 "modelindex" "141"
 "absmin" "-769 919 -281"
 "absmax" "-703 985 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-736 952 -256"
 "angles" "0 78 0"
 "classname" "place_model"
@@ -3530,11 +3386,11 @@ entity 176{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 177{
+entity 169{
 "modelindex" "141"
 "absmin" "-641 911 -281"
 "absmax" "-575 977 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-608 944 -256"
 "angles" "0 258 0"
 "classname" "place_model"
@@ -3550,11 +3406,11 @@ entity 177{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 178{
+entity 170{
 "modelindex" "141"
 "absmin" "-41 855 -281"
 "absmax" "25 921 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-8 888 -256"
 "angles" "0 118 0"
 "classname" "place_model"
@@ -3570,11 +3426,11 @@ entity 178{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 179{
+entity 171{
 "modelindex" "141"
 "absmin" "-401 859 -281"
 "absmax" "-335 925 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-368 892 -256"
 "angles" "0 78 0"
 "classname" "place_model"
@@ -3590,11 +3446,11 @@ entity 179{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 180{
+entity 172{
 "modelindex" "141"
 "absmin" "-489 887 -281"
 "absmax" "-423 953 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-456 920 -256"
 "angles" "0 78 0"
 "classname" "place_model"
@@ -3610,11 +3466,11 @@ entity 180{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 181{
+entity 173{
 "modelindex" "141"
 "absmin" "39 903 -281"
 "absmax" "105 969 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "72 936 -256"
 "angles" "0 94 0"
 "classname" "place_model"
@@ -3630,11 +3486,11 @@ entity 181{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 182{
+entity 174{
 "modelindex" "141"
 "absmin" "159 903 -281"
 "absmax" "225 969 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "192 936 -256"
 "angles" "0 269 0"
 "classname" "place_model"
@@ -3650,11 +3506,11 @@ entity 182{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 183{
+entity 175{
 "modelindex" "141"
 "absmin" "343 879 -281"
 "absmax" "409 945 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "376 912 -256"
 "angles" "0 260 0"
 "classname" "place_model"
@@ -3670,11 +3526,11 @@ entity 183{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 184{
+entity 176{
 "modelindex" "141"
 "absmin" "263 895 -281"
 "absmax" "329 961 -191"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "296 928 -256"
 "angles" "0 94 0"
 "classname" "place_model"
@@ -3690,11 +3546,11 @@ entity 184{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 185{
+entity 177{
 "modelindex" "145"
 "absmin" "855 1215 -233"
 "absmax" "921 1281 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "888 1248 -208"
 "angles" "0 263 0"
 "classname" "place_model"
@@ -3710,11 +3566,11 @@ entity 185{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 186{
+entity 178{
 "modelindex" "142"
 "absmin" "-889 -217 -153"
 "absmax" "-823 -151 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-856 -184 -128"
 "angles" "0 79 0"
 "classname" "place_model"
@@ -3730,11 +3586,11 @@ entity 186{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 187{
+entity 179{
 "modelindex" "142"
 "absmin" "-817 -209 -153"
 "absmax" "-751 -143 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-784 -176 -128"
 "angles" "0 9 0"
 "classname" "place_model"
@@ -3750,11 +3606,11 @@ entity 187{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 188{
+entity 180{
 "modelindex" "142"
 "absmin" "-902.433 -181.541 -137"
 "absmax" "-836.433 -115.541 -47"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-869.433 -148.541 -112"
 "angles" "270 116 0"
 "classname" "place_model"
@@ -3770,11 +3626,11 @@ entity 188{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 189{
+entity 181{
 "modelindex" "142"
 "absmin" "-889 -105 -153"
 "absmax" "-823 -39 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-856 -72 -128"
 "angles" "0 188 0"
 "classname" "place_model"
@@ -3790,11 +3646,11 @@ entity 189{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 190{
+entity 182{
 "modelindex" "133"
 "absmin" "-1713 991 -233"
 "absmax" "-1647 1057 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1680 1024 -208"
 "classname" "place_model"
 "model" "progs/props/stand.mdl"
@@ -3809,11 +3665,11 @@ entity 190{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 191{
+entity 183{
 "modelindex" "146"
 "absmin" "-1617 983 -81"
 "absmax" "-1551 1049 9"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1584 1016 -56"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -3830,11 +3686,11 @@ entity 191{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 192{
+entity 184{
 "modelindex" "146"
 "absmin" "-1425 1007 -81"
 "absmax" "-1359 1073 9"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1392 1040 -56"
 "angles" "0 127 0"
 "classname" "place_model"
@@ -3851,11 +3707,11 @@ entity 192{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 193{
+entity 185{
 "modelindex" "146"
 "absmin" "-961 1471 -233"
 "absmax" "-895 1537 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-928 1504 -208"
 "angles" "0 287 0"
 "classname" "place_model"
@@ -3872,11 +3728,11 @@ entity 193{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 194{
+entity 186{
 "modelindex" "139"
 "absmin" "-585 71 -185"
 "absmax" "-519 137 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-552 104 -160"
 "angles" "0 20 0"
 "classname" "place_model"
@@ -3892,11 +3748,11 @@ entity 194{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 195{
+entity 187{
 "modelindex" "141"
 "absmin" "-449 319 -209"
 "absmax" "-383 385 -119"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-416 352 -184"
 "angles" "85 233 340"
 "classname" "place_model"
@@ -3912,8 +3768,8 @@ entity 195{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 196{
-"lastruntime" "16.980001"
+entity 188{
+"lastruntime" "7.473001"
 "origin" "-1312 1608 -108"
 "angles" "0 0 0"
 "classname" "light"
@@ -3926,11 +3782,11 @@ entity 196{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 197{
+entity 189{
 "modelindex" "140"
 "absmin" "-1353 1543 -193"
 "absmax" "-1287 1609 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1320 1576 -168"
 "angles" "0 118 0"
 "classname" "place_model"
@@ -3946,10 +3802,10 @@ entity 197{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 198{
+entity 190{
 "absmin" "31 -65 95"
 "absmax" "33 -63 97"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "32 -64 96"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -3963,10 +3819,10 @@ entity 198{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 199{
+entity 191{
 "absmin" "-1066 -330 -130"
 "absmax" "-966 -230 -21"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "zapper_field"
 "model" ""
@@ -3982,11 +3838,11 @@ entity 199{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 200{
+entity 192{
 "modelindex" "132"
 "absmin" "1295 911 -193"
 "absmax" "1361 977 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1328 944 -168"
 "angles" "25 21 194"
 "classname" "place_model"
@@ -4002,11 +3858,11 @@ entity 200{
 "Version" "3"
 "uniquespawnid" "3"
 }
-entity 201{
+entity 193{
 "modelindex" "26"
 "absmin" "-1658 1306 -210"
 "absmax" "-1350 1314 -94"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "func_wall"
@@ -4022,8 +3878,8 @@ entity 201{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 202{
-"lastruntime" "16.980001"
+entity 194{
+"lastruntime" "7.473001"
 "origin" "-1552 1056 8"
 "classname" "light"
 "dimension_solid" "255"
@@ -4035,8 +3891,8 @@ entity 202{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 203{
-"lastruntime" "16.980001"
+entity 195{
+"lastruntime" "7.473001"
 "origin" "-152 -360 -88"
 "classname" "light"
 "dimension_solid" "255"
@@ -4048,8 +3904,8 @@ entity 203{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 204{
-"lastruntime" "16.980001"
+entity 196{
+"lastruntime" "7.473001"
 "origin" "368 1504 -176"
 "classname" "light"
 "dimension_solid" "255"
@@ -4061,11 +3917,11 @@ entity 204{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 205{
+entity 197{
 "modelindex" "147"
 "absmin" "-57 1647 -193"
 "absmax" "9 1713 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-24 1680 -168"
 "angles" "0 301 0"
 "classname" "place_model"
@@ -4081,11 +3937,11 @@ entity 205{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 206{
+entity 198{
 "modelindex" "147"
 "absmin" "-377 1639 -193"
 "absmax" "-311 1705 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-344 1672 -168"
 "angles" "0 247 0"
 "classname" "place_model"
@@ -4101,11 +3957,11 @@ entity 206{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 207{
+entity 199{
 "modelindex" "100"
 "absmin" "-1157 1259 -57"
 "absmax" "-1115 1301 25"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-1136 1280 8"
 "angles" "0 180 0"
@@ -4130,10 +3986,10 @@ entity 207{
 "idlebox" "-1076 1280 -24"
 "hop_spot" "-1176 1280 -22"
 }
-entity 208{
+entity 200{
 "absmin" "-1025 959 -17"
 "absmax" "-1023 961 -15"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1024 960 -16"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -4148,10 +4004,10 @@ entity 208{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 209{
+entity 201{
 "absmin" "-1009 1087 -24.9688"
 "absmax" "-1007 1089 -22.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1008 1088 -23.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4168,10 +4024,10 @@ entity 209{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 210{
+entity 202{
 "absmin" "1679 767 -176.969"
 "absmax" "1681 769 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1680 768 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4188,10 +4044,10 @@ entity 210{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 211{
+entity 203{
 "absmin" "-1817 983 -24.9688"
 "absmax" "-1815 985 -22.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1816 984 -23.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4208,10 +4064,10 @@ entity 211{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 212{
+entity 204{
 "absmin" "-1881 839 -176.969"
 "absmax" "-1879 841 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1880 840 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4228,11 +4084,11 @@ entity 212{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 213{
+entity 205{
 "modelindex" "124"
 "absmin" "-241 479 167"
 "absmax" "-175 545 257"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-208 512 192"
 "angles" "0 15 0"
 "classname" "place_model"
@@ -4248,10 +4104,10 @@ entity 213{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 214{
+entity 206{
 "absmin" "-985 255 -96.9688"
 "absmax" "-983 257 -94.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-984 256 -95.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4268,8 +4124,8 @@ entity 214{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 215{
-"lastruntime" "16.980001"
+entity 207{
+"lastruntime" "7.473001"
 "origin" "976 1688 -136"
 "angles" "0 0 0"
 "classname" "light"
@@ -4282,11 +4138,11 @@ entity 215{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 216{
+entity 208{
 "modelindex" "27"
 "absmin" "-402 -962 38"
 "absmax" "34 -950 170"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "func_wall"
@@ -4302,8 +4158,8 @@ entity 216{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 217{
-"lastruntime" "16.980001"
+entity 209{
+"lastruntime" "7.473001"
 "origin" "808 1384 -136"
 "classname" "light"
 "dimension_solid" "255"
@@ -4315,11 +4171,11 @@ entity 217{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 218{
+entity 210{
 "modelindex" "100"
 "absmin" "1019 443 -209"
 "absmax" "1061 485 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "1040 464 -144"
 "angles" "0 90 0"
@@ -4344,11 +4200,11 @@ entity 218{
 "idlebox" "1040 404 -176"
 "hop_spot" "1040 504 -174"
 }
-entity 219{
+entity 211{
 "modelindex" "28"
 "absmin" "925 -362 54"
 "absmax" "1122 -93 118"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*27"
 "mins" "926 -361 55"
@@ -4362,10 +4218,10 @@ entity 219{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 220{
+entity 212{
 "absmin" "1143 -41 87"
 "absmax" "1145 -39 89"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1144 -40 88"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -4378,11 +4234,11 @@ entity 220{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 221{
+entity 213{
 "modelindex" "148"
 "absmin" "-389 31 87"
 "absmax" "-323 97 177"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-356 64 112"
 "angles" "0 0 0"
 "classname" "place_model"
@@ -4398,11 +4254,11 @@ entity 221{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 222{
+entity 214{
 "modelindex" "100"
 "absmin" "-1037 -29 -129"
 "absmax" "-995 13 -47"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-1016 -8 -64"
 "angles" "0 270 0"
@@ -4427,11 +4283,11 @@ entity 222{
 "idlebox" "-1016 52 -96"
 "hop_spot" "-1016 -48 -94"
 }
-entity 223{
+entity 215{
 "modelindex" "100"
 "absmin" "1259 -257 55"
 "absmax" "1301 -215 137"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "1280 -236 120"
 "angles" "0 180 0"
@@ -4456,10 +4312,10 @@ entity 223{
 "idlebox" "1340 -236 88"
 "hop_spot" "1240 -236 90"
 }
-entity 224{
+entity 216{
 "absmin" "1503 -609 -1"
 "absmax" "1505 -607 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1504 -608 0"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -4474,10 +4330,10 @@ entity 224{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 225{
+entity 217{
 "absmin" "1471 -321 31.0312"
 "absmax" "1473 -319 33.0312"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1472 -320 32.0312"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4494,12 +4350,12 @@ entity 225{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 226{
+entity 218{
 "modelindex" "29"
 "absmin" "982 46 54"
 "absmax" "1098 54 162"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp_cost"
@@ -4511,9 +4367,9 @@ entity 226{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "226"
+"enemy" "218"
 "target" "r2"
-"owner" "226"
+"owner" "218"
 "movedir" "1 0 0"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -4537,13 +4393,13 @@ entity 226{
 "target8" "r2"
 "oldmodel" "*28"
 "dmg" "2"
-"trigger_field" "350"
+"trigger_field" "342"
 }
-entity 227{
+entity 219{
 "modelindex" "30"
 "absmin" "1274 -306 54"
 "absmax" "1290 -141.997 138"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*29"
 "mins" "1275 -305 55"
@@ -4557,12 +4413,12 @@ entity 227{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 228{
+entity 220{
 "modelindex" "31"
 "absmin" "-514 1382 -210"
 "absmax" "-198 1390 130"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp"
@@ -4574,10 +4430,10 @@ entity 228{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "229"
+"enemy" "221"
 "spawnflags" "96"
 "target" "r6"
-"owner" "228"
+"owner" "220"
 "movedir" "-1 5.30717e-017 -0"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -4600,14 +4456,14 @@ entity 228{
 "target8" "r6"
 "oldmodel" "*30"
 "dmg" "2"
-"trigger_field" "351"
+"trigger_field" "343"
 }
-entity 229{
+entity 221{
 "modelindex" "32"
 "absmin" "-202 1382 -210"
 "absmax" "114 1390 130"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp"
@@ -4619,10 +4475,10 @@ entity 229{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "228"
+"enemy" "220"
 "spawnflags" "96"
 "target" "r6"
-"owner" "228"
+"owner" "220"
 "movedir" "1 0 0"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -4646,12 +4502,12 @@ entity 229{
 "oldmodel" "*31"
 "dmg" "2"
 }
-entity 230{
+entity 222{
 "modelindex" "33"
 "absmin" "262 -346 54"
 "absmax" "270 -230 162"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp_cost"
@@ -4663,9 +4519,9 @@ entity 230{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "230"
+"enemy" "222"
 "target" "r1"
-"owner" "230"
+"owner" "222"
 "movedir" "-7.96075e-017 -1 -0"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -4689,12 +4545,12 @@ entity 230{
 "target8" "r1"
 "oldmodel" "*32"
 "dmg" "2"
-"trigger_field" "352"
+"trigger_field" "344"
 }
-entity 231{
+entity 223{
 "absmin" "1279 1519 -176.969"
 "absmax" "1281 1521 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1280 1520 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4711,11 +4567,11 @@ entity 231{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 232{
+entity 224{
 "modelindex" "100"
 "absmin" "-777 -573 -129"
 "absmax" "-735 -531 -47"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-756 -552 -64"
 "angles" "0 90 0"
@@ -4740,10 +4596,10 @@ entity 232{
 "idlebox" "-756 -612 -96"
 "hop_spot" "-756 -512 -94"
 }
-entity 233{
+entity 225{
 "absmin" "-833 -801 -96.9688"
 "absmax" "-831 -799 -94.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-832 -800 -95.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4760,10 +4616,10 @@ entity 233{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 234{
+entity 226{
 "absmin" "-825 -737 -96.9688"
 "absmax" "-823 -735 -94.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-824 -736 -95.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4780,10 +4636,10 @@ entity 234{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 235{
+entity 227{
 "absmin" "-705 -817 -89"
 "absmax" "-703 -815 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-704 -816 -88"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -4798,11 +4654,11 @@ entity 235{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 236{
+entity 228{
 "modelindex" "100"
 "absmin" "-73 -981 -129"
 "absmax" "-31 -939 -47"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-52 -960 -64"
 "angles" "0 90 0"
@@ -4826,12 +4682,11 @@ entity 236{
 "box3" "-82 -990 -96"
 "idlebox" "-52 -1020 -96"
 "hop_spot" "-52 -920 -94"
-"box1owner" "369"
 }
-entity 237{
+entity 229{
 "absmin" "-369 -1297 -96.9688"
 "absmax" "-367 -1295 -94.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-368 -1296 -95.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -4848,10 +4703,10 @@ entity 237{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 238{
+entity 230{
 "absmin" "-513 -1313 -89"
 "absmax" "-511 -1311 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-512 -1312 -88"
 "angles" "0 0 0"
 "classname" "spawn_zombie"
@@ -4865,11 +4720,11 @@ entity 238{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 239{
+entity 231{
 "modelindex" "149"
 "absmin" "223 -785 -121"
 "absmax" "289 -719 -31"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "256 -752 -96"
 "angles" "0 180 0"
@@ -4881,7 +4736,6 @@ entity 239{
 "size" "64 64 88"
 "touch" "0:touch_perk"
 "think" "0:setup_perk"
-"chain" "1"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -4890,11 +4744,11 @@ entity 239{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 240{
+entity 232{
 "modelindex" "150"
 "absmin" "-552 -809 -97"
 "absmax" "-486 -743 -7"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-519 -776 -72"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -4910,8 +4764,8 @@ entity 240{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 241{
-"lastruntime" "16.980001"
+entity 233{
+"lastruntime" "7.473001"
 "origin" "-200 -776 -64"
 "classname" "info_player_start"
 "dimension_solid" "255"
@@ -4922,11 +4776,11 @@ entity 241{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 242{
+entity 234{
 "modelindex" "151"
 "absmin" "-241 -441 -3"
 "absmax" "-175 -375 87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-208 -408 22"
 "angles" "0 180 0"
@@ -4938,7 +4792,7 @@ entity 242{
 "size" "64 64 88"
 "touch" "0:mystery_touch"
 "think" "0:box_open2"
-"nextthink" "17.093000"
+"nextthink" "7.586000"
 "chain" "1"
 "spawnflags" "1"
 "owner" "1"
@@ -4951,8 +4805,8 @@ entity 242{
 "uniquespawnid" "1"
 "boxstatus" "1"
 }
-entity 243{
-"lastruntime" "16.980001"
+entity 235{
+"lastruntime" "7.473001"
 "origin" "358 -586 104"
 "classname" "light"
 "dimension_solid" "255"
@@ -4964,11 +4818,11 @@ entity 243{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 244{
+entity 236{
 "modelindex" "100"
 "absmin" "279 -693 55"
 "absmax" "321 -651 137"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "300 -672 120"
 "angles" "0 90 0"
@@ -4993,10 +4847,10 @@ entity 244{
 "idlebox" "300 -732 88"
 "hop_spot" "300 -632 90"
 }
-entity 245{
+entity 237{
 "absmin" "399 -801 87.0312"
 "absmax" "401 -799 89.0312"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "400 -800 88.0312"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -5013,10 +4867,10 @@ entity 245{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 246{
+entity 238{
 "absmin" "191 -865 95"
 "absmax" "193 -863 97"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "192 -864 96"
 "classname" "spawn_zombie_in"
 "spawnflags" "1"
@@ -5030,10 +4884,10 @@ entity 246{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 247{
+entity 239{
 "absmin" "-1 -801 -97"
 "absmax" "1 -799 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "0 -800 -96"
 "classname" "spawn_dog"
 "targetname" "r1"
@@ -5045,10 +4899,10 @@ entity 247{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 248{
+entity 240{
 "absmin" "-209 -545 -97"
 "absmax" "-207 -543 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-208 -544 -96"
 "classname" "spawn_dog"
 "targetname" "r1"
@@ -5060,11 +4914,11 @@ entity 248{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 249{
+entity 241{
 "modelindex" "122"
 "absmin" "-161 -681 -153"
 "absmax" "-95 -615 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-128 -648 -128"
 "angles" "0 142 0"
 "classname" "place_model"
@@ -5080,11 +4934,11 @@ entity 249{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 250{
+entity 242{
 "modelindex" "122"
 "absmin" "-369 -617 -153"
 "absmax" "-303 -551 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-336 -584 -128"
 "angles" "0 15 0"
 "classname" "place_model"
@@ -5100,11 +4954,11 @@ entity 250{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 251{
+entity 243{
 "modelindex" "122"
 "absmin" "269.804 -468.154 50"
 "absmax" "335.804 -402.154 140"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "302.804 -435.154 75"
 "angles" "90 221 0"
 "classname" "place_model"
@@ -5120,11 +4974,11 @@ entity 251{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 252{
+entity 244{
 "modelindex" "153"
 "absmin" "-233 -841 -153"
 "absmax" "-167 -775 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-200 -808 -128"
 "classname" "place_model"
 "model" "progs/props/mainframe_pad.mdl"
@@ -5139,8 +4993,8 @@ entity 252{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 253{
-"lastruntime" "16.980001"
+entity 245{
+"lastruntime" "7.473001"
 "origin" "-448 -848 0"
 "classname" "light"
 "dimension_solid" "255"
@@ -5152,11 +5006,11 @@ entity 253{
 "uniquespawnid" "1"
 "wait" "1"
 }
-entity 254{
+entity 246{
 "modelindex" "124"
 "absmin" "-233 -665 103"
 "absmax" "-167 -599 193"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-200 -632 128"
 "classname" "place_model"
 "model" "progs/props/chandelier.mdl"
@@ -5171,10 +5025,10 @@ entity 254{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 255{
+entity 247{
 "absmin" "63 -1313 -89"
 "absmax" "65 -1311 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "64 -1312 -88"
 "angles" "0 0 0"
 "classname" "spawn_zombie"
@@ -5188,10 +5042,10 @@ entity 255{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 256{
+entity 248{
 "absmin" "-369 -1209 -96.9688"
 "absmax" "-367 -1207 -94.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-368 -1208 -95.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -5208,11 +5062,11 @@ entity 256{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 257{
+entity 249{
 "modelindex" "141"
 "absmin" "-393 -965 -149"
 "absmax" "-327 -899 -59"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-360 -932 -124"
 "angles" "7 81 5"
 "classname" "place_model"
@@ -5228,10 +5082,10 @@ entity 257{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 258{
+entity 250{
 "absmin" "391 -729 87.0312"
 "absmax" "393 -727 89.0312"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "392 -728 88.0312"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -5248,10 +5102,10 @@ entity 258{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 259{
+entity 251{
 "absmin" "-569 -641 -89"
 "absmax" "-567 -639 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-568 -640 -88"
 "angles" "0 0 0"
 "classname" "spawn_zombie"
@@ -5265,10 +5119,10 @@ entity 259{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 260{
+entity 252{
 "absmin" "-569 -753 -96.9688"
 "absmax" "-567 -751 -94.9688"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-568 -752 -95.9688"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -5285,22 +5139,20 @@ entity 260{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 261{
+entity 253{
 "modelindex" "100"
 "absmin" "-549 -905 -129"
 "absmax" "-507 -863 -47"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-528 -884 -64"
 "classname" "window"
 "model" "models/Misc/window.mdl"
-"frame" "13"
 "mins" "-20 -20 -64"
 "maxs" "20 20 16"
 "size" "40 40 80"
 "touch" "0:window_touch"
-"think" "0:SUB_Null"
-"health" "4"
+"health" "6"
 "targetname" "bi1"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -5314,13 +5166,12 @@ entity 261{
 "box3" "-558 -854 -96"
 "idlebox" "-588 -884 -96"
 "hop_spot" "-488 -884 -94"
-"box1owner" "379"
 }
-entity 262{
+entity 254{
 "modelindex" "121"
 "absmin" "-729 -649 -113"
 "absmax" "-663 -583 -23"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-696 -616 -88"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -5336,11 +5187,11 @@ entity 262{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 263{
+entity 255{
 "modelindex" "121"
 "absmin" "-729 -745 -113"
 "absmax" "-663 -679 -23"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-696 -712 -88"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -5356,12 +5207,12 @@ entity 263{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 264{
+entity 256{
 "modelindex" "34"
 "absmin" "982 1134 -210"
 "absmax" "1098 1142 -102"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp_cost"
@@ -5373,10 +5224,10 @@ entity 264{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "264"
+"enemy" "256"
 "spawnflags" "32"
 "target" "r3"
-"owner" "264"
+"owner" "256"
 "movedir" "1 0 0"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -5400,13 +5251,13 @@ entity 264{
 "target8" "r3"
 "oldmodel" "*33"
 "dmg" "2"
-"trigger_field" "353"
+"trigger_field" "345"
 }
-entity 265{
+entity 257{
 "modelindex" "146"
 "absmin" "223 1415 -233"
 "absmax" "289 1481 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "256 1448 -208"
 "angles" "0 337 0"
 "classname" "place_model"
@@ -5423,10 +5274,10 @@ entity 265{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 266{
+entity 258{
 "absmin" "-666 -346 -130"
 "absmax" "266 -174 162"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5445,10 +5296,10 @@ entity 266{
 "target2" "r2"
 "target3" "r6"
 }
-entity 267{
+entity 259{
 "absmin" "270 -346 54"
 "absmax" "1098 50 162"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5467,10 +5318,10 @@ entity 267{
 "target2" "r2"
 "target3" "r3"
 }
-entity 268{
+entity 260{
 "absmin" "982 54 -210"
 "absmax" "1098 1138 162"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5489,10 +5340,10 @@ entity 268{
 "target2" "r3"
 "target3" "r4"
 }
-entity 269{
+entity 261{
 "absmin" "478 1142 -210"
 "absmax" "1098 1706 -102"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5511,10 +5362,10 @@ entity 269{
 "target2" "r4"
 "target3" "r5"
 }
-entity 270{
+entity 262{
 "absmin" "1023 1487 -177"
 "absmax" "1025 1489 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "1024 1488 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5527,10 +5378,10 @@ entity 270{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 271{
+entity 263{
 "absmin" "799 1439 -177"
 "absmax" "801 1441 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "800 1440 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5543,10 +5394,10 @@ entity 271{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 272{
+entity 264{
 "absmin" "-1178 1390 -210"
 "absmax" "474 1706 50"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5565,10 +5416,10 @@ entity 272{
 "target2" "r5"
 "target3" "r6"
 }
-entity 273{
+entity 265{
 "absmin" "-769 1535 -177"
 "absmax" "-767 1537 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-768 1536 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5581,10 +5432,10 @@ entity 273{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 274{
+entity 266{
 "absmin" "-514 158 -210"
 "absmax" "114 1386 -94"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5603,10 +5454,10 @@ entity 274{
 "target2" "r6"
 "target3" "r1"
 }
-entity 275{
+entity 267{
 "absmin" "-193 1327 -177"
 "absmax" "-191 1329 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-192 1328 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5619,10 +5470,10 @@ entity 275{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 276{
+entity 268{
 "absmin" "191 1023 -225"
 "absmax" "193 1025 -223"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "192 1024 -224"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5635,10 +5486,10 @@ entity 276{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 277{
+entity 269{
 "absmin" "-241 383 -161"
 "absmax" "-239 385 -159"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-240 384 -160"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5651,10 +5502,10 @@ entity 277{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 278{
+entity 270{
 "absmin" "-1610 998 -210"
 "absmax" "-878 1458 -102"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5673,12 +5524,12 @@ entity 278{
 "target2" "r7"
 "target3" "r8"
 }
-entity 279{
+entity 271{
 "modelindex" "42"
 "absmin" "-1182 1398 -210"
 "absmax" "-874 1586 50"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp_cost"
@@ -5690,9 +5541,9 @@ entity 279{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "279"
+"enemy" "271"
 "target" "r5"
-"owner" "279"
+"owner" "271"
 "movedir" "2.65358e-017 1 -0"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -5716,12 +5567,12 @@ entity 279{
 "target8" "r5"
 "oldmodel" "*41"
 "dmg" "2"
-"trigger_field" "354"
+"trigger_field" "346"
 }
-entity 280{
+entity 272{
 "absmin" "-1568.5 1111 -177"
 "absmax" "-1566.5 1113 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1567.5 1112 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5734,10 +5585,10 @@ entity 280{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 281{
+entity 273{
 "absmin" "-1610 -106.001 -210"
 "absmax" "-1350 994 -22"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5756,10 +5607,10 @@ entity 281{
 "target2" "r8"
 "target3" "r9"
 }
-entity 282{
+entity 274{
 "absmin" "-1337 351 -177"
 "absmax" "-1335 353 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1336 352 -176"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5772,10 +5623,10 @@ entity 282{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 283{
+entity 275{
 "absmin" "-1346 -346 -130"
 "absmax" "-670 -46 -22"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "trigger_activator"
 "model" ""
@@ -5794,10 +5645,10 @@ entity 283{
 "target2" "r9"
 "target3" "r1"
 }
-entity 284{
+entity 276{
 "absmin" "-1249 -465 -97"
 "absmax" "-1247 -463 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1248 -464 -96"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -5810,12 +5661,12 @@ entity 284{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 285{
+entity 277{
 "modelindex" "45"
 "absmin" "470 1590 -210"
 "absmax" "478 1706 -102"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp_cost"
@@ -5827,9 +5678,9 @@ entity 285{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "285"
+"enemy" "277"
 "target" "r4"
-"owner" "285"
+"owner" "277"
 "movedir" "2.65358e-017 0 -1"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -5853,14 +5704,14 @@ entity 285{
 "target8" "r4"
 "oldmodel" "*44"
 "dmg" "2"
-"trigger_field" "355"
+"trigger_field" "347"
 }
-entity 286{
+entity 278{
 "modelindex" "46"
 "absmin" "-258 -174 -202"
 "absmax" "-142 158 -22"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp"
@@ -5872,9 +5723,9 @@ entity 286{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "286"
+"enemy" "278"
 "spawnflags" "64"
-"owner" "286"
+"owner" "278"
 "movedir" "2.65358e-017 0 -1"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -5890,14 +5741,14 @@ entity 286{
 "speed" "100"
 "oldmodel" "*45"
 "dmg" "2"
-"trigger_field" "356"
+"trigger_field" "348"
 }
-entity 287{
+entity 279{
 "modelindex" "47"
 "absmin" "-670 -346 -130"
 "absmax" "-662 -230 -22"
 "ltime" "0.100000"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "door_nzp_cost"
@@ -5909,9 +5760,9 @@ entity 287{
 "use" "0:door_use"
 "think" "0:LinkDoors"
 "blocked" "0:door_blocked"
-"enemy" "287"
+"enemy" "279"
 "target" "r9"
-"owner" "287"
+"owner" "279"
 "movedir" "-7.96075e-017 -1 -0"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -5935,12 +5786,12 @@ entity 287{
 "target8" "r9"
 "oldmodel" "*46"
 "dmg" "2"
-"trigger_field" "357"
+"trigger_field" "349"
 }
-entity 288{
+entity 280{
 "absmin" "486 -26 54"
 "absmax" "522 -14 114"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -5961,11 +5812,11 @@ entity 288{
 "cost" "1000"
 "cost2" "300"
 }
-entity 289{
+entity 281{
 "modelindex" "156"
 "absmin" "471 -49 87"
 "absmax" "537 17 177"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "504 -16 112"
 "angles" "0 180 0"
 "classname" "place_model"
@@ -5981,10 +5832,10 @@ entity 289{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 290{
+entity 282{
 "absmin" "-545 -257 -97"
 "absmax" "-543 -255 -95"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-544 -256 -96"
 "classname" "spawn_dog"
 "targetname" "r1"
@@ -5996,10 +5847,10 @@ entity 290{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 291{
+entity 283{
 "absmin" "-946 -26 -130"
 "absmax" "-910 -14 -70"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "classname" "buy_weapon"
 "model" ""
@@ -6020,11 +5871,11 @@ entity 291{
 "cost" "1000"
 "cost2" "300"
 }
-entity 292{
+entity 284{
 "modelindex" "156"
 "absmin" "-961 -49 -97"
 "absmax" "-895 17 -7"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-928 -16 -72"
 "angles" "0 180 0"
 "classname" "place_model"
@@ -6040,11 +5891,11 @@ entity 292{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 293{
+entity 285{
 "modelindex" "157"
 "absmin" "-1191 471 -177"
 "absmax" "-1125 537 -87"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1158 504 -152"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -6060,11 +5911,11 @@ entity 293{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 294{
+entity 286{
 "modelindex" "158"
 "absmin" "-401 -41 -169"
 "absmax" "-335 25 -79"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-368 -8 -144"
 "angles" "0 90 0"
 "classname" "place_model"
@@ -6080,11 +5931,11 @@ entity 294{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 295{
+entity 287{
 "modelindex" "140"
 "absmin" "-1625 1239 -193"
 "absmax" "-1559 1305 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1592 1272 -168"
 "angles" "0 270 0"
 "classname" "place_model"
@@ -6100,11 +5951,11 @@ entity 295{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 296{
+entity 288{
 "modelindex" "140"
 "absmin" "-1225 223 -193"
 "absmax" "-1159 289 -103"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1192 256 -168"
 "angles" "0 184 0"
 "classname" "place_model"
@@ -6120,10 +5971,10 @@ entity 296{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 297{
+entity 289{
 "absmin" "671 607 -41"
 "absmax" "673 609 -39"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "672 608 -40"
 "classname" "spawn_dog_in"
 "spawnflags" "1"
@@ -6136,11 +5987,11 @@ entity 297{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 298{
+entity 290{
 "modelindex" "50"
 "absmin" "-402 -962 -130"
 "absmax" "-22 -950 -22"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*49"
 "mins" "-401 -961 -129"
@@ -6154,10 +6005,10 @@ entity 298{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 299{
+entity 291{
 "absmin" "743 -249 216.555"
 "absmax" "745 -247 218.555"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "744 -248 217.555"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -6175,10 +6026,10 @@ entity 299{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 300{
+entity 292{
 "absmin" "807 -241 87.0312"
 "absmax" "809 -239 89.0312"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "808 -240 88.0312"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -6194,12 +6045,12 @@ entity 300{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
-"cost" "10"
+"cost" "5"
 }
-entity 301{
+entity 293{
 "absmin" "-1 2063 -176.969"
 "absmax" "1 2065 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "0 2064 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -6216,11 +6067,11 @@ entity 301{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 302{
+entity 294{
 "modelindex" "51"
 "absmin" "-1754 990 -210"
 "absmax" "-1350 998 -78"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*50"
 "mins" "-1753 991 -209"
@@ -6234,11 +6085,11 @@ entity 302{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 303{
+entity 295{
 "modelindex" "52"
 "absmin" "-1562 538 -210"
 "absmax" "-1158 546 -94"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*51"
 "mins" "-1561 539 -209"
@@ -6252,11 +6103,11 @@ entity 303{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 304{
+entity 296{
 "modelindex" "53"
 "absmin" "-1562 534 -210"
 "absmax" "-1270 542 -110"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "func_wall"
@@ -6272,10 +6123,10 @@ entity 304{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 305{
+entity 297{
 "absmin" "-785 1967 -176.969"
 "absmax" "-783 1969 -174.969"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-784 1968 -175.969"
 "classname" "path_corner"
 "touch" "0:SUB_Null"
@@ -6292,11 +6143,11 @@ entity 305{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 306{
+entity 298{
 "modelindex" "145"
 "absmin" "839 1535 -207"
 "absmax" "905 1601 -117"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "872 1568 -182"
 "angles" "0 172 0"
 "classname" "place_model"
@@ -6312,11 +6163,11 @@ entity 306{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 307{
+entity 299{
 "modelindex" "145"
 "absmin" "823 1527 -233"
 "absmax" "889 1593 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "856 1560 -208"
 "angles" "0 88 0"
 "classname" "place_model"
@@ -6332,11 +6183,11 @@ entity 307{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 308{
+entity 300{
 "modelindex" "142"
 "absmin" "-945 -361 -153"
 "absmax" "-879 -295 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-912 -328 -128"
 "angles" "0 213 0"
 "classname" "place_model"
@@ -6352,11 +6203,11 @@ entity 308{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 309{
+entity 301{
 "modelindex" "142"
 "absmin" "-945 -233 -153"
 "absmax" "-879 -167 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-912 -200 -128"
 "angles" "0 140 0"
 "classname" "place_model"
@@ -6372,11 +6223,11 @@ entity 309{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 310{
+entity 302{
 "modelindex" "142"
 "absmin" "-1209 -73 -153"
 "absmax" "-1143 -7 -63"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1176 -40 -128"
 "angles" "0 115 0"
 "classname" "place_model"
@@ -6392,11 +6243,11 @@ entity 310{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 311{
+entity 303{
 "modelindex" "54"
 "absmin" "598 -186 54"
 "absmax" "786 -77.9952 138"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*53"
 "mins" "599 -185 55"
@@ -6410,10 +6261,10 @@ entity 311{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 312{
+entity 304{
 "absmin" "-665 599 -137"
 "absmax" "-663 601 -135"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-664 600 -136"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -6428,10 +6279,10 @@ entity 312{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 313{
+entity 305{
 "absmin" "-629 927 -257"
 "absmax" "-587 969 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-608 948 -192"
 "angles" "0 80 0"
@@ -6456,10 +6307,10 @@ entity 313{
 "idlebox" "-618.419 888.911 -224"
 "hop_spot" "-601.054 987.392 -222"
 }
-entity 314{
+entity 306{
 "absmin" "-381 467 -233"
 "absmax" "-339 509 -151"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-360 488 -168"
 "angles" "0 344 0"
@@ -6484,10 +6335,10 @@ entity 314{
 "idlebox" "-417.676 504.538 -200"
 "hop_spot" "-321.55 476.975 -198"
 }
-entity 315{
+entity 307{
 "absmin" "-785 335 -145"
 "absmax" "-783 337 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-784 336 -144"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -6502,10 +6353,10 @@ entity 315{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 316{
+entity 308{
 "absmin" "44.0234 915.285 -257"
 "absmax" "86.0234 957.285 -175"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "65.0234 936.285 -192"
 "angles" "0 102 0"
@@ -6530,10 +6381,10 @@ entity 316{
 "idlebox" "77.4981 877.596 -224"
 "hop_spot" "56.7069 975.411 -222"
 }
-entity 317{
+entity 309{
 "absmin" "223 703 -161"
 "absmax" "225 705 -159"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "224 704 -160"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -6548,10 +6399,10 @@ entity 317{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 318{
+entity 310{
 "absmin" "-9 591 -137"
 "absmax" "-7 593 -135"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-8 592 -136"
 "angles" "0 0 0"
 "classname" "spawn_zombie_in"
@@ -6566,10 +6417,10 @@ entity 318{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 319{
+entity 311{
 "absmin" "-109 275 -209"
 "absmax" "-67 317 -127"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "origin" "-88 296 -144"
 "angles" "0 168 0"
@@ -6594,11 +6445,11 @@ entity 319{
 "idlebox" "-29.3111 283.525 -176"
 "hop_spot" "-127.126 304.316 -174"
 }
-entity 320{
+entity 312{
 "modelindex" "141"
 "absmin" "-121 263 -233"
 "absmax" "-55 329 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-88 296 -208"
 "angles" "10 169 0"
 "classname" "place_model"
@@ -6614,11 +6465,11 @@ entity 320{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 321{
+entity 313{
 "modelindex" "141"
 "absmin" "-153 495 -241"
 "absmax" "-87 561 -151"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-120 528 -216"
 "angles" "340 347 350"
 "classname" "place_model"
@@ -6634,11 +6485,11 @@ entity 321{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 322{
+entity 314{
 "modelindex" "145"
 "absmin" "-105 183 -225"
 "absmax" "-39 249 -135"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-72 216 -200"
 "angles" "9 28 0"
 "classname" "place_model"
@@ -6654,11 +6505,11 @@ entity 322{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 323{
+entity 315{
 "modelindex" "141"
 "absmin" "-393 455 -249"
 "absmax" "-327 521 -159"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-360 488 -224"
 "angles" "0 171 9"
 "classname" "place_model"
@@ -6674,11 +6525,11 @@ entity 323{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 324{
+entity 316{
 "modelindex" "141"
 "absmin" "-369 687 -273"
 "absmax" "-303 753 -183"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-336 720 -248"
 "angles" "340 26 9"
 "classname" "place_model"
@@ -6694,11 +6545,11 @@ entity 324{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 325{
+entity 317{
 "modelindex" "145"
 "absmin" "-377 775 -273"
 "absmax" "-311 841 -183"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-344 808 -248"
 "angles" "15 123 20"
 "classname" "place_model"
@@ -6714,11 +6565,11 @@ entity 325{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 326{
+entity 318{
 "modelindex" "145"
 "absmin" "-409 543 -257"
 "absmax" "-343 609 -167"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-376 576 -232"
 "angles" "340 348 345"
 "classname" "place_model"
@@ -6734,11 +6585,11 @@ entity 326{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 327{
+entity 319{
 "modelindex" "145"
 "absmin" "-521 183 -221"
 "absmax" "-455 249 -131"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-488 216 -196"
 "angles" "0 293 0"
 "classname" "place_model"
@@ -6754,11 +6605,11 @@ entity 327{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 328{
+entity 320{
 "modelindex" "145"
 "absmin" "-617 -129 -225"
 "absmax" "-551 -63 -135"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-584 -96 -200"
 "angles" "0 140 0"
 "classname" "place_model"
@@ -6774,11 +6625,11 @@ entity 328{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 329{
+entity 321{
 "modelindex" "133"
 "absmin" "-511.286 256.897 -189"
 "absmax" "-445.286 322.897 -99"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-478.286 289.897 -164"
 "angles" "90 177 0"
 "classname" "place_model"
@@ -6794,11 +6645,11 @@ entity 329{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 330{
+entity 322{
 "modelindex" "55"
 "absmin" "-258 142 86"
 "absmax" "-230 274 114"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*54"
 "mins" "-257 143 87"
@@ -6812,11 +6663,11 @@ entity 330{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 331{
+entity 323{
 "modelindex" "146"
 "absmin" "-1161 1463 -233"
 "absmax" "-1095 1529 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-1128 1496 -208"
 "angles" "0 250 0"
 "classname" "place_model"
@@ -6833,11 +6684,11 @@ entity 331{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 332{
+entity 324{
 "modelindex" "56"
 "absmin" "-1178 1466 -202"
 "absmax" "-970 1746 -22"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*55"
 "mins" "-1177 1467 -201"
@@ -6851,11 +6702,11 @@ entity 332{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 333{
+entity 325{
 "modelindex" "145"
 "absmin" "807 1543 -207"
 "absmax" "873 1609 -117"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "840 1576 -182"
 "angles" "0 172 0"
 "classname" "place_model"
@@ -6871,11 +6722,11 @@ entity 333{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 334{
+entity 326{
 "modelindex" "133"
 "absmin" "-609.866 3.6022 -209"
 "absmax" "-543.866 69.6022 -119"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-576.866 36.6022 -184"
 "angles" "0 5 90"
 "classname" "place_model"
@@ -6891,11 +6742,11 @@ entity 334{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 335{
+entity 327{
 "modelindex" "141"
 "absmin" "-569 895 -277"
 "absmax" "-503 961 -187"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-536 928 -252"
 "angles" "5 297 355"
 "classname" "place_model"
@@ -6911,11 +6762,11 @@ entity 335{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 336{
+entity 328{
 "modelindex" "145"
 "absmin" "-121 775 -273"
 "absmax" "-55 841 -183"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-88 808 -248"
 "angles" "340 151 345"
 "classname" "place_model"
@@ -6931,11 +6782,11 @@ entity 336{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 337{
+entity 329{
 "modelindex" "139"
 "absmin" "-113 607 -233"
 "absmax" "-47 673 -143"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-80 640 -208"
 "angles" "5 296 15"
 "classname" "place_model"
@@ -6951,11 +6802,11 @@ entity 337{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 338{
+entity 330{
 "modelindex" "133"
 "absmin" "-100.061 391.263 -205"
 "absmax" "-34.0612 457.263 -115"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "origin" "-67.0612 424.263 -180"
 "angles" "345 172 270"
 "classname" "place_model"
@@ -6971,11 +6822,11 @@ entity 338{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 339{
+entity 331{
 "modelindex" "57"
 "absmin" "-382 -658 -122"
 "absmax" "-18 -394 46"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*56"
 "mins" "-381 -657 -121"
@@ -6989,11 +6840,11 @@ entity 339{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 340{
+entity 332{
 "modelindex" "58"
 "absmin" "-1122 -362 -130"
 "absmax" "-1110 -174 -14"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*57"
 "mins" "-1121 -361 -129"
@@ -7007,11 +6858,11 @@ entity 340{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 341{
+entity 333{
 "modelindex" "59"
 "absmin" "-1754 -250 -210"
 "absmax" "-1558 -242 -94"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "func_wall"
@@ -7027,11 +6878,11 @@ entity 341{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 342{
+entity 334{
 "modelindex" "60"
 "absmin" "-1750 1206 -204"
 "absmax" "-1658 1498 -62"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "func_wall"
@@ -7047,11 +6898,11 @@ entity 342{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 343{
+entity 335{
 "modelindex" "61"
 "absmin" "-1662 1206 -202"
 "absmax" "-1654 1498 -18"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*60"
 "mins" "-1661 1207 -201"
@@ -7065,11 +6916,11 @@ entity 343{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 344{
+entity 336{
 "modelindex" "62"
 "absmin" "-1178 1382 -204"
 "absmax" "-878 1746 -54"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "7"
 "solid" "4"
 "classname" "func_wall"
@@ -7085,11 +6936,11 @@ entity 344{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 345{
+entity 337{
 "modelindex" "63"
 "absmin" "794 466 -202"
 "absmax" "1286 854 -34"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*62"
 "mins" "795 467 -201"
@@ -7103,11 +6954,11 @@ entity 345{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 346{
+entity 338{
 "modelindex" "64"
 "absmin" "966 162 -2"
 "absmax" "1194 170 94"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "classname" "func_illusionary"
 "model" "*63"
 "mins" "967 163 -1"
@@ -7121,16 +6972,160 @@ entity 346{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 347{
+entity 339{
 "absmin" "-353 1551 -18"
 "absmax" "65 1589 194"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "solid" "1"
 "mins" "-352 1552 -17"
 "maxs" "64 1588 193"
 "size" "416 36 210"
 "touch" "0:door_trigger_touch"
-"owner" "42"
+"owner" "40"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 340{
+"absmin" "-1369 -121.001 -138"
+"absmax" "-1331 -31 -14"
+"lastruntime" "7.473001"
+"solid" "1"
+"mins" "-1368 -120.001 -137"
+"maxs" "-1332 -32 -15"
+"size" "36 88.0005 122"
+"touch" "0:door_trigger_touch"
+"owner" "131"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 341{
+"absmin" "-1625 979 -218"
+"absmax" "-1479 1017 -94"
+"lastruntime" "7.473001"
+"solid" "1"
+"mins" "-1624 980 -217"
+"maxs" "-1480 1016 -95"
+"size" "144 36 122"
+"touch" "0:door_trigger_touch"
+"owner" "136"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 342{
+"absmin" "967 31 46"
+"absmax" "1113 69 170"
+"lastruntime" "7.473001"
+"solid" "1"
+"mins" "968 32 47"
+"maxs" "1112 68 169"
+"size" "144 36 122"
+"touch" "0:door_trigger_touch"
+"owner" "218"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 343{
+"absmin" "-529 1367 -218"
+"absmax" "129 1405 138"
+"lastruntime" "7.473001"
+"solid" "1"
+"mins" "-528 1368 -217"
+"maxs" "128 1404 137"
+"size" "656 36 354"
+"touch" "0:door_trigger_touch"
+"owner" "220"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 344{
+"absmin" "247 -361 46"
+"absmax" "285 -215 170"
+"lastruntime" "7.473001"
+"solid" "1"
+"mins" "248 -360 47"
+"maxs" "284 -216 169"
+"size" "36 144 122"
+"touch" "0:door_trigger_touch"
+"owner" "222"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 345{
+"absmin" "967 1119 -218"
+"absmax" "1113 1157 -94"
+"lastruntime" "7.473001"
+"solid" "1"
+"mins" "968 1120 -217"
+"maxs" "1112 1156 -95"
+"size" "144 36 122"
+"touch" "0:door_trigger_touch"
+"owner" "256"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 346{
+"absmin" "-1197 1383 -218"
+"absmax" "-859 1601 58"
+"lastruntime" "7.473001"
+"solid" "1"
+"mins" "-1196 1384 -217"
+"maxs" "-860 1600 57"
+"size" "336 216 274"
+"touch" "0:door_trigger_touch"
+"owner" "271"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 347{
+"absmin" "455 1575 -218"
+"absmax" "493 1721 -94"
+"lastruntime" "7.473001"
+"solid" "1"
+"mins" "456 1576 -217"
+"maxs" "492 1720 -95"
+"size" "36 144 122"
+"touch" "0:door_trigger_touch"
+"owner" "277"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7140,15 +7135,15 @@ entity 347{
 "uniquespawnid" "1"
 }
 entity 348{
-"absmin" "-1369 -121.001 -138"
-"absmax" "-1331 -31 -14"
-"lastruntime" "16.980001"
+"absmin" "-273 -189 -210"
+"absmax" "-127 173 -14"
+"lastruntime" "7.473001"
 "solid" "1"
-"mins" "-1368 -120.001 -137"
-"maxs" "-1332 -32 -15"
-"size" "36 88.0005 122"
+"mins" "-272 -188 -209"
+"maxs" "-128 172 -15"
+"size" "144 360 194"
 "touch" "0:door_trigger_touch"
-"owner" "137"
+"owner" "278"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7158,103 +7153,13 @@ entity 348{
 "uniquespawnid" "1"
 }
 entity 349{
-"absmin" "-1625 979 -218"
-"absmax" "-1479 1017 -94"
-"lastruntime" "16.980001"
+"absmin" "-685 -361 -138"
+"absmax" "-647 -215 -14"
+"lastruntime" "7.473001"
 "solid" "1"
-"mins" "-1624 980 -217"
-"maxs" "-1480 1016 -95"
-"size" "144 36 122"
-"touch" "0:door_trigger_touch"
-"owner" "143"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 350{
-"absmin" "967 31 46"
-"absmax" "1113 69 170"
-"lastruntime" "16.980001"
-"solid" "1"
-"mins" "968 32 47"
-"maxs" "1112 68 169"
-"size" "144 36 122"
-"touch" "0:door_trigger_touch"
-"owner" "226"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 351{
-"absmin" "-529 1367 -218"
-"absmax" "129 1405 138"
-"lastruntime" "16.980001"
-"solid" "1"
-"mins" "-528 1368 -217"
-"maxs" "128 1404 137"
-"size" "656 36 354"
-"touch" "0:door_trigger_touch"
-"owner" "228"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 352{
-"absmin" "247 -361 46"
-"absmax" "285 -215 170"
-"lastruntime" "16.980001"
-"solid" "1"
-"mins" "248 -360 47"
-"maxs" "284 -216 169"
+"mins" "-684 -360 -137"
+"maxs" "-648 -216 -15"
 "size" "36 144 122"
-"touch" "0:door_trigger_touch"
-"owner" "230"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 353{
-"absmin" "967 1119 -218"
-"absmax" "1113 1157 -94"
-"lastruntime" "16.980001"
-"solid" "1"
-"mins" "968 1120 -217"
-"maxs" "1112 1156 -95"
-"size" "144 36 122"
-"touch" "0:door_trigger_touch"
-"owner" "264"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 354{
-"absmin" "-1197 1383 -218"
-"absmax" "-859 1601 58"
-"lastruntime" "16.980001"
-"solid" "1"
-"mins" "-1196 1384 -217"
-"maxs" "-860 1600 57"
-"size" "336 216 274"
 "touch" "0:door_trigger_touch"
 "owner" "279"
 "dimension_solid" "255"
@@ -7265,16 +7170,9 @@ entity 354{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 355{
-"absmin" "455 1575 -218"
-"absmax" "493 1721 -94"
-"lastruntime" "16.980001"
-"solid" "1"
-"mins" "456 1576 -217"
-"maxs" "492 1720 -95"
-"size" "36 144 122"
-"touch" "0:door_trigger_touch"
-"owner" "285"
+entity 350{
+"lastruntime" "7.473001"
+"classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7282,121 +7180,14 @@ entity 355{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
+"aistatus" "0"
+"goaldummy" "351"
+"larm" "353"
+"rarm" "354"
+"head" "352"
 }
-entity 356{
-"absmin" "-273 -189 -210"
-"absmax" "-127 173 -14"
-"lastruntime" "16.980001"
-"solid" "1"
-"mins" "-272 -188 -209"
-"maxs" "-128 172 -15"
-"size" "144 360 194"
-"touch" "0:door_trigger_touch"
-"owner" "286"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 357{
-"absmin" "-685 -361 -138"
-"absmax" "-647 -215 -14"
-"lastruntime" "16.980001"
-"solid" "1"
-"mins" "-684 -360 -137"
-"maxs" "-648 -216 -15"
-"size" "36 144 122"
-"touch" "0:door_trigger_touch"
-"owner" "287"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 358{
-"modelindex" "115"
-"absmin" "-201 -777 -64"
-"absmax" "-199 -775 -62"
-"lastruntime" "16.980001"
-"origin" "-200 -776 -63"
-"classname" "mystery_box_tp_spot"
-"model" "progs/Misc/teddy.mdl"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 359{
-"modelindex" "72"
-"absmin" "200.6 -300.93 -128.969"
-"absmax" "218.6 -282.93 -64.9688"
-"lastruntime" "16.980001"
-"movetype" "3"
-"solid" "5"
-"origin" "209.6 -291.93 -95.9688"
-"oldorigin" "210.134 -291.816 -95.9688"
-"velocity" "-41.0735 -8.77303 0"
-"angles" "0 192.997 0"
-"classname" "ai_zombie"
-"model" "models/ai/zbod.mdl"
-"frame" "53"
-"mins" "-8 -8 -32"
-"maxs" "8 8 30"
-"size" "16 16 62"
-"think" "0:zombie_walkb2"
-"nextthink" "17.119999"
-"health" "150"
-"takedamage" "1"
-"flags" "1568"
-"watertype" "-1"
-"ideal_yaw" "193"
-"yaw_speed" "20"
-"goalentity" "10"
-"target" "b3"
-"gravity" "1"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"goalorigin" "22 -332 -96"
-"cost" "113"
-"reload_delay" "44.910004"
-"aistatus" "1"
-"outside" "1"
-"goaldummy" "360"
-"walktype" "2"
-"th_walk" "0:Zombie_Walk_Setup"
-"th_die" "0:Zombie_Death"
-"th_melee" "0:zombie_attack"
-"th_idle" "0:zombie_idle"
-"th_windowhop" "0:zombie_hop1"
-"th_fall" "0:zombie_fall1"
-"th_land" "0:zombie_land1"
-"hop_step" "3"
-"sound_time" "17.365030"
-"s_time" "16.970001"
-"larm" "481"
-"rarm" "480"
-"head" "479"
-"currentHitBoxSetup" "5"
-"droptime" "10.710000"
-}
-entity 360{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
+entity 351{
+"lastruntime" "7.473001"
 "classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -7406,13 +7197,142 @@ entity 360{
 "Version" "1"
 "uniquespawnid" "1"
 }
-entity 361{
+entity 352{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
 "classname" "in_ai_zombie_head"
-"owner" "359"
+"owner" "350"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 353{
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_larm"
+"owner" "350"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 354{
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "350"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 355{
+"lastruntime" "7.473001"
+"classname" "freeZombieEntity"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+"aistatus" "0"
+"goaldummy" "356"
+"larm" "358"
+"rarm" "359"
+"head" "357"
+}
+entity 356{
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 357{
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_head"
+"owner" "355"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 358{
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_larm"
+"owner" "355"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 359{
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "355"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 360{
+"lastruntime" "7.473001"
+"classname" "freeZombieEntity"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+"aistatus" "0"
+"goaldummy" "361"
+"larm" "363"
+"rarm" "364"
+"head" "362"
+}
+entity 361{
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7424,10 +7344,10 @@ entity 361{
 entity 362{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "359"
+"classname" "in_ai_zombie_head"
+"owner" "360"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7439,10 +7359,10 @@ entity 362{
 entity 363{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "359"
+"classname" "in_ai_zombie_larm"
+"owner" "360"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7452,32 +7372,12 @@ entity 363{
 "uniquespawnid" "1"
 }
 entity 364{
-"modelindex" "72"
-"absmin" "-710.976 -296.664 55.0312"
-"absmax" "-692.976 -278.664 119.031"
-"lastruntime" "16.980001"
-"movetype" "3"
-"solid" "5"
-"origin" "-701.976 -287.664 88.0312"
-"oldorigin" "-701.976 -287.664 88.0312"
-"classname" "ai_zombie"
-"model" "models/ai/zbod.mdl"
-"frame" "3"
-"mins" "-8 -8 -32"
-"maxs" "8 8 30"
-"size" "16 16 62"
-"think" "0:zombie_idle4"
-"nextthink" "17.071011"
-"health" "150"
-"takedamage" "1"
-"enemy" "72"
-"flags" "1568"
-"watertype" "-1"
-"ideal_yaw" "85"
-"yaw_speed" "20"
-"goalentity" "72"
-"target" "b4"
-"gravity" "1"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "360"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7485,35 +7385,10 @@ entity 364{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
-"goalorigin" "-702 -288 88"
-"reload_delay" "45.571007"
-"aistatus" "1"
-"outside" "1"
-"chase_time" "17.071007"
-"goaldummy" "365"
-"walktype" "3"
-"th_walk" "0:Zombie_Walk_Setup"
-"th_die" "0:Zombie_Death"
-"th_melee" "0:zombie_attack"
-"th_idle" "0:zombie_idle"
-"th_windowhop" "0:zombie_hop1"
-"th_fall" "0:zombie_fall1"
-"th_land" "0:zombie_land1"
-"hop_step" "4"
-"sound_time" "19.224928"
-"s_time" "16.981001"
-"laststep" "1"
-"larm" "484"
-"rarm" "483"
-"head" "482"
-"currentHitBoxSetup" "2"
-"droptime" "10.721001"
 }
 entity 365{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
+"lastruntime" "7.473001"
+"classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7521,14 +7396,15 @@ entity 365{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
+"aistatus" "0"
+"goaldummy" "366"
+"larm" "368"
+"rarm" "369"
+"head" "367"
 }
 entity 366{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "364"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7540,10 +7416,10 @@ entity 366{
 entity 367{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "364"
+"classname" "in_ai_zombie_head"
+"owner" "365"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7555,10 +7431,10 @@ entity 367{
 entity 368{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "364"
+"classname" "in_ai_zombie_larm"
+"owner" "365"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7568,33 +7444,12 @@ entity 368{
 "uniquespawnid" "1"
 }
 entity 369{
-"modelindex" "72"
-"absmin" "-352.875 -1201.45 -128.969"
-"absmax" "-334.875 -1183.45 -64.9688"
-"lastruntime" "16.980001"
-"movetype" "3"
-"solid" "5"
-"origin" "-343.875 -1192.45 -95.9688"
-"oldorigin" "-344.185 -1192.66 -95.9688"
-"velocity" "23.829 16.5281 0"
-"angles" "0 33.9972 0"
-"classname" "ai_zombie"
-"model" "models/ai/zbod.mdl"
-"frame" "74"
-"mins" "-8 -8 -32"
-"maxs" "8 8 30"
-"size" "16 16 62"
-"think" "0:zombie_walkc9"
-"nextthink" "17.013000"
-"health" "150"
-"takedamage" "1"
-"flags" "1568"
-"watertype" "-1"
-"ideal_yaw" "34"
-"yaw_speed" "20"
-"goalentity" "236"
-"target" "b2"
-"gravity" "1"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "365"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7602,33 +7457,10 @@ entity 369{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
-"goalorigin" "-52 -990 -96"
-"reload_delay" "46.233006"
-"aistatus" "1"
-"outside" "1"
-"goaldummy" "370"
-"walktype" "3"
-"th_walk" "0:Zombie_Walk_Setup"
-"th_die" "0:Zombie_Death"
-"th_melee" "0:zombie_attack"
-"th_idle" "0:zombie_idle"
-"th_windowhop" "0:zombie_hop1"
-"th_fall" "0:zombie_fall1"
-"th_land" "0:zombie_land1"
-"hop_step" "3"
-"sound_time" "17.460129"
-"s_time" "16.993000"
-"larm" "487"
-"rarm" "486"
-"head" "485"
-"currentHitBoxSetup" "6"
-"droptime" "10.733001"
 }
 entity 370{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
+"lastruntime" "7.473001"
+"classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7636,14 +7468,15 @@ entity 370{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
+"aistatus" "0"
+"goaldummy" "371"
+"larm" "373"
+"rarm" "374"
+"head" "372"
 }
 entity 371{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "369"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7655,10 +7488,10 @@ entity 371{
 entity 372{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "369"
+"classname" "in_ai_zombie_head"
+"owner" "370"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7670,10 +7503,10 @@ entity 372{
 entity 373{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "369"
+"classname" "in_ai_zombie_larm"
+"owner" "370"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7683,33 +7516,12 @@ entity 373{
 "uniquespawnid" "1"
 }
 entity 374{
-"modelindex" "72"
-"absmin" "-320.532 -1307.09 -128.969"
-"absmax" "-302.532 -1289.09 -64.9688"
-"lastruntime" "16.980001"
-"movetype" "3"
-"solid" "5"
-"origin" "-311.532 -1298.09 -95.9688"
-"oldorigin" "-310.857 -1298.12 -95.9688"
-"velocity" "-51.9644 1.92442 0"
-"angles" "0 176.995 0"
-"classname" "ai_zombie"
-"model" "models/ai/zbod.mdl"
-"frame" "48"
-"mins" "-8 -8 -32"
-"maxs" "8 8 30"
-"size" "16 16 62"
-"think" "0:zombie_walk13"
-"nextthink" "17.031002"
-"health" "150"
-"takedamage" "1"
-"flags" "1568"
-"watertype" "-1"
-"ideal_yaw" "177"
-"yaw_speed" "20"
-"goalentity" "237"
-"target" "b2"
-"gravity" "1"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "370"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7717,30 +7529,10 @@ entity 374{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
-"reload_delay" "39.831001"
-"aistatus" "1"
-"outside" "1"
-"goaldummy" "375"
-"walktype" "1"
-"th_walk" "0:Zombie_Walk_Setup"
-"th_die" "0:Zombie_Death"
-"th_melee" "0:zombie_attack"
-"th_idle" "0:zombie_idle"
-"th_windowhop" "0:zombie_hop1"
-"th_fall" "0:zombie_fall1"
-"th_land" "0:zombie_land1"
-"laststep" "1"
-"larm" "490"
-"rarm" "489"
-"head" "488"
-"currentHitBoxSetup" "4"
-"droptime" "10.831000"
 }
 entity 375{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
+"lastruntime" "7.473001"
+"classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7748,14 +7540,15 @@ entity 375{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
+"aistatus" "0"
+"goaldummy" "376"
+"larm" "378"
+"rarm" "379"
+"head" "377"
 }
 entity 376{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "374"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7767,10 +7560,10 @@ entity 376{
 entity 377{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "374"
+"classname" "in_ai_zombie_head"
+"owner" "375"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7782,10 +7575,10 @@ entity 377{
 entity 378{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "374"
+"classname" "in_ai_zombie_larm"
+"owner" "375"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7795,33 +7588,12 @@ entity 378{
 "uniquespawnid" "1"
 }
 entity 379{
-"modelindex" "72"
-"absmin" "-567.239 -889.482 -128.969"
-"absmax" "-549.239 -871.482 -64.9688"
-"lastruntime" "16.980001"
-"movetype" "3"
-"solid" "5"
-"origin" "-558.239 -880.482 -95.9688"
-"oldorigin" "-558.239 -880.482 -95.9688"
-"classname" "ai_zombie"
-"model" "models/ai/zbod.mdl"
-"frame" "201"
-"mins" "-8 -8 -32"
-"maxs" "8 8 30"
-"size" "16 16 62"
-"think" "0:zombie_decide"
-"nextthink" "17.023005"
-"health" "150"
-"takedamage" "1"
-"chain" "261"
-"enemy" "261"
-"flags" "1568"
-"watertype" "-1"
-"ideal_yaw" "274"
-"yaw_speed" "20"
-"goalentity" "261"
-"target" "b1"
-"gravity" "1"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "375"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7829,32 +7601,10 @@ entity 379{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
-"goalorigin" "-558 -884 -96"
-"reload_delay" "46.023003"
-"aistatus" "1"
-"outside" "1"
-"chase_time" "17.523001"
-"goaldummy" "380"
-"walktype" "1"
-"th_walk" "0:Zombie_Walk_Setup"
-"th_die" "0:Zombie_Death"
-"th_melee" "0:zombie_attack"
-"th_idle" "0:zombie_idle"
-"th_windowhop" "0:zombie_hop1"
-"th_fall" "0:zombie_fall1"
-"th_land" "0:zombie_land1"
-"hop_step" "4"
-"larm" "493"
-"rarm" "492"
-"head" "491"
-"currentHitBoxSetup" "2"
-"droptime" "10.843000"
 }
 entity 380{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
+"lastruntime" "7.473001"
+"classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7862,14 +7612,15 @@ entity 380{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
+"aistatus" "0"
+"goaldummy" "381"
+"larm" "383"
+"rarm" "384"
+"head" "382"
 }
 entity 381{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "379"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7881,10 +7632,10 @@ entity 381{
 entity 382{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "379"
+"classname" "in_ai_zombie_head"
+"owner" "380"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7896,10 +7647,10 @@ entity 382{
 entity 383{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "379"
+"classname" "in_ai_zombie_larm"
+"owner" "380"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7909,33 +7660,12 @@ entity 383{
 "uniquespawnid" "1"
 }
 entity 384{
-"modelindex" "72"
-"absmin" "-161.782 -1312.97 -128.969"
-"absmax" "-143.782 -1294.97 -64.9688"
-"lastruntime" "16.980001"
-"movetype" "3"
-"solid" "5"
-"origin" "-152.782 -1303.97 -95.9688"
-"oldorigin" "-152.497 -1303.98 -95.9688"
-"velocity" "-21.9849 0.814079 0"
-"angles" "0 176.995 0"
-"classname" "ai_zombie"
-"model" "models/ai/zbod.mdl"
-"frame" "81"
-"mins" "-8 -8 -32"
-"maxs" "8 8 30"
-"size" "16 16 62"
-"think" "0:zombie_walkc16"
-"nextthink" "17.112997"
-"health" "150"
-"takedamage" "1"
-"flags" "1568"
-"watertype" "-1"
-"ideal_yaw" "177"
-"yaw_speed" "20"
-"goalentity" "237"
-"target" "b2"
-"gravity" "1"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "380"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7943,30 +7673,10 @@ entity 384{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
-"reload_delay" "41.002998"
-"aistatus" "1"
-"outside" "1"
-"goaldummy" "385"
-"walktype" "3"
-"th_walk" "0:Zombie_Walk_Setup"
-"th_die" "0:Zombie_Death"
-"th_melee" "0:zombie_attack"
-"th_idle" "0:zombie_idle"
-"th_windowhop" "0:zombie_hop1"
-"th_fall" "0:zombie_fall1"
-"th_land" "0:zombie_land1"
-"laststep" "1"
-"larm" "496"
-"rarm" "495"
-"head" "494"
-"currentHitBoxSetup" "6"
-"droptime" "12.003000"
 }
 entity 385{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
+"lastruntime" "7.473001"
+"classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7974,14 +7684,15 @@ entity 385{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
+"aistatus" "0"
+"goaldummy" "386"
+"larm" "388"
+"rarm" "389"
+"head" "387"
 }
 entity 386{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "384"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -7993,10 +7704,10 @@ entity 386{
 entity 387{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "384"
+"classname" "in_ai_zombie_head"
+"owner" "385"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8008,10 +7719,10 @@ entity 387{
 entity 388{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "384"
+"classname" "in_ai_zombie_larm"
+"owner" "385"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8021,7 +7732,22 @@ entity 388{
 "uniquespawnid" "1"
 }
 entity 389{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "385"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 390{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8031,29 +7757,14 @@ entity 389{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "390"
-"larm" "392"
-"rarm" "393"
-"head" "391"
-}
-entity 390{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "391"
+"larm" "393"
+"rarm" "394"
+"head" "392"
 }
 entity 391{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "389"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8065,10 +7776,10 @@ entity 391{
 entity 392{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "389"
+"classname" "in_ai_zombie_head"
+"owner" "390"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8080,10 +7791,10 @@ entity 392{
 entity 393{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "389"
+"classname" "in_ai_zombie_larm"
+"owner" "390"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8093,7 +7804,22 @@ entity 393{
 "uniquespawnid" "1"
 }
 entity 394{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "390"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 395{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8103,29 +7829,14 @@ entity 394{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "395"
-"larm" "397"
-"rarm" "398"
-"head" "396"
-}
-entity 395{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "396"
+"larm" "398"
+"rarm" "399"
+"head" "397"
 }
 entity 396{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "394"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8137,10 +7848,10 @@ entity 396{
 entity 397{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "394"
+"classname" "in_ai_zombie_head"
+"owner" "395"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8152,10 +7863,10 @@ entity 397{
 entity 398{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "394"
+"classname" "in_ai_zombie_larm"
+"owner" "395"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8165,7 +7876,22 @@ entity 398{
 "uniquespawnid" "1"
 }
 entity 399{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "395"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 400{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8175,29 +7901,14 @@ entity 399{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "400"
-"larm" "402"
-"rarm" "403"
-"head" "401"
-}
-entity 400{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "401"
+"larm" "403"
+"rarm" "404"
+"head" "402"
 }
 entity 401{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "399"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8209,10 +7920,10 @@ entity 401{
 entity 402{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "399"
+"classname" "in_ai_zombie_head"
+"owner" "400"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8224,10 +7935,10 @@ entity 402{
 entity 403{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "399"
+"classname" "in_ai_zombie_larm"
+"owner" "400"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8237,7 +7948,22 @@ entity 403{
 "uniquespawnid" "1"
 }
 entity 404{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "400"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 405{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8247,29 +7973,14 @@ entity 404{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "405"
-"larm" "407"
-"rarm" "408"
-"head" "406"
-}
-entity 405{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "406"
+"larm" "408"
+"rarm" "409"
+"head" "407"
 }
 entity 406{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "404"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8281,10 +7992,10 @@ entity 406{
 entity 407{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "404"
+"classname" "in_ai_zombie_head"
+"owner" "405"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8296,10 +8007,10 @@ entity 407{
 entity 408{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "404"
+"classname" "in_ai_zombie_larm"
+"owner" "405"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8309,7 +8020,22 @@ entity 408{
 "uniquespawnid" "1"
 }
 entity 409{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "405"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 410{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8319,29 +8045,14 @@ entity 409{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "410"
-"larm" "412"
-"rarm" "413"
-"head" "411"
-}
-entity 410{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "411"
+"larm" "413"
+"rarm" "414"
+"head" "412"
 }
 entity 411{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "409"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8353,10 +8064,10 @@ entity 411{
 entity 412{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "409"
+"classname" "in_ai_zombie_head"
+"owner" "410"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8368,10 +8079,10 @@ entity 412{
 entity 413{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "409"
+"classname" "in_ai_zombie_larm"
+"owner" "410"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8381,7 +8092,22 @@ entity 413{
 "uniquespawnid" "1"
 }
 entity 414{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "410"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 415{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8391,29 +8117,14 @@ entity 414{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "415"
-"larm" "417"
-"rarm" "418"
-"head" "416"
-}
-entity 415{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "416"
+"larm" "418"
+"rarm" "419"
+"head" "417"
 }
 entity 416{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "414"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8425,10 +8136,10 @@ entity 416{
 entity 417{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "414"
+"classname" "in_ai_zombie_head"
+"owner" "415"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8440,10 +8151,10 @@ entity 417{
 entity 418{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "414"
+"classname" "in_ai_zombie_larm"
+"owner" "415"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8453,7 +8164,22 @@ entity 418{
 "uniquespawnid" "1"
 }
 entity 419{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "415"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 420{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8463,29 +8189,14 @@ entity 419{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "420"
-"larm" "422"
-"rarm" "423"
-"head" "421"
-}
-entity 420{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "421"
+"larm" "423"
+"rarm" "424"
+"head" "422"
 }
 entity 421{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "419"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8497,10 +8208,10 @@ entity 421{
 entity 422{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "419"
+"classname" "in_ai_zombie_head"
+"owner" "420"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8512,10 +8223,10 @@ entity 422{
 entity 423{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "419"
+"classname" "in_ai_zombie_larm"
+"owner" "420"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8525,7 +8236,22 @@ entity 423{
 "uniquespawnid" "1"
 }
 entity 424{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "420"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 425{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8535,29 +8261,14 @@ entity 424{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "425"
-"larm" "427"
-"rarm" "428"
-"head" "426"
-}
-entity 425{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "426"
+"larm" "428"
+"rarm" "429"
+"head" "427"
 }
 entity 426{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "424"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8569,10 +8280,10 @@ entity 426{
 entity 427{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "424"
+"classname" "in_ai_zombie_head"
+"owner" "425"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8584,10 +8295,10 @@ entity 427{
 entity 428{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "424"
+"classname" "in_ai_zombie_larm"
+"owner" "425"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8597,7 +8308,22 @@ entity 428{
 "uniquespawnid" "1"
 }
 entity 429{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "425"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 430{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8607,29 +8333,14 @@ entity 429{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "430"
-"larm" "432"
-"rarm" "433"
-"head" "431"
-}
-entity 430{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "431"
+"larm" "433"
+"rarm" "434"
+"head" "432"
 }
 entity 431{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "429"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8641,10 +8352,10 @@ entity 431{
 entity 432{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "429"
+"classname" "in_ai_zombie_head"
+"owner" "430"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8656,10 +8367,10 @@ entity 432{
 entity 433{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "429"
+"classname" "in_ai_zombie_larm"
+"owner" "430"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8669,7 +8380,22 @@ entity 433{
 "uniquespawnid" "1"
 }
 entity 434{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "430"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 435{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8679,29 +8405,14 @@ entity 434{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "435"
-"larm" "437"
-"rarm" "438"
-"head" "436"
-}
-entity 435{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "436"
+"larm" "438"
+"rarm" "439"
+"head" "437"
 }
 entity 436{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "434"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8713,10 +8424,10 @@ entity 436{
 entity 437{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "434"
+"classname" "in_ai_zombie_head"
+"owner" "435"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8728,10 +8439,10 @@ entity 437{
 entity 438{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "434"
+"classname" "in_ai_zombie_larm"
+"owner" "435"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8741,7 +8452,22 @@ entity 438{
 "uniquespawnid" "1"
 }
 entity 439{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "435"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 440{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8751,29 +8477,14 @@ entity 439{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "440"
-"larm" "442"
-"rarm" "443"
-"head" "441"
-}
-entity 440{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "441"
+"larm" "443"
+"rarm" "444"
+"head" "442"
 }
 entity 441{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "439"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8785,10 +8496,10 @@ entity 441{
 entity 442{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "439"
+"classname" "in_ai_zombie_head"
+"owner" "440"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8800,10 +8511,10 @@ entity 442{
 entity 443{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "439"
+"classname" "in_ai_zombie_larm"
+"owner" "440"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8813,7 +8524,22 @@ entity 443{
 "uniquespawnid" "1"
 }
 entity 444{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "440"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 445{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8823,29 +8549,14 @@ entity 444{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "445"
-"larm" "447"
-"rarm" "448"
-"head" "446"
-}
-entity 445{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "446"
+"larm" "448"
+"rarm" "449"
+"head" "447"
 }
 entity 446{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "444"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8857,10 +8568,10 @@ entity 446{
 entity 447{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "444"
+"classname" "in_ai_zombie_head"
+"owner" "445"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8872,10 +8583,10 @@ entity 447{
 entity 448{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "444"
+"classname" "in_ai_zombie_larm"
+"owner" "445"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8885,7 +8596,22 @@ entity 448{
 "uniquespawnid" "1"
 }
 entity 449{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "445"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 450{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8895,29 +8621,14 @@ entity 449{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "450"
-"larm" "452"
-"rarm" "453"
-"head" "451"
-}
-entity 450{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "451"
+"larm" "453"
+"rarm" "454"
+"head" "452"
 }
 entity 451{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "449"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8929,10 +8640,10 @@ entity 451{
 entity 452{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "449"
+"classname" "in_ai_zombie_head"
+"owner" "450"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8944,10 +8655,10 @@ entity 452{
 entity 453{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "449"
+"classname" "in_ai_zombie_larm"
+"owner" "450"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -8957,7 +8668,22 @@ entity 453{
 "uniquespawnid" "1"
 }
 entity 454{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "450"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 455{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -8967,29 +8693,14 @@ entity 454{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "455"
-"larm" "457"
-"rarm" "458"
-"head" "456"
-}
-entity 455{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "456"
+"larm" "458"
+"rarm" "459"
+"head" "457"
 }
 entity 456{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "454"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9001,10 +8712,10 @@ entity 456{
 entity 457{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "454"
+"classname" "in_ai_zombie_head"
+"owner" "455"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9016,10 +8727,10 @@ entity 457{
 entity 458{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "454"
+"classname" "in_ai_zombie_larm"
+"owner" "455"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9029,7 +8740,22 @@ entity 458{
 "uniquespawnid" "1"
 }
 entity 459{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "455"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 460{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -9039,29 +8765,14 @@ entity 459{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "460"
-"larm" "462"
-"rarm" "463"
-"head" "461"
-}
-entity 460{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "461"
+"larm" "463"
+"rarm" "464"
+"head" "462"
 }
 entity 461{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "459"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9073,10 +8784,10 @@ entity 461{
 entity 462{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "459"
+"classname" "in_ai_zombie_head"
+"owner" "460"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9088,10 +8799,10 @@ entity 462{
 entity 463{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "459"
+"classname" "in_ai_zombie_larm"
+"owner" "460"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9101,7 +8812,22 @@ entity 463{
 "uniquespawnid" "1"
 }
 entity 464{
-"lastruntime" "16.980001"
+"absmin" "-1 -1 -1"
+"absmax" "1 1 1"
+"lastruntime" "7.473001"
+"movetype" "4"
+"classname" "in_ai_zombie_rarm"
+"owner" "460"
+"dimension_solid" "255"
+"dimension_hit" "255"
+"drawflags" "96"
+"dimension_see" "255"
+"dimension_seen" "255"
+"Version" "1"
+"uniquespawnid" "1"
+}
+entity 465{
+"lastruntime" "7.473001"
 "classname" "freeZombieEntity"
 "dimension_solid" "255"
 "dimension_hit" "255"
@@ -9111,29 +8837,14 @@ entity 464{
 "Version" "1"
 "uniquespawnid" "1"
 "aistatus" "0"
-"goaldummy" "465"
-"larm" "467"
-"rarm" "468"
-"head" "466"
-}
-entity 465{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
+"goaldummy" "466"
+"larm" "468"
+"rarm" "469"
+"head" "467"
 }
 entity 466{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "464"
+"lastruntime" "7.473001"
+"classname" "waypoint_target"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9145,10 +8856,10 @@ entity 466{
 entity 467{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "464"
+"classname" "in_ai_zombie_head"
+"owner" "465"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9160,10 +8871,10 @@ entity 467{
 entity 468{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "464"
+"classname" "in_ai_zombie_larm"
+"owner" "465"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9173,69 +8884,12 @@ entity 468{
 "uniquespawnid" "1"
 }
 entity 469{
-"lastruntime" "16.980001"
-"classname" "freeZombieEntity"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"aistatus" "0"
-"goaldummy" "470"
-"larm" "472"
-"rarm" "473"
-"head" "471"
-}
-entity 470{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 471{
 "absmin" "-1 -1 -1"
 "absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "469"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 472{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "469"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 473{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
+"lastruntime" "7.473001"
 "movetype" "4"
 "classname" "in_ai_zombie_rarm"
-"owner" "469"
+"owner" "465"
 "dimension_solid" "255"
 "dimension_hit" "255"
 "drawflags" "96"
@@ -9243,677 +8897,4 @@ entity 473{
 "dimension_seen" "255"
 "Version" "1"
 "uniquespawnid" "1"
-}
-entity 474{
-"lastruntime" "16.980001"
-"classname" "freeZombieEntity"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"aistatus" "0"
-"goaldummy" "475"
-"larm" "477"
-"rarm" "478"
-"head" "476"
-}
-entity 475{
-"lastruntime" "16.980001"
-"classname" "waypoint_target"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 476{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_head"
-"owner" "474"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 477{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_larm"
-"owner" "474"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 478{
-"absmin" "-1 -1 -1"
-"absmax" "1 1 1"
-"lastruntime" "16.980001"
-"movetype" "4"
-"classname" "in_ai_zombie_rarm"
-"owner" "474"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-}
-entity 479{
-"modelindex" "73"
-"absmin" "198.227 -309.998 -65.9688"
-"absmax" "214.227 -297.998 -53.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "209.6 -291.93 -95.9688"
-"angles" "0 192.997 0"
-"classname" "ai_zombie_head"
-"model" "models/ai/zhead.mdl"
-"frame" "53"
-"mins" "-10.3724 -17.0676 31"
-"maxs" "3.62757 -7.06759 41"
-"size" "14 10 10"
-"health" "15"
-"takedamage" "1"
-"chain" "359"
-"deadflag" "1"
-"view_ofs" "-11 6 36"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "359"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-7 -5 -5"
-"bbmaxs" "7 5 5"
-}
-entity 480{
-"modelindex" "71"
-"absmin" "190.033 -296.956 -96.9688"
-"absmax" "202.033 -284.956 -72.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "209.6 -291.93 -95.9688"
-"angles" "0 192.997 0"
-"classname" "ai_zombie_rarm"
-"model" "models/ai/zrarm.mdl"
-"frame" "53"
-"mins" "-18.5666 -4.02613 0"
-"maxs" "-8.56656 5.97387 22"
-"size" "10 10 22"
-"health" "15"
-"takedamage" "1"
-"chain" "479"
-"deadflag" "1"
-"view_ofs" "4 13 11"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "359"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -11"
-"bbmaxs" "5 5 11"
-}
-entity 481{
-"modelindex" "70"
-"absmin" "203.825 -313.246 -96.9688"
-"absmax" "215.825 -299.246 -64.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "209.6 -291.93 -95.9688"
-"angles" "0 192.997 0"
-"classname" "ai_zombie_larm"
-"model" "models/ai/zlarm.mdl"
-"frame" "53"
-"mins" "-4.77459 -20.316 0"
-"maxs" "5.22541 -8.31605 30"
-"size" "10 12 30"
-"health" "15"
-"takedamage" "1"
-"chain" "359"
-"deadflag" "1"
-"view_ofs" "-14 3 15"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "359"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -6 -15"
-"bbmaxs" "5 6 15"
-}
-entity 482{
-"modelindex" "73"
-"absmin" "-697.976 -293.664 117.031"
-"absmax" "-685.976 -281.664 129.031"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-701.976 -287.664 88.0312"
-"classname" "ai_zombie_head"
-"model" "models/ai/zhead.mdl"
-"frame" "3"
-"mins" "5 -5 30"
-"maxs" "15 5 40"
-"size" "10 10 10"
-"health" "15"
-"takedamage" "1"
-"chain" "364"
-"deadflag" "1"
-"view_ofs" "0 10 35"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "364"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -5"
-"bbmaxs" "5 5 5"
-}
-entity 483{
-"modelindex" "71"
-"absmin" "-697.976 -303.664 82.0312"
-"absmax" "-685.976 -291.664 114.031"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-701.976 -287.664 88.0312"
-"classname" "ai_zombie_rarm"
-"model" "models/ai/zrarm.mdl"
-"frame" "3"
-"mins" "5 -15 -5"
-"maxs" "15 -5 25"
-"size" "10 10 30"
-"health" "15"
-"takedamage" "1"
-"chain" "364"
-"deadflag" "1"
-"view_ofs" "10 10 10"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "364"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -15"
-"bbmaxs" "5 5 15"
-}
-entity 484{
-"modelindex" "70"
-"absmin" "-697.976 -283.664 82.0312"
-"absmax" "-685.976 -271.664 114.031"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-701.976 -287.664 88.0312"
-"classname" "ai_zombie_larm"
-"model" "models/ai/zlarm.mdl"
-"frame" "3"
-"mins" "5 5 -5"
-"maxs" "15 15 25"
-"size" "10 10 30"
-"health" "15"
-"takedamage" "1"
-"chain" "483"
-"deadflag" "1"
-"view_ofs" "-10 10 10"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "364"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -15"
-"bbmaxs" "5 5 15"
-}
-entity 485{
-"modelindex" "73"
-"absmin" "-340.216 -1189.52 -70.9688"
-"absmax" "-328.216 -1177.52 -58.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-343.875 -1192.45 -95.9688"
-"angles" "0 33.9972 0"
-"classname" "ai_zombie_head"
-"model" "models/ai/zhead.mdl"
-"frame" "74"
-"mins" "4.65954 3.92711 26"
-"maxs" "14.6595 13.9271 36"
-"size" "10 10 10"
-"health" "15"
-"takedamage" "1"
-"chain" "369"
-"deadflag" "1"
-"view_ofs" "-2 13 31"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "369"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -5"
-"bbmaxs" "5 5 5"
-}
-entity 486{
-"modelindex" "71"
-"absmin" "-337.073 -1206.7 -95.9688"
-"absmax" "-325.073 -1194.7 -71.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-343.875 -1192.45 -95.9688"
-"angles" "0 33.9972 0"
-"classname" "ai_zombie_rarm"
-"model" "models/ai/zrarm.mdl"
-"frame" "74"
-"mins" "7.80252 -13.252 1"
-"maxs" "17.8025 -3.252 23"
-"size" "10 10 22"
-"health" "15"
-"takedamage" "1"
-"chain" "369"
-"deadflag" "1"
-"view_ofs" "14 6 12"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "369"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -11"
-"bbmaxs" "5 5 11"
-}
-entity 487{
-"modelindex" "70"
-"absmin" "-353.098 -1187.82 -99.9688"
-"absmax" "-343.098 -1173.82 -69.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-343.875 -1192.45 -95.9688"
-"angles" "0 33.9972 0"
-"classname" "ai_zombie_larm"
-"model" "models/ai/zlarm.mdl"
-"frame" "74"
-"mins" "-8.22263 5.62624 -3"
-"maxs" "-0.222632 17.6262 25"
-"size" "8 12 28"
-"health" "15"
-"takedamage" "1"
-"chain" "486"
-"deadflag" "1"
-"view_ofs" "-12 3 11"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "369"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-4 -6 -14"
-"bbmaxs" "4 6 14"
-}
-entity 488{
-"modelindex" "73"
-"absmin" "-314.432 -1302.25 -66.9688"
-"absmax" "-302.432 -1290.25 -54.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-311.532 -1298.09 -95.9688"
-"angles" "0 176.995 0"
-"classname" "ai_zombie_head"
-"model" "models/ai/zhead.mdl"
-"frame" "48"
-"mins" "-1.89929 -3.16001 30"
-"maxs" "8.10071 6.83999 40"
-"size" "10 10 10"
-"health" "15"
-"takedamage" "1"
-"chain" "374"
-"deadflag" "1"
-"view_ofs" "2 -3 35"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "374"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -5"
-"bbmaxs" "5 5 5"
-}
-entity 489{
-"modelindex" "71"
-"absmin" "-327.993 -1296.53 -96.9688"
-"absmax" "-315.993 -1278.53 -72.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-311.532 -1298.09 -95.9688"
-"angles" "0 176.995 0"
-"classname" "ai_zombie_rarm"
-"model" "models/ai/zrarm.mdl"
-"frame" "48"
-"mins" "-15.4607 2.56286 0"
-"maxs" "-5.46069 18.5629 22"
-"size" "10 16 22"
-"health" "15"
-"takedamage" "1"
-"chain" "488"
-"deadflag" "1"
-"view_ofs" "10 11 11"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "374"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -8 -11"
-"bbmaxs" "5 8 11"
-}
-entity 490{
-"modelindex" "70"
-"absmin" "-314.062 -1316.29 -96.9688"
-"absmax" "-302.062 -1300.29 -64.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-311.532 -1298.09 -95.9688"
-"angles" "0 176.995 0"
-"classname" "ai_zombie_larm"
-"model" "models/ai/zlarm.mdl"
-"frame" "48"
-"mins" "-1.52969 -17.1959 0"
-"maxs" "8.47031 -3.19593 30"
-"size" "10 14 30"
-"health" "15"
-"takedamage" "1"
-"deadflag" "1"
-"view_ofs" "-10 -4 15"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "374"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -7 -15"
-"bbmaxs" "5 7 15"
-}
-entity 491{
-"modelindex" "73"
-"absmin" "-554.239 -886.482 -66.9688"
-"absmax" "-542.239 -874.482 -54.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-558.239 -880.482 -95.9688"
-"classname" "ai_zombie_head"
-"model" "models/ai/zhead.mdl"
-"frame" "201"
-"mins" "5 -5 30"
-"maxs" "15 5 40"
-"size" "10 10 10"
-"health" "15"
-"takedamage" "1"
-"chain" "379"
-"deadflag" "1"
-"view_ofs" "0 10 35"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "379"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -5"
-"bbmaxs" "5 5 5"
-}
-entity 492{
-"modelindex" "71"
-"absmin" "-554.239 -896.482 -101.969"
-"absmax" "-542.239 -884.482 -69.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-558.239 -880.482 -95.9688"
-"classname" "ai_zombie_rarm"
-"model" "models/ai/zrarm.mdl"
-"frame" "201"
-"mins" "5 -15 -5"
-"maxs" "15 -5 25"
-"size" "10 10 30"
-"health" "15"
-"takedamage" "1"
-"chain" "491"
-"deadflag" "1"
-"view_ofs" "10 10 10"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "379"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -15"
-"bbmaxs" "5 5 15"
-}
-entity 493{
-"modelindex" "70"
-"absmin" "-554.239 -876.482 -101.969"
-"absmax" "-542.239 -864.482 -69.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-558.239 -880.482 -95.9688"
-"classname" "ai_zombie_larm"
-"model" "models/ai/zlarm.mdl"
-"frame" "201"
-"mins" "5 5 -5"
-"maxs" "15 15 25"
-"size" "10 10 30"
-"health" "15"
-"takedamage" "1"
-"chain" "492"
-"deadflag" "1"
-"view_ofs" "-10 10 10"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "379"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -15"
-"bbmaxs" "5 5 15"
-}
-entity 494{
-"modelindex" "73"
-"absmin" "-171.869 -1311.29 -70.9688"
-"absmax" "-159.869 -1299.29 -58.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-152.782 -1303.97 -95.9688"
-"angles" "0 176.995 0"
-"classname" "ai_zombie_head"
-"model" "models/ai/zhead.mdl"
-"frame" "81"
-"mins" "-18.087 -6.3158 26"
-"maxs" "-8.08697 3.6842 36"
-"size" "10 10 10"
-"health" "15"
-"takedamage" "1"
-"deadflag" "1"
-"view_ofs" "-2 13 31"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "384"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -5"
-"bbmaxs" "5 5 5"
-}
-entity 495{
-"modelindex" "71"
-"absmin" "-164.04 -1295.67 -95.9688"
-"absmax" "-152.04 -1283.67 -71.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-152.782 -1303.97 -95.9688"
-"angles" "0 176.995 0"
-"classname" "ai_zombie_rarm"
-"model" "models/ai/zrarm.mdl"
-"frame" "81"
-"mins" "-10.2579 9.29527 1"
-"maxs" "-0.257886 19.2953 23"
-"size" "10 10 22"
-"health" "15"
-"takedamage" "1"
-"deadflag" "1"
-"view_ofs" "14 6 12"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "384"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-5 -5 -11"
-"bbmaxs" "5 5 11"
-}
-entity 496{
-"modelindex" "70"
-"absmin" "-161.407 -1322.8 -99.9688"
-"absmax" "-151.407 -1308.8 -69.9688"
-"lastruntime" "16.980001"
-"movetype" "4"
-"solid" "5"
-"origin" "-152.782 -1303.97 -95.9688"
-"angles" "0 176.995 0"
-"classname" "ai_zombie_larm"
-"model" "models/ai/zlarm.mdl"
-"frame" "81"
-"mins" "-7.6249 -17.8262 -3"
-"maxs" "0.375098 -5.82624 25"
-"size" "8 12 28"
-"health" "15"
-"takedamage" "1"
-"deadflag" "1"
-"view_ofs" "-12 3 11"
-"flags" "512"
-"waterlevel" "-1"
-"watertype" "-1"
-"owner" "384"
-"dimension_solid" "255"
-"dimension_hit" "255"
-"drawflags" "96"
-"dimension_see" "255"
-"dimension_seen" "255"
-"Version" "1"
-"uniquespawnid" "1"
-"bbmins" "-4 -6 -14"
-"bbmaxs" "4 6 14"
 }
