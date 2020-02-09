@@ -371,6 +371,27 @@ void() PlayerPostThink =
 	}
 
 	self.oldvelocity = self.velocity;
+
+	// Check if we are currently looking at an enemy
+	// This should NOT be handled server-side, yet here we are
+	// FIXME - MotoLegacy
+	#ifdef PC
+	vector	source;
+
+	makevectors (self.v_angle);
+	source = self.origin + self.view_ofs;
+
+	self.solid = SOLID_BBOX;
+	traceline (source, source + v_forward*800*1.2, 0, self); // naievil -- ^^
+	self.solid = SOLID_SLIDEBOX;
+
+	if (trace_ent.classname == "ai_zombie" || trace_ent.classname == "ai_zombie_head" 
+	|| trace_ent.classname == "ai_zombie_rarm" ||trace_ent.classname == "ai_zombie_larm" 
+	|| trace_ent.classname == "ai_dog")
+		self.facingenemy = true;
+	else
+		self.facingenemy = false;
+	#endif
 };
 
 void() ClientKill = {};

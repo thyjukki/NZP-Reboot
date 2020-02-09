@@ -166,6 +166,7 @@ const float EVENT_HUDUPDATE = 33;
 #define STAT_SPECTATING			63
 #define STAT_PLAYERNUM			64
 #define STAT_PLAYERSTANCE 		65
+#define STAT_FACINGENEMY 		66
 
 //
 // invert float takes in float value between 0 and 1, inverts position

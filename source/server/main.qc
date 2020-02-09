@@ -274,6 +274,7 @@ void() worldspawn =
 	clientstat(STAT_SPECTATING, EV_FLOAT, isspec);
 	clientstat(STAT_PLAYERNUM, EV_FLOAT, playernum);		// literally useless but will be kept in case
 	clientstat(STAT_PLAYERSTANCE, EV_FLOAT, stance);
+	clientstat(STAT_FACINGENEMY, EV_FLOAT, facingenemy);
 	#endif
 	
 	mappath = strcat("maps/", mapname);

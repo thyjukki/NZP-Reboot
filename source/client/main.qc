@@ -69,8 +69,8 @@ noref void() CSQC_WorldLoaded =
 	//precache_model("models/weapons/mg/mzl.iqm");
 	//precache_model("models/blood.iqm");
 	
-	//if(!player)
-	//	player = edict_num(player_localentnum);
+	if(!player)
+		player = edict_num(player_localnum);
 	if(!vmodel)
 		vmodel = spawn();
 	if(!v2model)
@@ -323,7 +323,7 @@ void() Update_Vmodel =
 noref void(float isnew) CSQC_Ent_Update =
 {
 	if(isnew)
-		print(strcat(etos(self),"\n"));
+		addentity(self);
 }
 
 
@@ -450,6 +450,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	{
 		//in menu.qc
 		Draw_Menu();
+		Draw_Crosshair();
 	}
 	else
 	{

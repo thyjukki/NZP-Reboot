@@ -986,25 +986,48 @@ void() HUD_Hitmark =
 float croshhairmoving; // naievil --used t o see if we are moving or not
 float cur_spread;
 float crosshair_offset_step;
+float crosshair_opacity;
+vector crosshair_color;
 
 void() Draw_Crosshair =
 {
+	if (!crosshair_opacity)
+		crosshair_opacity = 1;
+
 	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN || input_buttons == 2) {
 		croshhairmoving = 1;
+
+		crosshair_opacity -= frametime;
+
+		if (crosshair_opacity < 0.5)
+			crosshair_opacity = 0.5;
 		
 		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE))) {
 			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE));
 		} else {
-			cur_spread += (frametime*250);
+			cur_spread += (frametime*80);
+
 		}
 	} else {
 		croshhairmoving = 0;
 		
 		if (cur_spread > 0)
-			cur_spread -= (frametime*250);
+			cur_spread -= (frametime*80);
 		else 
 			cur_spread = 0;
-	}	
+
+		crosshair_opacity += frametime;
+
+		if (crosshair_opacity > 1)
+			crosshair_opacity = 1;
+	}
+
+	// Update values to be red if we're facing an enemy
+	// FIXME - this should be handled COMPLETELY client side, NOT as a stat.
+	if (getstatf(STAT_FACINGENEMY))
+		crosshair_color = TEXT_RED;
+	else
+		crosshair_color = [1, 1, 1];
 
 	if (getstatf(STAT_WEAPONZOOM) == 2 && zoom_2_time < time)
     {
@@ -1039,16 +1062,13 @@ void() Draw_Crosshair =
 
 	if (getstatf(STAT_ACTIVEWEAPON) == W_M2)
 	{
-		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1);
+		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, 1, 1);
 	}
 	else if (getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER && getstatf(STAT_ACTIVEWEAPON) != W_LONGINUS) // naievil (FIXME) crosshair cvar
     {
         int x_value, y_value;
         int crosshair_offset;
         
-        /*if (sv_player->v.view_ofs[2] != 32) // naievil -- changed weapon spread if crouched or not
-         crosshair_offset = CrossHairWeapon()*(.8) + cur_spread;
-        else*/
         crosshair_offset = CrossHairWeapon(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE)) + cur_spread;
         
 		if (CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE)) < crosshair_offset)
@@ -1059,21 +1079,25 @@ void() Draw_Crosshair =
 
 		crosshair_offset_step += (crosshair_offset - crosshair_offset_step) * 0.5;
 
-		x_value = ((480 - 8)/2 - crosshair_offset_step)*(g_width/480);
-		y_value = ((272 - 8)/2)*g_height/272;
-		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		// Left
+		x_value = g_width/2 - crosshair_offset_step*2;
+		y_value = g_height/2;
+		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
 
-		x_value = ((480 - 8)/2 + crosshair_offset_step)*(g_width/480);
-		y_value = ((272 - 8)/2)*g_height/272;
-		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		// Right
+		x_value = g_width/2 + crosshair_offset_step*2;
+		y_value = g_height/2;
+		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
 
-		x_value = ((480 - 8)/2)*(g_width/480);
-		y_value = ((272 - 8)/2 - crosshair_offset_step)*g_height/272;
-		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		// Down
+		x_value = g_width/2;
+		y_value = g_height/2 - crosshair_offset_step*2;
+		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
 
-		x_value = ((480 - 8)/2)*(g_width/480);
-		y_value = ((272 - 8)/2 + crosshair_offset_step)*g_height/272;
-		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		// Up
+		x_value = g_width/2;
+		y_value = g_height/2 + crosshair_offset_step*2;
+		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
 
     }
     else if (/*crosshair.value && */getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2) // naievil (FIXME) crosshair cvar
