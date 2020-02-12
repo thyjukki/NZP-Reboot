@@ -103,7 +103,7 @@ void DrinkPerk(float perk) {
 
 void() touch_perk =
 {  
-	if (other.classname != "player" || other.downed || other.isBuying == true)
+	if (other.classname != "player" || other.downed || other.isBuying == true || !isFacing(other, self))
 		return;
 
 	if (other.stance == 0 && self.collected == false && G_PRONEPOINTS != 0) {
@@ -128,7 +128,6 @@ void() touch_perk =
 	
 	if (self.classname == "perk_revive" && !(other.perks & P_REVIVE) && other.fire_delay < time)
 	{
-
 		if (!deathmatch && !coop)
 		{
 			useprint (other, 9, 500, 1);

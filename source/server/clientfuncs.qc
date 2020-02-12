@@ -358,6 +358,20 @@ void(float ach, entity who, optional float single) GiveAchievement= {
 // Unrelated to engine, but custom functions
 // *****************************************
 
+float(entity who, entity target) isFacing =
+{
+	local float who_angle = who.angles_y;
+	local float target_angle = target.angles_y;
+
+	local float difference_angle = target_angle - who_angle;
+
+	// 180 = directly facing each other, 30 degree buffer.
+	if (difference_angle <= 210 && difference_angle >= 150)
+		return true;
+
+	return false;
+}
+
 float() crandom =
 {
 	return 2*(random() - 0.5);

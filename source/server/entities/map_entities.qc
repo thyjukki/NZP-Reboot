@@ -201,7 +201,7 @@ void () buy_weapon_touch =
 	local float startframe,endframe;
 	local string modelname;
 
-	if (other.classname != "player" || other.downed || other.isBuying) {
+	if (other.classname != "player" || other.downed || other.isBuying || !isFacing(other, self)) {
 		return;
 	}
 	
