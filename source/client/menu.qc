@@ -136,6 +136,7 @@ void() menu_controls =
 void() menu_customs =
 {
 	in_menu = MENU_CUSTOMS;
+	customs_interact = FALSE;
 }
 
 //
@@ -533,38 +534,61 @@ void() Draw_Extra_Controls =
 	}
 }
 
-float page;
+// remove prefix and suffix from custom map line
+// (maps/) & (.bsp)
+string(string s) strip_custominfo =
+{
+	string s2;
+	s2 = substring(s, 5, strlen(s)); // maps/
+	s2 = substring(s2, 0, strlen(s2) - 4); // .bsp
+
+	return s2;
+}
+
+void() Menu_Click_Customs =
+{
+
+}
+
 string custom_map_name[10];
-float custom_map_index[10];
 void() Draw_Extra_Customs =
 {
+	float items;
+
 	// get all .BSPs in the maps folder
 	searchhandle maps = search_begin("maps/*.bsp", 0, 0);
+
 	// the amount of maps in the folder
-	//float mapcount = search_getsize(maps);
+	float mapcount = search_getsize(maps);
 
-	// the number of maps in the last page < 10
-	//float remain = mapcount % 10;
+	if (mapcount < 10)
+		items = mapcount;
+	else
+		items = 10;
 
-	/*
-
-	0.025, 0.175, 0], "Solo", -1, menu_single, null, MENU_MAIN},
-	{[0.025, 0.225,
-	*/
-
-	float a;
-
-	//if (a < 10)
-	//	a = mapcount;
-	//else
-	a = 9;
-
-	for(float i = 0; i < a; i++) {
+	for (float i = 0; i < 10; i++) {
 		custom_map_name[i] = search_getfilename(maps, i);
-		drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_name[a], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		custom_map_name[i] = strip_custominfo(custom_map_name[i]);
+
+		// hacky thing here to emulate the normal buttons on the menu..
+		// since they're fixed/static the current system won't work well with
+		// something dynamic like the custom maps menu, were results vary.
+		// --
+		// god this if statement is horrid - moto
+		if (cursor_pos_x > 0.025*g_width && cursor_pos_x < (0.025*g_width + g_height * 0.6) && cursor_pos_y > (0.175 + (0.05 * i))*g_height && cursor_pos_y < (0.175 + (0.05 * i))*g_height + (0.030*g_height)) {
+			lastActive = -1;
+			if (customs_interact) {
+				localcmd(strcat("map ", custom_map_name[i]));
+			}
+				
+			
+			drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_name[i], [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
+		} else {
+			drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_name[i], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		}
 	}
 
-	//drawstring([0.025*g_width, 0.375*g_height, 0], ftos(remain), [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+	customs_interact = FALSE;
 }
 
 void() Draw_Menu =

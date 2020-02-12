@@ -552,6 +552,8 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 			{
 				if(scanx == K_MOUSE1) {
 					Menu_Click(0);
+					if (in_menu == MENU_CUSTOMS)
+						customs_interact = TRUE;
 					return TRUE;
 				} else if (scanx == K_MOUSE2) {
 					Menu_Click(1);
