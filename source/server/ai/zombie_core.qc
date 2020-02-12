@@ -1175,8 +1175,9 @@ float() spawn_a_zombieA =
 	
 	FAIL = false;
 	szombie = getFreeZombieEnt(self);
-	if(szombie == world)
+	if(szombie == world || zombie_spawn_timer > time)
 	{
+		//bprint(PRINT_HIGH, "STOPPED AT A\n");
 		//dprint("No avaible zombie entity\n");
 		return 0;
 	}
@@ -1337,8 +1338,9 @@ void(entity where) spawn_a_zombieB =
 	//szombie = spawn();
 	
 	szombie = getFreeZombieEnt(self);
-	if(szombie == world)
+	if(szombie == world || zombie_spawn_timer > time)
 	{
+		//bprint(PRINT_HIGH, "STOPPED AT B\n");
 		//dprint("Out of zombie entities \n");
 		return;
 	}
@@ -1472,6 +1474,9 @@ void(entity where) spawn_a_zombieB =
 	else
 		self.th_walk();
 	self = old_self;
+
+	// set up timer for next spawn
+	zombie_spawn_timer = zombie_spawn_delay + time;
 };
 
 void() zombie_dummy =

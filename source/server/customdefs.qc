@@ -171,6 +171,8 @@ vector	trace_plane_normal;
 void Do_Zombie_AI();
 .string aistatus;
 entity lastzombie;
+float zombie_spawn_delay; // time before spawning, in seconds.
+float zombie_spawn_timer; // the actual timer for spawn delay
 //Other AI definitions
 .vector box1, box2, box3;//used for windows and zombies
 .vector idlebox;

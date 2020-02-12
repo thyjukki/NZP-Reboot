@@ -157,7 +157,8 @@ void() NewRound =
 	
 	maxreward = 50 * rounds;
 	if (maxreward > 500)
-			maxreward = 500;
+		maxreward = 500;
+
 	totalreward = 0;
 	Current_Zombies = 0;
 	spawn_delay = 0;
@@ -195,6 +196,24 @@ void() NewRound =
 	}
 	#endif
 	#endif
+
+	// Set up delay for zombie spawning
+	local float spawndelay;
+
+	spawndelay = zombie_spawn_delay;
+
+	if (spawndelay > 0.08) {
+		zombie_spawn_delay *= 0.95;
+	} else {
+		zombie_spawn_delay = 0.08;
+	}
+
+	// 2 seconds by default
+	if (rounds == 1)
+		zombie_spawn_delay = 2;
+
+	// Actually start the timer
+	zombie_spawn_timer = 2 + time;
 }
 void() Round_Core =
 {
