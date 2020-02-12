@@ -450,7 +450,6 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	{
 		//in menu.qc
 		Draw_Menu();
-		Draw_Crosshair();
 	}
 	else
 	{

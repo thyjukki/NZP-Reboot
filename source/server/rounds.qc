@@ -18,23 +18,33 @@ void() Spawn_Enemy =
 
 float() getZombieTotal = {
 	if (roundtype == 1) {
-		if (rounds < 20) {
-			switch (player_count) {
-				case 0: float cnt[20] = {6, 8, 13, 18, 24, 27, 28, 28, 29, 33, 34, 36, 39, 41, 44, 47, 50, 53, 56}; return cnt[rounds - 1];
-				case 1: float cnt2[20] = {7, 9, 15, 21, 27, 31, 32, 33, 34, 42, 45, 49, 54, 59, 64, 70, 76, 82, 89}; return cnt2[rounds - 1];
-				case 2: float cnt3[20] = {11, 14, 23, 32, 41, 47, 48, 50, 51, 62, 68, 74, 81, 89, 97, 105, 114, 123, 133}; return cnt3[rounds - 1];
-				case 3: float cnt4[20] = {14, 18, 30, 42, 54, 62, 64, 66, 68, 83, 91, 99, 108, 118, 129, 140, 152, 164, 178}; return cnt4[rounds - 1];
-				default: return 0;
-			}
+		local float count;
+
+		count = 0;
+
+		if(player_count == 0) {
+			count += 24;
 		} else {
-			switch (player_count) {
-				case 0: return 0.09 * rounds * rounds - 0.0029 * rounds + 23.958;
-				case 1: return 0.1882 * rounds * rounds - 0.4313 * rounds + 29.212;
-				case 2: return 0.2637 * rounds * rounds + 0.1802 * rounds + 35.015;
-				case 3: return 0.35714 * rounds * rounds - 0.0714 * rounds + 50.4286;
-				default: return 0;
-			}
+			count += rint((player_count) * 24);
 		}
+
+		//bprint(PRINT_HIGH, strcat("STARTING WITH: ", ftos(count), "\n"));
+
+		if (rounds == 1) {
+			count = rint(count * 0.25);
+		} else if (rounds < 3) {
+			count = rint(count * 0.3);
+		} else if (rounds < 4) {
+			count = rint(count * 0.5);
+		} else if (rounds < 5){
+			count = rint(count * 0.7);
+		} else if (rounds < 6) {
+			count = rint(count * 0.9);
+		}
+
+		//bprint(PRINT_HIGH, strcat("GOT TOTAL AS: ", ftos(count), "\n"));
+
+		return count;
 	} else { //dogs
 		if (dogWave == 1 || dogWave == 2)
 			return 6 * (player_count + 1);
