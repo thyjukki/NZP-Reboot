@@ -243,10 +243,12 @@ void() precaches =
 	precache_sound ("sounds/zombie/sc1.wav");
 	//Announce
 	precache_sound ("sounds/pu/pickup.wav");
+	precache_sound ("sounds/pu/carpenter.wav");
 	precache_sound ("sounds/pu/maxammo.wav");
 	precache_sound ("sounds/pu/double_points.wav");
 	precache_sound ("sounds/pu/insta_kill.wav");
 	precache_sound ("sounds/pu/nuke.wav");
+	precache_sound ("sounds/pu/byebye.wav");
 	precache_sound ("sounds/pu/powerup.wav");
 	precache_sound ("sounds/pu/drop.wav");
 }

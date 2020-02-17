@@ -240,6 +240,7 @@ void() powerup_touch =
 		}
 		else if(self.zombie_drop_id == 5)
 		{
+			sound(self,CHAN_VOICE,"sounds/pu/carpenter.wav",1,ATTN_NONE);
 			addmoney(other, 200*exp, 0);
 			carpenter();
 		}
