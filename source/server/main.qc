@@ -251,6 +251,11 @@ void() precaches =
 	precache_sound ("sounds/pu/byebye.wav");
 	precache_sound ("sounds/pu/powerup.wav");
 	precache_sound ("sounds/pu/drop.wav");
+
+	#ifdef PC
+	// Moto -- FIXME: compile FTE to remove this engine sound request
+	precache_sound ("demon/dland2.wav");
+	#endif
 }
 
 //called when map loaded

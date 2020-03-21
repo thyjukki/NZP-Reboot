@@ -69,13 +69,11 @@ void() menu_back =
 
 void() menu_loadndu =
 {
-	print("loading ndu\n");
 	localcmd("map ndu\n");
 };
 
 void() menu_loadwh =
 {
-	print("loading warehouse\n");
 	localcmd("map warehouse\n");
 };
 

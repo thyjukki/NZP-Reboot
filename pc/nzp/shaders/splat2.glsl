@@ -29,11 +29,11 @@ void main ()
 {
 	vec4 col;
 	col = texture2D(s_t0, tc);
-	col.a -= 1 - va;
+	col.a -= 1.0 - va;
 	if(col.a > 0.1)
-		col.a = 1;
+		col.a = 1.0;
 	else
-		col.a = 0;
+		col.a = 0.0;
 	gl_FragColor = fog4(col);
 }
 #endif

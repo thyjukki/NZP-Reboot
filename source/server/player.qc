@@ -428,8 +428,10 @@ void() ClientConnect =
 	}
 	#endif
 	
-	bprint(PRINT_HIGH, self.netname); //print player name
-	bprint(PRINT_HIGH, " connected.\n");
+	if(cvar("developer") || player_count > 1) {
+		bprint(PRINT_HIGH, self.netname); //print player name
+		bprint(PRINT_HIGH, " connected.\n");
+	}	
 };
 
 void() PollPlayerPoints =
@@ -595,8 +597,10 @@ void() SpectatorSpawn =
 //called when a client loads a map
 void() PutClientInServer =
 {
-	bprint(PRINT_HIGH, self.netname);
-	bprint(PRINT_HIGH, " has joined the game.\n");
+	if(cvar("developer") || player_count > 1) {
+		bprint(PRINT_HIGH, self.netname);
+		bprint(PRINT_HIGH, " has joined the game.\n");
+	}
 	
 	if (spawn_time > time || !rounds)
 		PlayerSpawn();
