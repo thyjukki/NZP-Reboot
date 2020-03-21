@@ -138,8 +138,7 @@ void() precaches =
 	precache_sound("sounds/player/footstep5.wav");
 	precache_sound("sounds/player/jump.wav");
 	precache_sound("sounds/player/land.wav");
-	precache_sound("sounds/items/health.wav");
-	precache_sound("sounds/items/respawn.wav");
+	precache_sound("sounds/player/pain4.wav");
 
 	precache_sound("sounds/weapons/colt/magin.wav");
 	precache_sound("sounds/weapons/colt/magout.wav");
