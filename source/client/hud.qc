@@ -767,85 +767,94 @@ void(float width, float height) HUD_Rounds =
 
 void(float width, float height) HUD_Useprint =
 {
-
-		string usestring, usebutton;
-		float print_width, x;
+	string usestring, usebutton, usespace;
+	float print_width, x, button_width;
 		
-		tokenize(findkeysforcommand("+button7"));
-		usebutton = strtoupper(keynumtostring(stof(argv(0))));
+	tokenize(findkeysforcommand("+button7"));
+	usebutton = strtoupper(keynumtostring(stof(argv(0))));
 
-		switch (useprint_type) {
-			case 0://clear
-				usestring = "";
-				break;
-			case 1://door
-				usestring = strcat("Hold ",usebutton, " to open door [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 2://debris
-				usestring = strcat("Hold ",usebutton, " to remove debris [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 3://ammo
-				usestring = strcat("Hold ",usebutton, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 4://weapon
-				usestring = strcat("Hold ",usebutton, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 5://window
-				usestring = strcat("Hold ",usebutton, " to Rebuild Barrier");
-				break;
-			case 6://box
-				usestring = strcat("Hold ",usebutton, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 7://box take
-				usestring = strcat("Hold ",usebutton, " to take weapon");
-				break;
-			case 8://power
-				usestring = "The power must be activated first";
-				break;
-			case 9://perk
-				usestring = strcat("Hold ",usebutton, " to buy ", GetPerkName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 10://turn on power
-				usestring = strcat("Hold ",usebutton, " to turn on the power");
-				break;
-			case 11://turn on trap
-				usestring = strcat("Hold ",usebutton, " to active the electric barrier [Cost:", ftos(useprint_cost), "]");
-				break;
-			case 12://packapunch
-				usestring = strcat("Hold ",usebutton, " to Pack a Punch [Cost:", ftos(useprint_cost), "]");
-				break;
-			case 13://revive
-				usestring = strcat("Hold ",usebutton, " to revive player");
-				break;
-			case 14://use teleporter (free)
-				usestring = strcat("Hold ", usebutton, " to use Teleporter");
-				break;
-			case 15://use teleporter (cost)
-				usestring = strcat("Hold ", usebutton, " to use Teleporter [Cost: ", ftos(useprint_cost), "]");
-				break;
-			case 16://tp cooldown
-				usestring = "Teleporter is cooling down";
-				break;
-			case 17://link
-				usestring = strcat("Hold ", usebutton, " to initate link to pad");
-				break;
-			case 18://no link
-				usestring = "Link not active";
-				break;
-			case 19://finish link
-				usestring = strcat("Hold ", usebutton, " to link pad with core");
-				break;
-			case 20://buyable ending
-				usestring = strcat("Hold ", usebutton, " to End the Game [Cost: ", ftos(useprint_cost), "]");
-				break;
-			default:
-				usestring = "This should not happen you dum fuck"; //yikes
-				break;
-		}
-			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
-			x = (width - print_width)/2;
-			drawstring([x, 0.67*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	for(float i = 0; i < strlen(usebutton); i++) {
+		usespace = strcat(usespace, " ");
+	}
 
+	switch (useprint_type) {
+		case 0://clear
+			usestring = "";
+			break;
+		case 1://door
+			usestring = strcat("Hold ",usespace, " to open door [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 2://debris
+			usestring = strcat("Hold ",usespace, " to remove debris [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 3://ammo
+			usestring = strcat("Hold ",usespace, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 4://weapon
+			usestring = strcat("Hold ",usespace, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 5://window
+			usestring = strcat("Hold ",usespace, " to Rebuild Barrier");
+			break;
+		case 6://box
+			usestring = strcat("Hold ",usespace, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 7://box take
+			usestring = strcat("Hold ",usespace, " to take weapon");
+			break;
+		case 8://power
+			usestring = "The power must be activated first";
+			break;
+		case 9://perk
+			usestring = strcat("Hold ",usespace, " to buy ", GetPerkName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 10://turn on power
+			usestring = strcat("Hold ",usespace, " to turn on the power");
+			break;
+		case 11://turn on trap
+			usestring = strcat("Hold ",usespace, " to active the electric barrier [Cost:", ftos(useprint_cost), "]");
+			break;
+		case 12://packapunch
+			usestring = strcat("Hold ",usespace, " to Pack a Punch [Cost:", ftos(useprint_cost), "]");
+			break;
+		case 13://revive
+			usestring = strcat("Hold ",usespace, " to revive player");
+			break;
+		case 14://use teleporter (free)
+			usestring = strcat("Hold ", usespace, " to use Teleporter");
+			break;
+		case 15://use teleporter (cost)
+			usestring = strcat("Hold ", usespace, " to use Teleporter [Cost: ", ftos(useprint_cost), "]");
+			break;
+		case 16://tp cooldown
+			usestring = "Teleporter is cooling down";
+			break;
+		case 17://link
+			usestring = strcat("Hold ", usespace, " to initate link to pad");
+			break;
+		case 18://no link
+			usestring = "Link not active";
+			break;
+		case 19://finish link
+			usestring = strcat("Hold ", usespace, " to link pad with core");
+			break;
+		case 20://buyable ending
+			usestring = strcat("Hold ", usespace, " to End the Game [Cost: ", ftos(useprint_cost), "]");
+			break;
+		default:
+			usestring = "This should not happen you dum fuck"; //yikes
+			break;
+	}
+
+	print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
+	x = (width - print_width)/2;
+	drawstring([x, 0.67*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+
+	// Draw highlighted usebutton (or button icon in the future)
+	if (substring(usestring, 0, 4) == "Hold") {
+		button_width = x + stringwidth ("Hold ", 0, [0.015*width, 0.015*width, 0]);
+		drawstring([button_width, 0.67*height, 0], usebutton, [0.015*width, 0.015*width, 0], [1, 1, 0], 1, 1);
+	}
 }
 
 /*******************
