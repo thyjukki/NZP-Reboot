@@ -298,6 +298,7 @@ vector boxOrigin;
 .float x2_icon;
 .float insta_icon;
 #endif
+.string powerup_vo;
 float instakill_finished;
 float insta_blink;
 float x2_finished;
