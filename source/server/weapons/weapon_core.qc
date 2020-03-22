@@ -751,9 +751,25 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 		}
 		
 		SpawnBlood (org, vel, damage*10);
-		
 
-		f_damage = damage;
+		switch(hit_ent.classname) {
+			case "ai_zombie_head":
+				f_damage = damage*getWeaponMultiplier(self.weapon, HEAD_X);
+				break;
+			case "ai_zombie_larm":
+			case "ai_zombie_rarm":
+				f_damage = damage*getWeaponMultiplier(self.weapon, LIMBS_X);
+				break;
+			case "ai_zombie":
+				if (trace_endpos_z < hit_ent.origin_z)
+					f_damage = damage*getWeaponMultiplier(self.weapon, LOWER_TORSO_X);
+				else
+					f_damage = damage*getWeaponMultiplier(self.weapon, UPPER_TORSO_X);
+				break;
+			default:
+				f_damage = damage;
+				break;
+		}
 
 		hit_ent.washit = 1;
 		hit_ent.hitamount = hit_ent.hitamount + f_damage;

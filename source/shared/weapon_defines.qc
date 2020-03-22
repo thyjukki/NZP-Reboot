@@ -273,6 +273,212 @@ float(float wep) GetFiretype =
     return 0;
 }
 
+#define	HEAD_X			0
+#define	UPPER_TORSO_X	1
+#define	LOWER_TORSO_X	2
+#define	LIMBS_X			3
+
+float(float wep, float type) getWeaponMultiplier =
+{
+
+	switch (wep)
+	{
+		case W_COLT:
+			switch (type)
+			{
+				case HEAD_X: 		return 3;
+				case UPPER_TORSO_X: return 1;
+				case LOWER_TORSO_X: return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_KAR:
+			switch (type)
+			{
+				case HEAD_X: 		return 3.5;
+				case UPPER_TORSO_X:	return 1.8;
+				case LOWER_TORSO_X:	return 1.7;
+				case LIMBS_X: 		return 0.7;
+			}
+			break;
+		case W_THOMPSON:
+			switch (type)
+			{
+				case HEAD_X: 		return 4;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_357:
+			switch (type)
+			{
+				case HEAD_X: 		return 1.4;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_BAR:
+			switch (type)
+			{
+				case HEAD_X: 		return 2.7;
+				case UPPER_TORSO_X:	return 1.8;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1.5;
+			}
+			break;
+		case W_BK:
+			return 1;
+			break;
+		case W_BROWNING:
+			switch (type)
+			{
+				case HEAD_X: 		return 3;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_DB:
+			switch (type)
+			{
+				case HEAD_X: 		return 1;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_FG:
+			switch (type)
+			{
+				case HEAD_X: 		return 2.7;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1.5;
+			}
+			break;
+		case W_GEWEHR:
+			switch (type)
+			{
+				case HEAD_X: 		return 2.7;
+				case UPPER_TORSO_X:	return 1.25;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 0.8;
+			}
+			break;
+		case W_KAR_SCOPE:
+			switch (type)
+			{
+				case HEAD_X: 		return 10;
+				case UPPER_TORSO_X:	return 1.5;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_M1:
+			switch (type)
+			{
+				case HEAD_X: 		return 2.7;
+				case UPPER_TORSO_X:	return 1.25;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 0.7;
+			}
+			break;
+		case W_M1A1:
+			switch (type)
+			{
+				case HEAD_X: 		return 2.7;
+				case UPPER_TORSO_X:	return 1.25;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 0.7;
+			}
+			break;
+		case W_M2:
+			return 3;
+			break;
+		case W_MP40:
+			switch (type)
+			{
+				case HEAD_X: 		return 4;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_MG:
+			switch (type)
+			{
+				case HEAD_X: 		return 3;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_PANZER:
+			return 3;
+			break;
+		case W_PPSH:
+			switch (type)
+			{
+				case HEAD_X: 		return 3;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_PTRS:
+			switch (type)
+			{
+				case HEAD_X: 		return 4;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_RAY:
+			return 3;
+			break;
+		case W_SAWNOFF:
+			switch (type)
+			{
+				case HEAD_X: 		return 1;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_STG:
+			switch (type)
+			{
+				case HEAD_X: 		return 2.7;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 0.5;
+			}
+			break;
+		case W_TRENCH:
+			switch (type)
+			{
+				case HEAD_X: 		return 1;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+		case W_TYPE:
+			switch (type)
+			{
+				case HEAD_X: 		return 4;
+				case UPPER_TORSO_X:	return 1;
+				case LOWER_TORSO_X:	return 1;
+				case LIMBS_X: 		return 1;
+			}
+			break;
+	}
+	return 0;
+}
+
 float(float wep) getWeaponMag =
 {
 
@@ -901,94 +1107,97 @@ float(float wep, float delaytype) getWeaponDelay =
 	{
 		case W_COLT:
 			if (delaytype == RELOAD)
-				return 2.5;
+				return 1.9;
 			else if (delaytype == FIRE)
-				return 0.185;
+				return 0.100;
 		case W_BIATCH:
 			if (delaytype == RELOAD)
-				return 2.5;
+				return 1.9;
 			else if (delaytype == FIRE)
-				return 0.075;
+				return 0.100;
     	case W_ARMAGEDDON:
 		case W_KAR:
 			if (delaytype == RELOAD)
-				return 1.6;
+				return 1.8;
 			else if (delaytype == FIRE)
 				return 0.3;
 		case W_THOMPSON:
 		case W_GIBS:
 			if (delaytype == RELOAD)
-				return 2.4;
-			else if (delaytype == FIRE)
-				return 0.08;
+				return 2.1;
+			else if (delaytype == FIRE) {
+				if (wep == W_THOMPSON)
+					return 0.085;
+				return 0.07;
+			}
 		case W_357:
 		case W_KILLU:
 			if (delaytype == RELOAD)
-				return 2.2;
+				return 3;
 			else if (delaytype == FIRE)
-				return 0.32;
+				return 0.4;
 		case W_BAR:
 			if (delaytype == RELOAD)
-				return 3.5;
+				return 2.75;
 			else if (delaytype == FIRE)
-				return 0.16;
+				return 0.17;
 		case W_WIDOW:
 			if (delaytype == RELOAD)
 				return 3.5;
 			else if (delaytype == FIRE)
-				return 0.11;
+				return 0.12;
 		case W_BROWNING:
 			if (delaytype == RELOAD)
-				return 3.3;
+				return 7;
 			else if (delaytype == FIRE)
-				return 0.096;
+				return 0.104;
 		case W_ACCELERATOR:
 			if (delaytype == RELOAD)
-				return 3.3;
+				return 7;
 			else if (delaytype == FIRE)
-				return 0.08;
+				return 0.088;
 		case W_DB:
 			if (delaytype == RELOAD)
-				return 2.8;
+				return 3;
 			else if (delaytype == FIRE)
-				return 0.283;
+				return 0.5;
 		case W_BORE:
 			if (delaytype == RELOAD)
-				return 2.4;
+				return 2.5;
 			else if (delaytype == FIRE)
-				return 0.283;
+				return 0.5;
 		case W_FG:
 			if (delaytype == RELOAD)
-			  	return 4.5;
+			  	return 2.6;
 			else if (delaytype == FIRE)
-				return 0.064;
+				return 0.075;
 		case W_IMPELLER:
 			if (delaytype == RELOAD)
-			  	return 4.5;
+			  	return 2.6;
 			else if (delaytype == FIRE)
-				return 0.06;
+				return 0.068;
 		case W_GEWEHR:
 		case W_COMPRESSOR:
 			if (delaytype == RELOAD)
-				return 3.5;
+				return 3;
 			else if (delaytype == FIRE)
-				return 0.125;
+				return 0.200;
 		case W_M1:
 		case W_M1000:
 			if (delaytype == RELOAD)
-				return 3.8;
+				return 3.2;
 			else if (delaytype == FIRE)
-				return 0.135;
+				return 0.275;
 		case W_M1A1:
 			if (delaytype == RELOAD)
 				return 2.9;
 			else if (delaytype == FIRE)
-				return 0.135;
+				return 0.220;
 		case W_WIDDER:
 			if (delaytype == RELOAD)
 				return 2.9;
 			else if (delaytype == FIRE)
-				return 0.1;
+				return 0.150;
 		case W_M2:
 		case W_FIW:
 			if (delaytype == RELOAD)
@@ -997,24 +1206,24 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 0.02;
 		case W_MP40:
 			if (delaytype == RELOAD)
-				return 2.2;
+				return 2.3;
 			else if (delaytype == FIRE)
-				return 0.112;
+				return 0.120;
 		case W_AFTERBURNER:
 			if (delaytype == RELOAD)
-				return 2.2;
+				return 2.3;
 			else if (delaytype == FIRE)
-				return 0.1;
+				return 0.110;
 		case W_MG:
 			if (delaytype == RELOAD)
-				return 3.6;
+				return 4;
 			else if (delaytype == FIRE)
-				return 0.064;
+				return 0.065;
 		case W_BARRACUDA:
 			if (delaytype == RELOAD)
-				return 3.6;
+				return 4;
 			else if (delaytype == FIRE)
-				return 0.04;
+				return 0.05;
 		case W_PANZER:
 		case W_LONGINUS:
 			if (delaytype == RELOAD)
@@ -1023,18 +1232,18 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 0.331;
 		case W_PPSH:
 			if (delaytype == RELOAD)
-				return 3.3;
+				return 2.1;
 			else if (delaytype == FIRE)
-				return 0.048;
+				return 0.05;
 		case W_REAPER:
 			if (delaytype == RELOAD)
-				return 3.3;
+				return 2.1;
 			else if (delaytype == FIRE)
-				return 0.038;
+				return 0.04;
 		case W_PTRS:
 		case W_PENETRATOR:
 			if (delaytype == RELOAD)
-				return 2.8;
+				return 3;
 			else if (delaytype == FIRE)
 				return 0.8;
 		case W_RAY:
@@ -1045,7 +1254,7 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 0.35;
 		case W_SAWNOFF:
 			if (delaytype == RELOAD)
-				return 2.8;
+				return 2.65;
 			else if (delaytype == FIRE)
 				return 0.283;
 		case W_SNUFF:
@@ -1055,12 +1264,12 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 0.283;
 		case W_STG:
 			if (delaytype == RELOAD)
-				return 2.5;
+				return 2.15;
 			else if (delaytype == FIRE)
-				return 0.102;
+				return 0.110;
 		case W_SPATZ:
 			if (delaytype == RELOAD)
-				return 2.5;
+				return 2.15;
 			else if (delaytype == FIRE)
 				return 0.08;
 		case W_TRENCH:
@@ -1071,14 +1280,14 @@ float(float wep, float delaytype) getWeaponDelay =
 				return 0.283;
 		case W_TYPE:
 			if (delaytype == RELOAD)
-				return 2.3;
+				return 2.25;
 			else if (delaytype == FIRE)
-				return 0.08;
+				return 0.09;
 		case W_SAMURAI:
 			if (delaytype == RELOAD)
-				return 2.3;
+				return 2.25;
 			else if (delaytype == FIRE)
-				return 0.065;
+				return 0.07;
 		case W_TESLA:
 			if (delaytype == RELOAD)
 				return 4;

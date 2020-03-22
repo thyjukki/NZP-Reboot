@@ -81,6 +81,12 @@ void() carpenter =
 	local entity oldself;
 	local entity who;
 	oldself = self;
+	local float exp;
+  
+	if (x2_finished > time)
+		exp = 2;
+	else
+		exp = 1;
 	
 	
 	who = find(world,classname,"window");
@@ -100,7 +106,7 @@ void() carpenter =
 	who = find(world,classname,"player");
 	while(who)
 	{
-		addmoney(who,200,1);
+		addmoney(who,200*exp,1);
 		
 		who = find(who,classname,"player");
 	}
@@ -209,12 +215,6 @@ void() powerup_play_sound =
 void() powerup_touch =
 {
   local float t;
-  local float exp;
-  
-  if (x2_finished > time)
-	exp = 2;
-  else
-	exp = 1;
   
   t = random();
   
@@ -258,7 +258,6 @@ void() powerup_touch =
 				break;
 			// carpenter
 			case 5:
-				addmoney(other, 200*exp, 0);
 				carpenter();
 				break;
 			// free perk
