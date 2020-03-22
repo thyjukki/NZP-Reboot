@@ -1,3 +1,4 @@
+void() Load_Waypoints_Legacy;
 
 float Distance (vector from, vector to) {
 	return vlen(from - to);
@@ -345,6 +346,10 @@ void LoadWaypointData() {
 					new_way.touch = creator_way_touch;
 					point = 1;
 					targetcount = 0;
+				} else if (h == "Waypoint") {
+					bprint(PRINT_HIGH, "Identified .way as legacy..\n");
+					point = 99;
+					Load_Waypoints_Legacy();
 				} else {
 					bprint(PRINT_HIGH, strcat("Error: unknown point ", strcat(h, "\n")));
 				}
