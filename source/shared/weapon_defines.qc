@@ -284,6 +284,7 @@ float(float wep, float type) getWeaponMultiplier =
 	switch (wep)
 	{
 		case W_COLT:
+		case W_BIATCH:
 			switch (type)
 			{
 				case HEAD_X: 		return 3;
@@ -293,6 +294,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_KAR:
+		case W_ARMAGEDDON:
 			switch (type)
 			{
 				case HEAD_X: 		return 3.5;
@@ -302,6 +304,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_THOMPSON:
+		case W_GIBS:
 			switch (type)
 			{
 				case HEAD_X: 		return 4;
@@ -311,6 +314,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_357:
+		case W_KILLU:
 			switch (type)
 			{
 				case HEAD_X: 		return 1.4;
@@ -320,6 +324,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_BAR:
+		case W_WIDOW:
 			switch (type)
 			{
 				case HEAD_X: 		return 2.7;
@@ -332,6 +337,7 @@ float(float wep, float type) getWeaponMultiplier =
 			return 1;
 			break;
 		case W_BROWNING:
+		case W_ACCELERATOR:
 			switch (type)
 			{
 				case HEAD_X: 		return 3;
@@ -341,6 +347,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_DB:
+		case W_BORE:
 			switch (type)
 			{
 				case HEAD_X: 		return 1;
@@ -350,6 +357,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_FG:
+		case W_IMPELLER:
 			switch (type)
 			{
 				case HEAD_X: 		return 2.7;
@@ -359,6 +367,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_GEWEHR:
+		case W_COMPRESSOR:
 			switch (type)
 			{
 				case HEAD_X: 		return 2.7;
@@ -368,6 +377,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
 			switch (type)
 			{
 				case HEAD_X: 		return 10;
@@ -377,6 +387,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_M1:
+		case W_M1000:
 			switch (type)
 			{
 				case HEAD_X: 		return 2.7;
@@ -386,6 +397,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_M1A1:
+		case W_WIDDER:
 			switch (type)
 			{
 				case HEAD_X: 		return 2.7;
@@ -395,9 +407,11 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_M2:
+		case W_FIW:
 			return 3;
 			break;
 		case W_MP40:
+		case W_AFTERBURNER:
 			switch (type)
 			{
 				case HEAD_X: 		return 4;
@@ -407,6 +421,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_MG:
+		case W_BARRACUDA:
 			switch (type)
 			{
 				case HEAD_X: 		return 3;
@@ -416,9 +431,11 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_PANZER:
+		case W_LONGINUS:
 			return 3;
 			break;
 		case W_PPSH:
+		case W_REAPER:
 			switch (type)
 			{
 				case HEAD_X: 		return 3;
@@ -428,6 +445,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_PTRS:
+		case W_PENETRATOR:
 			switch (type)
 			{
 				case HEAD_X: 		return 4;
@@ -437,9 +455,11 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_RAY:
+		case W_PORTER:
 			return 3;
 			break;
 		case W_SAWNOFF:
+		case W_SNUFF:
 			switch (type)
 			{
 				case HEAD_X: 		return 1;
@@ -449,6 +469,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_STG:
+		case W_SPATZ:
 			switch (type)
 			{
 				case HEAD_X: 		return 2.7;
@@ -458,6 +479,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_TRENCH:
+		case W_GUT:
 			switch (type)
 			{
 				case HEAD_X: 		return 1;
@@ -467,6 +489,7 @@ float(float wep, float type) getWeaponMultiplier =
 			}
 			break;
 		case W_TYPE:
+		case W_SAMURAI:
 			switch (type)
 			{
 				case HEAD_X: 		return 4;
