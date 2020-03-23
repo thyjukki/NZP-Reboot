@@ -656,12 +656,10 @@ void() LungeKnifeHit =
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 
-	self.solid = SOLID_BBOX;
 	if (self.weapon == W_BK)
 		traceline (source, source + v_forward*80*1.2, 0, self); // naievil -- added some extra length
 	else
 		traceline (source, source + v_forward*64*1.2, 0, self); // naievil -- ^^
-	self.solid = SOLID_SLIDEBOX;
 	
 	org = trace_endpos - v_forward*3; // naievil -- changed to factor of 3 from 4
 	
@@ -1117,9 +1115,7 @@ void() W_FireTesla =
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 
-	self.solid = SOLID_BBOX;
 	FireTrace(1, 0, 0);
-	self.solid = SOLID_SLIDEBOX;
 
 	#ifdef PC
 	te_lightning2(self, self.origin, trace_endpos);
@@ -1267,9 +1263,7 @@ void(float side) W_Fire =
 	}
 
 	if (firetype == 1 || firetype == 0) {
-		self.solid = SOLID_BBOX;
 		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
-		self.solid = SOLID_SLIDEBOX;
 	}
 
 

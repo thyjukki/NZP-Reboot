@@ -1252,17 +1252,17 @@ void(float i) spawnSingleZombEnt =
 };
 void(entity szombie)  SetUpHitBoxes =
 {
-	szombie.head.solid = SOLID_CORPSE;
+	szombie.head.solid = SOLID_SLIDEBOX;
 	szombie.head.movetype = MOVETYPE_STEP;
 	szombie.head.classname = "ai_zombie_head";
 	szombie.head.takedamage = DAMAGE_YES;
 
-	szombie.larm.solid = SOLID_CORPSE;
+	szombie.larm.solid = SOLID_SLIDEBOX;
 	szombie.larm.movetype = MOVETYPE_STEP;
 	szombie.larm.classname = "ai_zombie_larm";
 	szombie.larm.takedamage = DAMAGE_YES;
 
-	szombie.rarm.solid = SOLID_CORPSE;
+	szombie.rarm.solid = SOLID_SLIDEBOX;
 	szombie.rarm.movetype = MOVETYPE_STEP;
 	szombie.rarm.classname = "ai_zombie_rarm";
 	szombie.rarm.takedamage = DAMAGE_YES;
@@ -1376,7 +1376,7 @@ void(entity where) spawn_a_zombieB =
 	#endif
 	
 	
-	szombie.solid = szombie.head.solid = SOLID_CORPSE;
+	szombie.solid = szombie.head.solid = SOLID_SLIDEBOX;
 	szombie.movetype = MOVETYPE_WALK;
 	setmodel(szombie, "models/ai/zbod.mdl");
 	szombie.hop_step = 0;
