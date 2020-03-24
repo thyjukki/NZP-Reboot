@@ -126,30 +126,61 @@ void() W_Switch =
 {
 	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button7)
 	{      
-		float tempf,tempf1,tempf2,tempf3;
+		float tempf,tempf1,tempf2,tempf3,tempf4;
 		float startframe;
 		float endframe;
 		string modelname;
-			
-		tempf = self.currentammo;
-		self.currentammo = self.secondaryammo;
-		self.secondaryammo = tempf;
 
-		tempf1 = self.currentmag;
-		self.currentmag = self.secondarymag;
-		self.secondarymag = tempf1;
+		// just do normal weapon swapping if we don't have mule..
+		if (!(self.perks & P_MULE) || !self.thirdweapon) {
+			tempf = self.currentammo;
+			self.currentammo = self.secondaryammo;
+			self.secondaryammo = tempf;
 
-		tempf1 = self.currentmag2;
-		self.currentmag2 = self.secondarymag2;
-		self.secondarymag2 = tempf1;
+			tempf1 = self.currentmag;
+			self.currentmag = self.secondarymag;
+			self.secondarymag = tempf1;
 
-		tempf2 = self.weapon;
-		self.weapon = self.secondaryweapon;
-		self.secondaryweapon = tempf2;
+			tempf1 = self.currentmag2;
+			self.currentmag2 = self.secondarymag2;
+			self.secondarymag2 = tempf1;
 
-		tempf3 = self.weaponskin;
-		self.weaponskin = self.secondaryweaponskin;
-		self.secondaryweaponskin = tempf3;
+			tempf2 = self.weapon;
+			self.weapon = self.secondaryweapon;
+			self.secondaryweapon = tempf2;
+
+			tempf3 = self.weaponskin;
+			self.weaponskin = self.secondaryweaponskin;
+			self.secondaryweaponskin = tempf3;
+		} else {
+			// store primary weapon
+			tempf = self.weapon;
+			tempf1 = self.currentmag;
+			tempf2 = self.currentmag2;
+			tempf3 = self.currentammo;
+			tempf4 = self.weaponskin;
+
+			// set primary weapon to third weapon
+			self.weapon = self.thirdweapon;
+			self.currentmag = self.thirdmag;
+			self.currentmag2 = self.thirdmag2;
+			self.currentammo = self.thirdammo;
+			self.weaponskin = self.thirdweaponskin;
+
+			// set third weapon to secondary weapon
+			self.thirdweapon = self.secondaryweapon;
+			self.thirdmag = self.secondarymag;
+			self.thirdmag2 = self.secondarymag2;
+			self.thirdammo = self.secondaryammo;
+			self.thirdweaponskin = self.secondaryweaponskin;
+
+			// set secondary weapon to primary weapon
+			self.secondaryweapon = tempf;
+			self.secondarymag = tempf1;
+			self.secondarymag2 = tempf2;
+			self.secondaryammo = tempf3;
+			self.secondaryweaponskin = tempf4;
+		}
 
 		startframe = GetFrame(self.weapon,TAKE_OUT_START);
 		endframe = GetFrame(self.weapon,TAKE_OUT_END);
@@ -1855,12 +1886,16 @@ void () Impulse_Functions =
 			else
 				Change_Stance();
 			break;
-		case 110:
+		/*case 110:
 			CheckButton(1);
 			break;
 		case 111:
 			CheckButton(0);
-			break;		
+			break;	*/
+		case 110:
+		case 111:
+			W_PutOut();
+			break;	
 		case 100:
 			cvar_set("waypoint_mode", "1");
 			

@@ -197,7 +197,7 @@ void() place_model =
 void () buy_weapon_touch =
 {
 	entity oldent;
-	local float tempf, tempf1, tempf2;
+	local float tempf, tempf1, tempf2, tempf3;
 	local float startframe,endframe;
 	local string modelname;
 
@@ -364,15 +364,35 @@ void () buy_weapon_touch =
 			tempf2 = other.weapon;
 			other.weapon = other.secondaryweapon;
 			other.secondaryweapon = tempf2;
+
+			tempf3 = other.currentmag2;
+			other.currentmag2 = other.secondarymag2;
+			other.secondarymag2 = tempf3;
 		} else if (other.weapon && other.secondaryweapon) {
-		
+			if ((other.perks & P_MULE) && !other.thirdweapon) {
+				// store secondary weapon
+				tempf = other.secondaryweapon;
+				tempf1 = other.secondarymag;
+				tempf2 = other.secondaryammo;
+				tempf3 = other.secondarymag2;
+				// move primary to secondary
+				other.secondaryweapon = other.weapon;
+				other.secondarymag = other.currentmag;
+				other.secondarymag2 = other.currentmag2;
+				other.secondaryammo = other.currentammo;
+				// move secondary to tertiary
+				other.thirdweapon = tempf;
+				other.thirdmag = tempf1;
+				other.thirdammo = tempf2;
+				other.thirdmag2 = tempf3;
+			}
+
+			// free current slot
 			other.currentammo = 0;
 			other.currentmag = 0;
 			other.weapon = 0;
-			
 		}
 		
-		/* insert here mule kick thingy*/
 		sound(other, 0,"sounds/misc/ching.wav", 1, 1);
 		other.reload_delay = 0;
 		addmoney(other, -1*self.cost, 0);

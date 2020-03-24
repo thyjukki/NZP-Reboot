@@ -702,7 +702,7 @@ CL_ParseClientdata
 Server information pertaining to this client only
 ==================
 */
-extern int perk_order[8];
+extern int perk_order[9];
 extern int current_perk_order;
 
 extern double HUD_Change_time;
@@ -794,9 +794,14 @@ void CL_ParseClientdata (void)
 			perk_order[current_perk_order] = 64;
 			current_perk_order++;
 		}
+		if (i & 128 && !(cl.perks & 128))
+		{
+			perk_order[current_perk_order] = 128;
+			current_perk_order++;
+		}
 		if (cl.perks & 1 && !(i & 1))
 		{
-			for (s = 0; s < 8; s++)
+			for (s = 0; s < 9; s++)
 			{
 				if (perk_order[s] == 1)
 				{
@@ -813,7 +818,7 @@ void CL_ParseClientdata (void)
 		}
 		if (cl.perks & 2 && !(i & 2))
 		{
-			for (s = 0; s < 8; s++)
+			for (s = 0; s < 9; s++)
 			{
 				if (perk_order[s] == 2)
 				{
@@ -830,7 +835,7 @@ void CL_ParseClientdata (void)
 		}
 		if (cl.perks & 4 && !(i & 4))
 		{
-			for (s = 0; s < 8; s++)
+			for (s = 0; s < 9; s++)
 			{
 				if (perk_order[s] == 4)
 				{
@@ -847,7 +852,7 @@ void CL_ParseClientdata (void)
 		}
 		if (cl.perks & 8 && !(i & 8))
 		{
-			for (s = 0; s < 8; s++)
+			for (s = 0; s < 9; s++)
 			{
 				if (perk_order[s] == 8)
 				{
@@ -864,7 +869,7 @@ void CL_ParseClientdata (void)
 		}
 		if (cl.perks & 16 && !(i & 16))
 		{
-			for (s = 0; s < 8; s++)
+			for (s = 0; s < 9; s++)
 			{
 				if (perk_order[s] == 16)
 				{
@@ -881,7 +886,7 @@ void CL_ParseClientdata (void)
 		}
 		if (cl.perks & 32 && !(i & 32))
 		{
-			for (s = 0; s < 8; s++)
+			for (s = 0; s < 9; s++)
 			{
 				if (perk_order[s] == 32)
 				{
@@ -898,9 +903,26 @@ void CL_ParseClientdata (void)
 		}
 		if (cl.perks & 64 && !(i & 64))
 		{
-			for (s = 0; s < 8; s++)
+			for (s = 0; s < 9; s++)
 			{
 				if (perk_order[s] == 64)
+				{
+					perk_order[s] = 0;
+					while (perk_order[s+1])
+					{
+						perk_order[s] = perk_order[s+1];
+						perk_order[s+1] = 0;
+					}
+					break;
+				}
+			}
+			current_perk_order--;
+		}
+		if (cl.perks & 128 && !(i & 128))
+		{
+			for (s = 0; s < 9; s++)
+			{
+				if (perk_order[s] == 128)
 				{
 					perk_order[s] = 0;
 					while (perk_order[s+1])

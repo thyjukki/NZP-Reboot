@@ -354,6 +354,8 @@ char *GetPerkName (int perk)
 			return "PhD Flopper";
 		case 7:
 			return "Deadshot Daiquiri";
+		case 8:
+			return "Mule Kick";
 		default:
 			return "NULL";
 	}

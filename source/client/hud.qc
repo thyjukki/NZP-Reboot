@@ -871,7 +871,7 @@ void(float width, float height) HUD_Perks =
 	int y = height - 100 - 22;
 	int x = 2;	
 			
-	for (i = 0; i < 8; i = i + 1)
+	for (i = 0; i < 9; i = i + 1)
 	{
 		if (perk_order[i])
 		{
@@ -927,6 +927,14 @@ void(float width, float height) HUD_Perks =
 			else if (perk_order[i] == P_DEAD)
 			{
 				drawpic([x,y,0], getImage("dead.tga"), [20, 20, 1], [1,1,1], 1);
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
+			}
+			else if (perk_order[i] == P_MULE)
+			{
+				drawpic([x,y,0], getImage("mule.tga"), [20, 20, 1], [1,1,1], 1);
 				if (G_HUDHOR)
 					x += 22;
 				else
@@ -1336,14 +1344,14 @@ void(float width, float height) HUD_Draw =
 void UpdatePerks(float newperks) {
 	float s;
 
-	for(float i = 1; i < 65; i *= 2) {
+	for(float i = 1; i < 129; i *= 2) {
 		if (newperks & i && !(perks & i)) {
 			perk_order[current_perk_order] = i;
 			current_perk_order += 1;
 		}
 	}
 
-	for(float i = 1; i < 65; i *= 2) {
+	for(float i = 1; i < 129; i *= 2) {
 		if (perks & i && !(newperks & i)) 
 		{
 			for(s = 0; s < 8; s++) 

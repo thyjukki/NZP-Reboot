@@ -213,6 +213,11 @@
 [
 
 ]
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/mulekick.mdl") = 
+	perk_mule : "Mule Kick" 
+[
+
+]
 
 @PointClass size(-32 -32 -32, 32 32 56) base(Item, Appearflags) color(125 196 187) studio("models/machines/pap.mdl") = 
 	perk_pap : "Pack-A-Punch" 

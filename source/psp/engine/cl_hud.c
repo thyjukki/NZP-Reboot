@@ -36,6 +36,7 @@ qpic_t		*staminpic;
 qpic_t		*doublepic;
 qpic_t		*speedpic;
 qpic_t		*deadpic;
+qpic_t 		*mulepic;
 qpic_t		*fragpic;
 qpic_t		*bettypic;
 
@@ -120,6 +121,7 @@ void HUD_Init (void)
 	doublepic = Draw_CachePic ("gfx/hud/double");
 	speedpic = Draw_CachePic ("gfx/hud/speed");
 	deadpic = Draw_CachePic ("gfx/hud/dead");
+	mulepic = Draw_CachePic ("gfx/hud/mule");
 	fragpic = Draw_CachePic ("gfx/hud/frag");
 	bettypic = Draw_CachePic ("gfx/hud/betty");
 
@@ -907,8 +909,9 @@ HUD_Perks
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
 #define 	P_DEAD 		64
+#define 	P_MULE 		128
 
-int perk_order[8];
+int perk_order[9];
 int current_perk_order;
 
 void HUD_Perks (void)
@@ -917,7 +920,7 @@ void HUD_Perks (void)
 	int y;
 	y = vid.height - sb_round[1]->height - jugpic->height -2;
 
-	for (i = 0; i < 8; i++)
+	for (i = 0; i < 9; i++)
 	{
 		if (perk_order[i])
 		{
@@ -954,6 +957,11 @@ void HUD_Perks (void)
 			else if (perk_order[i] == P_DEAD)
 			{
 				Draw_StretchPic (2, y, deadpic, 20, 20);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_MULE)
+			{
+				Draw_StretchPic (2, y, mulepic, 20, 20);
 				y = y - 22;
 			}
 		}

@@ -185,6 +185,9 @@ void() GetDown =
 		default: break;
 	}
 
+	// remove third weapon
+	self.thirdweapon = 0;
+
 	self.velocity = '-80 0 -80';           			// Stop any old movement
 	self.zoom = 0;
 	self.downed = true;

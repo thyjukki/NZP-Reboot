@@ -149,6 +149,7 @@ const float EVENT_HUDUPDATE = 33;
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
 #define 	P_DEAD 		64
+#define 	P_MULE 		128
 
 #define STAT_CURRENTMAG         50
 #define STAT_CURRENTMAG2        51
