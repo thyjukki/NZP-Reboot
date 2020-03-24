@@ -135,7 +135,6 @@ float(float dir) checkMovement =
 }
 #endif
 
-
 void() PlayerJump =
 {
 	if (!(self.flags & FL_ONGROUND) 
@@ -147,14 +146,45 @@ void() PlayerJump =
 			
 	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 	sound(self, CHAN_VOICE, "sounds/player/jump.wav", 1, 1.75);
-	self.button2 = 0;
+
+	if (self.button2)
+		self.button2 = 0;
 	
 	self.oldz = self.origin_z;
 
-	// jumping needs to be handled manually on psp and switch
+	self.velocity_z = 230;
+}
+
+void(optional float override) JumpCheck =
+{
 	#ifndef PC
-	self.velocity_z = self.velocity_z + 270;
+	override = 0;
 	#endif 
+	
+	if(self.button2 || override) {
+		if (self.downed)
+			return;
+			
+		if (self.stance == 2 || override) {
+			// this redundant check helps our jump override work lol
+			if (override && self.stance != 2)
+				return;
+			PlayerJump();
+		} else {
+			switch(self.stance) {
+				case 0:
+					self.new_ofs_z = self.view_ofs_z + 42;
+					self.stance = 2;
+					break;
+				case 1:
+					self.new_ofs_z = self.view_ofs_z + 24;
+					self.stance = 2;
+					break;
+				default: break;
+			}
+		}
+	} else
+		self.flags = self.flags | FL_JUMPRELEASED;
 }
 
 void() PlayerPreThink =
@@ -201,6 +231,11 @@ void() PlayerPreThink =
 		}
 
 		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
+		
+		#ifdef PC
+		if (!checkMovement(forward))
+			self.maxspeed -= self.maxspeed*0.25;
+		#endif
 	}
 	if(self.isspec != 0 && !self.downed)
 	{
@@ -237,29 +272,8 @@ void() PlayerPreThink =
 	} else {
 		Weapon_Logic();
 	}
-	
 
-	if(self.button2) { //motolegacy (FIXME) -- prevent jumping unless standing
-		if (self.downed)
-			return;
-			
-		if (self.stance == 2)
-			PlayerJump();
-		else {
-			switch(self.stance) {
-				case 0:
-					self.new_ofs_z = self.view_ofs_z + 42;
-					self.stance = 2;
-					break;
-				case 1:
-					self.new_ofs_z = self.view_ofs_z + 24;
-					self.stance = 2;
-					break;
-				default: break;
-			}
-		}
-	} else
-		self.flags = self.flags | FL_JUMPRELEASED;
+	JumpCheck();
 };
 
 void() PlayerPostThink =

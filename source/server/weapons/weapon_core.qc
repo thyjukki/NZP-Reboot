@@ -1826,15 +1826,16 @@ void() dolphin_dive =		//naievil
 	makevectors (self.v_angle);
     self.velocity = self.velocity * 1.2;		
 	self.velocity_z = self.velocity_z + 270;
-	
-	self.new_ofs_z = self.view_ofs_z - 42;
-	self.stance = 0;
 
-	self.button2 = 0;
+	if (self.button2)
+		self.button2 = 0;
+
 	self.dive = 1;
 	W_SprintStop();
 
 	self.oldz = self.origin_z;
+	self.new_ofs_z = self.view_ofs_z - 42;
+	self.stance = 0;
 }
 
 
@@ -1845,6 +1846,12 @@ void () Impulse_Functions =
 		
 	switch (self.impulse)
 	{		
+		case 10:
+			#ifdef PC
+			// FTE handles jumping on PC, which we don't want.. so we use impulses to override.
+			JumpCheck(1);
+			#endif
+			break;
 		case 22:
 			addmoney(self, 10000, 0);
 			rounds += 4;

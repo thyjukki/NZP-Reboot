@@ -101,7 +101,9 @@ void DrinkPerk(float perk) {
 	self = other;
 	
 	if (self.sprinting)
-		W_SprintStop();
+		self.sprinting = 0;
+
+	self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
 	
 	self.knife_delay = self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;		
 	Set_W_Frame (0, 22, 0, 0, PERK, func, "models/machines/v_perk.mdl", true, S_RIGHT);
