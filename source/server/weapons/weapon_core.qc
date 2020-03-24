@@ -1847,6 +1847,7 @@ void () Impulse_Functions =
 	switch (self.impulse)
 	{		
 		case 10:
+			centerprint(self, "aaaaaaaa");
 			#ifdef PC
 			// FTE handles jumping on PC, which we don't want.. so we use impulses to override.
 			JumpCheck(1);

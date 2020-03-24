@@ -155,20 +155,17 @@ void() PlayerJump =
 	self.velocity_z = 230;
 }
 
-void(optional float override) JumpCheck =
+void(float override) JumpCheck =
 {
 	#ifndef PC
 	override = 0;
 	#endif 
-	
+
 	if(self.button2 || override) {
 		if (self.downed)
 			return;
 			
-		if (self.stance == 2 || override) {
-			// this redundant check helps our jump override work lol
-			if (override && self.stance != 2)
-				return;
+		if (self.stance == 2) {
 			PlayerJump();
 		} else {
 			switch(self.stance) {
@@ -273,7 +270,7 @@ void() PlayerPreThink =
 		Weapon_Logic();
 	}
 
-	JumpCheck();
+	JumpCheck(0);
 };
 
 void() PlayerPostThink =
