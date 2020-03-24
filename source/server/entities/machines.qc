@@ -987,6 +987,7 @@ void() Float_Change =
 			return;
 		}
 		else {
+			addmoney(self.owner.owner, 950, 0);
 			self.model = "progs/Misc/teddy.mdl";
 			setmodel(self, self.model);
 			self.angles_y = self.angles_y - 90;
