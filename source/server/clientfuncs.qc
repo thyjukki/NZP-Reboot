@@ -365,6 +365,12 @@ float(entity who, entity target) isFacing =
 
 	local float difference_angle = target_angle - who_angle;
 
+	#ifdef PSP
+	if (difference_angle < -45) {
+		difference_angle += 360;
+	}
+	#endif
+
 	// 180 = directly facing each other, 30 degree buffer.
 	if (difference_angle <= 210 && difference_angle >= 150)
 		return true;
