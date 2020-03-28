@@ -103,7 +103,7 @@ qboolean	scr_initialized;		// ready to draw
 
 qpic_t      *hitmark;
 qpic_t      *ls_wahnsinn;
-qpic_t      *ls_anstieg;
+//qpic_t      *ls_anstieg;
 
 int			scr_fullupdate;
 
@@ -603,7 +603,8 @@ void SCR_Init (void)
 
     hitmark = Draw_CachePic("gfx/hud/hit_marker");
 	ls_wahnsinn = Draw_CachePic ("gfx/lscreen/psp_wahnsinn.lmp");
-	ls_anstieg = Draw_CachePic ("gfx/lscreen/psp_anstieg");
+	//ls_anstieg = Draw_CachePic ("gfx/lscreen/psp_anstieg");
+	//Sys_Error("pass");
 
 	scr_initialized = qtrue;
 }
@@ -957,8 +958,8 @@ void SCR_DrawLoadScreen (void)
 	}*/
 	if (loadingScreen == 1)
 		Draw_Pic (scr_vrect.x, scr_vrect.y, ls_wahnsinn);
-	else if (loadingScreen == 2)
-		Draw_Pic (scr_vrect.x, scr_vrect.y, ls_anstieg);/*
+	//else if (loadingScreen == 2)
+		/*Draw_Pic (scr_vrect.x, scr_vrect.y, ls_anstieg);*//*
 	else if (loadingScreen == 3)
 	{
 		pic = Draw_CachePic ("gfx/lscreen/psp_ch");

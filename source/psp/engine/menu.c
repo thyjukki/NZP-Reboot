@@ -390,7 +390,7 @@ static void M_Start_Menu_Draw ()
     start_bk = Draw_CacheImg ("gfx/menu/start_background");
 	pause_bk = Draw_CacheImg ("gfx/menu/pause_background");
 	Draw_Pic (0, 0, start_bk);
-	M_Print ((vid.width)/2 - 44, (vid.height - 64),  "Press start");
+	M_Print ((vid.width)/2 - 44, (vid.height - 64),  "Press Start");
 }
 void M_Start_Key (int key)
 {
@@ -4365,7 +4365,13 @@ double m_serverInfoMessageTime;
 
 void Map_Finder(void)
 {
+
+#ifdef KERNEL_MODE
+	SceUID dir = sceIoDopen(va("%s/maps", com_gamedir));
+#else
 	SceUID dir = sceIoDopen(va("nzp/maps"));
+#endif // KERNEL_MODE
+
 	if(dir < 0)
 	{
 		Sys_Error ("Map_Finder");

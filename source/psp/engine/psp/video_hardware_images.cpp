@@ -1010,6 +1010,7 @@ byte* loadimagepixels (char* filename, qboolean complain, int matchwidth, int ma
 	if (data = LoadWAL(name))
 		return data;
 */
+
 	sprintf (name, "%s.tga", basename);
 	FS_FOpenFile (name, &f);
 	if (f)

@@ -415,7 +415,8 @@ void Cmd_Maps_f (void)
 
 	s = Cmd_Argv(1);
 
-	SceUID dir = sceIoDopen(va("%s/maps",com_gamedir));
+	SceUID dir = sceIoDopen(va("%s/maps", com_gamedir));
+
 	if(dir < 0)
 	{
 		return;

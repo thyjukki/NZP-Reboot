@@ -23,13 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "module.h"
 
 // Set up the module info.
-
-#ifdef KERNEL_MODE
-PSP_MODULE_INFO("QuakeKernel", PSP_MODULE_KERNEL, 1, 1);
-PSP_MAIN_THREAD_STACK_SIZE_KB(32);
-#else
-PSP_MODULE_INFO("QuakeUser", PSP_MODULE_USER, 1, 1);
+PSP_MODULE_INFO("NZPortable", 0, 1, 1);
 PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_USER | PSP_THREAD_ATTR_VFPU);
-#endif
-
 PSP_HEAP_SIZE_KB(-1024);
