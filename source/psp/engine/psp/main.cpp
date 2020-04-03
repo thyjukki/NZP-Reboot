@@ -37,6 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern "C"
 {
 #include "../quakedef.h"
+#include "m33libs/kubridge.h"
 }
 
 #include "battery.hpp"
@@ -733,4 +734,40 @@ void Sys_ReadCommandLineFile (char* netpath)
 
 	if (in > 0)
 		Sys_FileClose (in);
+}
+
+char* Sys_GetPSPModel(void) 
+{
+	// check for the vita prx
+	int vitaprx = sceIoOpen("flash0:/kd/registry.prx", PSP_O_RDONLY | PSP_O_WRONLY, 0777);
+
+	if (vitaprx >= 0) {
+		sceIoClose(vitaprx);
+		return "PS Vita (PSP2)";
+	}
+
+	// normal psp models
+	char* modelstring;
+	switch(kuKernelGetModel()) {
+		case 0:
+			modelstring = "PSP Phat (1000)";
+			break;
+		case 1:
+			modelstring = "PSP Slim (2000)";
+			break;
+		case 2:
+			modelstring = "PSP Brite (3000)";
+			break;
+		case 4:
+			modelstring = "PSP GO (4000)";
+			break;
+		default: // a little unoptimized but hopefully in the future we get the street num implemented
+			char mnum[32];
+			sprintf(mnum, "%d)", kuKernelGetModel());
+			modelstring = "Unkown Model (kuKernelGetModel returns ";
+			strcat(modelstring, mnum);
+			break;
+	}
+
+	return modelstring;
 }
