@@ -92,11 +92,7 @@ void() W_SprintStop =
 		playwalk();
 }
 
-void W_SprintStart () {
-
-	if (cvar("waypoint_mode"))
-		centerprint(self, "ahah");
-	
+void W_SprintStart () {	
 	if (self.fire_delay > time ||
 		self.fire_delay2 > time ||
 		self.new_anim_stop ||
@@ -133,6 +129,9 @@ void() W_Switch =
 		float startframe;
 		float endframe;
 		string modelname;
+
+		// un-zoom camera
+		self.zoom = false;
 
 		// just do normal weapon swapping if we don't have mule..
 		if (!(self.perks & P_MULE) || !self.thirdweapon) {
@@ -208,12 +207,13 @@ void() W_Switch =
 		self.Weapon_Name = GetWeaponName(self.weapon);
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
-		
+		#endif
+
 		if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
 			self.weapon2model = "models/weapons/kar/v_karscope.mdl";
 		else 
 			self.weapon2model = "";
-		#endif
+		UpdateV2model(self.weapon2model, 0);
 	}
 }
 

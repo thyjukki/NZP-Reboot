@@ -1611,6 +1611,8 @@ void PapUpgrade(entity pap, entity buyer) {
 	self.secondarymag2 = 0;
 
 	Set_W_Frame (0, 39, 0, 0, 0, W_TakeOut, "models/machines/v_pap.mdl", true, S_BOTH);
+	self.weapon2model = "";
+	UpdateV2model(self.weapon2model, 0);
 
 	#ifndef PC
 	self.Weapon_Name = "";
@@ -1671,9 +1673,14 @@ void touch_pap() {
 			endframe = GetFrame(other.weapon,TAKE_OUT_END);
 			modelname = GetWeaponModel(other.weapon, 0);
 			other.weaponmodel = GetWeaponModel(other.weapon, 0);// Give weapon model
+		
+			// Kar Scope
+			if (other.weapon == W_HEADCRACKER)
+				other.weapon2model = "models/weapons/kar/v_karscope.mdl";
 
 			self = other;
 			SwitchWeapon(self.weapon);
+			UpdateV2model(other.weapon2model, 0);
 			Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, true, S_BOTH);//FIXME
 
 			#ifndef PC
