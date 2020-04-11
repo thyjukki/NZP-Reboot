@@ -1288,6 +1288,32 @@ void(float width, float height) HUD_Achievements = {
 	}
 }
 
+string(float index) GetButtonString =
+{
+	// place holder
+	if (index == 100)
+		return "LMOUSE";
+	else if (index == 101)
+		return "RMOUSE";
+
+	tokenize(findkeysforcommand(buttonBind[index]));
+	string temps = strtoupper(keynumtostring(stof(argv(0))));
+
+	return temps;
+}
+
+void(float width, float height) HUD_Waypoint =
+{
+	drawstring([0.015*width, 0.015*height, 0], "WAYPOINT MODE", [0.030*width, 0.030*width, 0], [1, 1, 1], 1, 1);
+	drawfill([0.015*width, 0.035*height + height*0.035, 0], [strlen("WAYPOINT MODE")*0.030*width, 0.005*width, 0], [1, 1,1], 1);
+	drawstring([0.015*width, 0.095*height, 0], strcat("Press ", GetButtonString(100), " to Create a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.125*height, 0], strcat("Press ", GetButtonString(9), " to Select a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.155*height, 0], strcat("Press ", GetButtonString(101), " to Link a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.185*height, 0], strcat("Press ", GetButtonString(11), " to Remove a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.215*height, 0], strcat("Press ", GetButtonString(7), " to Move a Waypoint Here"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.245*height, 0], strcat("Press ", GetButtonString(10), " to Create a Special Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+}
+
 /*******************
 *     HUD Draw     *
 *******************/
@@ -1297,33 +1323,38 @@ void(float width, float height) HUD_Draw =
 	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10) && !score_show)
 	{
 		Draw_Crosshair();
-		HUD_Health(width, height);
-		HUD_Points(width, height);
-		HUD_Rounds(width, height);
-		HUD_Perks(width, height);
-		HUD_Progressbar(width, height);
-		HUD_Powerups();
-		HUD_AmmoString();
-		HUD_Achievements(width, height);
-	
-		if (HUD_Change_time > time)
-		{
-			HUD_Ammo(width, height);
-			HUD_Grenades(width, height);
-			HUD_Weaponstring(width, height);
-		}
-			
-		if (useprint_time > time) 
-			HUD_Useprint(width, height);
-		
-		if (Hitmark_time > time)
-			HUD_Hitmark();
 
-		if (stext) {
-			HUD_ScrollText(width, height);
+		if (!cvar("waypoint_mode")) {
+			HUD_Health(width, height);
+			HUD_Points(width, height);
+			HUD_Rounds(width, height);
+			HUD_Perks(width, height);
+			HUD_Progressbar(width, height);
+			HUD_Powerups();
+			HUD_AmmoString();
+			HUD_Achievements(width, height);
+		
+			if (HUD_Change_time > time)
+			{
+				HUD_Ammo(width, height);
+				HUD_Grenades(width, height);
+				HUD_Weaponstring(width, height);
+			}
+				
+			if (useprint_time > time) 
+				HUD_Useprint(width, height);
+			
+			if (Hitmark_time > time)
+				HUD_Hitmark();
+
+			if (stext) {
+				HUD_ScrollText(width, height);
+			} else {
+				scrollopacity = 1;
+				scrollheight = 0.80;
+			}
 		} else {
-			scrollopacity = 1;
-			scrollheight = 0.80;
+			HUD_Waypoint(width, height);
 		}
 	}
 	

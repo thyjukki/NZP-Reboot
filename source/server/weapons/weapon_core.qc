@@ -93,6 +93,9 @@ void() W_SprintStop =
 }
 
 void W_SprintStart () {
+
+	if (cvar("waypoint_mode"))
+		centerprint(self, "ahah");
 	
 	if (self.fire_delay > time ||
 		self.fire_delay2 > time ||
