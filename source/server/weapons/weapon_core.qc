@@ -192,7 +192,12 @@ void() W_Switch =
 
 		if (IsDualWeapon(self.weapon)) {
 			self.weapon2model = GetLeftWeaponModel(self.weapon);
-		}
+		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
+			self.weapon2model = "models/weapons/kar/v_karscope.mdl";
+		else 
+			self.weapon2model = "";
+
+		UpdateV2model(self.weapon2model, 0);
 	
 		
 		//UpdateWeapons(1);
@@ -208,12 +213,6 @@ void() W_Switch =
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
 		#endif
-
-		if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
-			self.weapon2model = "models/weapons/kar/v_karscope.mdl";
-		else 
-			self.weapon2model = "";
-		UpdateV2model(self.weapon2model, 0);
 	}
 }
 
@@ -1527,7 +1526,7 @@ void() GrenadeExplode =
 	if (self.classname == "grenade")
 		DamgageExplode (self, self.owner, 225, 75, 128);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...	
 	else
-		DamgageExplode (self, self.owner, 125, 300, 128); //explosive weapons have a smaller radius but are more powerful :)
+		DamgageExplode (self, self.owner, 1200, 1000, 128); //explosive weapons are more powerful :)
 	
 	#ifdef PC
 	te_explosionquad(self.origin);

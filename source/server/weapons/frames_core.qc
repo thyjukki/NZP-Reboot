@@ -36,10 +36,8 @@ void () W2_Frame_Update =
 	
 	self.anim_weapon2_time = time + self.weapon2_animduration;
 
-
 	if (self.weapon2frame != self.weapon2frame_end && !self.anim2_reversed)
 	{   // continue an animation
-
         if (self.anim2_reversed) {
 		    self.weapon2frame = self.weapon2frame - 1;
         } else {
@@ -82,6 +80,8 @@ void () W_Frame_Update =
 	// note: call whenever weapon frames are called!
 	if (self.anim_weapon_time > time)
 		return; //don't call every frame, if it is the animations will play too fast
+
+	W2_Frame_Update();
 	
 	self.anim_weapon_time = time + self.weapon_animduration;
 
@@ -135,8 +135,6 @@ void () W_Frame_Update =
 		if (temp)
 			temp(S_RIGHT);
 	}
-	
-	W2_Frame_Update();
 };
 
 void Set_W_Frame (float startframe, float endframe, float duration, float funccalledin, float animtype, void(optional float t) endanimfunc, string set_model, float dontstartnew, float side) =
