@@ -167,7 +167,7 @@ void(float override) JumpCheck =
 			
 		if (self.stance == 2) {
 			PlayerJump();
-		} else {
+		} else if (self.view_ofs_z == self.new_ofs_z && (self.flags & FL_ONGROUND)) {
 			switch(self.stance) {
 				case 0:
 					self.new_ofs_z = self.view_ofs_z + 42;

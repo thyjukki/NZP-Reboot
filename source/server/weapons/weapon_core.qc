@@ -1770,7 +1770,7 @@ void(float wepnum) CheckButton = {
 
 void() Change_Stance = {
 
-	if (self.downed || !(self.flags & FL_ONGROUND) || self.changestance == true)
+	if (self.downed || !(self.flags & FL_ONGROUND) || self.changestance == true || self.new_ofs_z != self.view_ofs_z)
 		return;
 
 	switch(self.stance) {
