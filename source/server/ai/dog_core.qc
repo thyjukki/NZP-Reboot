@@ -82,7 +82,7 @@ void(entity where) spawn_a_dogB =
 	
 	sdog.target = where.target;	
 	
-	sdog.solid = SOLID_SLIDEBOX;
+	sdog.solid = SOLID_CORPSE;
 	sdog.movetype = MOVETYPE_WALK;
 	setmodel(sdog, "models/ai/dog.mdl");
 	sdog.hop_step = 0;

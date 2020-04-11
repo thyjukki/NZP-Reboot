@@ -791,22 +791,22 @@ void() zombie_attack2;
 
 $frame attack1 attack2 attack3 attack4 attack5
 
-void() zombie_attackA1		=[	$attack1,		zombie_attackA2	]	{self.frame = 102;SetZombieHitBox(BASE_BBOX);Zombie_Think();};
+void() zombie_attackA1		=[	$attack1,		zombie_attackA2	]	{self.frame = 102;SetZombieHitBox(BASE_BBOX);Zombie_Think();self.solid = SOLID_BBOX;};
 void() zombie_attackA2		=[	$attack2,		zombie_attackA3	]	{self.frame = 103;Zombie_Think();};
 void() zombie_attackA3		=[	$attack3,		zombie_attackA4	]	{self.frame = 104;Zombie_Think();};
 void() zombie_attackA4		=[	$attack4,		zombie_attackA5	]	{zombie_attack2();self.frame = 105;Zombie_Think();};
-void() zombie_attackA5		=[	$attack5,		zombie_decide	]	{self.frame = 106;Zombie_Think();};
+void() zombie_attackA5		=[	$attack5,		zombie_decide	]	{self.frame = 106;Zombie_Think();self.solid = SOLID_CORPSE;};
 
 ///////////////////////////////////////////////////////////////////////// ZOMBIE ATTACK 2// Swipe with left arm
 //91-96
 $frame attackb1 attackb2 attackb3 attackb4 attackb5 attackb6
 
-void() zombie_attackB1		=[	$attackb1,		zombie_attackB2	]	{self.frame = 107;SetZombieHitBox(BASE_BBOX);Zombie_Think();};
+void() zombie_attackB1		=[	$attackb1,		zombie_attackB2	]	{self.frame = 107;SetZombieHitBox(BASE_BBOX);Zombie_Think();self.solid = SOLID_BBOX;};
 void() zombie_attackB2		=[	$attackb2,		zombie_attackB3	]	{self.frame = 108;Zombie_Think();};
 void() zombie_attackB3		=[	$attackb3,		zombie_attackB4	]	{self.frame = 109;Zombie_Think();};
 void() zombie_attackB4		=[	$attackb4,		zombie_attackB5	]	{zombie_attack2(); self.frame = 110;Zombie_Think();};
 void() zombie_attackB5		=[	$attackb5,		zombie_attackB6	]	{self.frame = 111;Zombie_Think();};
-void() zombie_attackB6		=[	$attackb6,		zombie_decide	]	{self.frame = 112;Zombie_Think();};
+void() zombie_attackB6		=[	$attackb6,		zombie_decide	]	{self.frame = 112;Zombie_Think();self.solid = SOLID_CORPSE;};
 
 
 void() zombie_attack =
@@ -1252,17 +1252,17 @@ void(float i) spawnSingleZombEnt =
 };
 void(entity szombie)  SetUpHitBoxes =
 {
-	szombie.head.solid = SOLID_SLIDEBOX;
+	szombie.head.solid = SOLID_CORPSE;
 	szombie.head.movetype = MOVETYPE_STEP;
 	szombie.head.classname = "ai_zombie_head";
 	szombie.head.takedamage = DAMAGE_YES;
 
-	szombie.larm.solid = SOLID_SLIDEBOX;
+	szombie.larm.solid = SOLID_CORPSE;
 	szombie.larm.movetype = MOVETYPE_STEP;
 	szombie.larm.classname = "ai_zombie_larm";
 	szombie.larm.takedamage = DAMAGE_YES;
 
-	szombie.rarm.solid = SOLID_SLIDEBOX;
+	szombie.rarm.solid = SOLID_CORPSE;
 	szombie.rarm.movetype = MOVETYPE_STEP;
 	szombie.rarm.classname = "ai_zombie_rarm";
 	szombie.rarm.takedamage = DAMAGE_YES;
@@ -1376,7 +1376,7 @@ void(entity where) spawn_a_zombieB =
 	#endif
 	
 	
-	szombie.solid = szombie.head.solid = SOLID_SLIDEBOX;
+	szombie.solid = szombie.head.solid = SOLID_CORPSE;
 	szombie.movetype = MOVETYPE_WALK;
 	setmodel(szombie, "models/ai/zbod.mdl");
 	szombie.hop_step = 0;

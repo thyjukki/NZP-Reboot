@@ -392,9 +392,7 @@ void() PlayerPostThink =
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 
-	self.solid = SOLID_BBOX;
 	traceline (source, source + v_forward*800*1.2, 0, self); // naievil -- ^^
-	self.solid = SOLID_SLIDEBOX;
 
 	if (trace_ent.classname == "ai_zombie" || trace_ent.classname == "ai_zombie_head" 
 	|| trace_ent.classname == "ai_zombie_rarm" ||trace_ent.classname == "ai_zombie_larm" 
@@ -472,7 +470,7 @@ void() PlayerSpawn =
 	
 	self.isspec = FALSE;
 	self.classname = "player";
-	self.solid = SOLID_SLIDEBOX;
+	self.solid = SOLID_BBOX;
 	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
 	self.max_health = self.health = 100;
