@@ -159,7 +159,7 @@ void() precaches =
 	precache_sound("sounds/music/end.wav");
 	precache_sound("sounds/null.wav");
 
-	if (gotdog) {
+	if (find(world, classname, "spawn_dog")) {
 		precache_model("models/ai/dog.mdl");
 		precache_model("models/ai/dog_lightning.mdl");
 		precache_model("models/misc/lightning.spr");

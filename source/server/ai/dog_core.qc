@@ -1,4 +1,5 @@
 void() Dog_Think;
+void() Dog_Death;
 
 // DOG RUN
 // 0-6
@@ -52,10 +53,24 @@ void()	dog_meleeanim9	=[	$dogmelee9, 	dog_meleeanim10	] {Zombie_Walk(0);self.fra
 void()	dog_meleeanim10	=[	$dogmelee10, 	dog_runanim 	] {Zombie_Walk(0);self.frame = 34;};
 
 // DOG DEATH
-// 37 - 47
+// 35 - 36
 $frame dogdeath1 dogdeath2
 void()	dog_deathanim		=[	$dogdeath1,		dog_deathanim2	] 	{self.frame = 35;};
 void()	dog_deathanim2		=[	$dogdeath2,		SUB_Null 		] 	{self.nextthink = time + 3; self.think = removeZombie;  self.frame = 36;};
+
+// DOG WAFFE DEATH
+// 37-46
+$frame dogwunder1 dogwunder2 dogwunder3 dogwunder4 dogwunder5 dogwunder6 dogwunder7 dogwunder8 dogwunder9 dogwunder10 
+void() die_dog_wunder1 	=[ $dogwunder1, 	die_dog_wunder2 	] {Zombie_Walk(0);Zombie_Tesla_Light();self.frame = 37;};
+void() die_dog_wunder2 	=[ $dogwunder2, 	die_dog_wunder3 	] {Zombie_Walk(0);self.frame = 38;};
+void() die_dog_wunder3 	=[ $dogwunder3, 	die_dog_wunder4 	] {Zombie_Walk(0);self.frame = 39;};
+void() die_dog_wunder4 	=[ $dogwunder4, 	die_dog_wunder5 	] {Zombie_Walk(0);self.frame = 40;};
+void() die_dog_wunder5 	=[ $dogwunder5, 	die_dog_wunder6 	] {Zombie_Walk(0);self.frame = 41;};
+void() die_dog_wunder6 	=[ $dogwunder6, 	die_dog_wunder7 	] {Zombie_Walk(0);Zombie_Find_Tesla_Target();self.frame = 42;};
+void() die_dog_wunder7 	=[ $dogwunder7, 	die_dog_wunder8 	] {Zombie_Walk(0);self.frame = 43;};
+void() die_dog_wunder8 	=[ $dogwunder8, 	die_dog_wunder9 	] {Zombie_Walk(0);self.frame = 44;};
+void() die_dog_wunder9 	=[ $dogwunder9, 	die_dog_wunder10 	] {Zombie_Walk(0);self.frame = 45;};
+void() die_dog_wunder10 =[ $dogwunder10, 	die_dog_wunder10 	] {Zombie_Walk(0);self.frame = 46;self.health = 0; self.th_die();};
 
 // DOG LIGHTNING SPAWN
 // 1-13
@@ -202,6 +217,7 @@ void(entity where) spawn_a_dogB =
 	
 	sdog.th_melee = dog_meleeanim;
 	sdog.th_idle = dog_idleanim;
+	sdog.th_diewunder = die_dog_wunder1;
 
 	SetZombieWalk(sdog);
 	sdog.walktype = 5;
