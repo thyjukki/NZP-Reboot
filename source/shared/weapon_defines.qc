@@ -156,6 +156,8 @@ string(float wep) GetWeaponName =
 			return "Bouncing Betty";
     	case W_TESLA:
       		return "Wunderwaffe DG-2";
+		case W_DG3:
+			return "Wunderwaffe DG-3 JZ";
 		default:
 			return " ";
 	}
@@ -269,6 +271,7 @@ float(float wep) GetFiretype =
 		case W_SAMURAI:
 			return 0;
 		case W_TESLA:
+		case W_DG3:
 			return 5;
     }
 
@@ -1319,6 +1322,12 @@ float(float wep, float delaytype) getWeaponDelay =
 			else if (delaytype == FIRE)
 				return 1;
 			break;
+		case W_DG3:
+			if (delaytype == RELOAD)
+				return 3.3;
+			else if (delaytype == FIRE)
+				return 1;
+			break;
     }
 
     return 0;
@@ -2301,27 +2310,27 @@ float(float wep, float frametype, optional float z) GetFrame =
 				case FIRE_START:
 					return 1;
 				case FIRE_END:
-					return 5;
+					return 4;
 				case RELOAD_START:
-					return 5;
+					return 9;
 				case RELOAD_END:
-					return 47;
+					return 58;
 				case SPRINT_IN_START:
-					return 78;
+					return 60;
 				case SPRINT_IN_END:
-					return 80;
+					return 63;
 				case SPRINT_OUT_START:
-					return 80;
+					return 63;
 				case SPRINT_OUT_END:
-					return 83;
+					return 66;
 				case TAKE_OUT_START:
-					return 80;
+					return 72;
 				case TAKE_OUT_END:
-					return 83;
+					return 76;
 				case PUT_OUT_START:
-					return 77;
+					return 66;
 				case PUT_OUT_END:
-					return 80;
+					return 71;
 				case RELOAD_CANCEL:
 					return 16;
 			}
@@ -2654,6 +2663,7 @@ float(float wep) IsPapWeapon = {
 		case W_SPATZ:
 		case W_GUT:
 		case W_SAMURAI:
+		case W_DG3:
 			return 1;
 		default:
 			return 0;
@@ -3113,17 +3123,17 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 			break;
 		case W_TESLA:
 		case W_DG3:
-			if (curweaponframe == 10)
+			if (curweaponframe == 20)
 				sound (self ,5, "sounds/weapons/tesla/switchoff.wav", 1, ATTN_NORM);
-			else if (curweaponframe == 16)
+			else if (curweaponframe == 25)
 				sound (self ,5, "sounds/weapons/tesla/pulllever.wav", 1, ATTN_NORM);
-			else if (curweaponframe == 22)
+			else if (curweaponframe == 31)
 				sound (self ,5, "sounds/weapons/tesla/glassbreak.wav", 1, ATTN_NORM);
-			else if (curweaponframe == 29)
+			else if (curweaponframe == 38)
 				sound (self ,5, "sounds/weapons/tesla/clipin.wav", 1, ATTN_NORM);
-			else if (curweaponframe == 32)
+			else if (curweaponframe == 43)
 				sound (self ,5, "sounds/weapons/tesla/clipoff.wav", 1, ATTN_NORM);
-			else if (curweaponframe == 41)
+			else if (curweaponframe == 51)
 				sound (self ,5, "sounds/weapons/tesla/switchon.wav", 1, ATTN_NORM);
 	}
 }
@@ -3313,12 +3323,14 @@ void(float weptype) precache_extra =
 			break;
 		case W_TESLA:
 		case W_DG3:
+			precache_model("models/misc/lightning.spr");
 			precache_sound("sounds/weapons/tesla/switchoff.wav");
 			precache_sound("sounds/weapons/tesla/pulllever.wav");
 			precache_sound("sounds/weapons/tesla/glassbreak.wav");
 			precache_sound("sounds/weapons/tesla/clipin.wav");
 			precache_sound("sounds/weapons/tesla/clipoff.wav");
 			precache_sound("sounds/weapons/tesla/switchon.wav");
+			precache_sound("sounds/weapons/tesla/shoot.wav");
 			break;
 	}
 }
@@ -3468,6 +3480,7 @@ float(float wep) getWeaponRecoilReturn =
 			return 1255;
 			break;
 		case W_TESLA:
+		case W_DG3:
 			return 1813;
 			break;
 	}
@@ -3929,6 +3942,7 @@ vector(float wep) GetWeaponRecoil =
 			kick_change = '50 66 50';
 			break;
 		case W_TESLA:
+		case W_DG3:
 			kick_change = '74 74 85';
 			break;
 	}

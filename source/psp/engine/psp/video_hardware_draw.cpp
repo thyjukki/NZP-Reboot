@@ -1326,7 +1326,7 @@ void Draw_Crosshair (void)
 		}
     }
 
-	if (cl.stats[STAT_ACTIVEWEAPON] == W_M2)
+	if (cl.stats[STAT_ACTIVEWEAPON] == W_M2 || cl.stats[STAT_ACTIVEWEAPON] == W_TESLA || cl.stats[STAT_ACTIVEWEAPON] == W_DG3)
 	{
 		Draw_Character ((vid.width)/2-4, (vid.height)/2, 'O');
 	}

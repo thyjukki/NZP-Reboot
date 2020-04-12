@@ -1077,7 +1077,7 @@ void() Draw_Crosshair =
 		}
     }
 
-	if (getstatf(STAT_ACTIVEWEAPON) == W_M2)
+	if (getstatf(STAT_ACTIVEWEAPON) == W_M2 || getstatf(STAT_ACTIVEWEAPON) == W_TESLA || getstatf(STAT_ACTIVEWEAPON) == W_DG3)
 	{
 		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, 1, 1);
 	}

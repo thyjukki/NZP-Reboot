@@ -364,6 +364,10 @@ void(float which) SetZombieHitBox =
 
 void() Zombie_Think = //called every frame for zombies
 {
+	if (self.classname == "wunder") {
+		self.th_diewunder();
+		return;
+	}
 	if (self.bleedingtime < time && !self.head.deadflag)
 	{
 		self.bleedingtime = time + 2;
@@ -815,6 +819,10 @@ void() zombie_attackB6		=[	$attackb6,		zombie_decide	]	{self.frame = 112;Zombie_
 void() zombie_attack =
 {
 	self.velocity = '0 0 0';
+
+	if (self.classname == "wunder")
+		return;
+
 	if(self.outside == TRUE)
 	{
 		self.angles_y = self.goalentity.angles_y;
@@ -905,8 +913,6 @@ void() zombie_land4		=[	$land4,		zombie_land5	]	{self.frame = 156;Zombie_Think()
 void() zombie_land5		=[	$land5,		zombie_land6	]	{self.frame = 157;Zombie_Think();};
 void() zombie_land6		=[	$land6,		zombie_land7	]	{self.frame = 158;Zombie_Think();};
 void() zombie_land7		=[	$land7,		Zombie_Walk_Setup	]	{self.frame = 159;Zombie_Think();};
-
-
 
 void() removeZombie =
 {
@@ -1009,7 +1015,6 @@ void()	zombie_deathC8		=[	$deathC8,		zombie_deathC9	] 	{self.frame = 146;zombie_
 void()	zombie_deathC9		=[	$deathC9,		zombie_deathC10	] 	{self.frame = 147;};
 void()	zombie_deathC10		=[	$deathC10,		SUB_Null		] 	{self.nextthink = time + 3; self.think = removeZombie; self.frame = 148;};
 
-
 void() Zombie_Death =
 {
 	self.aistatus = "0";
@@ -1089,6 +1094,126 @@ void() Zombie_Death =
 		}
 	}
 };
+
+/////////////////////ZOMBIE WAFFE STUFF/////////////////////
+
+void() Zombie_Lightning_Think =
+{
+	self.frame++;
+
+	if (self.frame >= 3)
+		self.frame = 0;
+	
+	// suicide timer!
+	if(self.ltime < time) {
+		remove(self);
+	}
+
+	self.nextthink = time + 0.05;
+}
+
+void() Zombie_Tesla_Light =
+{
+	// lightning sprite
+	local entity lightning = spawn();
+	setmodel(lightning, "models/misc/lightning.spr");
+	setorigin(lightning, self.origin + '0 0 13');
+	lightning.think = Zombie_Lightning_Think;
+	lightning.nextthink = time + 0.05;
+	lightning.ltime = time + 1;
+}
+
+void() Zombie_Find_Tesla_Target =
+{
+	local entity zombs = findradius(self.origin, 200);
+	local entity tempe;
+	local vector org;
+	local vector targetorg;
+	local float found_target;
+
+	if (self.teslacount >= 10)
+		return;
+
+	found_target = false;
+	while(zombs && !found_target) {
+		if (zombs == world) {
+			found_target = true;
+			return;
+		}
+		// limb stuff
+		if (zombs.classname == "ai_zombie_head" || zombs.classname == "ai_zombie_larm"
+		|| zombs.classname == "ai_zombie_rarm") {
+			zombs = zombs.owner;
+		}
+
+		if (zombs.classname == "ai_zombie" || zombs.classname == "ai_dog") {
+			found_target = true;
+
+			zombs.owner = self.owner;
+
+			// remove libs
+			if (zombs.head)
+				setmodel(zombs.head, "");
+			if (zombs.larm)
+				setmodel(zombs.larm, "");
+			if (zombs.rarm)
+				setmodel(zombs.rarm, "");
+
+			// add 50pts
+			addmoney(self.owner, 50, true);
+
+			// kill
+			self.owner.kills += 1;
+
+			// add to tesla count
+			zombs.teslacount = self.teslacount + 1;
+
+			// classname change
+			zombs.classname = "wunder";
+
+			org = self.origin + '0 0 13';
+			targetorg = zombs.origin + '0 0 13';
+
+			// shoot lightning
+			#ifdef PC
+			te_lightning2(self, org, targetorg);
+			#endif
+			#ifdef PSP
+			WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+			WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+			WriteEntity (MSG_BROADCAST, self);
+			WriteCoord (MSG_BROADCAST, org_x);
+			WriteCoord (MSG_BROADCAST, org_y);
+			WriteCoord (MSG_BROADCAST, org_z);
+			WriteCoord (MSG_BROADCAST, targetorg_x);
+			WriteCoord (MSG_BROADCAST, targetorg_y);
+			WriteCoord (MSG_BROADCAST, targetorg_z);
+			#endif
+
+			// anim play
+			tempe = self;
+			self = zombs;
+			self.th_diewunder();
+			self = tempe;
+		}
+		zombs = zombs.chain;
+	}
+}
+
+// Wunder'd
+// 149-152 (FIXME - animate wunder'd zombies)
+$frame wunder1 wunder2 wunder3 wunder4 wunder5 wunder6 wunder7 wunder8 wunder9 wunder10
+
+void() zombie_wunder1		=[	$wunder1,		zombie_wunder2	]	{play_sound_z(4);Zombie_Tesla_Light();Zombie_Walk(0);self.frame = 149;self.solid = SOLID_NOT;};
+void() zombie_wunder2		=[	$wunder2,		zombie_wunder3	]	{Zombie_Walk(0);self.frame = 150;};
+void() zombie_wunder3		=[	$wunder3,		zombie_wunder4	]	{Zombie_Walk(0);Zombie_Find_Tesla_Target();self.frame = 151;};
+void() zombie_wunder4		=[	$wunder4,		zombie_wunder5	]	{Zombie_Walk(0);self.frame = 152;};
+void() zombie_wunder5		=[	$wunder5,		zombie_wunder6	]	{Zombie_Walk(0);self.frame = 151;};
+void() zombie_wunder6		=[	$wunder6,		zombie_wunder7	]	{Zombie_Walk(0);self.frame = 152;};
+void() zombie_wunder7		=[	$wunder7,		zombie_wunder8	]	{Zombie_Walk(0);self.frame = 151;};
+void() zombie_wunder8		=[	$wunder8,		zombie_wunder9	]	{play_sound_z(3);Zombie_Walk(0);self.frame = 152;};
+void() zombie_wunder9		=[	$wunder9,		zombie_wunder10	]	{Zombie_Walk(0);self.frame = 151;};
+void() zombie_wunder10		=[	$wunder10,		SUB_Null 		]	{self.health = 0; self.th_die();Zombie_Walk(0);self.frame = 152;};
 
 /////////////////////ZOMBIE SPAWNING/////////////////////
 void() zombieRise =
@@ -1438,6 +1563,7 @@ void(entity where) spawn_a_zombieB =
 	
 	szombie.ideal_yaw = szombie.angles_y;
 	szombie.yaw_speed = 20;
+	szombie.iszomb = 1;
 	
 	szombie.health = z_health;
 
@@ -1453,10 +1579,11 @@ void(entity where) spawn_a_zombieB =
 	
 	szombie.th_fall = zombie_fall1;
 	szombie.th_land = zombie_land1;
+
+	szombie.th_diewunder = zombie_wunder1;
 	
 	//szombie.th_jump = zombie_jump1;
 	//szombie.th_grabledge = zombie_grabledge1;
-	//szombie.th_diewunder = die_wunder1;
 	
 
 	//==================================================================================================

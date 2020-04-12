@@ -184,6 +184,7 @@ float zombie_spawn_timer; // the actual timer for spawn delay
 .vector hop_spot;//used for windows (zombies hop to these)
 .vector goalorigin;
 .float teslacount;
+.float iszomb;
 float crawler_num;
 //==== Reference Vars ====
 #define 	WWINDOW		1

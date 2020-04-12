@@ -20,6 +20,9 @@ void() ReturnWeaponModel =
 
 void() W_AimIn =
 {
+	if (self.weapon == W_TESLA || self.weapon == W_DG3)
+		return;
+		
 	if (IsDualWeapon(self.weapon) ||
 		self.zoom ||
 		self.reload_delay > time ||
@@ -1014,87 +1017,46 @@ void() W_FireRay =
 	self.callfuncat = 0;
 }
 
-void(entity who) FindNewTeslaTarget;
-
-// Spawn a clone in the place of lightning'd zombies.
-void(vector org, float frame, vector ang) SpawnLightningClone =
-{
-	local entity clone;
-
-	clone = spawn();
-
-	setmodel(clone, "models/machines/juggernog.mdl");
-	setorigin(clone, org);
-
-	clone.angles = ang;
-
-	clone.classname = "tesla_clone";
-
-	self.teslacount--;
-
-	centerprint(self, strcat("kills left: ", ftos(self.teslacount)));
-
-	// If we can chain more, try to look for another zombie
-	if (self.teslacount > 0) {
-		FindNewTeslaTarget(clone);
-	} else {
-		self.teslacount = 20;
-	}
-}
-
 // Remove zombie, add money, request clone spawn.
 void(entity hit_ent) LightningHit =
 {
-	//we do a hacky thing here: spawn a clone, kill zomb, and use the clone to
-	//dictate our next target. zom's think function is waay too much to handle lol
-	hit_ent.classname = "dead_zombie";
+	local entity tempe;
 
-	SpawnLightningClone(hit_ent.origin, hit_ent.frame, hit_ent.angles);
-
-	if (hit_ent.head) {
-		remove(hit_ent.head);
-	} if (hit_ent.larm) {
-		remove(hit_ent.larm);
-	} if (hit_ent.rarm) {
-		remove(hit_ent.rarm);
-	}
-
-	remove(hit_ent);
-
-	Current_Zombies -= 1;
-	
+	// 50 points for waffe kills
 	addmoney(self, 50, true);
+
+	// set lib models to null
+	// (if we remove them RelinkZombies will cry)
+	if (hit_ent.head)
+		setmodel(hit_ent.head, "");
+	if (hit_ent.larm)
+		setmodel(hit_ent.larm, "");
+	if (hit_ent.rarm)
+		setmodel(hit_ent.rarm, "");
+
+	// window hop fix
+	if (self.state == 1 || self.hop_step != 0) {
+		self.state = self.hop_step = 0;
+	}
+
+	// change classname so it can't be re-targted
+	hit_ent.classname = "wunder";
+
+	// own it!
+	hit_ent.owner = self;
+
+	// we're the start of a chain
+	hit_ent.teslacount = 1;
+
+	// play our wunder-ful anim
+	tempe = self;
+	self = hit_ent;
+	self.th_diewunder();
+	self = tempe;
+
+	// kill
+	self.kills += 1;
 };
-
-// Look for a zombie in radius to chain to, if one's not there, we can start killing.
-void(entity who) FindNewTeslaTarget =
-{
-	local entity ent, newtarg;
-	ent = findradius(who.origin, 200);
-		
-	while(ent != world)
-	{
-		if (ent.classname == "ai_zombie") {
-			newtarg = ent;
-			#ifdef PC
-			te_lightning2(who, who.origin, newtarg.origin);
-			#endif
-		}
-		ent = ent.chain;
-		
-		if (newtarg != world)
-			ent = world;
-	}
-
-	// couldn't find a new target
-	if (newtarg == world) {
-		// TODO: tell all of our clones the death clock is ticking
-		self.teslacount = 2;
-		return;
-	}
-
-	LightningHit(newtarg);
-}
 
 // Initial Zombie impact, creds to Naievil/UP
 void(vector p1, vector p2, entity from, float damage) LightningDamage =
@@ -1115,6 +1077,9 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 	//traceline (p1, p2, false, self);
 	
 	hit_ent = trace_ent;
+
+	if (hit_ent == world)
+		return;
 
 	if (hit_ent.classname == "ai_zombie_head" || hit_ent.classname == "ai_zombie_larm" || hit_ent.classname == "ai_zombie_rarm")
 		hit_ent = hit_ent.owner;
@@ -1151,7 +1116,18 @@ void() W_FireTesla =
 	FireTrace(1, 0, 0);
 
 	#ifdef PC
-	te_lightning2(self, self.origin, trace_endpos);
+	te_lightning2(self, source, trace_endpos);
+	#endif
+	#ifdef PSP
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+	WriteEntity (MSG_BROADCAST, self);
+	WriteCoord (MSG_BROADCAST, source_x);
+	WriteCoord (MSG_BROADCAST, source_y);
+	WriteCoord (MSG_BROADCAST, source_z);
+	WriteCoord (MSG_BROADCAST, trace_endpos_x);
+	WriteCoord (MSG_BROADCAST, trace_endpos_y);
+	WriteCoord (MSG_BROADCAST, trace_endpos_z);
 	#endif
 
 	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30);
@@ -2154,7 +2130,6 @@ void () Weapon_Logic =
 			self.semi2 = FALSE;
 			#endif
 		}
-		
 	} else {
 		if (self.button0) {
 			W_Fire(S_RIGHT);

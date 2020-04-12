@@ -544,8 +544,6 @@ void() PlayerSpawn =
 	SetPerk(self, self.perks);
 	
 	self.zoom = 1;			// This is to fix an aimin bug for the kar scope
-
-	self.teslacount = 20;
 	
 	if (!self.playernum) {
 		self.playernum = player_count + 1;

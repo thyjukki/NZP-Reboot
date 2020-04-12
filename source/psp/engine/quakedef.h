@@ -183,6 +183,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define W_M14   55
 
 #define W_TESLA  56
+#define W_DG3 	 57 //tesla
 
 #define W_NOWEP   420
 
