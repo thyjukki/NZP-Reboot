@@ -590,7 +590,10 @@ void() zombie_attack2 =
 	{
 		if(vlen(self.enemy.origin - self.origin) < 60)
 		{
-			DamageHandler (self.enemy, self, 50, S_ZOMBIE);
+			if (self.classname == "ai_dog")
+				DamageHandler (self.enemy, self, 40, S_ZOMBIE);
+			else
+				DamageHandler (self.enemy, self, 50, S_ZOMBIE);
 		}
 	}
 	else return;
@@ -1313,7 +1316,7 @@ void(entity szombie) SetZombieWalk =
 
 float() getMaxZombies =
 {
-	if (rounds == dogRound && gotdog) {
+	if (dogWave == true) {
 		return 2;
 	} else {
 		return MAX_ZOMB;

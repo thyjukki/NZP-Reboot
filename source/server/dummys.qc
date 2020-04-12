@@ -65,7 +65,6 @@ void() change_frame =
 }
 
 #ifdef PSP
-float () spawn_a_dogA = {return 1;};
 void LoadWaypointData() = {};
 #endif
 
@@ -74,7 +73,4 @@ void LoadWaypointData() = {};
 .float MaxRange;
 void() trigger_teleport = {remove(self);};
 void() tigger_mainframe = {remove(self);}; //lol this typo is in their old fgd too, apparently.
-#ifndef PC
-void() spawn_dog = {remove(self);};
-#endif
 void() trigger_teleport_area = {remove(self);};

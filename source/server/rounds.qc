@@ -1,3 +1,5 @@
+float() spawn_a_dogA;
+
 void() Spawn_Enemy = 
 {
 	if (roundtype == 1)
@@ -46,7 +48,8 @@ float() getZombieTotal = {
 
 		return count;
 	} else { //dogs
-		if (dogWave == 1 || dogWave == 2)
+		// 2 waves
+		if (rounds <= 14)
 			return 6 * (player_count + 1);
 
 		return 8 * (player_count + 1);
@@ -76,15 +79,18 @@ void() updateDogRound =
 	} else {
 		dogRound = rounds + 7;
 	}
-
-	dogWave++;
 }
 
 void() EndRound =
 {
 	rounds_change = 4;
 	SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
-	playSoundAtPlayers("sounds/rounds/eround.wav");
+	if (gotdog && rounds == dogRound) {
+		playSoundAtPlayers("sounds/rounds/droundend.wav");
+		dogWave = false;
+	} else {
+		playSoundAtPlayers("sounds/rounds/eround.wav");
+	}
 	round_changetime = time + 5;
 }
 
@@ -116,7 +122,12 @@ void() NewRound =
 	}
 	if (rounds != 0)
 	{
-		playSoundAtPlayers("sounds/rounds/nround.wav");
+		if (gotdog && rounds == (dogRound - 1)) {
+			playSoundAtPlayers("sounds/rounds/droundstart.wav");
+			dogWave = true;
+		} else {
+			playSoundAtPlayers("sounds/rounds/nround.wav");
+		}
 		rounds_change = 6;
 		SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
 		blink_return = time + 2;

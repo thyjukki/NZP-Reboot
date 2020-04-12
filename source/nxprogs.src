@@ -33,5 +33,6 @@ psp/QC/ai/waypoints_func.qc
 psp/QC/ai/waypoints_core.qc
 server/ai/zombie_core.qc
 server/ai/crawler_core.qc
+server/ai/dog_core.qc
 
 server/items.qc

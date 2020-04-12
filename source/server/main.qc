@@ -122,8 +122,6 @@ void() precaches =
 	precache_model ("models/ai/zclarm.mdl");
 	precache_model ("models/ai/zcrarm.mdl");
 	precache_model ("models/ai/zchead.mdl");
-	
-	precache_model ("models/ai/dog.mdl");
 
 	precache_model ("progs/Misc/maxammo!.mdl");
 	precache_model ("progs/Misc/x2!.mdl");
@@ -160,6 +158,16 @@ void() precaches =
 	precache_sound("sounds/rounds/splash.wav");
 	precache_sound("sounds/music/end.wav");
 	precache_sound("sounds/null.wav");
+
+	if (gotdog) {
+		precache_model("models/ai/dog.mdl");
+		precache_model("models/ai/dog_lightning.mdl");
+		precache_model("models/misc/lightning.spr");
+		precache_model("models/misc/explosion.spr");
+
+		precache_sound("sounds/rounds/droundstart.wav");
+		precache_sound("sounds/rounds/droundend.wav");
+	}
 
 	precache_sound("sounds/misc/buy.wav");
 	precache_sound("sounds/misc/wood_door.wav");

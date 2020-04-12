@@ -262,7 +262,6 @@ void(entity who) makeCrawler;
 void() spawnAllZombEnts;
 void() set_z_health;
 float() spawn_a_zombieA;
-float() spawn_a_dogA;
 float gotdog;
 float dogRound;
 float dogWave;

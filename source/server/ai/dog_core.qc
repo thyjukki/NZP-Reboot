@@ -1,41 +1,110 @@
-// 37 - 47
-$frame dogdeath1 dogdeath2 dogdeath3 dogdeath4 dogdeath5 dogdeath6 dogdeath7 dogdeath8
-void()	dog_deathanim		=[	$dogdeath1,		dog_deathanim2	] 	{self.frame = 37;};
-void()	dog_deathanim2		=[	$dogdeath2,		dog_deathanim3	] 	{self.frame = 38;};
-void()	dog_deathanim3		=[	$dogdeath3,		dog_deathanim4	] 	{self.frame = 39;};
-void()	dog_deathanim4		=[	$dogdeath4,		dog_deathanim5	] 	{self.frame = 41;};
-void()	dog_deathanim5		=[	$dogdeath5,		dog_deathanim6	] 	{self.frame = 44;};
-void()	dog_deathanim6		=[	$dogdeath6,		dog_deathanim7	] 	{self.frame = 45;};
-void()	dog_deathanim7		=[	$dogdeath7,		dog_deathanim8	] 	{self.frame = 46;};
-void()	dog_deathanim8		=[	$dogdeath8,		SUB_Null	] 	{self.nextthink = time + 3; self.think = removeZombie;  self.frame = 36;};
+void() Dog_Think;
 
+// DOG RUN
+// 0-6
+$frame dogrun1 dogrun2 dogrun3 dogrun4 dogrun5 dogrun6 dogrun7
+void()	dog_runanim		=[	$dogrun1,	dog_runanim2	] {Dog_Think();Zombie_Walk(25);self.frame = 0;};
+void()	dog_runanim2	=[	$dogrun2,	dog_runanim3	] {Dog_Think();Zombie_Walk(15);self.frame = 1;};
+void()	dog_runanim3	=[	$dogrun3,	dog_runanim4	] {Dog_Think();Zombie_Walk(15);self.frame = 2;};
+void()	dog_runanim4	=[	$dogrun4,	dog_runanim5	] {Dog_Think();Zombie_Walk(15);self.frame = 3;};
+void()	dog_runanim5	=[	$dogrun5,	dog_runanim6	] {Dog_Think();Zombie_Walk(15);self.frame = 4;};
+void()	dog_runanim6	=[	$dogrun6,	dog_runanim7	] {Dog_Think();Zombie_Walk(15);self.frame = 5;};
+void()	dog_runanim7	=[	$dogrun7, 	dog_runanim 	] {Dog_Think();Zombie_Walk(15);self.frame = 6;};
+
+// DOG WALK
+// 7-18
+$frame dogwalk1 dogwalk2 dogwalk3 dogwalk4 dogwalk5 dogwalk6 dogwalk7 dogwalk8 dogwalk9 dogwalk10 dogwalk11 dogwalk12
+void()	dog_walkanim	=[	$dogwalk1,		dog_walkanim2	] {Dog_Think();Zombie_Walk(8);self.frame = 7;};
+void()	dog_walkanim2	=[	$dogwalk2,		dog_walkanim3	] {Dog_Think();Zombie_Walk(8);self.frame = 8;};
+void()	dog_walkanim3	=[	$dogwalk3,		dog_walkanim4	] {Dog_Think();Zombie_Walk(8);self.frame = 9;};
+void()	dog_walkanim4	=[	$dogwalk4,		dog_walkanim5	] {Dog_Think();Zombie_Walk(8);self.frame = 10;};
+void()	dog_walkanim5	=[	$dogwalk5,		dog_walkanim6	] {Dog_Think();Zombie_Walk(8);self.frame = 11;};
+void()	dog_walkanim6	=[	$dogwalk6,		dog_walkanim7	] {Dog_Think();Zombie_Walk(8);self.frame = 12;};
+void()	dog_walkanim7	=[	$dogwalk7,		dog_walkanim8	] {Dog_Think();Zombie_Walk(8);self.frame = 13;};
+void()	dog_walkanim8	=[	$dogwalk8,		dog_walkanim9	] {Dog_Think();Zombie_Walk(8);self.frame = 14;};
+void()	dog_walkanim9	=[	$dogwalk9,		dog_walkanim10	] {Dog_Think();Zombie_Walk(8);self.frame = 15;};
+void()	dog_walkanim10	=[	$dogwalk10,	dog_walkanim11	] {Dog_Think();Zombie_Walk(8);self.frame = 16;};
+void()	dog_walkanim11 	=[	$dogwalk11,	dog_walkanim12	] {Dog_Think();Zombie_Walk(8);self.frame = 17;};
+void()	dog_walkanim12	=[	$dogwalk12,	dog_walkanim	] {Dog_Think();Zombie_Walk(8);self.frame = 18;};
+
+// DOG IDLE
+// 19-24
+$frame dogstand1 dogstand2 dogstand3 dogstand4 dogstand5 dogstand6
+void()	dog_idleanim	=[	$dogstand1,	dog_idleanim2	] {self.frame = 19;};
+void()	dog_idleanim2	=[	$dogstand2,	dog_idleanim3	] {self.frame = 20;};
+void()	dog_idleanim3	=[	$dogstand3,	dog_idleanim4	] {self.frame = 21;};
+void()	dog_idleanim4	=[	$dogstand4,	dog_idleanim5	] {self.frame = 22;};
+void()	dog_idleanim5	=[	$dogstand5,	dog_idleanim6	] {self.frame = 23;};
+void()	dog_idleanim6	=[	$dogstand6,	dog_idleanim	] {self.frame = 24;};
+
+// DOG MELEE
+// 25-34
+$frame dogmelee1 dogmelee2 dogmelee3 dogmelee4 dogmelee5 dogmelee6 dogmelee7 dogmelee8 dogmelee9 dogmelee10
+void()	dog_meleeanim	=[	$dogmelee1, 	dog_meleeanim2	] {Zombie_Walk(0);self.frame = 25;};
+void()	dog_meleeanim2	=[	$dogmelee2, 	dog_meleeanim3	] {Zombie_Walk(0);self.frame = 26;};
+void()	dog_meleeanim3	=[	$dogmelee3, 	dog_meleeanim4	] {Zombie_Walk(0);self.frame = 27;};
+void()	dog_meleeanim4	=[	$dogmelee4, 	dog_meleeanim5	] {Zombie_Walk(0);self.frame = 28;};
+void()	dog_meleeanim5	=[	$dogmelee5, 	dog_meleeanim6	] {Zombie_Walk(0);self.frame = 29;};
+void()	dog_meleeanim6	=[	$dogmelee6, 	dog_meleeanim7	] {Zombie_Walk(0);zombie_attack2();self.frame = 30;};
+void()	dog_meleeanim7	=[	$dogmelee7, 	dog_meleeanim8	] {Zombie_Walk(0);self.frame = 31;};
+void()	dog_meleeanim8	=[	$dogmelee8, 	dog_meleeanim9	] {Zombie_Walk(0);self.frame = 32;};
+void()	dog_meleeanim9	=[	$dogmelee9, 	dog_meleeanim10	] {Zombie_Walk(0);self.frame = 33;};
+void()	dog_meleeanim10	=[	$dogmelee10, 	dog_runanim 	] {Zombie_Walk(0);self.frame = 34;};
+
+// DOG DEATH
+// 37 - 47
+$frame dogdeath1 dogdeath2
+void()	dog_deathanim		=[	$dogdeath1,		dog_deathanim2	] 	{self.frame = 35;};
+void()	dog_deathanim2		=[	$dogdeath2,		SUB_Null 		] 	{self.nextthink = time + 3; self.think = removeZombie;  self.frame = 36;};
+
+// DOG LIGHTNING SPAWN
+// 1-13
+$frame dls1 dls2 dls3 dls4 dls5 dls6 dls7 dls8 dls9 dls10 dls11 dls12 dls13
+void() 	dog_lightninganim     =[  $dls1, 			dog_lightninganim2 	] {self.frame = 1;};
+void() 	dog_lightninganim2    =[  $dls2, 			dog_lightninganim3 	] {self.frame = 2;};
+void() 	dog_lightninganim3    =[  $dls3, 			dog_lightninganim4 	] {self.frame = 3;};
+void() 	dog_lightninganim4    =[  $dls4, 			dog_lightninganim5 	] {self.frame = 4;};
+void() 	dog_lightninganim5    =[  $dls5, 			dog_lightninganim6 	] {self.frame = 5;};
+void() 	dog_lightninganim6    =[  $dls6, 			dog_lightninganim7 	] {self.frame = 6;};
+void() 	dog_lightninganim7    =[  $dls7, 			dog_lightninganim8 	] {self.frame = 7;};
+void() 	dog_lightninganim8    =[  $dls8, 			dog_lightninganim9 	] {self.frame = 8;};
+void() 	dog_lightninganim9    =[  $dls9, 			dog_lightninganim10 ] {self.frame = 9;};
+void() 	dog_lightninganim10   =[  $dls10, 			dog_lightninganim11 ] {self.frame = 10;};
+void() 	dog_lightninganim11   =[  $dls11, 			dog_lightninganim12 ] {self.frame = 11;};
+void() 	dog_lightninganim12   =[  $dls12, 			dog_lightninganim13 ] {self.frame = 12;};
+void() 	dog_lightninganim13   =[  $dls13, 			SUB_Null		 	] {self.frame = 13; remove(self);};
+
+// DOG EXPLODE SPRITE
+// 1-5
+$frame des1 des2 des3 des4 des5 des6
+void() dog_explodeanim 		=[ 	$des1, 				dog_explodeanim2	] {self.frame = 1;};
+void() dog_explodeanim2 	=[ 	$des2, 				dog_explodeanim3	] {self.frame = 2;};
+void() dog_explodeanim3 	=[ 	$des3, 				dog_explodeanim4	] {self.frame = 3;};
+void() dog_explodeanim4 	=[ 	$des4, 				dog_explodeanim5	] {self.frame = 4;};
+void() dog_explodeanim5 	=[ 	$des5, 				dog_explodeanim6 	] {self.frame = 5;};
+void() dog_explodeanim6 	=[ 	$des5, 				SUB_Null 		 	] {remove(self);};
 
 void() Dog_Walk_Setup = 
 {	
-	if(self.walktype == 1)
-	{
-		zombie_walk1();
-	}
-	
-	else if(self.walktype == 2)
-	{
-		zombie_walkb1();
-	}
-	
-	else if(self.walktype == 3)
-	{
-		zombie_walkc1();
-	}
-	
-	else if(self.walktype == 4)
-	{
-		zombie_jog1();
-	}
-	else if(self.walktype == 5)
-	{
-		zombie_run1();
-	}
+	if (self.walktype == 1)
+		dog_walkanim();
+	else
+		dog_runanim();
 };
+
+// decide our walktype based on player distance
+void() Dog_Think =
+{
+	// FIXME - crash
+	self.walktype = 2;
+	/*
+	if(vlen(self.enemy.origin - self.origin) < 300)
+		self.walktype = 2;
+	else
+		self.walktype = 1;*/
+}
+
+float dogCount;
 void() Dog_Death =
 {
 	self.aistatus = "0";
@@ -49,6 +118,7 @@ void() Dog_Death =
 	
 	self.health = 0;
 	Remaining_Zombies = Remaining_Zombies - 1;
+	dogCount -= 1;
 	
 	play_sound_z(3);
 	//Gotta' make sure we set it back down instead of glitching it up, yo'
@@ -64,7 +134,18 @@ void() Dog_Death =
 			Spawn_Powerup(self.origin + '0 0 12', 1);
 	}
 	
-	dog_deathanim();		// FIXME real animation
+	float r = random();
+
+	// explode chance
+	if (r < 0.75) {
+		self.frame = 0;
+		setmodel (self, "models/misc/explosion.spr");
+		sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);
+		dog_explodeanim();
+	} else {
+		dog_deathanim();
+	}
+	
 };
 
 void(entity where) spawn_a_dogB =
@@ -116,16 +197,12 @@ void(entity where) spawn_a_dogB =
 	sdog.yaw_speed = 20;
 	sdog.health = z_health;
 	sdog.th_die = Dog_Death;
-	sdog.th_walk = Zombie_Walk_Setup;	// Naievil FIXME
+	sdog.th_walk = Dog_Walk_Setup;
 	sdog.outside = FALSE;
 	
-	sdog.th_melee = zombie_attack;
-	sdog.th_idle = zombie_idle;
-	sdog.th_windowhop = zombie_hop1;
-	
-	sdog.th_fall = zombie_fall1;
-	sdog.th_land = zombie_land1;
-	
+	sdog.th_melee = dog_meleeanim;
+	sdog.th_idle = dog_idleanim;
+
 	SetZombieWalk(sdog);
 	sdog.walktype = 5;
 	
@@ -138,6 +215,48 @@ void(entity where) spawn_a_dogB =
 	self = old_self;
 };
 
+void() dogsprite_think =
+{
+	self.frame++;
+
+	if (self.frame >= 3)
+		self.frame = 0;
+	
+	// suicide timer!
+	if(self.ltime < time) {
+		spawn_a_dogB(self.owner);
+		remove(self);
+	}
+
+	self.nextthink = time + 0.05;
+}
+
+void(entity where) spawn_dog_lightning =
+{
+	local entity tempe;
+	local entity doglight;
+	local entity dogsprite;
+
+	// lightning model
+	doglight = spawn();
+	setmodel(doglight, "models/ai/dog_lightning.mdl");
+	setorigin(doglight, where.origin - '0 0 20');
+	tempe = self;
+	self = doglight;
+	dog_lightninganim();
+	self = tempe;
+
+	// lightning sprite
+	dogsprite = spawn();
+	setmodel(dogsprite, "models/misc/lightning.spr");
+	setorigin(dogsprite, where.origin);
+	dogsprite.owner = where;
+	dogsprite.think = dogsprite_think;
+	dogsprite.nextthink = time + 0.05;
+	dogsprite.ltime = time + 1.3; // we use ltime here to be out remove timer,
+								  // since using frames interrupts think()
+}
+
 float() spawn_a_dogA =
 {
 	local float pcount;
@@ -147,7 +266,7 @@ float() spawn_a_dogA =
 	FAIL = false;
 	pcount = 0;
 	szombie = getFreeZombieEnt(self);
-	if(szombie == world)
+	if(szombie == world || dogCount >= (2 * (player_count + 1)))
 	{
 		return 0;
 	}
@@ -172,8 +291,10 @@ float() spawn_a_dogA =
 		}
 		if (!pcount && random() < 0.6)
 		{
-			spawn_a_dogB(lastspawn);
-			spawn_delay = time + delay_at_round;
+			//spawn_a_dogB(lastspawn);
+			spawn_dog_lightning(lastspawn);
+			dogCount++;
+			spawn_delay = time + 2;
 			return true;
 		}
 		lastspawn = find(lastspawn, classname, "spawn_dog");

@@ -574,7 +574,7 @@ void Parse_Damage () = // DO NOT TOUCH
 			if (ent.classname == "ai_zombie_head")
 				head_hit = 1;
 			
-			if (ent.classname != "ai_zombie" || ent.classname == "ai_dog") //limb
+			if (ent.classname != "ai_zombie" && ent.classname != "ai_dog") //limb
 				body_ent = ent.owner;
 			else
 				body_ent = ent;

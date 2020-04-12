@@ -340,7 +340,6 @@ void() PlayerPostThink =
 		}
 	}
 
-
 	if (self.sprinting) {
 		#ifndef PC
 		if (!self.velocity || self.stance != 2) {
