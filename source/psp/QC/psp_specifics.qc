@@ -59,7 +59,16 @@ void() Soft_Restart = {
 		{
 			self = who;
 			self.th_die();
-			remove(self); //so dead bodies don't remain
+
+			// hide bodies
+			setmodel(self, "");
+			if (self.head)
+				setmodel(self.head, "");
+			if (self.larm)
+				setmodel(self.larm, "");
+			if (self.rarm)
+				setmodel(self.rarm, "");
+
 			self = oldself;
 		}
 		

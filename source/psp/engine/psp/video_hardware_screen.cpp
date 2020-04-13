@@ -371,15 +371,15 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			strcpy(s, "");
 			break;
 		case 1://door
-			strcpy(s, va("Hold %s to open door [Cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to open Door [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 2://debris
-			strcpy(s, va("Hold %s to remove debris [Cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to remove Debris [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 3://ammo
-			strcpy(s, va("Hold %s to buy ammo for %s [Cost:%i]\n", GetUseButtonL(), pr_strings+sv_player->v.Weapon_Name_Touch, cost));
+			strcpy(s, va("Hold %s to buy Ammo for %s [Cost:%i]\n", GetUseButtonL(), pr_strings+sv_player->v.Weapon_Name_Touch, cost));
 			button_pic_x = 5;
 			break;
 		case 4://weapon
@@ -391,15 +391,15 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			button_pic_x = 5;
 			break;
 		case 6://box
-			strcpy(s, va("Hold %s to buy a random weapon [cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to buy a Random Weapon [cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 7://box take
-			strcpy(s, va("Press %s to take weapon\n", GetUseButtonL()));
+			strcpy(s, va("Press %s to take Weapon\n", GetUseButtonL()));
 			button_pic_x = 6;
 			break;
 		case 8://power
-			strcpy(s, "The power must be activated first\n");
+			strcpy(s, "The Power must be Activated first\n");
 			button_pic_x = 100;
 			break;
 		case 9://perk
@@ -407,15 +407,15 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			button_pic_x = 5;
 			break;
 		case 10://turn on power
-			strcpy(s, va("Hold %s to turn on the power\n", GetUseButtonL()));
+			strcpy(s, va("Hold %s to Turn On the Power\n", GetUseButtonL()));
 			button_pic_x = 5;
 			break;
 		case 11://turn on trap
-			strcpy(s, va("Hold %s to activate the electric barrier [Cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to Activate the Trap [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 12://PAP
-			strcpy(s, va("Hold %s to Pack a Punch [Cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to Pack-a-Punch [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 13://revive

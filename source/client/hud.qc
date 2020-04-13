@@ -782,13 +782,13 @@ void(float width, float height) HUD_Useprint =
 			usestring = "";
 			break;
 		case 1://door
-			usestring = strcat("Hold ",usespace, " to open door [Cost:", ftos(useprint_cost),"]");
+			usestring = strcat("Hold ",usespace, " to open Door [Cost:", ftos(useprint_cost),"]");
 			break;
 		case 2://debris
-			usestring = strcat("Hold ",usespace, " to remove debris [Cost:", ftos(useprint_cost),"]");
+			usestring = strcat("Hold ",usespace, " to remove Debris [Cost:", ftos(useprint_cost),"]");
 			break;
 		case 3://ammo
-			usestring = strcat("Hold ",usespace, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+			usestring = strcat("Hold ",usespace, " to buy Ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
 			break;
 		case 4://weapon
 			usestring = strcat("Hold ",usespace, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
@@ -797,28 +797,28 @@ void(float width, float height) HUD_Useprint =
 			usestring = strcat("Hold ",usespace, " to Rebuild Barrier");
 			break;
 		case 6://box
-			usestring = strcat("Hold ",usespace, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
+			usestring = strcat("Hold ",usespace, " to buy a Random Weapon [Cost:", ftos(useprint_cost),"]");
 			break;
 		case 7://box take
-			usestring = strcat("Hold ",usespace, " to take weapon");
+			usestring = strcat("Hold ",usespace, " to take Weapon");
 			break;
 		case 8://power
-			usestring = "The power must be activated first";
+			usestring = "The Power must be Activated first";
 			break;
 		case 9://perk
 			usestring = strcat("Hold ",usespace, " to buy ", GetPerkName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
 			break;
 		case 10://turn on power
-			usestring = strcat("Hold ",usespace, " to turn on the power");
+			usestring = strcat("Hold ",usespace, " to Turn On the Power");
 			break;
 		case 11://turn on trap
-			usestring = strcat("Hold ",usespace, " to active the electric barrier [Cost:", ftos(useprint_cost), "]");
+			usestring = strcat("Hold ",usespace, " to Activate the Trap [Cost:", ftos(useprint_cost), "]");
 			break;
 		case 12://packapunch
-			usestring = strcat("Hold ",usespace, " to Pack a Punch [Cost:", ftos(useprint_cost), "]");
+			usestring = strcat("Hold ",usespace, " to Pack-a-Punch [Cost:", ftos(useprint_cost), "]");
 			break;
 		case 13://revive
-			usestring = strcat("Hold ",usespace, " to revive player");
+			usestring = strcat("Hold ",usespace, " to Revive Player");
 			break;
 		case 14://use teleporter (free)
 			usestring = strcat("Hold ", usespace, " to use Teleporter");

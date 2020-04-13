@@ -594,18 +594,37 @@ void zap_zombie () {
 
 void zapper_play () {
 	entity zents = find(world, targetname, self.target);
+	local vector org = self.origin;
+	local vector targetorg = zents.origin;
 
 	if (zents) {
-		//TEMPORARY
 		#ifdef PC
 		te_lightning2(self, self.origin, zents.origin);
+		#endif
+		#ifdef PSP
+		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+		WriteEntity (MSG_BROADCAST, self);
+		WriteCoord (MSG_BROADCAST, org_x);
+		WriteCoord (MSG_BROADCAST, org_y);
+		WriteCoord (MSG_BROADCAST, org_z);
+		WriteCoord (MSG_BROADCAST, targetorg_x);
+		WriteCoord (MSG_BROADCAST, targetorg_y);
+		WriteCoord (MSG_BROADCAST, targetorg_z);
 		#endif
 	}
 
 	zents.touch = zap_zombie;
 	
 	self.think = zapper_play;
-	self.nextthink = time + (1*random());
+	self.nextthink = time + (0.5*random());
+}
+
+void() zapper_touch;
+void() zapper_cooldown =
+{
+	offswitch2();
+	self.touch = zapper_touch;
 }
 
 void zapper_stop() {
@@ -621,7 +640,8 @@ void zapper_stop() {
 			tempe = self;
 			self = zents;
 			self.state = 0;
-			offswitch2();
+			self.think = zapper_cooldown;
+			self.nextthink = time + 30;
 			self = tempe;
 		} else if (zents.classname == "zapper_node" && zents.target) {
 			zents.think = SUB_Null;
@@ -662,26 +682,28 @@ void zapper_start(string zapper) {
 	tempe.zappername = zapper;
 }
 
-
 void zapper_touch () {
-
+	centerprint(other, "stage zero");
 	if (other.classname != "player") {
 		return;
 	}
     
+	centerprint(other, "stage one");
+
 	if (self.requirespower == true && !isPowerOn) {
 		useprint (other, 8, 0, 0);
 		return;
 	}	
 
+	centerprint(other, "stage two");
+
 	if (self.state == 0) {
 		useprint (other, 11, self.cost, self.weapon);
 
-		if (!other.button7 || other.semiuse) {
+		if (!other.button7) {
 			return;
 		}
 
-		other.semiuse = true;
 		if (other.points < self.cost) {
 			centerprint(other, "You do not have enough points\n");
 			return;
@@ -696,12 +718,12 @@ void() zapper_switch =
 {
 	precache_model ("models/machines/zapper/z_switch.mdl");
 	self.movetype = MOVETYPE_NONE;
+	self.solid = SOLID_TRIGGER;
 	self.classname = "zapper_switch";
 	setmodel(self, "models/machines/zapper/z_switch.mdl");
 	setsize (self, '-4 -4 -4', '4 4 4');
 
 	self.state = 0;
-	self.solid = SOLID_TRIGGER;
 	self.touch = zapper_touch;
 };
 
