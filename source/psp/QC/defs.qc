@@ -242,6 +242,8 @@ vector(entity zombie,vector start,vector min, vector max) Get_First_Waypoint = #
 void(string s) Close_Waypoint = #89;
 
 void(entity plr, float achievement) achievement = #79;
+
+void(string trackname) songegg = #500;
 /*
 type 0 = clear
 type 1 = buy door

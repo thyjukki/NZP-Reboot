@@ -565,7 +565,7 @@ float(float wep) getWeaponMag =
 		case W_M2:
 			return 200;
 		case W_FIW:
-			return 200;
+			return 400;
 		case W_MP40:
 			return 32;
 		case W_AFTERBURNER:
@@ -670,9 +670,8 @@ float(float wep) getWeaponAmmo =
 		case W_WIDDER:
 			return 150;
 		case W_M2:
-      		return 200;
 		case W_FIW:
-      		return 200;
+      		return 0;
 		case W_MP40:
 			return 192;
 		case W_AFTERBURNER:
@@ -1986,6 +1985,7 @@ float(float wep, float frametype, optional float z) GetFrame =
 					return 17;
 			}
 			break;
+		case W_FIW:
 		case W_M2:
 			switch (frametype)
 			{
@@ -2002,13 +2002,13 @@ float(float wep, float frametype, optional float z) GetFrame =
 				case SPRINT_OUT_END:
 					return 0;
 				case TAKE_OUT_START:
-					return 0;
+					return 2;
 				case TAKE_OUT_END:
-					return 0;
+					return 1;
 				case PUT_OUT_START:
-					return 0;
+					return 1;
 				case PUT_OUT_END:
-					return 0;
+					return 2;
 				case RELOAD_CANCEL:
 					return 0;
 			}
@@ -2429,6 +2429,7 @@ string(float wep, float gorvmodel) GetWeaponModel =
 			else
 				return ("models/weapons/m1carbine/v_m1a1.mdl");
 		case W_M2:
+		case W_FIW:
 			if (gorvmodel)
 				return ("models/weapons/m2flame/g_m2flame.mdl");
 			else
@@ -2753,6 +2754,8 @@ float(float wep)  EqualNonPapWeapon =
 			return W_CUSTOM3;
 		case W_DG3:
 			return W_TESLA;
+		case W_FIW:
+			return W_M2;
 		default:
 			return 0;
 	}
@@ -2815,6 +2818,8 @@ float(float wep)  EqualPapWeapon =
 			return W_DG3;
 		case W_M14:
 			return W_M14;
+		case W_M2:
+			return W_FIW;
 		default:
 			return wep;
 	}
@@ -3254,7 +3259,7 @@ void(float weptype) precache_extra =
 			break;
 		case W_M2:
 			precache_sound("sounds/weapons/m2flame/flamethrower.wav");
-			//precache_model ("progs/flame_main2.spr");	// sprite explosion
+			precache_model("models/misc/flame.spr");
 			break;
 		case W_MP40:
 		case W_AFTERBURNER:

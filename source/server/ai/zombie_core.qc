@@ -364,10 +364,30 @@ void(float which) SetZombieHitBox =
 
 void() Zombie_Think = //called every frame for zombies
 {
+	if (self.onfire) {
+		#ifdef PC
+		te_flamejet(self.origin, v_up*8, 10);
+		#else
+		particle (self.origin, v_up*8, 0, 0);
+		#endif
+
+		if (self.ltime < time && self.onfire){
+			DamageHandler(self, self.firer, 300, S_NORMAL);
+			self.ltime = time + 2;
+
+			self.spins++;
+			if (self.spins >= 5) {
+				self.spins = 0;
+				self.onfire = false;
+			}
+		}
+	}
+
 	if (self.classname == "wunder") {
 		self.th_diewunder();
 		return;
 	}
+
 	if (self.bleedingtime < time && !self.head.deadflag)
 	{
 		self.bleedingtime = time + 2;

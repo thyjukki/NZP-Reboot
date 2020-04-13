@@ -201,6 +201,10 @@ void() W_Switch =
 			self.weapon2model = "";
 
 		UpdateV2model(self.weapon2model, 0);
+
+		// TEMP
+		if (self.weapon == W_M2 || self.weapon == W_FIW)
+			UpdateVmodel(modelname, GetWepSkin(self.weapon));
 	
 		
 		//UpdateWeapons(1);
@@ -358,6 +362,9 @@ void() ContinueReload = //Special reloads
 
 void(float side) W_Reload =
 {
+	if (self.weapon == W_M2 || self.weapon == W_FIW)
+		return;
+	
 	//TEMPORARY
 	#ifdef PC
 	self.viewzoom = 1;
@@ -1133,9 +1140,144 @@ void() W_FireTesla =
 	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30);
 }
 
+void() Flame_LingerThink =
+{
+	#ifdef PC
+	te_flamejet(self.origin, v_up*8, 5);
+	#else
+	particle (self.origin, v_up*8, 0, 0);
+	#endif
+
+	if (self.ltime < time)
+		remove(self);
+
+	self.nextthink = time + 0.1;
+}
+
+// spawn linger effect/entity
+void(vector org, entity whodunit) Flame_Linger =
+{
+	local entity linger = spawn();
+
+	setorigin(linger, org);
+
+	linger.owner = whodunit.owner;
+	linger.think = Flame_LingerThink;
+	linger.nextthink = time + 0.1;
+	linger.ltime = time + 5;
+}
+
+void() Flame_Touch =
+{
+	if (other == world) {
+		Flame_Linger(self.origin, self);
+		remove(self);
+	} else {
+		if (other.onfire || other.owner.onfire)
+			return;
+		if (other.classname == "ai_zombie_head" || other.classname == "ai_zombie_larm" 
+		|| other.classname == "ai_zombie_rarm") {
+			other.owner.onfire = true;
+			other.owner.ltime = time + 2;
+			addmoney(self.owner, 10, true);
+		} else if (other.classname == "ai_zombie" || other.classname == "ai_dog") {
+			other.onfire = true;
+			other.firer = self.owner;
+			other.ltime = time + 2;
+			addmoney(self.owner, 10, true);
+		}
+	}
+}
+
+// fallen flame touches something
+void() Flame_DropCatch =
+{
+	if (other == world) {
+		Flame_Linger(self.origin + '0 0 5', self);
+		remove(self);
+	}
+}
+
+// drop didn't make it to the ground in time to spread
+void() Flame_DropDissapate =
+{
+	remove(self);
+}
+
+// rare chance some falls
+void() Flame_Drop =
+{
+	local entity drop = spawn();
+
+	drop.owner = self.owner;
+
+	setmodel(drop, "models/misc/flame.spr");
+	setsize(drop, '0 0 0', '0 0 0');
+	setorigin(drop, self.origin);
+
+	drop.touch = Flame_DropCatch;
+	drop.think = Flame_DropDissapate;
+	drop.nextthink = time + 0.8;
+	drop.solid = SOLID_TRIGGER;
+	drop.movetype = MOVETYPE_BOUNCE;
+
+	drop.velocity = v_up*-55;
+}
+
+// increase frames, remove/drop
+void() Flame_Buildup =
+{
+	self.frame++;
+
+	if (self.frame > 11) {
+		if (random() > 0.75)
+			Flame_Drop();
+		remove(self);
+	}
+
+	self.nextthink = time + 0.05;
+}
+
+void() W_FireM2 =
+{
+
+	local entity flamespr;
+	local vector rand_angle;
+
+	flamespr = spawn();
+	flamespr.owner = self;
+	flamespr.movetype = MOVETYPE_FLYMISSILE;
+	flamespr.solid = SOLID_TRIGGER;
+	flamespr.classname = "flamethrower_sprite";
+	flamespr.state = 0;
+	flamespr.finaldest = self.v_angle;
+
+	// calc some randomness
+	rand_angle = self.v_angle;
+	rand_angle_x += random()*10;
+	rand_angle_y += random()*10;
+
+	makevectors(rand_angle);
+	flamespr.velocity = aim(self, 1000);
+	flamespr.velocity *= 600;
+
+	flamespr.owner = self;
+
+	flamespr.think = Flame_Buildup;
+	flamespr.nextthink = time + 0.01;
+	flamespr.touch = Flame_Touch;
+
+	setmodel(flamespr, "models/misc/flame.spr");
+	setorigin(flamespr, self.origin + self.view_ofs - '0 0 10');
+	setsize(flamespr, '0 0 0', '0 0 0');
+}
+
 
 void(float side) W_Fire =
 {
+	if (self.weapon == W_M2 || self.weapon == W_FIW && self.cooldown)
+		return;
+
 	//First check that we can actualy fire
 	if (side == S_RIGHT &&
 		(time < self.fire_delay ||
@@ -1269,6 +1411,8 @@ void(float side) W_Fire =
 		W_FireRay();
 	} else if (firetype == 5) {
 		W_FireTesla();
+	} else if (firetype == 6) {
+		W_FireM2();
 	}
 
 	if (firetype == 1 || firetype == 0) {

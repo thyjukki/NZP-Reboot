@@ -271,6 +271,21 @@ void() PlayerPreThink =
 	}
 
 	JumpCheck(0);
+
+	// refuel/cool m2
+	if (self.ltime < time) {
+		if (self.currentmag == 0 && !self.cooldown) {
+			self.cooldown = true;
+		}
+
+		if (self.cooldown && self.currentmag > 20)
+			self.cooldown = false;
+		
+		if (self.weapon == W_M2 || self.weapon == W_FIW && self.currentmag < getWeaponMag(self.weapon))
+			self.currentmag += 1;
+
+		self.ltime = time + 0.1;
+	}
 };
 
 void() PlayerPostThink =
@@ -519,7 +534,7 @@ void() PlayerSpawn =
 	self.currentammo = G_STARTWEAPON[2];
 	self.currentmag = G_STARTWEAPON[1];
 	self.weapon = G_STARTWEAPON[0];
-	
+
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
 	
 	if (rounds)

@@ -73,7 +73,8 @@ char *svc_strings[] =
 	"svc_limbupdate",
     "svc_fog",    // 41		// [byte] start [byte] end [byte] red [byte] green [byte] blue [float] time
     "svc_bspdecal", //42     // [string] name [byte] decal_size [coords] pos
-    "svc_achievement" //43
+    "svc_achievement", //43
+	"svc_songegg" //44 			[string] track name
 };
 
 //=============================================================================
@@ -1345,7 +1346,9 @@ void CL_ParseServerMessage (void)
 	    case svc_skybox:
 			Sky_LoadSkyBox(MSG_ReadString());
 			break;
-
+		case svc_songegg:
+			CDAudio_Track(MSG_ReadString());
+			break;
 		case svc_fog:
 			Fog_ParseServerMessage ();
 			break;

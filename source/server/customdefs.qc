@@ -185,6 +185,8 @@ float zombie_spawn_timer; // the actual timer for spawn delay
 .vector goalorigin;
 .float teslacount;
 .float iszomb;
+.float onfire;
+.entity firer;
 float crawler_num;
 //==== Reference Vars ====
 #define 	WWINDOW		1

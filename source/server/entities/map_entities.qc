@@ -164,14 +164,22 @@ void() func_button =
 	self.pos2 = self.pos1 + self.movedir*(fabs(self.movedir*self.size) - self.lip);
 };
 
-void() flame_update = {		
+void() flame_update = {	
+	#ifndef PC	
 	particle (self.origin, v_up, 111, 0);
+	#else
+	te_flamejet(self.origin, v_up, 10);
+	#endif
 	self.think = flame_update;
 	self.nextthink = time + random()+0.1;
 }
 void() place_fire =
 {
+	#ifndef PC
 	particle (self.origin, v_up*8, self.frame, 0);
+	#else
+	te_flamejet(self.origin, v_up*8, 10);
+	#endif
 	self.think = flame_update;
 	self.nextthink = time + random()+0.1;
 };
@@ -683,19 +691,14 @@ void zapper_start(string zapper) {
 }
 
 void zapper_touch () {
-	centerprint(other, "stage zero");
 	if (other.classname != "player") {
 		return;
 	}
-    
-	centerprint(other, "stage one");
 
 	if (self.requirespower == true && !isPowerOn) {
 		useprint (other, 8, 0, 0);
 		return;
 	}	
-
-	centerprint(other, "stage two");
 
 	if (self.state == 0) {
 		useprint (other, 11, self.cost, self.weapon);
