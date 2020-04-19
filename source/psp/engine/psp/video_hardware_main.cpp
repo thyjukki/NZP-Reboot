@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern "C"
 {
 #include "../quakedef.h"
+#include "iridlibs/perflib.h"
 float TraceLine (vec3_t start, vec3_t end, vec3_t impact, vec3_t normal);
 }
 
@@ -61,6 +62,8 @@ int			playertextures;		// up to 16 color translated skins
 int			mirrortexturenum;	// quake texturenum, not gltexturenum
 qboolean	mirror;
 mplane_t	*mirror_plane;
+
+int 		game_fps;
 
 void R_RenderDecals (void);
 bool    fixlight;
@@ -157,6 +160,7 @@ cvar_t	r_flametype	        = {"r_flametype",        "2",qtrue};
 //Shpuld
 cvar_t  r_model_brightness = { "r_model_brightness", "1", qtrue};   // Toggle high brightness model lighting
 
+extern cvar_t cl_maxfps;
 
 void 	VID_SetPaletteH2();
 void 	VID_SetPaletteTX();
@@ -4544,5 +4548,9 @@ void R_RenderView (void)
 		Con_Printf ("%4i wpoly\n",  c_brush_polys);
 		Con_Printf ("%4i epoly\n",  c_alias_polys);
 		Con_Printf ("%4i md3poly\n",c_md3_polys);
+		Con_Printf ("%4i CPU Percentage\n", (int)PFL_GetCPUPercentage()/(1000/game_fps));
+		Con_Printf ("%4i GPU Percentage\n", (int)PFL_GetGPUPercentage()/(1000/game_fps));
+		Con_Printf ("%4i CPU Time (ms)\n", (int)PFL_GetCPUTime());
+		Con_Printf ("%4i GPU Time (ms)\n", (int)PFL_GetGPUTime());
 	}
 }

@@ -125,6 +125,8 @@ float		scr_disabled_time;
 
 qboolean	block_drawing;
 
+extern 	int 	game_fps;
+
 void SCR_ScreenShot_f (void);
 
 /*
@@ -701,6 +703,8 @@ void SCR_DrawFPS (void)
 	y = 0 ;
 
 	Draw_ColoredString (x, y, st, 0);
+
+	game_fps = lastfps;
 
 	//"&cF20 C &cF50 r &cF80 o &c883 w &cA85 _ &cA85 b &c668 a &c55A r"
 	//

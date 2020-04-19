@@ -38,6 +38,7 @@ extern "C"
 {
 #include "../quakedef.h"
 #include "m33libs/kubridge.h"
+#include "iridlibs/perflib.h"
 }
 
 #include "battery.hpp"
@@ -535,6 +536,8 @@ int user_main(SceSize argc, void* argp)
 	// operations.
 	disableFloatingPointExceptions();
 
+	// init perflib
+	PFL_Init(true);
 
 	// Initialise the Common module.
 #if 0
@@ -613,11 +616,15 @@ int user_main(SceSize argc, void* argp)
 
 #ifdef PSP_SOFTWARE_VIDEO
 	// Bump up the clock frequency.
-	if (!COM_CheckParm("-cpu222"))
+	if (!COM_CheckParm("-cpu222")) {
 		scePowerSetClockFrequency(333, 333, 166);
+		//PFL_SetCPUFrequency(222);
+	}
 #else
-	if (COM_CheckParm("-cpu333"))
+	if (COM_CheckParm("-cpu333")) {
 		scePowerSetClockFrequency(333, 333, 166);
+		//PFL_SetCPUFrequency(333);
+	}
 #endif
 
 	// Catch exceptions from here.
@@ -643,6 +650,9 @@ int user_main(SceSize argc, void* argp)
 		// Enter the main loop.
 		while (!quit)
 		{
+			// start cpu profiling
+			PFL_BeginCPURecord();
+
 			// Handle suspend & resume.
 			if (suspended)
 			{
@@ -678,6 +688,9 @@ int user_main(SceSize argc, void* argp)
 			Host_Frame(deltaSeconds);
 			// Remember the time for next frame.
 			lastTicks = ticks;
+
+			// end cpu profiling
+			PFL_EndCPURecord();
 		}
 	}
 	catch (const std::exception& e)
