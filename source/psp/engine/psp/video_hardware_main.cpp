@@ -37,6 +37,9 @@ float TraceLine (vec3_t start, vec3_t end, vec3_t impact, vec3_t normal);
 using namespace quake;
 
 //prototypes
+extern "C" void V_CalcBlend (void);
+
+void Fog_SetupFrame (void);
 void Fog_EnableGFog (void); 
 void Fog_DisableGFog (void);
 void R_DrawDecals (void);
@@ -3553,43 +3556,6 @@ void R_DrawLine(vec3_t start,vec3_t end, vec3_t rgb)
 
 }
 
-/*
-================
-R_ShowBoundingBoxes -- johnfitz
-
-draw bounding boxes -- the server-side boxes, not the renderer cullboxes
-================
-*/
-void R_ShowBoundingBoxes (void)
-{
-	extern		edict_t *sv_player;
-	edict_t		*ed;
-	int			i;
-
-	if (!r_showbboxes.value || cl.maxclients > 1 || !r_drawentities.value || !sv.active)
-		return;
-
-	if(r_showbboxes_full.value)
-	   sceGuDisable (GU_DEPTH_TEST);
-
-	sceGuDisable (GU_TEXTURE_2D);
-	sceGuDisable (GU_CULL_FACE);
-	sceGuColor(GU_COLOR(0,1,0,1));
-	for (i=0, ed = NEXT_EDICT(sv.edicts) ; i < sv.num_edicts ; i++, ed = NEXT_EDICT(ed))
-	{
-		if (ed == sv_player)
-			continue; //don't draw player's own bbox
-
-		R_EmitWireBox (ed->v.absmin, ed->v.absmax, (r_showbboxes.value >= 2) ? qtrue : qfalse);
-	}
-	sceGuColor(GU_COLOR(1,1,1,1));
-	sceGuEnable (GU_TEXTURE_2D);
-	sceGuEnable (GU_CULL_FACE);
-
-	if(r_showbboxes_full.value)
-	   sceGuEnable (GU_DEPTH_TEST);
-}
-
 //==================================================================================
 int SetFlameModelState (void)
 {
@@ -3670,138 +3636,6 @@ int SetFlameModelState (void)
 	}
 
 	return 0;
-}
-
-
-/*
-=============
-R_DrawEntitiesOnList
-=============
-*/
-void R_DrawEntitiesOnList (void)
-{
-	int		i;
-
-	if (!r_drawentities.value)
-		return;
-
-	//t1 = 0;
-	//t2 = 0;
-	//t3 = 0;
-	//t1 -= Sys_FloatTime();
-	
-	int zHackCount = 0;
-	doZHack = 0;
-	char specChar;
-
-   	// draw sprites seperately, because of alpha blending
-	for (i=0 ; i<cl_numvisedicts ; i++)
-	{
-		currententity = cl_visedicts[i];
-
-		if (currententity == &cl_entities[cl.viewentity])
-			currententity->angles[0] *= 0.3;
-
-		//currentmodel = currententity->model;
-		if(!(currententity->model))
-		{
-			R_DrawNullModel();
-			continue;
-		}
-		
-		
-		specChar = currententity->model->name[strlen(currententity->model->name)-5];
-		
-		if(specChar == '(' || specChar == '^')//skip heads and arms: it's faster to do this than a strcmp...
-		{
-			continue;
-		}
-		doZHack = 0;
-		if(specChar == '#')
-		{
-			if(zHackCount > 5 || ((currententity->z_head != 0) && (currententity->z_larm != 0) && (currententity->z_rarm != 0)))
-			{
-				doZHack = 1;
-			}
-			else
-			{
-				zHackCount ++;//drawing zombie piece by piece.
-			}
-		}
-
-		switch (currententity->model->type)
-		{
-		case mod_alias:
-
-			if (qmb_initialized && SetFlameModelState() == -1)
-				continue;
-			
-			if (currententity->model->aliastype == ALIASTYPE_MD2)
-				R_DrawMD2Model (currententity);
-			else
-			{
-				if(specChar == '$')//This is for smooth alpha, draw in the following loop, not this one
-				{
-					continue;
-				}
-				R_DrawAliasModel (currententity);
-			}
-			
-			break;
-		case mod_md3:
-			R_DrawQ3Model (currententity);
-			break;
-
-		case mod_halflife:
-			R_DrawHLModel (currententity);
-			break;
-
-		case mod_brush:
-			R_DrawBrushModel (currententity);
-			break;
-
-		default:
-			break;
-		}
-		doZHack = 0;
-	}
-
-	for (i=0 ; i<cl_numvisedicts ; i++)
-	{
-		currententity = cl_visedicts[i];
-		
-		if(!(currententity->model))
-		{
-			continue;
-		}
-		
-		specChar = currententity->model->name[strlen(currententity->model->name)-5];
-
-		switch (currententity->model->type)
-		{
-		case mod_sprite:
-		{
-			R_DrawSpriteModel (currententity);
-			break;
-		}
-		case mod_alias:
-			if (currententity->model->aliastype != ALIASTYPE_MD2)
-			{
-				if(specChar == '$')//mdl model with blended alpha
-				{
-					R_DrawTransparentAliasModel(currententity);
-				}
-			}
-			break;
-		default: break;
-		}
-	}
-	//t1 += Sys_FloatTime();
-	//Con_Printf("Time: %lf, T2: %lf, T3: %lf \n\n\n\n", t1,t2,t3);
-
-	//Con_Printf("%d%%",(int)(t2 * 100/t1));
-	//Con_Printf("Old: %d, New: %d",(int)(t2 * 1000), (int)(t3 * 1000));
-	//Con_Printf("\n\n\n");
 }
 
 /*
@@ -4054,69 +3888,47 @@ static int SignbitsForPlane (mplane_t *out)
 }
 
 
-void R_SetFrustum (void)
-{
-	int		i;
-
-	// disabled as well.
-	if (r_refdef.fov_x == 90)
-	{
-		// front side is visible
-
-		VectorAdd (vpn, vright, frustum[0].normal);
-		VectorSubtract (vpn, vright, frustum[1].normal);
-
-		VectorAdd (vpn, vup, frustum[2].normal);
-		VectorSubtract (vpn, vup, frustum[3].normal);
-	}
-	else
-	{
-		RotatePointAroundVector( frustum[0].normal, vup, vpn,    -( 90 - r_refdef.fov_x * 0.5 ) );
-		RotatePointAroundVector( frustum[1].normal, vup, vpn,     ( 90 - r_refdef.fov_x * 0.5 ) );
-		RotatePointAroundVector( frustum[2].normal, vright, vpn,  ( 90 - r_refdef.fov_y * 0.5 ) );
-		RotatePointAroundVector( frustum[3].normal, vright, vpn, -( 90 - r_refdef.fov_y * 0.5 ) );
-	}
-
-	for (i=0 ; i<4 ; i++)
-	{
-		frustum[i].type = PLANE_ANYZ;
-		frustum[i].dist = DotProduct (r_origin, frustum[i].normal);
-		frustum[i].signbits = SignbitsForPlane (&frustum[i]);
-	}
-}
-
-
-void Fog_SetupFrame (void);
-extern "C" void V_CalcBlend (void);
 /*
 ===============
-R_SetupFrame
+R_RenderScene
+
+r_refdef must be set before the first call
 ===============
 */
-void R_SetupFrame (void)
+void R_RenderScene (void)
 {
-// don't allow cheats in multiplayer
 
-    Fog_SetupFrame ();
+	int 		i;
+	float vecx_point_transform = 90 - r_refdef.fov_x * 0.5;
+	float vecy_point_transform = 90 - r_refdef.fov_y * 0.5;
+	float screenaspect;
+	extern int glwidth, glheight;
+	int x, x2, y2, y, w, h;
+	float fovx, fovy; //johnfitz
+	int contents; //johnfitz
+	char specChar; //nzp
 
 	if (cl.maxclients > 1)
 		Cvar_Set ("r_fullbright", "0");
 
-	R_AnimateLight ();
+	//xaa - opt
+	int w_ratio = glwidth/vid.width;
+	int h_ratio = glheight/vid.height;
+	vrect_t* renderrect = &r_refdef.vrect;
 
-	r_framecount++;
+	//setupframe
+	Fog_SetupFrame();
+	R_AnimateLight();
+	++r_framecount;
 
-// build the transformation matrix for the given view angles
 	VectorCopy (r_refdef.vieworg, r_origin);
-
 	AngleVectors (r_refdef.viewangles, vpn, vright, vup);
 
-// current viewleaf
+	// current viewleaf
 	r_oldviewleaf = r_viewleaf;
 	r_viewleaf = Mod_PointInLeaf (r_origin, cl.worldmodel);
 
 	V_SetContentsColor (r_viewleaf->contents);
-
 	V_CalcBlend ();
 
 	r_cache_thrash = qfalse;
@@ -4124,26 +3936,30 @@ void R_SetupFrame (void)
 	c_brush_polys = 0;
 	c_alias_polys = 0;
     c_md3_polys = 0;
-}
 
-/*
-=============
-R_SetupGL
-=============
-*/
-void R_SetupGL (void)
-{
-	float	screenaspect;
-	extern	int glwidth, glheight;
-	int		x, x2, y2, y, w, h;
-    float fovx, fovy; //johnfitz
-	int contents; //johnfitz
+	//setfrustum
+	// disabled as well
+	if (r_refdef.fov_x == 90) {
+		// front side is visible
+		VectorAdd(vpn, vright, frustum[0].normal);
+		VectorSubtract(vpn, vright, frustum[1].normal);
 
-	//xaa - opt
-	int w_ratio = glwidth/vid.width;
-	int h_ratio = glheight/vid.height;
-	vrect_t* renderrect = &r_refdef.vrect;
+		VectorAdd(vpn, vright, frustum[1].normal);
+		VectorSubtract(vpn, vup, frustum[3].normal);
+	} else {
+		RotatePointAroundVector( frustum[0].normal, vup, vpn,    -( vecx_point_transform ) );
+		RotatePointAroundVector( frustum[1].normal, vup, vpn,     ( vecx_point_transform ) );
+		RotatePointAroundVector( frustum[2].normal, vright, vpn,  ( vecy_point_transform ) );
+		RotatePointAroundVector( frustum[3].normal, vright, vpn, -( vecy_point_transform ) );
+	}
 
+	for (i=0 ; i<4 ; i++) {
+		frustum[i].type = PLANE_ANYZ;
+		frustum[i].dist = DotProduct (r_origin, frustum[i].normal);
+		frustum[i].signbits = SignbitsForPlane (&frustum[i]);
+	}
+
+//setupgl
 	// set up viewpoint
 	sceGumMatrixMode(GU_PROJECTION);
 	sceGumLoadIdentity();
@@ -4211,25 +4027,14 @@ void R_SetupGL (void)
 		}
 	}
 
-	//xaa - removed a random empty else {} here (???)
-
 	sceGumUpdateMatrix();
 	sceGumMatrixMode(GU_VIEW);
 	sceGumLoadIdentity();
 
-    /*glRotatef (-90,  1, 0, 0);	    // put Z going up*/
 	sceGumRotateX(-90 * piconst);
-
-    /*glRotatef (90,  0, 0, 1);	    // put Z going up*/
 	sceGumRotateZ(90 * piconst);
-
-    /*glRotatef (-r_refdef.viewangles[2],  1, 0, 0);*/
 	sceGumRotateX(-r_refdef.viewangles[2] * piconst);
-
-    /*glRotatef (-r_refdef.viewangles[0],  0, 1, 0);*/
 	sceGumRotateY(-r_refdef.viewangles[0] * piconst);
-
-    /*glRotatef (-r_refdef.viewangles[1],  0, 0, 1);*/
 	sceGumRotateZ(-r_refdef.viewangles[1] * piconst);
 
     /*glTranslatef (-r_refdef.vieworg[0],  -r_refdef.vieworg[1],  -r_refdef.vieworg[2]);*/
@@ -4252,31 +4057,71 @@ void R_SetupGL (void)
 	sceGuDisable(GU_BLEND);
 	sceGuDisable(GU_ALPHA_TEST);
 	sceGuTexFunc(GU_TFX_REPLACE, GU_TCC_RGBA);
-}
 
-/*
-================
-R_RenderScene
-
-r_refdef must be set before the first call
-================
-*/
-
-void R_RenderScene (void)
-{
-	R_SetupFrame ();
-	R_SetFrustum ();
-	R_SetupGL ();
 	R_MarkLeaves ();	// done here so we know if we're in water
 	Fog_EnableGFog (); //johnfitz
 	R_DrawWorld ();		// adds static entities to the list
 	S_ExtraUpdate ();	// don't let sound get messed up if going slow
-	R_DrawEntitiesOnList ();
-	R_RenderDlights ();
+	
+	// drawentitiesonlist
+	if (r_drawentities.value) {
+
+		// draw sprites seperately, because of alpha blending
+		for (i=0 ; i<cl_numvisedicts ; i++)
+		{
+			currententity = cl_visedicts[i];
+
+			if (currententity == &cl_entities[cl.viewentity])
+			currententity->angles[0] *= 0.3;
+
+			//currentmodel = currententity->model;
+			if(!(currententity->model))
+			{
+				R_DrawNullModel();
+				continue;
+			}
+
+			specChar = currententity->model->name[strlen(currententity->model->name)-5];
+
+			switch (currententity->model->type) {
+				case mod_alias:
+					if (qmb_initialized && SetFlameModelState() == -1) continue;
+					
+					if (currententity->model->aliastype == ALIASTYPE_MD2)
+						R_DrawMD2Model(currententity);
+					else {
+						if (specChar == '$')
+							R_DrawTransparentAliasModel(currententity);
+						else
+							R_DrawAliasModel(currententity);
+					}
+
+					break;
+				case mod_md3:
+					R_DrawQ3Model (currententity);
+					break;
+
+				case mod_halflife:
+					R_DrawHLModel (currententity);
+					break;
+
+				case mod_brush:
+					R_DrawBrushModel (currententity);
+					break;
+				case mod_sprite:
+					R_DrawSpriteModel(currententity);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	R_RenderDlights ();		//pointless jump? -xaa
+	
 	R_DrawDecals();
 	R_DrawParticles ();
 	Fog_DisableGFog (); //johnfitz
-	R_ShowBoundingBoxes ();
 }
 
 
@@ -4292,35 +4137,13 @@ void R_Clear (void)
         sceGuClear(GU_COLOR_BUFFER_BIT | GU_DEPTH_BUFFER_BIT);
         sceGuClearColor(GU_COLOR(r_refdef.fog_red * 0.01f,r_refdef.fog_green * 0.01f,r_refdef.fog_blue * 0.01f,1.0f));
     }
-    else
-    {
-        sceGuClear(GU_DEPTH_BUFFER_BIT);
-//      sceGuClearColor(GU_COLOR(0.25f,0.25f,0.25f,0.5f));
-    }
+    else sceGuClear(GU_DEPTH_BUFFER_BIT);
 
 	if(r_shadows.value)
 	{
 	  sceGuClearStencil(GU_TRUE);
 	  sceGuClear(GU_STENCIL_BUFFER_BIT);
 	}
-
-	if (r_mirroralpha.value != 1.0)
-	{
-		/*
-		gldepthmin = 0;
-		gldepthmax = 0.5;
-		glDepthFunc (GL_LEQUAL);
-		*/
-	}
-	else
-	{
-		/*
-		gldepthmin = 0;
-		gldepthmax = 1;
-		glDepthFunc (GL_LEQUAL);*/
-	}
-
-	/*glDepthRange (gldepthmin, gldepthmax);*/
 }
 
 /*
@@ -4355,20 +4178,10 @@ void R_Mirror (void)
 		cl_visedicts[cl_numvisedicts] = ent;
 		cl_numvisedicts++;
 	}
-/*
-	gldepthmin = 0.5;
-	gldepthmax = 1;
-	glDepthRange (gldepthmin, gldepthmax);
-	glDepthFunc (GL_LEQUAL);
-*/
+
 	R_RenderScene ();
 	R_DrawWaterSurfaces ();
-/*
-	gldepthmin = 0;
-	gldepthmax = 0.5;
-	glDepthRange (gldepthmin, gldepthmax);
-	glDepthFunc (GL_LEQUAL);
-*/
+
 	// blend on top
 	sceGuEnable (GU_BLEND);
 
@@ -4416,52 +4229,25 @@ r_refdef must be set before the first call
 */
 void R_RenderView (void)
 {
-	if (r_speeds.value)
-	{
-		c_brush_polys = 0;
-		c_alias_polys = 0;
-        c_md3_polys = 0;
-	}
+	c_brush_polys = 0;
+	c_alias_polys = 0;
+    c_md3_polys = 0;
 
 	mirror = qfalse;
-/*
-	if (gl_finish.value)
-		glFinish ();*/
 
 	R_Clear ();
 
 	// render normal view
 	R_RenderScene ();
-/*
-	sceGumMatrixMode(GU_VIEW);
-	ScePspFMatrix4 view_matrix;
-	sceGumStoreMatrix(&view_matrix);
-
-	sceGumLoadIdentity();
-
-	ScePspFVector3 translation =
-	{
-		view_matrix.x.w, view_matrix.y.w, view_matrix.z.w
-	};
-	sceGumTranslate(&translation);
-	sceGumUpdateMatrix();
-
-	sceGumMatrixMode(GU_MODEL);
-
-	sceGumLoadIdentity();
-	sceGumUpdateMatrix();
-*/
 
 	R_DrawViewModel ();
-
 	R_DrawView2Model ();
-
 	R_DrawWaterSurfaces ();
 
 	// render mirror view
 	R_Mirror ();
-
 	R_PolyBlend ();
+
     //Crow_bar fixed
 	if (r_speeds.value)
 	{
