@@ -27,8 +27,8 @@ extern "C"
 float TraceLine (vec3_t start, vec3_t end, vec3_t impact, vec3_t normal);
 }
 
+//includes
 #include "video_hardware_hlmdl.h"
-
 #include <pspgu.h>
 #include <pspgum.h>
 
@@ -36,63 +36,65 @@ float TraceLine (vec3_t start, vec3_t end, vec3_t impact, vec3_t normal);
 
 using namespace quake;
 
+//prototypes
+void Fog_EnableGFog (void); 
+void Fog_DisableGFog (void);
+void R_DrawDecals (void);
+void R_RenderDecals (void);
+void R_MarkLeaves (void);
+void QMB_LetItRain(void);
+void QMB_LaserSight (void);
+void VID_SetPaletteH2();
+void VID_SetPaletteTX();
+
+// globals
+const float piconst = GU_PI / 180.0f;
+
 entity_t	r_worldentity;
+entity_t 	*currententity;
 
 qboolean	r_cache_thrash;		// compatability
+qboolean 	envmap;
+qboolean 	mirror;
+
+// view origin
+vec3_t 		vup;
+vec3_t 		vpn;
+vec3_t 		vright;
+vec3_t 		r_origin;
 
 vec3_t		modelorg, r_entorigin;
-entity_t	*currententity;
+
 
 int			r_visframecount;	// bumped when going to a new PVS
 int			r_framecount;		// used for dlight push checking
-
-mplane_t	frustum[4];
-
 int			c_brush_polys, c_alias_polys, c_md3_polys;
-
-qboolean	envmap;				// qtrue during envmap command capture
-
 int			currenttexture = -1;		// to avoid unnecessary texture sets
-
 int			cnttextures[2] = {-1, -1};     // cached
-
 int			particletexture;	// little dot for particles
 int			playertextures;		// up to 16 color translated skins
-
 int			mirrortexturenum;	// quake texturenum, not gltexturenum
-qboolean	mirror;
+int 		game_fps; 			// should probably move this somewhere less.. lame
+
 mplane_t	*mirror_plane;
+mplane_t 	frustum[4];
 
-int 		game_fps;
+// screen size info
+refdef_t 	r_refdef;
+mleaf_t 	*r_viewleaf;
+mleaf_t 	*r_oldviewleaf;
+texture_t 	*r_notexture_mip;
 
-void R_RenderDecals (void);
 bool    fixlight;
 bool    alphafunc2;
 bool    alphafunc;
-//
-// view origin
-//
-vec3_t	vup;
-vec3_t	vpn;
-vec3_t	vright;
-vec3_t	r_origin;
 
 ScePspFMatrix4	r_world_matrix;
 ScePspFMatrix4	r_base_world_matrix;
 ScePspFMatrix4  md3mult;
-//
-// screen size info
-//
-refdef_t	r_refdef;
-
-mleaf_t		*r_viewleaf, *r_oldviewleaf;
-
-texture_t	*r_notexture_mip;
 
 int		d_lightstylevalue[256];	// 8.8 fraction of base light value
 
-
-void R_MarkLeaves (void);
 cvar_t	r_partalpha           = {"r_partalpha",             "0.8",qtrue};
 cvar_t	r_norefresh           = {"r_norefresh",               "0"};
 cvar_t	r_drawentities        = {"r_drawentities",            "1"};
@@ -162,11 +164,6 @@ cvar_t  r_model_brightness = { "r_model_brightness", "1", qtrue};   // Toggle hi
 
 extern cvar_t cl_maxfps;
 
-void 	VID_SetPaletteH2();
-void 	VID_SetPaletteTX();
-
-void Fog_EnableGFog  (void);
-void Fog_DisableGFog (void);
 
 
 
@@ -301,30 +298,12 @@ void R_RotateForViewEntity (entity_t *ent)
 	// Rotate.
 	const ScePspFVector3 rotation =
 	{
-		ent->angles[ROLL] * (GU_PI / 180.0f),
-		-ent->angles[PITCH] * (GU_PI / 180.0f),
-		ent->angles[YAW] * (GU_PI / 180.0f)
+		ent->angles[ROLL] * piconst,
+		-ent->angles[PITCH] * piconst,
+		ent->angles[YAW] * piconst
 	};
 	sceGumRotateZYX(&rotation);
 }
-
-/*
-=================
-R_CullBox
-
-Returns qtrue if the box is completely outside the frustom
-=================
-
-qboolean R_CullBox (vec3_t mins, vec3_t maxs)
-{
-	int		i;
-
-	for (i=0 ; i<4 ; i++)
-		if (BoxOnPlaneSide (mins, maxs, &frustum[i]) == 2)
-			return qtrue;
-	return qfalse;
-}
-*/
 
 /*
 =================
@@ -337,6 +316,9 @@ qboolean R_CullBox (vec3_t emins, vec3_t emaxs)
 {
 	int i;
 	mplane_t *p;
+
+
+
 	for (i = 0;i < 4;i++)
 	{
 		p = frustum + i;
@@ -4157,30 +4139,25 @@ void R_SetupGL (void)
     float fovx, fovy; //johnfitz
 	int contents; //johnfitz
 
-	//
+	//xaa - opt
+	int w_ratio = glwidth/vid.width;
+	int h_ratio = glheight/vid.height;
+	vrect_t* renderrect = &r_refdef.vrect;
+
 	// set up viewpoint
-	//
-	/*
-	glMatrixMode(GL_PROJECTION);
-    glLoadIdentity ();
-	*/
 	sceGumMatrixMode(GU_PROJECTION);
 	sceGumLoadIdentity();
 
-	x = r_refdef.vrect.x * glwidth/vid.width;
-	x2 = (r_refdef.vrect.x + r_refdef.vrect.width) * glwidth/vid.width;
-	y = (vid.height-r_refdef.vrect.y) * glheight/vid.height;
-	y2 = (vid.height - (r_refdef.vrect.y + r_refdef.vrect.height)) * glheight/vid.height;
+	x = renderrect->x * w_ratio;
+	x2 = (renderrect->x + renderrect->width) * w_ratio;
+	y = (vid.height-renderrect->y) * h_ratio;
+	y2 = (vid.height - (renderrect->y + renderrect->height)) * h_ratio;
 
 	// fudge around because of frac screen scale
-	if (x > 0)
-		x--;
-	if (x2 < glwidth)
-		x2++;
-	if (y2 < 0)
-		y2--;
-	if (y < glheight)
-		y++;
+	if (x > 0)				x--;
+	if (x2 < glwidth)		x2++;
+	if (y2 < 0)				y2--;
+	if (y < glheight)		y++;
 
 	w = x2 - x;
 	h = y - y2;
@@ -4193,12 +4170,12 @@ void R_SetupGL (void)
 
 	sceGuViewport(
 		glx,
-		gly + (glheight / 2) - y2 - (h / 2),
+		gly + (glheight >> 1) - y2 - (h >> 1), //xaa - try to skip some divides (/2) here
 		w,
 		h);
 	sceGuScissor(x, glheight - y2 - h, x + w, glheight - y2);
 
-    screenaspect = (float)r_refdef.vrect.width/r_refdef.vrect.height;
+    screenaspect = (float)renderrect->width/renderrect->height;
 
 	 //johnfitz -- warp view for underwater
 	fovx = screenaspect;
@@ -4233,30 +4210,27 @@ void R_SetupGL (void)
 	        sceGumScale(&scaling);
 		}
 	}
-	else
-	{
-	}
-	sceGumUpdateMatrix();
 
-	/*glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity ();*/
+	//xaa - removed a random empty else {} here (???)
+
+	sceGumUpdateMatrix();
 	sceGumMatrixMode(GU_VIEW);
 	sceGumLoadIdentity();
 
     /*glRotatef (-90,  1, 0, 0);	    // put Z going up*/
-	sceGumRotateX(-90 * (GU_PI / 180.0f));
+	sceGumRotateX(-90 * piconst);
 
     /*glRotatef (90,  0, 0, 1);	    // put Z going up*/
-	sceGumRotateZ(90 * (GU_PI / 180.0f));
+	sceGumRotateZ(90 * piconst);
 
     /*glRotatef (-r_refdef.viewangles[2],  1, 0, 0);*/
-	sceGumRotateX(-r_refdef.viewangles[2] * (GU_PI / 180.0f));
+	sceGumRotateX(-r_refdef.viewangles[2] * piconst);
 
     /*glRotatef (-r_refdef.viewangles[0],  0, 1, 0);*/
-	sceGumRotateY(-r_refdef.viewangles[0] * (GU_PI / 180.0f));
+	sceGumRotateY(-r_refdef.viewangles[0] * piconst);
 
     /*glRotatef (-r_refdef.viewangles[1],  0, 0, 1);*/
-	sceGumRotateZ(-r_refdef.viewangles[1] * (GU_PI / 180.0f));
+	sceGumRotateZ(-r_refdef.viewangles[1] * piconst);
 
     /*glTranslatef (-r_refdef.vieworg[0],  -r_refdef.vieworg[1],  -r_refdef.vieworg[2]);*/
 	const ScePspFVector3 translation = {
@@ -4274,32 +4248,11 @@ void R_SetupGL (void)
 
 	clipping::begin_frame();
 
-	//
 	// set drawing parms
-	//
-	/*
-	if (gl_cull.value)
-	{
-		glEnable(GL_CULL_FACE);
-	}
-	else
-	{
-		glDisable(GL_CULL_FACE);
-	}
-
-	glDisable(GL_BLEND);
-	glDisable(GL_ALPHA_TEST);
-	glEnable(GL_DEPTH_TEST);*/
 	sceGuDisable(GU_BLEND);
 	sceGuDisable(GU_ALPHA_TEST);
 	sceGuTexFunc(GU_TFX_REPLACE, GU_TCC_RGBA);
 }
-
-void Fog_EnableGFog (void);
-void Fog_DisableGFog (void);
-void R_DrawDecals (void);
-void QMB_LetItRain(void);
-void QMB_LaserSight (void);
 
 /*
 ================
@@ -4312,39 +4265,18 @@ r_refdef must be set before the first call
 void R_RenderScene (void)
 {
 	R_SetupFrame ();
-
 	R_SetFrustum ();
-
 	R_SetupGL ();
-
 	R_MarkLeaves ();	// done here so we know if we're in water
-
 	Fog_EnableGFog (); //johnfitz
-
 	R_DrawWorld ();		// adds static entities to the list
-
 	S_ExtraUpdate ();	// don't let sound get messed up if going slow
-
 	R_DrawEntitiesOnList ();
-
-	/*GL_DisableMultitexture();*/
-
 	R_RenderDlights ();
-
-//	R_RenderDecals ();
-
 	R_DrawDecals();
-
-	//QMB_LetItRain();
-
-	//QMB_LaserSight ();
-
 	R_DrawParticles ();
-
 	Fog_DisableGFog (); //johnfitz
-
 	R_ShowBoundingBoxes ();
-
 }
 
 
@@ -4484,18 +4416,8 @@ r_refdef must be set before the first call
 */
 void R_RenderView (void)
 {
-	double	time1, time2;
-
-	if (r_norefresh.value)
-		return;
-
-	if (!r_worldentity.model || !cl.worldmodel)
-		Sys_Error ("R_RenderView: NULL worldmodel");
-    time1 = 0;
 	if (r_speeds.value)
 	{
-		/*glFinish ();*/
-		time1 = Sys_FloatTime ();
 		c_brush_polys = 0;
 		c_alias_polys = 0;
         c_md3_polys = 0;
@@ -4543,11 +4465,8 @@ void R_RenderView (void)
     //Crow_bar fixed
 	if (r_speeds.value)
 	{
-		time2 = Sys_FloatTime ();
-		Con_Printf ("%3i ms\n",(int)((time2-time1)*1000));
-		Con_Printf ("%4i wpoly\n",  c_brush_polys);
-		Con_Printf ("%4i epoly\n",  c_alias_polys);
-		Con_Printf ("%4i md3poly\n",c_md3_polys);
+		Con_Printf ("%4i world poly\n",  c_brush_polys);
+		Con_Printf ("%4i entity poly\n",  c_alias_polys);
 		Con_Printf ("%4i CPU Percentage\n", (int)PFL_GetCPUPercentage()/(1000/game_fps));
 		Con_Printf ("%4i GPU Percentage\n", (int)PFL_GetGPUPercentage()/(1000/game_fps));
 		Con_Printf ("%4i CPU Time (ms)\n", (int)PFL_GetCPUTime());
