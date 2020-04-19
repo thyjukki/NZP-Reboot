@@ -186,8 +186,13 @@ void() place_fire =
 
 void() place_model =
 {  
-  precache_model (self.model);
-  setmodel (self, self.model);
+	#ifdef PSP
+	if (self.spawnflags & 2)
+		remove(self);
+	#endif
+
+	precache_model (self.model);
+	setmodel (self, self.model);
   
 	self.skin = 0;
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);

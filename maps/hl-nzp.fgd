@@ -278,6 +278,7 @@
 	spawnflags(Flags) =
 	[
 		1 : "Fullbright" : 0
+		2 : "Not on PSP" : 0
 	]
 ]
 
