@@ -4,7 +4,7 @@ A faithful recreation of Call of Duty Zombies for the PC and PlayStation Portabl
 <hr>
 
 ## Running From Source
-* Download using [this link](https://github.com/thyjukki/NZP-Reboot/archive/master.zip)
+* Download using [this link](https://github.com/thyjukki/NZP-Reboot/archive/nzp-1.0.zip)
 * Extract the archive
 * Navigate to NZP-Reboot/source and run fteqccgui.exe
 * Hit the "Compile" button on the bottom left corner of the window.
