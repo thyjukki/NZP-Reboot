@@ -959,7 +959,11 @@ void() RayBulletExplode =
 	te_smallflash(self.origin);
 	#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	#ifdef PSP
+	WriteByte (MSG_BROADCAST, TE_RAYSPLASH);
+	#else
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	#endif
 	WriteCoord (MSG_BROADCAST, self.origin_x);
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);

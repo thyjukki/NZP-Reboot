@@ -520,13 +520,13 @@ void R_RunParticleEffect (vec3_t org, vec3_t dir, int color, int count)
 
 	switch (count)
 	{
-	case 10:
-	case 20:
-	case 30:
-		RunParticleEffect(sparks, org, dir, color, count);
-		break;
-	default:
-		RunParticleEffect(gunshots, org, dir, color, count);
+		case 10:
+		case 20:
+		case 30:
+			RunParticleEffect(sparks, org, dir, color, count);
+			break;
+		default:
+			RunParticleEffect(gunshots, org, dir, color, count);
 	}
 }
 
