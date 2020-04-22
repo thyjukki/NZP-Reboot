@@ -1337,6 +1337,12 @@ void Draw_Crosshair (void)
 		if (CrossHairMaxSpread() < crosshair_offset || croshhairmoving)
 			crosshair_offset = CrossHairMaxSpread();
 
+		if (sv_player->v.view_ofs[2] == 8) {
+			crosshair_offset *= 0.80;
+		} else if (sv_player->v.view_ofs[2] == -10) {
+			crosshair_offset *= 0.65;
+		}
+
 		crosshair_offset_step += (crosshair_offset - crosshair_offset_step) * 0.5;
 
 		x_value = (vid.width - 8)/2 - crosshair_offset_step;

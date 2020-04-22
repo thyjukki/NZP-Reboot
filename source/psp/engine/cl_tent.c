@@ -228,7 +228,7 @@ void CL_ParseTEnt (void)
 		dl->decay = 300;
 		S_StartSound (-1, 0, cl_sfx_r_exp3, pos, 1, 0.5);
 		break;
-	case TE_RAYSPLASH:
+	case TE_RAYSPLASHGREEN:
 		pos[0] = MSG_ReadCoord ();
 		pos[1] = MSG_ReadCoord ();
 		pos[2] = MSG_ReadCoord ();
@@ -241,6 +241,21 @@ void CL_ParseTEnt (void)
 		dl->color[1] = 255;
 		dl->color[2] = 0; 
 		R_RunParticleEffect (pos, vec3_origin, 0, 256);
+		//S_StartSound (-1, 0, cl_sfx_r_exp3, pos, 1, 0.5); // NZPFIXME - add raygun hum
+		break;
+	case TE_RAYSPLASHRED:
+		pos[0] = MSG_ReadCoord ();
+		pos[1] = MSG_ReadCoord ();
+		pos[2] = MSG_ReadCoord ();
+		dl = CL_AllocDlight (0);
+		VectorCopy (pos, dl->origin);
+		dl->radius = 65;
+		dl->die = cl.time + 0.3;
+		dl->decay = 300;
+		dl->color[0] = 255;
+		dl->color[1] = 0;
+		dl->color[2] = 0; 
+		R_RunParticleEffect (pos, vec3_origin, 0, 512);
 		//S_StartSound (-1, 0, cl_sfx_r_exp3, pos, 1, 0.5); // NZPFIXME - add raygun hum
 		break;
 	case TE_TAREXPLOSION:			// tarbaby explosion

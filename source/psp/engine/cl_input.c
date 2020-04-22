@@ -435,10 +435,18 @@ void CL_BaseMove (usercmd_t *cmd)
 
 	Q_memset (cmd, 0, sizeof(*cmd));
 
-	if (cl.stats[STAT_HEALTH] < 20)
+	if (cl.stats[STAT_HEALTH] < 20) {
 		cl_backspeed = cl_forwardspeed = cl_sidespeed = 30;
-	else
-		cl_backspeed = cl_forwardspeed = cl_sidespeed = 175;//190
+	} else {
+		if (sv_player->v.view_ofs[2] == 8) {
+			cl_backspeed = cl_forwardspeed = cl_sidespeed = 120;
+		} else if (sv_player->v.view_ofs[2] == -10) {
+			cl_backspeed = cl_forwardspeed = cl_sidespeed = 40;
+		} else {
+			cl_backspeed = cl_forwardspeed = cl_sidespeed = 175;//190
+		}	
+	}
+		
 
 	cl_sidespeed = cl_sidespeed*speed_reduce(cl.stats[STAT_ACTIVEWEAPON]);
 

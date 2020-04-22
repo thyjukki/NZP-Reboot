@@ -54,6 +54,8 @@ m*_t structures are in-memory
 #define EF_DARKLIGHT			1024
 #define EF_DARKFIELD			2048
 #define EF_PURPLELIGHT    		4096
+#define EF_RAYRED	 			8196			// red trail for porter x2
+#define EF_RAYGREEN  			16384			// gree trail for ray gun
 
 /*
 ==============================================================================
@@ -386,15 +388,15 @@ mod_md3
 }
 modtype_t;
 
-#define	EF_ROCKET	1			// leave a trail
-#define	EF_GRENADE	2			// leave a trail
-#define	EF_GIB		4			// leave a trail
-#define	EF_ROTATE	8			// rotate (bonus items)
-#define	EF_TRACER	16			// green split trail
-#define	EF_ZOMGIB	32			// small blood trail
-#define	EF_TRACER2	64			// orange split trail + rotate
-#define	EF_TRACER3	128			// purple trail
-#define	EF_Q3TRANS	256		    // Q3 model containing transparent surface(s)
+#define	EF_ROCKET	 1				// leave a trail
+#define	EF_GRENADE	 2				// leave a trail
+#define	EF_GIB		 4				// leave a trail
+#define	EF_ROTATE	 8				// rotate (bonus items)
+#define	EF_TRACER	 16				// green split trail
+#define	EF_ZOMGIB	 32				// small blood trail
+#define	EF_TRACER2	 64				// orange split trail + rotate
+#define	EF_TRACER3	 128			// purple trail
+#define	EF_Q3TRANS	 256		    // Q3 model containing transparent surface(s)
 
 /*
 ========================================================================

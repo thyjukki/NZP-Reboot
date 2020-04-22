@@ -2398,6 +2398,14 @@ void QMB_RunParticleEffect (vec3_t org, vec3_t dir, int col, int count)
 		color[2] = 1.0f;
 		AddParticle (p_raysmoke, org, 3, 25, 1.225f + ((rand() % 10) - 2) / 40.0, color, zerodir);
 		AddParticle (p_rayspark, org, 12, 75, 0.6f,  color, zerodir);
+		break;
+	case 512:
+		color[1] = 1.0f;
+		color[2] = 0;
+		color[3] = 0;
+		AddParticle (p_raysmoke, org, 3, 25, 1.225f + ((rand() % 10) - 2) / 40.0, color, zerodir);
+		AddParticle (p_rayspark, org, 12, 75, 0.6f,  color, zerodir);
+		break;
 	default:
 /*
 		else if (nehahra)
@@ -2744,7 +2752,18 @@ void QMB_RocketTrail (vec3_t start, vec3_t end, trail_type_t type)
 	case NEHAHRA_SMOKE:
 		AddParticleTrail (p_smoke, start, end, 0.8, 0.825, NULL);
 		break;
-
+	case RAYGREEN_TRAIL:
+		color[0] = 0;
+		color[1] = 255;
+		color[2] = 0;
+		AddParticleTrail (p_alphatrail, start, end, 8, 0.6, color);
+		break;
+	case RAYRED_TRAIL:
+		color[0] = 255;
+		color[1] = 0;
+		color[2] = 0;
+		AddParticleTrail (p_alphatrail, start, end, 8, 0.6, color);
+		break;
 	case ROCKET_TRAIL:
 	default:
 		color[0] = 255;

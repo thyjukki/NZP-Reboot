@@ -55,7 +55,7 @@ typedef enum
 {
 	lt_default, lt_muzzleflash, lt_explosion, lt_rocket,
 	lt_red, lt_blue, lt_redblue, lt_green, NUM_DLIGHTTYPES,
-	lt_explosion2, lt_explosion3
+	lt_explosion2, lt_explosion3, lt_rayred, lt_raygreen
 } dlighttype_t;
 
 #define	CSHIFT_CONTENTS	0

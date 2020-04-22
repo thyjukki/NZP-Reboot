@@ -805,6 +805,32 @@ void CL_RelinkEntities (void)
 			dl->color[2] = 2;
 		}
 
+		if (ent->effects & EF_RAYGREEN)
+		{
+			R_RocketTrail (oldorg, ent->origin, 12);
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin, dl->origin);
+			dl->radius = 25;
+			dl->die = cl.time + 0.01;
+	        dl->color[0] = 0;
+			dl->color[1] = 255;
+			dl->color[2] = 0;
+	        dl->type = SetDlightColor (2, lt_rocket, true);
+		}
+
+		if (ent->effects & EF_RAYRED)
+		{
+			R_RocketTrail (oldorg, ent->origin, 13);
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin, dl->origin);
+			dl->radius = 25;
+			dl->die = cl.time + 0.01;
+	        dl->color[0] = 255;
+			dl->color[1] = 0;
+			dl->color[2] = 0;
+	        dl->type = SetDlightColor (2, lt_rocket, true);
+		}
+
 		if (!strcmp(ent->model->name, "progs/flame2.mdl"))
 		{
 			if (qmb_initialized && r_part_flames.value)

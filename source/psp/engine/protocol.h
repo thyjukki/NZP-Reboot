@@ -180,4 +180,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // PGM 01/21/97
 #define TE_BEAM				13
 // PGM 01/21/97
-#define TE_RAYSPLASH 		14
+#define TE_RAYSPLASHGREEN 	14
+#define TE_RAYSPLASHRED 	15

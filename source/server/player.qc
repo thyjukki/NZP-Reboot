@@ -734,6 +734,8 @@ void(string com) SV_ParseClientCommand =
 						self.currentmag2 = self.currentmag;
 					}
 
+					self.weaponskin = GetWepSkin(self.weapon);
+
 					startframe = GetFrame(self.weapon,TAKE_OUT_START);
 					endframe = GetFrame(self.weapon,TAKE_OUT_END);
 					modelname = GetWeaponModel(wep, 0);

@@ -960,7 +960,10 @@ void() RayBulletExplode =
 	#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	#ifdef PSP
-	WriteByte (MSG_BROADCAST, TE_RAYSPLASH);
+	if (self.effects & EF_RAYGREEN)
+		WriteByte (MSG_BROADCAST, TE_RAYSPLASHGREEN);
+	else
+		WriteByte (MSG_BROADCAST, TE_RAYSPLASHRED);
 	#else
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
 	#endif
@@ -1011,16 +1014,27 @@ void() W_FireRay =
 	porter.v_angle = '0 0 200';
 
 	porter.touch = velocity_increase_ray;
-	setmodel(porter, "progs/shark.mdl");
+	setmodel(porter, "progs/raybeam.mdl");
 	setsize(porter, '0 0 0', '0 0 0');
+
+	
+	if (self.weapon == W_PORTER) {
+		#ifdef PSP
+		porter.effects = EF_RAYRED;
+		#else
+		porter.effects = EF_RED;
+		#endif
+	} else {
+		#ifdef PSP
+		porter.effects = EF_RAYGREEN;
+		#else
+		porter.effects = EF_GREEN;
+		#endif
+	}
+	
+
 	porter.origin = self.origin + self.view_ofs;
 	porter.origin += v_forward * 0;
-
-	if (self.weapon == W_PORTER) {
-		porter.effects = EF_RED;
-	} else {
-		porter.effects = EF_GREEN;
-	}
 
 	setorigin(porter, porter.origin);
 

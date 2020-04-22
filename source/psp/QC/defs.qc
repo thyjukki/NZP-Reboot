@@ -430,7 +430,8 @@ string(float num) argv = #442;
 #define	TE_LIGHTNING3	 	 9
 #define	TE_LAVASPLASH	 	 10
 #define	TE_TELEPORT		 11
-#define TE_RAYSPLASH 		 14
+#define TE_RAYSPLASHGREEN 	 14
+#define TE_RAYSPLASHRED 	 15
 
 // sound channels
 // channel 0 never willingly overrides
@@ -469,6 +470,8 @@ string(float num) argv = #442;
 #define EF_DARKLIGHT			1024
 #define EF_DARKFIELD			2048
 #define EF_PURPLELIGHT    		4096
+#define EF_RAYRED		 	8196
+#define EF_RAYGREEN		 	16384
 
 // messages
 #define	MSG_BROADCAST	 0		// unreliable to all
