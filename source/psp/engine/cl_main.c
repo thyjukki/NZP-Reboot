@@ -692,7 +692,12 @@ void CL_RelinkEntities (void)
 				VectorMA (smokeorg, up_offset, v_up ,smokeorg);
 				VectorMA (smokeorg, right_offset, v_right ,smokeorg);
 				VectorAdd(smokeorg,CWeaponOffset,smokeorg);
-				QMB_MuzzleFlash (smokeorg);
+
+				if (sv_player->v.weapon != W_RAY && sv_player->v.weapon != W_PORTER) {
+					QMB_MuzzleFlash (smokeorg);
+				} else {
+					QMB_RayFlash(smokeorg, sv_player->v.weapon);
+				}
 			}
 
 		}

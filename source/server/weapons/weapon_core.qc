@@ -1476,8 +1476,7 @@ void(float side) W_Fire =
 
 	// REFORMAT THIS 
 	#ifndef PC
-	if (self.weapon != W_RAY && self.weapon != W_PORTER)
-		self.effects = self.effects | EF_MUZZLEFLASH;
+	self.effects = self.effects | EF_MUZZLEFLASH;
 	#else 
 	// psp takes care of this in engine
 	if (self.perks & P_DEAD)

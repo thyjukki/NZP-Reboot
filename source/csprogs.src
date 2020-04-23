@@ -1,4 +1,4 @@
-../../pc/nzp/csprogs.dat
+../pc/nzp/csprogs.dat
 
 client/csdefs.qc
 shared/customdefs.qc

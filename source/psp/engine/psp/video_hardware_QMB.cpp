@@ -2598,6 +2598,40 @@ float pap_detr(int weapon)
 	return 0;
 }
 
+// MotoLegacy - Raygun barrel trail
+void QMB_RayFlash(vec3_t org, float weapon)
+{
+	// if we're ADS, just flat out end here to avoid useless calcs/defs
+	if (cl.stats[STAT_ZOOM] || !qmb_initialized)
+		return;
+
+	col_t 	color;
+	vec3_t 	endorg;
+
+	// green trail
+	if (weapon == W_RAY) {
+		color[0] = 0;
+		color[1] = 255;
+	} else { // red trail
+		color[0] = 255;
+		color[1] = 0;
+	}
+	color[2] = 0;
+
+	// could possibly remove water calc in future
+	if (!(ISUNDERWATER(TruePointContents(org))))
+	{
+		//endorg = org;
+		org[1] += 4;
+		org[2] -= 2;
+		endorg[0] = org[0] - 50;		// x = forward & back
+		endorg[1] = org[1] + 6;			// y = left & right
+		endorg[2] = org[2] + 5;			// z = up & down
+		AddParticleTrail (p_alphatrail, org, endorg, 8, 1, color);
+	}
+	QMB_MuzzleFlash(org);
+}
+
 //R00k added particle muzzleflashes
 void QMB_MuzzleFlash(vec3_t org)
 {
