@@ -1541,6 +1541,12 @@ void () W_Knife =
 			hit_ent = trace_ent;
 		if (hit_ent.classname == "ai_zombie")
 			hit = true;
+
+		// if zombie has a head and it's instakill, gib for  a e s t h e t i c
+		if (hit_ent.head && instakill_finished >= time) {
+			spawn_gibs(hit_ent.head.origin);
+			setmodel(hit_ent.head, "");
+		}
 	}
 	else if (trace_fraction < 1.0)
 	{	// hit wall
