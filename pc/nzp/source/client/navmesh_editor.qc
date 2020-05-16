@@ -181,7 +181,6 @@ void cl_navmesh_editor_draw()
 	if(cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_PLACING || cl_navmesh_place_corner_state == NAVMESH_PLACE_CORNER_CONFIRM)
 	{
 		
-		//vector vorg = getviewprop(VF_ORIGIN);
 		//vector vorg = getentity(player_localentnum, GE_ORIGIN);
 		//vector vorg = getviewprop(VF_ORIGIN) - VEC_VIEW_OFS;
 		vector vorg = getviewprop(VF_ORIGIN);
