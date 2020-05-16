@@ -370,7 +370,7 @@ void sv_pathfind_smooth_path(vector start_point, vector goal_point, pathfind_res
 			}
 			
 			//if left vert was found
-			if(left_vert != -1)
+			else if(left_vert != -1)
 			{
 				use_left = TRUE;
 			}

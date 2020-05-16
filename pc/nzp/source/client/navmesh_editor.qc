@@ -466,7 +466,7 @@ void cl_navmesh_place_vert()
 
 	print("Vertex ");
 	print(ftos(cl_navmesh_vert_count));
-	print(" created.\n");
+	print(" created at ", vtos(vert_pos),"\n");
 	
 	cl_navmesh_vert_count++;
 }
@@ -1782,6 +1782,13 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 	while(1)
 	{
 		print("=============Funnel iteration.==========\n");
+		print("\tCurrent left edge: ");
+		print(ftos(cl_test_pathfind_result.portals_left_vert[funnel_left_index]));
+		print("\n");
+		print("\tCurrent right edge: ");
+		print(ftos(cl_test_pathfind_result.portals_right_vert[funnel_right_index]));
+		print("\n");
+		
 		//Check if we have reached the end of the portals, consider the goal position as the last portal
 		//If we are not at the last index of the left portal
 		
@@ -1795,18 +1802,18 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 		//================ Checking left funnel edge =================
 		if(funnel_left_index < cl_test_pathfind_result.portals_length)
 		{
-			print("Trying to advance left edge.\n");
+			print("\t-- Trying to advance left edge. --\n");
 			
 			if(funnel_left_index < cl_test_pathfind_result.portals_length - 1)
 			{
 				next_funnel_left = cl_navmesh_verts[cl_test_pathfind_result.portals_left_vert[funnel_left_index+1]].pos;
-				print("Next left edge is vert: ");
+				print("\t\tNext left edge is vert: ");
 				print(ftos(cl_test_pathfind_result.portals_left_vert[funnel_left_index+1]));
 				print(".\n");
 			}
 			else
 			{
-				print("Trying next left edge as goal point.\n");
+				print("\t\tTrying next left edge as goal point.\n");
 				//If funnel_left is pointing to the last portal in the array, consider the goal_point the last portal
 				next_funnel_left = goal_point;
 			}
@@ -1815,7 +1822,7 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 			//If the next left edge crosses the current right edge
 			if(inside_right_edge < 0)
 			{
-				print("next left edge crosses current right edge.\n");
+				print("\t\tnext left edge crosses current right edge.\n");
 				//Add funnel right point to path
 				cl_test_pathfind_result.result_path[cl_test_pathfind_result.result_length++] = funnel_right;
 				
@@ -1827,6 +1834,10 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 				}
 				
 				
+				print("\t\tnew funnel apex is now vert: ");
+				print(ftos(cl_test_pathfind_result.portals_right_vert[funnel_right_index]));
+				print("\n");
+
 				//Restart algorithm with the portal after the right point
 				funnel_apex = funnel_right;
 				
@@ -1840,7 +1851,7 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 			inside_left_edge = pathfind_point_is_to_left(funnel_left,funnel_apex,next_funnel_left);
 			if(inside_left_edge >= 0 && inside_right_edge >= 0)
 			{
-				print("next left edge is in the funnel.\n");
+				print("\t\tnext left edge is in the funnel, narrowing funnel.\n");
 				//Advance the left edge
 				funnel_left = next_funnel_left;
 				funnel_left_index++;
@@ -1858,18 +1869,18 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 		//================ Checking right funnel edge =================
 		if(funnel_right_index < cl_test_pathfind_result.portals_length)
 		{
-			print("Trying to advance right edge:.\n");
+			print("\t -- Trying to advance right edge --\n");
 			
 			if(funnel_right_index < cl_test_pathfind_result.portals_length - 1)
 			{
 				next_funnel_right = cl_navmesh_verts[cl_test_pathfind_result.portals_right_vert[funnel_right_index+1]].pos;
-				print("Next right edge is vert: ");
+				print("\t\tNext right edge is vert: ");
 				print(ftos(cl_test_pathfind_result.portals_right_vert[funnel_right_index+1]));
 				print(".\n");
 			}
 			else
 			{
-				print("Trying next right edge as goal point.\n");
+				print("\t\tTrying next right edge as goal point.\n");
 				//If funnel_right is pointing to the last portal in the array, consider the goal_point the last portal
 				next_funnel_right = goal_point;
 			}
@@ -1878,7 +1889,7 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 			inside_left_edge = pathfind_point_is_to_left(funnel_left,funnel_apex,next_funnel_right);
 			if(inside_left_edge < 0)
 			{
-				print("next right edge crosses current left edge.\n");
+				print("\t\tnext right edge crosses current left edge.\n");
 				//Add funnel left point to path
 				cl_test_pathfind_result.result_path[cl_test_pathfind_result.result_length++] = funnel_left;
 				
@@ -1892,6 +1903,9 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 				
 				//Restart algorithm with the portal after the right point
 				funnel_apex = funnel_left;
+				print("\t\tnew funnel apex is now vert: ");
+				print(ftos(cl_test_pathfind_result.portals_left_vert[funnel_left_index]));
+				print("\n");
 				
 				funnel_right_index = funnel_left_index + 1;
 				funnel_right = cl_navmesh_verts[cl_test_pathfind_result.portals_right_vert[funnel_right_index]].pos;
@@ -1903,7 +1917,7 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 			inside_right_edge = pathfind_point_is_to_left(funnel_apex,funnel_right,next_funnel_right);			
 			if(inside_left_edge >= 0 && inside_right_edge >= 0)
 			{
-				print("next right edge is in the funnel.\n");
+				print("\t\tnext right edge is in the funnel, narrowing funnel.\n");
 				//Advance the left edge
 				funnel_right = next_funnel_right;
 				funnel_right_index++;
@@ -2039,7 +2053,7 @@ void cl_pathfind_smooth_path(vector start_point, vector goal_point)
 			}
 			
 			//if left vert was found
-			if(left_vert != -1)
+			else if(left_vert != -1)
 			{
 				use_left = TRUE;
 			}
