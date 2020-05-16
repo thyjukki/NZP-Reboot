@@ -976,8 +976,26 @@ void cl_navmesh_confirm_corner()
 }
 
 
+void cl_navmesh_clear_connected_polies()
+{
+	for(float i = 0; i < cl_navmesh_poly_count; i++)
+	{
+		cl_navmesh_polies[i].connected_polies_count = 0;
+
+		for(float j = 0; j < 4; j++)
+		{
+			cl_navmesh_polies[i].connected_polies[j] = -1;
+			cl_navmesh_polies[i].connected_polies_left_vert[j] = -1;
+			cl_navmesh_polies[i].connected_polies_right_vert[j] = -1;
+		}
+	}
+}
+
+
 void cl_navmesh_calc_connected_polies()
 {
+	cl_navmesh_clear_connected_polies();
+
 	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{
 		for(float j = i + 1; j < cl_navmesh_poly_count; j++)
