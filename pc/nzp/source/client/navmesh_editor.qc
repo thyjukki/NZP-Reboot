@@ -1577,9 +1577,6 @@ float cl_navmesh_dist_to_poly(vector pos, float poly_index)
 float cl_navmesh_get_containing_poly(vector pos)
 {
 	//Get nearest polygon, and check if pos is in that polygon
-	
-	float poly_tried[NAV_MAX_POLIES] = {};
-	
 	float closest_poly = -1;
 	float closest_poly_dist = 1000000;
 	
@@ -1587,8 +1584,20 @@ float cl_navmesh_get_containing_poly(vector pos)
 	for(float i = 0; i < cl_navmesh_poly_count; i++)
 	{	
 		//Check if we are sufficiently close enough to polygon i in the z-axis
-		//Current method of checking: if pos is within 30 qu of polygon center in z-axis
-		if(fabs(cl_navmesh_polies[0].center.z - pos.z) >= 30)
+		//Current method of checking: if pos is within 30 qu of polygon z-axis bounds
+		float poly_min_z = sv_navmesh_verts[sv_navmesh_polies[i].verts[0]].pos.z;
+		float poly_max_z = poly_min_z;
+
+		for(float j = 0; j < sv_navmesh_polies[i].vert_count; j++)
+		{
+			float vert_z = sv_navmesh_verts[sv_navmesh_polies[i].verts[j]].pos.z;
+			poly_min_z = min(poly_min_z, vert_z);
+			poly_max_z = max(poly_max_z, vert_z);
+		}
+
+		// If we NOT between [min - 30, max + 30], skip this polygon
+		// if(fabs(sv_navmesh_polies[0].center.z - pos.z) >= 30)
+		if(pos.z < poly_min_z - 30 || pos.z > poly_max_z + 30)
 		{
 			continue;
 		}
@@ -1596,6 +1605,13 @@ float cl_navmesh_get_containing_poly(vector pos)
 		//Check if we are in the 2d plane of polygon i
 		if(cl_navmesh_is_inside_poly(pos,i))
 		{
+			// NOTE - Because is_inside_poly only checks if we are in it on X & Y axes,
+			// NOTE   we may have found a polygon on a floor below us or above us.
+			// NOTE   However, this may not be an issue. A polygon on a floor below
+			// NOTE   us would be at least about 80-ish qu away, and the checks done for 
+			// NOTE   z proximity might be enough to stop us from choosing polygons on 
+			// NOTE   different floors. I shall assume this works fine, and wait for a 
+			// NOTE   counter-example that shows we'll need a more sophisticated strategy.
 			print("Ent pos is inside poly: ");
 			print(ftos(i));
 			print(".\n");
@@ -1617,7 +1633,7 @@ float cl_navmesh_get_containing_poly(vector pos)
 	}
 	
 	
-	//FOR DEBUG: select that polygon if succesfull
+	//FOR DEBUG: select that polygon if successful
 	if(closest_poly != -1)
 	{
 		cl_navmesh_deselect_all();
