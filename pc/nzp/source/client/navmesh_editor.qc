@@ -2465,6 +2465,8 @@ void() cl_register_navmesh_commands =
 	registercommand("navtest_place_start");
 	registercommand("nav_save_navmesh");
 	registercommand("nav_clear_navmesh");
+	registercommand("y");
+	registercommand("yes");
 	registercommand("nav_load_navmesh");
 	
 	cl_navgen_register_commands();
@@ -2492,13 +2494,7 @@ float(string cmd) cl_navmesh_console_commands =
 			print("Are you sure you want to clear the navmesh? All unsaved changes will be lost.\n");
 			return TRUE;
 		case "y":
-		case "Y":
-		case "Yes":
 		case "yes":
-		case "YES":
-		case "go":
-		case "imnotafraidtodie":
-		case "tryme":
 			if(cl_confirm_clear_navmesh == 1)
 			{
 				print("Navmesh cleared.\n");
