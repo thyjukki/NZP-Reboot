@@ -492,8 +492,12 @@ void cl_navmesh_delete_verts()
 			for(float k = 0; k < cl_navmesh_polies[j].vert_count; k++)
 			{
 				if(cl_navmesh_polies[j].verts[k] == vert)
+				{
 					cl_navmesh_delete_poly_at_index(j);	
+					j -= 1;
+					break;
 			}
+		}
 		}
 		
 		
