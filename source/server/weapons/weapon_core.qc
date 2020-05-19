@@ -1869,39 +1869,26 @@ void() checkHold =
 
 
 void() W_Betty = {
-	if (self.throw_delay > time || self.zoom || self.downed)
+	if (self.throw_delay > time || self.zoom || self.downed || self.secondary_grenades < 1)
 		return;
 
 	Set_W_Frame (0, 18, 0, 0, GRENADE, checkHoldB, "progs/VModels/v_betty.mdl", true, S_RIGHT);
 	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
-	self.secondary_grenades = self.secondary_grenades - 1;
+	self.secondary_grenades -= 1;
 	self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
 	self.semiswitch = true;
 }
 
 void() W_Grenade =
 {
-	if (self.throw_delay > time || self.zoom || self.downed)
+	if (self.throw_delay > time || self.zoom || self.downed || self.primary_grenades < 0)
 		return;
 
-	if (self.primary_grenades > 0 || self.secondary_grenades > 0) {         
-	  	if (self.pri_grenade_state == 0 && self.primary_grenades > 0)
-      	{
-			Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true, S_RIGHT);
-			sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
-			self.primary_grenades = self.primary_grenades - 1;
-			self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
-			self.grenade_delay = time + 5;
-    	} else if (self.pri_grenade_state == 1 && self.secondary_grenades > 0) {  
-			Set_W_Frame (0, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true, S_RIGHT);
-			sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
-			self.secondary_grenades = self.secondary_grenades - 1;
-			self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
-      	}
-    	self.semiswitch = true;
-   	} else if (self.pri_grenade_state == 1 && self.secondary_grenades > 0) {  
-		W_Betty();
-    }
+	Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true, S_RIGHT);
+	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
+	self.primary_grenades -= 1;
+	self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
+	self.grenade_delay = time + 5;
     self.semiswitch = true;
 } 
 
@@ -2369,7 +2356,10 @@ void () Weapon_Logic =
 	
 	if (self.button3 && self.isBuying != true && self.semiswitch != true)
 	{
-		W_Grenade();
+        if (self.pri_grenade_state == 0)
+		    W_Grenade();
+        else
+            W_Betty();
 		self.semiswitch = true;
 	}
 	else if (!self.button3)
