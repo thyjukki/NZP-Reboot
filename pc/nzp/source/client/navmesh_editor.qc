@@ -1589,12 +1589,12 @@ float cl_navmesh_get_containing_poly(vector pos)
 	{	
 		//Check if we are sufficiently close enough to polygon i in the z-axis
 		//Current method of checking: if pos is within 30 qu of polygon z-axis bounds
-		float poly_min_z = sv_navmesh_verts[sv_navmesh_polies[i].verts[0]].pos.z;
+		float poly_min_z = cl_navmesh_verts[cl_navmesh_polies[i].verts[0]].pos.z;
 		float poly_max_z = poly_min_z;
 
-		for(float j = 0; j < sv_navmesh_polies[i].vert_count; j++)
+		for(float j = 0; j < cl_navmesh_polies[i].vert_count; j++)
 		{
-			float vert_z = sv_navmesh_verts[sv_navmesh_polies[i].verts[j]].pos.z;
+			float vert_z = cl_navmesh_verts[cl_navmesh_polies[i].verts[j]].pos.z;
 			poly_min_z = min(poly_min_z, vert_z);
 			poly_max_z = max(poly_max_z, vert_z);
 		}
@@ -2472,7 +2472,7 @@ void cl_toggle_navmesh_editor()
 		print("cl_navmesh editor: 1\n");
 		cl_navmesh_mode = TRUE;
 		cl_navmesh_deselect_all();
-		
+
 		//TEST NAVMESH GENERATION
 		navgen_start();
 		
