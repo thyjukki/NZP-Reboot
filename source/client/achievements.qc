@@ -6,19 +6,19 @@ void() Achievement_Init = {
     //define all of the achivements
     activeachievement = -1; //-1 = no achievement to display
     achievementname[0] = "Ready..";
-    achievementdesc[0] = "Reach Round 5.";
+    achievementdesc[0] = "Reach Round 5";
     achievementimg[0] = strcat(achievementdir, "ready.tga");
     achievementname[1] = "Steady..";
-    achievementdesc[1] = "Reach Round 10.";
+    achievementdesc[1] = "Reach Round 10";
     achievementimg[1] = strcat(achievementdir, "steady.tga");
     achievementname[2] = "Go? Hell No...";
-    achievementdesc[2] = "Reach Round 15.";
+    achievementdesc[2] = "Reach Round 15";
     achievementimg[2] = strcat(achievementdir, "go.tga");
     achievementname[3] = "Where Did Legs Go?";
-    achievementdesc[3] = "Turn a zombie into a crawler.";
+    achievementdesc[3] = "Turn a zombie into a crawler";
     achievementimg[3] = strcat(achievementdir, "legs.tga");
     achievementname[4] = "The F Bomb";
-    achievementdesc[4] = "Use the Nuke power-up to kill a single zombie.";
+    achievementdesc[4] = "Use the Nuke power-up to kill a single Zombie";
     achievementimg[4] = strcat(achievementdir, "nuke.tga");
 
     //unlock the achievements that we already have

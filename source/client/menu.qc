@@ -137,6 +137,11 @@ void() menu_customs =
 	customs_interact = FALSE;
 }
 
+void() menu_achievements =
+{
+    in_menu = MENU_ACHIEVEMENTS;
+}
+
 //
 //settings adjustments
 //
@@ -310,7 +315,7 @@ var struct
 	{[0.025, 0.175, 0], "Solo", -1, menu_single, null, MENU_MAIN},
 	{[0.025, 0.225, 0], "Cooperative", -1, menu_multi, null, MENU_MAIN},
 	{[0.025, 0.300, 0], "Settings", -1, menu_settings, null, MENU_MAIN},
-	{[0.025, 0.375, 0], "Achievements", -1, menu_main, null, MENU_MAIN},
+	{[0.025, 0.375, 0], "Achievements", -1, menu_achievements, null, MENU_MAIN},
 	{[0.025, 0.450, 0], "Credits", -1, menu_about, null, MENU_MAIN},
 	{[0.025, 0.525, 0], "Quit", -1, menu_quit, null, MENU_MAIN},
 
@@ -357,7 +362,8 @@ var struct
 
 	//Everything, pretty much
 	{[0.025, 0.925, 0], "Back", -1, menu_back, null, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + 
-													 MENU_IGS + MENU_GSETTINGS + MENU_CSETTINGS + MENU_CUSTOMS},
+													 MENU_IGS + MENU_GSETTINGS + MENU_CSETTINGS + MENU_CUSTOMS +
+                                                     MENU_ACHIEVEMENTS},
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
@@ -589,6 +595,23 @@ void() Draw_Extra_Customs =
 	customs_interact = FALSE;
 }
 
+// Moto - basically everything lol
+void() Draw_Extra_Achievements =
+{
+    for(float i = 0; i < MAX_ACHIEVEMENTS; i++) {
+        drawstring([0.200*g_width, (0.210 + (0.125 * i))*g_height, 0], achievementdesc[i], [g_height * 0.020, g_height * 0.020, 1], [1,1,1], 1, 1);
+
+        if (achievementunlocked[i]) {
+            drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], achievementimg[i], [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
+            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], achievementname[i], [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 1);
+            
+        } else {
+            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], strcat(achievementname[i], " (LOCKED)"), [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 1);
+            drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], "gfx/hud/ach/locked.tga", [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
+        }
+    }
+}
+
 void() Draw_Menu =
 {
 	//background
@@ -643,6 +666,10 @@ void() Draw_Menu =
 			title = "CUSTOM MAPS";
 			Draw_Extra_Customs();
 			break;
+        case MENU_ACHIEVEMENTS:
+            title = "ACHIEVEMENTS";
+            Draw_Extra_Achievements();
+            break;
 		default:
 			title = "Nazi Zombies: Portable";
 	}
