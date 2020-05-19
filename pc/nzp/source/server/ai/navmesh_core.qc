@@ -6,6 +6,57 @@ float sv_navmesh_vert_count;
 navmesh_poly sv_navmesh_polies[NAV_MAX_POLIES];
 float sv_navmesh_poly_count;
 
+void () Navmesh_Editor_Logic =
+{
+	if (!navmesh_edit_mode) {
+		navmesh_edit_mode = 1;
+
+		// ------------------------------------
+		// Remove and disable all zombies
+		// ------------------------------------
+		entity zent;
+	
+		zent = find (world, classname, "ai_zombie");
+		while (zent)
+		{
+			remove (zent);
+			zent = find (zent, classname, "ai_zombie");
+		}
+
+		// -----------------------------------------
+		// Reset all doors and rename to "door_nzp"
+		// -----------------------------------------
+
+		zent = find (world, classname, "door_nzp_cost");
+		while (zent)
+		{
+			zent.solid = SOLID_NOT;
+			zent.touch = SUB_Null;
+			zent = find (zent, classname, "door_nzp_cost");
+		}
+		zent = find (world, classname, "door_nzp");
+		while (zent)
+		{
+			zent.solid = SOLID_NOT;
+			zent.touch = SUB_Null;
+			zent.solid = SOLID_NOT;
+			zent = find (zent, classname, "door_nzp");
+		}
+		zent = find (world, classname, "window");
+		while (zent)
+		{
+			zent.solid = SOLID_NOT;
+			zent.touch = SUB_Null;
+			zent = find (zent, classname, "window");
+		}
+		
+	}
+	// FIXME - Does navmesh need this?
+	// We do need to modify the server, as doors need to be set to nonsolid,
+	// but the client-side navmesh editor / functions is pretty nifty...
+	// Waypoint_Functions();
+};
+
 
 void sv_load_navmesh_data()
 {

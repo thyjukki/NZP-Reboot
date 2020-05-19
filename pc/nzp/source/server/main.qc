@@ -20,6 +20,10 @@ void() StartFrame =
 	{
 		return;
 	}
+	if (navmesh_edit_mode)
+	{
+		return;
+	}
 	
 	if (roundinit) 
 	{

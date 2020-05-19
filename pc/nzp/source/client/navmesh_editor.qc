@@ -150,8 +150,13 @@ void() cl_navmesh_pathfind_draw_result_path;
 void cl_navmesh_editor_draw()
 {
 	//===================================================================================================
-	//Debug rendering navmesh generation intermediate results
-	cl_navmesh_render_gen();
+	//Debug logic of navmesh generation
+	navgen_logic();
+	//===================================================================================================
+
+	//===================================================================================================
+	// Debug rendering navmesh generation intermediate results
+	// cl_navmesh_render_gen();
 	//===================================================================================================
 	
 	
@@ -2460,7 +2465,7 @@ void cl_toggle_navmesh_editor()
 		cl_navmesh_mode = FALSE;
 		
 		//TEST NAVMESH CLEARING
-		cl_navgen_free_all_verts();
+		// cl_navgen_free_all_verts();
 	}
 	else
 	{
@@ -2469,7 +2474,10 @@ void cl_toggle_navmesh_editor()
 		cl_navmesh_deselect_all();
 		
 		//TEST NAVMESH GENERATION
-		cl_navmesh_gen_navmesh();
+		navgen_start();
+		
+		//TEST NAVMESH GENERATION
+		// cl_navmesh_gen_navmesh();
 	}
 }
 

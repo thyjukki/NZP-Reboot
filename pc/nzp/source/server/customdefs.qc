@@ -285,6 +285,7 @@ float rounds_change;
 void () Waypoint_Logic;
 entity current_way;
 float waypoint_mode;
+float navmesh_edit_mode;
 entity active_way;
 
 #define MAX_WAY_TARGETS		10
@@ -321,6 +322,7 @@ waypoint_ai waypoints[MAX_WAYPOINTS];
 #define UT_HM				3
 
 //======================= Navmesh defs ============================
+void() Navmesh_Editor_Logic;
 void() sv_load_navmesh_data;
 
 //One struct for temp pathfinding calculations per zombie 

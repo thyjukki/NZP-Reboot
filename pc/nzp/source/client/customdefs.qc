@@ -83,6 +83,9 @@ float rounds;
 #define printf(x, ...) print(sprintf(x, __VA_ARGS__))
 
 //Navmesh defs
+void() navgen_start;
+void() navgen_logic;
+
 void() cl_register_navmesh_commands;
 float(string cmd) cl_navmesh_console_commands;
 float cl_navmesh_mode;

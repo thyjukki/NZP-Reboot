@@ -297,6 +297,18 @@ void() door_trigger_touch =
 		return;
 	}
 	
+	if(cvar("navmesh_edit_mode"))
+	{
+		if(other.active_door != self.owner)
+		{
+			bprint(PRINT_HIGH, "Current Door for navmesh editor set to \"");
+			bprint(PRINT_HIGH, self.owner.wayTarget);      // naiveil (FIXME)
+			bprint(PRINT_HIGH, "\"\n");                                          
+			other.active_door = self.owner;
+		}
+		return;
+	}
+	
 	if (other.health <= 20)//FIXME, BUYING DOORS WHILE DOWNED?
 		return;
 
