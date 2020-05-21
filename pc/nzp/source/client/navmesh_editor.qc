@@ -139,42 +139,64 @@ void cl_navmesh_draw_edge(vector start, vector end)
 	cl_navmesh_draw_line(start,end,2,[0.5,0.5,0.5],0.2);
 }
 
-void cl_navmesh_draw_poly(float poly_index)
+void cl_navmesh_draw_quad(vector a, vector b, vector c, vector d, vector color, float alpha, int draw_edges)
 {
 	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
 	R_BeginPolygon("debug/wireframe",0);
 	R_BeginPolygon("debug/solid_nocull",0);
-	
-	vector color = [0.2,0.8,0.2];
-	
-	float face_alpha = 0.1;
-	
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos, [0,0,0], color, face_alpha);
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos, [0,0,0], color, face_alpha);
-	R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos, [0,0,0], color, face_alpha);
-	if(cl_navmesh_polies[poly_index].vert_count > 3)
-		R_PolygonVertex(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos, [0,0,0], color, face_alpha);
+		
+	R_PolygonVertex(a, [0,0,0], color, alpha);
+	R_PolygonVertex(b, [0,0,0], color, alpha);
+	R_PolygonVertex(c, [0,0,0], color, alpha);
 	R_EndPolygon();
 	
+	//Drawing polygon border
+	if(draw_edges == TRUE)
+	{
+		cl_navmesh_draw_edge(a,b);
+		cl_navmesh_draw_edge(b,c);
+		cl_navmesh_draw_edge(c,d);
+		cl_navmesh_draw_edge(d,a);
+	}
+}
+
+void cl_navmesh_draw_tri(vector a, vector b, vector c, vector color, float alpha, int draw_edges)
+{
+//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
+	R_BeginPolygon("debug/wireframe",0);
+	R_BeginPolygon("debug/solid_nocull",0);
+	
+	R_PolygonVertex(a, [0,0,0], color, alpha);
+	R_PolygonVertex(b, [0,0,0], color, alpha);
+	R_PolygonVertex(c, [0,0,0], color, alpha);
+	R_EndPolygon();
 	
 	//Drawing polygon border
+	if(draw_edges == TRUE)
+	{
+		cl_navmesh_draw_edge(a,b);
+		cl_navmesh_draw_edge(b,c);
+		cl_navmesh_draw_edge(c,a);
+	}
+}
 
-	//Vert 0->1
-	cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos);
-	//Vert 1->2
-	cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos);
+void cl_navmesh_draw_poly(float poly_index)
+{	
+	vector face_color = [0.2,0.8,0.2];	
+	float face_alpha = 0.1;
 	
+	vector a = cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos;
+	vector b = cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[1]].pos;
+	vector c = cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos;
+
 	if(cl_navmesh_polies[poly_index].vert_count == 3)
 	{
-		//Vert 2->0
-		cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos);
+		cl_navmesh_draw_tri(a,b,c,face_color,face_alpha,TRUE);
 	}
-	else//Quad
+	else
 	{
-		//Vert 2->3
-		cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[2]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos);
-		//Vert 3->0
-		cl_navmesh_draw_edge(cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos,cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[0]].pos);
+		vector d = cl_navmesh_verts[cl_navmesh_polies[poly_index].verts[3]].pos;
+		cl_navmesh_draw_quad(a,b,c,d,face_color,face_alpha,TRUE);
 	}
 }
 

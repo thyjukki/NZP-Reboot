@@ -8,5 +8,4 @@ client/menu.qc
 client/hud.qc
 client/main.qc
 client/navmesh_editor.qc
-client/navmesh_gen_old.qc
 client/navmesh_gen.qc

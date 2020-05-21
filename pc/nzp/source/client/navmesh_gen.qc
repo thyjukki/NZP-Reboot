@@ -40,41 +40,22 @@ navgen_poly *cl_navgen_polies;
 int cl_navgen_poly_count;
 
 void navgen_draw_poly(int poly_index)
-{
-	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
-	R_BeginPolygon("debug/wireframe",0);
-	R_BeginPolygon("debug/solid_nocull",0);
-	
-	vector color = [0.2,0.8,0.2];
-	
+{	
+	vector face_color = [0.2,0.8,0.2];	
 	float face_alpha = 0.1;
 	
-	R_PolygonVertex(cl_navgen_verts[cl_navgen_polies[poly_index].verts[0]].pos, [0,0,0], color, face_alpha);
-	R_PolygonVertex(cl_navgen_verts[cl_navgen_polies[poly_index].verts[1]].pos, [0,0,0], color, face_alpha);
-	R_PolygonVertex(cl_navgen_verts[cl_navgen_polies[poly_index].verts[2]].pos, [0,0,0], color, face_alpha);
-	if(cl_navgen_polies[poly_index].vert_count > 3)
-		R_PolygonVertex(cl_navgen_verts[cl_navgen_polies[poly_index].verts[3]].pos, [0,0,0], color, face_alpha);
-	R_EndPolygon();
+	vector a = cl_navgen_verts[cl_navgen_polies[poly_index].verts[0]].pos;
+	vector b = cl_navgen_verts[cl_navgen_polies[poly_index].verts[1]].pos;
+	vector c = cl_navgen_verts[cl_navgen_polies[poly_index].verts[2]].pos;
 	
-	
-	//Drawing polygon border
-
-	//Vert 0->1
-	cl_navmesh_draw_edge(cl_navgen_verts[cl_navgen_polies[poly_index].verts[0]].pos,cl_navgen_verts[cl_navgen_polies[poly_index].verts[1]].pos);
-	//Vert 1->2
-	cl_navmesh_draw_edge(cl_navgen_verts[cl_navgen_polies[poly_index].verts[1]].pos,cl_navgen_verts[cl_navgen_polies[poly_index].verts[2]].pos);
-	
-	if(cl_navgen_polies[poly_index].vert_count == 3)
+	if(cl_navmesh_polies[poly_index].vert_count == 3)
 	{
-		//Vert 2->0
-		cl_navmesh_draw_edge(cl_navgen_verts[cl_navgen_polies[poly_index].verts[2]].pos,cl_navgen_verts[cl_navgen_polies[poly_index].verts[0]].pos);
+		cl_navmesh_draw_tri(a,b,c,face_color,face_alpha,TRUE);
 	}
-	else//Quad
+	else
 	{
-		//Vert 2->3
-		cl_navmesh_draw_edge(cl_navgen_verts[cl_navgen_polies[poly_index].verts[2]].pos,cl_navgen_verts[cl_navgen_polies[poly_index].verts[3]].pos);
-		//Vert 3->0
-		cl_navmesh_draw_edge(cl_navgen_verts[cl_navgen_polies[poly_index].verts[3]].pos,cl_navgen_verts[cl_navgen_polies[poly_index].verts[0]].pos);
+		vector d = cl_navgen_verts[cl_navgen_polies[poly_index].verts[3]].pos;
+		cl_navmesh_draw_quad(a,b,c,d,face_color,face_alpha,TRUE);
 	}
 }
 
