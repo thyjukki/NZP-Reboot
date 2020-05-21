@@ -148,6 +148,7 @@ void cl_navmesh_draw_quad(vector a, vector b, vector c, vector d, vector color, 
 	R_PolygonVertex(a, [0,0,0], color, alpha);
 	R_PolygonVertex(b, [0,0,0], color, alpha);
 	R_PolygonVertex(c, [0,0,0], color, alpha);
+	R_PolygonVertex(d, [0,0,0], color, alpha);
 	R_EndPolygon();
 	
 	//Drawing polygon border
