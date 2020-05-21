@@ -31,6 +31,53 @@ float goalent_set;
 vector startent_pos;
 float startent_set;
 
+void cl_navmesh_draw_box(vector pos,vector size, vector color, float alpha)
+{
+	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
+	R_BeginPolygon("debug/wireframe",0);
+	R_BeginPolygon("debug/solid_nocull",0);
+
+	// Size is radius:
+	size = size * 0.5;
+	
+	//bottom face
+	R_PolygonVertex(pos + [-size.x,size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,-size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [-size.x,-size.y,-size.z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Top face
+	R_PolygonVertex(pos + [-size.x,size.y,size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,size.y,size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,-size.y,size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [-size.x,-size.y,size.z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Front face
+	R_PolygonVertex(pos + [-size.x,-size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,-size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,-size.y,size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [-size.x,-size.y,size.z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Back face
+	R_PolygonVertex(pos + [-size.x,size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,size.y,size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [-size.x,size.y,size.z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Left face
+	R_PolygonVertex(pos + [-size.x,-size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [-size.x,size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [-size.x,size.y,size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [-size.x,-size.y,size.z], [0,0,0], color,alpha);
+	R_EndPolygon();
+	//Right face
+	R_PolygonVertex(pos + [size.x,-size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,size.y,-size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,size.y,size.z], [0,0,0], color,alpha);
+	R_PolygonVertex(pos + [size.x,-size.y,size.z], [0,0,0], color,alpha);
+	R_EndPolygon();
+}
+
 void cl_navmesh_draw_vert(vector pos,vector color, float alpha)
 {
 	//Assigning the shader as something else so that fte doesn't batch the calls (leading to colors not changing between draw calls)
@@ -2506,7 +2553,7 @@ void() cl_register_navmesh_commands =
 	registercommand("yes");
 	registercommand("nav_load_navmesh");
 	
-	cl_navgen_register_commands();
+	// cl_navgen_register_commands();
 }
 
 float cl_confirm_clear_navmesh;
@@ -2603,5 +2650,6 @@ float(string cmd) cl_navmesh_console_commands =
 		default:
 			break;
 	}
-	return cl_navgen_console_commands(cmd);
+	// return cl_navgen_console_commands(cmd);
+	return FALSE;
 }

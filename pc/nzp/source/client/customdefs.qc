@@ -90,14 +90,11 @@ void() cl_register_navmesh_commands;
 float(string cmd) cl_navmesh_console_commands;
 float cl_navmesh_mode;
 void() cl_navmesh_editor_draw;
-void() cl_navmesh_gen_navmesh;
-void() cl_navmesh_render_gen;
-
-void() cl_navgen_free_all_verts;
-
-
-void() cl_navgen_register_commands;
-float(string cmd) cl_navgen_console_commands;
+// void() cl_navmesh_gen_navmesh;
+// void() cl_navmesh_render_gen;
+// void() cl_navgen_free_all_verts;
+// void() cl_navgen_register_commands;
+// float(string cmd) cl_navgen_console_commands;
 
 
 #define 	P_JUG		1
