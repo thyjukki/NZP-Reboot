@@ -134,11 +134,43 @@ void() navgen_logic =
 		}
 	}
 
+
+	if(navgen_phase == NAVGEN_PHASE_RASTERIZATION)
+	{
+		cl_navgen_draw_phase_rasterization();
+	}
+	else if(navgen_phase == NAVGEN_PHASE_RECTANGLE_EXPANSION)
+	{
 	cl_navgen_draw_phase_rasterization();
 	cl_navgen_draw_phase_rectangle_expansion();
+	}
+	else if(navgen_phase == NAVGEN_PHASE_RECTANGLE_VECTORIZATION)
+	{
+		cl_navgen_draw_phase_rectangle_expansion();
 	cl_navgen_draw_phase_rectangle_vectorization();
-	cl_navgen_draw_phase_rectangle_triangulation();
-	cl_navgen_draw_phase_mesh_detriangulation();
+}
+	else if(navgen_phase == NAVGEN_PHASE_RECTANGLE_TRIANGULATION)
+	{
+		cl_navgen_draw_phase_rectangle_expansion();
+		cl_navgen_draw_phase_rectangle_vectorization();
+	}
+	else if(navgen_phase == NAVGEN_PHASE_MESH_DETRIANGULATION)
+	{
+		cl_navgen_draw_phase_rectangle_expansion();
+		cl_navgen_draw_phase_rectangle_vectorization();
+	}
+	else if(navgen_phase == NAVGEN_PHASE_DONE)
+	{
+		cl_navgen_draw_phase_rectangle_expansion();
+		cl_navgen_draw_phase_rectangle_vectorization();
+	}
+
+	// All draw methods
+	// cl_navgen_draw_phase_rasterization();
+	// cl_navgen_draw_phase_rectangle_expansion();
+	// cl_navgen_draw_phase_rectangle_vectorization();
+	// cl_navgen_draw_phase_rectangle_triangulation();
+	// cl_navgen_draw_phase_mesh_detriangulation();
 }
 
 
