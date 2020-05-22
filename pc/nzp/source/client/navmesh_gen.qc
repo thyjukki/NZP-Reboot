@@ -46,8 +46,16 @@ navgen_rectangle *() create_rect;
 void(navgen_rectangle *rect) delete_rect;
 void(navgen_rectangle *rect, navgen_rectangle **list_root) add_rect_to_list;
 void(navgen_rectangle *rect, navgen_rectangle **list_root) remove_rect_from_list;
+// Cell-Rectangle Memberships
+struct navgen_cell_rectangle_membership;
+void(navgen_cell *cell, navgen_rectangle *rect) remove_cell_from_rectangle;
+navgen_cell_rectangle_membership *(navgen_cell *cell, navgen_rectangle *rect) get_membership;
+void(navgen_cell *cell, navgen_rectangle *rect) add_cell_to_rectangle;
+int(navgen_cell *cell, navgen_rectangle *rect) is_cell_in_rectangle;
+void(navgen_rectangle *rect) remove_cells_from_rectangle;
 // Data
 navgen_rectangle *navgen_rectangles;
+navgen_cell *cells_in_rects_list_root_node;
 // ---------------------------------------------------------------------------
 // NAVGEN_PHASE_RECTANGLE_VECTORIZATION
 // ---------------------------------------------------------------------------
@@ -206,6 +214,9 @@ struct navgen_cell
 
 	// Cached pointer to the list containing this cell
 	navgen_cell **containing_list;
+
+	// Pointer to a linked list of which rectangles this cell belongs to
+	navgen_cell_rectangle_membership *rect_memberships;
 };
 
 navgen_cell *(int x, int y, int z) create_cell = 
@@ -219,6 +230,7 @@ navgen_cell *(int x, int y, int z) create_cell =
 	new_cell->y_prev = 0;
 	new_cell->x_prev = 0;
 	new_cell->containing_list = 0;
+	new_cell->rect_memberships = 0;
 
 	new_cell->next = 0;
 	return new_cell;
@@ -722,7 +734,7 @@ struct navgen_rectangle
 	navgen_cell *max;
 
 	// List of the cells contained in this rectangle
-	navgen_cell *cells;
+	navgen_cell_rectangle_membership *cells;
 
 	// List of cells to treat as vertices
 	navgen_cell *verts;
@@ -749,15 +761,19 @@ void(navgen_rectangle *rect) delete_rect =
 	navgen_cell *temp_cell;
 	navgen_cell *temp_cell_next;
 
-	// Delete the linked list of cells
-	temp_cell = rect->cells;
-	while(temp_cell != 0)
-	{
-		temp_cell_next = temp_cell->next;
-		remove_cell_from_list(temp_cell, &(rect->cells));
-		delete_cell(temp_cell);
-		temp_cell = temp_cell_next;
-	}
+	// Remove cell memberships
+	remove_cells_from_rectangle(rect);
+
+	// // Delete the linked list of cells
+	// temp_cell = rect->cells;
+	// while(temp_cell != 0)
+	// {
+	// 	temp_cell_next = temp_cell->next;
+	// 	remove_cell_from_list(temp_cell, &(rect->cells));
+	// 	delete_cell(temp_cell);
+	// 	temp_cell = temp_cell_next;
+	// }
+
 	// Delete the linked list of cell vertices
 	temp_cell = rect->verts;
 	while(temp_cell != 0)
@@ -852,6 +868,107 @@ navgen_cell *(navgen_rectangle *rect) get_bottom_right_cell =
 	return br;
 }
 
+struct navgen_cell_rectangle_membership
+{
+	// The cell that has membership to a rectangle
+	navgen_cell *cell;
+	// The rectangle that the cell has membership in
+	navgen_rectangle *rect;
+
+	// Linked list node for cells (a cell traverses its memberships via this linked list)
+	navgen_cell_rectangle_membership *cell_next_membership;
+	// Linked list node for rects (a rect traverses its member cells via this linked list) 
+	navgen_cell_rectangle_membership *rect_next_membership;
+};
+
+
+void(navgen_cell *cell, navgen_rectangle *rect) add_cell_to_rectangle =
+{
+	if(is_cell_in_rectangle(cell, rect))
+		return;
+
+	navgen_cell_rectangle_membership *new_membership = memalloc(sizeof(navgen_cell_rectangle_membership));
+
+	new_membership->rect = rect;
+	new_membership->cell = cell;
+
+	// Link it into the vert
+	new_membership->cell_next_membership = cell->rect_memberships;
+	cell->rect_memberships = new_membership;
+
+	// Link it into the rect
+	new_membership->rect_next_membership = rect->cells;
+	rect->cells = new_membership;
+}
+
+navgen_cell_rectangle_membership *(navgen_cell *cell, navgen_rectangle *rect) get_membership =
+{
+	navgen_cell_rectangle_membership *membership;
+	// Traverse the cell's list to find the membership
+	// (A cell should belong to fewer rects, so this should be faster)
+	membership = cell->rect_memberships;
+	while(membership != 0)
+	{
+		if(membership->rect == rect)
+		{
+			return membership;
+		}
+		membership = membership->cell_next_membership;
+	}
+
+	return 0;
+}
+
+void(navgen_cell *cell, navgen_rectangle *rect) remove_cell_from_rectangle =
+{
+	navgen_cell_rectangle_membership *membership = get_membership(cell, rect);
+
+	if(membership == 0)
+		return;
+
+	navgen_cell_rectangle_membership **prev_next_cell_membership = &(cell->rect_memberships);
+	navgen_cell_rectangle_membership **prev_next_rect_membership = &(rect->cells);
+
+	if(*prev_next_cell_membership != membership)
+	{
+		// Find the cell membership that points to membership
+		while((*prev_next_cell_membership)->cell_next_membership != membership)
+		{
+			prev_next_cell_membership = &((*prev_next_cell_membership)->cell_next_membership);
+		}
+	}
+
+	if(*prev_next_rect_membership != membership)
+	{
+		// Find the rect membership that points to membership
+		while((*prev_next_rect_membership)->rect_next_membership != membership)
+		{
+			prev_next_rect_membership = &((*prev_next_rect_membership)->rect_next_membership);
+		}
+	}
+
+	// Unlink it
+	*prev_next_cell_membership = membership->cell_next_membership;
+	*prev_next_rect_membership = membership->rect_next_membership;
+	
+	memfree(membership);
+}
+
+int(navgen_cell *cell, navgen_rectangle *rect) is_cell_in_rectangle =
+{
+	return get_membership(cell, rect) != 0;
+}
+
+void(navgen_rectangle *rect) remove_cells_from_rectangle =
+{
+	while(rect->cells != 0)
+	{
+		navgen_cell_rectangle_membership *membership = rect->cells;
+		remove_cell_from_rectangle(membership->cell, rect);
+	}
+}
+
+
 // ------------------------------------------------------------------------------------------------------
 
 
@@ -872,6 +989,19 @@ void cl_navgen_phase_rectangle_expansion_start()
 		delete_rect(temp_rect);
 		temp_rect = temp_rect_next;
 	}
+
+	navgen_cell *temp_cell;
+	navgen_cell *temp_cell_next;
+	
+	// Empty the list of cells added to rectangles
+	temp_cell = cells_in_rects_list_root_node;
+	while(temp_cell != 0)
+	{
+		temp_cell_next = temp_cell->next;
+		remove_cell_from_list(temp_cell, &cells_in_rects_list_root_node);
+		temp_cell = temp_cell_next;
+	}
+
 }
 void cl_navgen_phase_rectangle_expansion_step()
 {
@@ -891,7 +1021,8 @@ void cl_navgen_phase_rectangle_expansion_step()
 		rect->max = cell;
 		
 		remove_cell_from_list(cell, &closed_list_root_node);
-		add_cell_to_list(cell, &(rect->cells));
+		add_cell_to_list(cell, &cells_in_rects_list_root_node);
+		add_cell_to_rectangle(cell, rect);
 
 		if(verbose)
 		{
@@ -967,7 +1098,7 @@ void cl_navgen_phase_rectangle_expansion_step()
 				while(temp_cell != 0 && temp_cell->x >= (rect->min)->x)
 				{
 					remove_cell_from_list(temp_cell->y_next, &closed_list_root_node);
-					add_cell_to_list(temp_cell->y_next, &(rect->cells));
+					add_cell_to_rectangle(temp_cell->y_next, rect);
 					temp_cell = temp_cell->x_prev;
 				}
 
@@ -998,6 +1129,7 @@ void cl_navgen_phase_rectangle_expansion_step()
 					break;
 				}
 				// If neighbor is not in closed list, then it already belongs to another rectangle
+				// FIXME FIXME FIXME
 				if(!cell_in_list(temp_cell->x_next, &closed_list_root_node))
 				{
 					if(verbose) print("\t\t+x failed. Reason: neighbor not in closed list.\n");
@@ -1023,7 +1155,7 @@ void cl_navgen_phase_rectangle_expansion_step()
 				while(temp_cell != 0 && temp_cell->y >= (rect->min)->y)
 				{
 					remove_cell_from_list(temp_cell->x_next, &closed_list_root_node);
-					add_cell_to_list(temp_cell->x_next, &(rect->cells));
+					add_cell_to_rectangle(temp_cell->x_next, rect);
 					temp_cell = temp_cell->y_prev;
 				}
 
@@ -1079,7 +1211,7 @@ void cl_navgen_phase_rectangle_expansion_step()
 				while(temp_cell != 0 && temp_cell->x <= (rect->max)->x)
 				{
 					remove_cell_from_list(temp_cell->y_prev, &closed_list_root_node);
-					add_cell_to_list(temp_cell->y_prev, &(rect->cells));
+					add_cell_to_rectangle(temp_cell->y_prev, rect);
 					temp_cell = temp_cell->x_next;
 				}
 
@@ -1135,7 +1267,7 @@ void cl_navgen_phase_rectangle_expansion_step()
 				while(temp_cell != 0 && temp_cell->y <= (rect->max)->y)
 				{
 					remove_cell_from_list(temp_cell->x_prev, &closed_list_root_node);
-					add_cell_to_list(temp_cell->x_prev, &(rect->cells));
+					add_cell_to_rectangle(temp_cell->x_prev, rect);
 					temp_cell = temp_cell->y_next;
 				}
 
