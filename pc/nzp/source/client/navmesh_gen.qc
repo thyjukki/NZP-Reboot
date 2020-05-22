@@ -170,6 +170,9 @@ struct navgen_cell
 
 	// Linked list node
 	navgen_cell *next;
+
+	// Cached pointer to the list containing this cell
+	navgen_cell **containing_list;
 };
 
 navgen_cell *(int x, int y, int z) create_cell = 
@@ -182,6 +185,7 @@ navgen_cell *(int x, int y, int z) create_cell =
 	new_cell->x_next = 0;
 	new_cell->y_prev = 0;
 	new_cell->x_prev = 0;
+	new_cell->containing_list = 0;
 
 	new_cell->next = 0;
 	return new_cell;
@@ -199,14 +203,19 @@ void(navgen_cell *cell, navgen_cell **list_root) add_cell_to_list =
 		cell->next = *list_root;
 	}
 	*list_root = cell;
+	cell->containing_list = list_root;
 }
 
 void(navgen_cell *cell, navgen_cell **list_root) remove_cell_from_list =
 {
+	if(cell->containing_list != list_root)
+		return;
+	
 	if(cell == *list_root)
 	{
 		*list_root = (*list_root)->next;
 		cell->next = 0;
+		cell->containing_list = 0;
 		return;
 	}
 
@@ -219,6 +228,7 @@ void(navgen_cell *cell, navgen_cell **list_root) remove_cell_from_list =
 		{
 			prev_cell->next = cur_cell->next;
 			cur_cell->next = 0;
+			cell->containing_list = 0;
 			return;
 		}
 
@@ -232,28 +242,33 @@ void(navgen_cell *cell, navgen_cell **list_root) remove_cell_from_list =
 // Otherwise, returns 0
 navgen_cell *(navgen_cell *cell, navgen_cell **list_root) cell_in_list =
 {
-	navgen_cell *cur_cell = *list_root;
-
-	int iters = 0;
-
-	while(cur_cell != 0)
+	if(cell->containing_list == list_root)
 	{
-		// HACK HACK HACK HACK HACK HACK 
-		// Easy hack to bypass 10k runaway loop error
-		// HACK HACK HACK HACK HACK HACK 
-		if(iters > 9000)
-		{
-			return cell_in_list(cell,&cur_cell);
-		}
-		iters++;
-		// HACK HACK HACK HACK HACK HACK 
-		if(cur_cell == cell)
-		{
 			return cell;
 		}
-		cur_cell = cur_cell->next;
-	}
 	return 0;
+	// navgen_cell *cur_cell = *list_root;
+
+	// int iters = 0;
+
+	// while(cur_cell != 0)
+	// {
+	// 	// HACK HACK HACK HACK HACK HACK 
+	// 	// Easy hack to bypass 10k runaway loop error
+	// 	// HACK HACK HACK HACK HACK HACK 
+	// 	if(iters > 9000)
+	// 	{
+	// 		return cell_in_list(cell,&cur_cell);
+	// 	}
+	// 	iters++;
+	// 	// HACK HACK HACK HACK HACK HACK 
+	// 	if(cur_cell == cell)
+	// 	{
+	// 		return cell;
+	// 	}
+	// 	cur_cell = cur_cell->next;
+	// }
+	// return 0;
 }
 
 navgen_cell *(int x, int y, int z, navgen_cell **list_root) get_cell_from_list =
