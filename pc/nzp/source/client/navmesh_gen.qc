@@ -321,6 +321,19 @@ void mark_cells_as_neighbors(navgen_cell *a, navgen_cell *b, int ofs_x, int ofs_
 		b->x_next = a;
 	}
 }
+
+int cells_are_neighbors(navgen_cell *a, navgen_cell *b) =
+{
+	if(a->x_next == b && b->x_prev == a)
+		return TRUE;
+	if(a->x_prev == b && b->x_next == a)
+		return TRUE;
+	if(a->y_next == b && b->y_prev == a)
+		return TRUE;
+	if(a->y_prev == b && b->y_next == a)
+		return TRUE;
+	return FALSE;
+}
 // ------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------
@@ -803,12 +816,14 @@ void cl_navgen_phase_rectangle_expansion_step()
 			int expanded = FALSE;
 			int can_expand;
 			navgen_cell *temp_cell;
+			navgen_cell *last_temp_cell;
 
 			// ---------------------------------------------------
 			// Increasing in +y direction
 			// ---------------------------------------------------
 			if(verbose) print("\t\t-- Checking +y --\n");
 			can_expand = TRUE;
+			last_temp_cell = 0;
 
 			// Sweep from top-right to top-left, checking if each node has a y_next neighbor in the closed list
 			temp_cell = rect->max;
@@ -830,6 +845,16 @@ void cl_navgen_phase_rectangle_expansion_step()
 					can_expand = FALSE;
 					break;
 				}
+				// If this cell's y_next is not neighbors with the last cell's y_next, then we can't expand
+				if(last_temp_cell != 0 && !cells_are_neighbors(temp_cell->y_next, last_temp_cell->y_next))
+				{
+					if(verbose) print("\t\t+y failed. Reason: Two consecutive y_nexts are not neighbors.\n");
+					can_expand = FALSE;
+					break;
+
+				}
+
+				last_temp_cell = temp_cell;
 				temp_cell = temp_cell->x_prev;
 			}
 			// if(verbose) print("\t\tFound all neighbors, can_expand: ",ftos(can_expand),"\n");
@@ -861,6 +886,7 @@ void cl_navgen_phase_rectangle_expansion_step()
 			// ---------------------------------------------------
 			if(verbose) print("\t\t-- Checking +x --\n");
 			can_expand = TRUE;
+			last_temp_cell = 0;
 
 			// Sweep from top-right to bottom-right, checking if each node has a x_next neighbor in the closed list
 			temp_cell = rect->max;
@@ -880,7 +906,15 @@ void cl_navgen_phase_rectangle_expansion_step()
 					can_expand = FALSE;
 					break;
 				}
+				// If this cell's x_next is not neighbors with the last cell's x_next, then we can't expand
+				if(last_temp_cell != 0 && !cells_are_neighbors(temp_cell->x_next, last_temp_cell->x_next))
+				{
+					if(verbose) print("\t\t+x failed. Reason: Two consecutive x_nexts are not neighbors.\n");
+					can_expand = FALSE;
+					break;
+				}
 
+			    last_temp_cell = temp_cell;
 				temp_cell = temp_cell->y_prev;
 			}
 			// If we got to the edge and found them all, expand the rectangle
@@ -908,6 +942,7 @@ void cl_navgen_phase_rectangle_expansion_step()
 			// ---------------------------------------------------
 			if(verbose) print("\t\t-- Checking -y --\n");
 			can_expand = TRUE;
+			last_temp_cell = 0;
 
 			// Sweep from bottom-left to bottom-right, checking if each node has a y_prev neighbor in the closed list
 			temp_cell = rect->min;
@@ -927,6 +962,15 @@ void cl_navgen_phase_rectangle_expansion_step()
 					can_expand = FALSE;
 					break;
 				}
+				// If this cell's y_prev is not neighbors with the last cell's y_prev, then we can't expand
+				if(last_temp_cell != 0 && !cells_are_neighbors(temp_cell->y_prev, last_temp_cell->y_prev))
+				{
+					if(verbose) print("\t\t-y failed. Reason: Two consecutive y_prevs are not neighbors.\n");
+					can_expand = FALSE;
+					break;
+				}
+
+				last_temp_cell = temp_cell;
 				temp_cell = temp_cell->x_next;
 			}
 			// If we got to the edge and found them all, expand the rectangle
@@ -954,6 +998,7 @@ void cl_navgen_phase_rectangle_expansion_step()
 			// ---------------------------------------------------
 			if(verbose) print("\t\t-- Checking -x --\n");
 			can_expand = TRUE;
+			last_temp_cell = 0;
 
 			// Sweep from bottom-left to top-left, checking if each node has a x_prev neighbor in the closed list
 			temp_cell = rect->min;
@@ -973,6 +1018,15 @@ void cl_navgen_phase_rectangle_expansion_step()
 					can_expand = FALSE;
 					break;
 				}
+				// If this cell's x_prev is not neighbors with the last cell's x_prev, then we can't expand
+				if(last_temp_cell != 0 && !cells_are_neighbors(temp_cell->x_prev, last_temp_cell->x_prev))
+				{
+					if(verbose) print("\t\t-x failed. Reason: Two consecutive x_prevs are not neighbors.\n");
+					can_expand = FALSE;
+					break;
+				}
+
+				last_temp_cell = temp_cell;
 				temp_cell = temp_cell->y_next;
 			}
 			// If we got to the edge and found them all, expand the rectangle
@@ -1018,11 +1072,13 @@ int cl_navgen_phase_rectangle_expansion_finished()
 }
 void cl_navgen_draw_phase_rectangle_expansion()
 {
+	vector color = [0.2,0.8,0.2];
+	float alpha = 0.1;
+
 	navgen_rectangle *rect = navgen_rectangles;
+
 	while(rect != 0)
 	{
-		vector color = [0.2,0.8,0.2];
-		float alpha = 0.1;
 		// Find 4 corners
 		navgen_cell *tl;
 		navgen_cell *tr;
@@ -1032,24 +1088,46 @@ void cl_navgen_draw_phase_rectangle_expansion()
 		tr = rect->max;
 		bl = rect->min;
 
-		// Sweep from tr to tl
+		// Sweep from top right to top left
 		tl = rect->max;
-		while(tl.x > (rect->min)->x)
+		while(tl->x > (rect->min)->x)
 		{
+			// NOTE - This should NEVER happen. If it does, that means the rectangle
+			// NOTE   is malformed, and it'll cause problems elsewhere.
+			// NOTE   In case it does happen, catch it and print some details.
+			if(tl->x_prev == 0)
+			{
+				print("WARNING: Failed to draw rectangle. Failed scanning from top right to top left.\n");
+				print("\tCell located at: (",ftos(tl->x),",",ftos(tl->y),",",ftos(tl->z),") has no left neighbor.\n");
+				print("\tWe were trying to scan all the way to x=",ftos((rect->min)->x),"\n");
+				break;
+			}
+
 			tl = tl->x_prev;
 		}
 
-		// Sweep from bl to br
+		// Sweep from bottom left to bottom right
 		br = rect->min;
-		while(br.x < (rect->max)->x)
+		while(br->x < (rect->max)->x)
 		{
+			// NOTE - This should NEVER happen. If it does, that means the rectangle
+			// NOTE   is malformed, and it'll cause problems elsewhere.
+			// NOTE   In case it does happen, catch it and print some details.
+			if(br->x_next == 0)
+		{
+				print("WARNING: Failed to draw rectangle. Failed scanning from bottom left to bottom right.\n");
+				print("\tCell located at: (",ftos(br->x),",",ftos(br->y),",",ftos(br->z),") has no right neighbor.\n");
+				print("\tWe were trying to scan all the way to x=",ftos((rect->max)->x),"\n");
+				break;
+			}
+
 			br = br->x_next;
 		}
 
-		vector a = [bl.x, bl.y, bl.z];
-		vector b = [br.x, br.y, br.z];
-		vector c = [tr.x, tr.y, tr.z];
-		vector d = [tl.x, tl.y, tl.z];
+		vector a = [bl->x, bl->y, bl->z];
+		vector b = [br->x, br->y, br->z];
+		vector c = [tr->x, tr->y, tr->z];
+		vector d = [tl->x, tl->y, tl->z];
 
 		cl_navmesh_draw_quad(a,b,c,d,color,alpha,TRUE);
 
@@ -1095,10 +1173,6 @@ void cl_navgen_draw_phase_rectangle_expansion()
 
 		// 	cell = cell->next;
 		// }
-
-
-
-
 
 		rect = rect->next;
 	}
