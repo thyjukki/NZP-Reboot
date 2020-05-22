@@ -32,6 +32,7 @@ navgen_boundary *(int x, int y, int z, int ofs_x, int ofs_y, navgen_boundary **l
 navgen_cell *open_list_root_node;
 navgen_cell *closed_list_root_node;
 navgen_boundary *boundary_list_root_node;
+int navgen_cell_size = 8;
 // ---------------------------------------------------------------------------
 // NAVGEN_PHASE_RECTANGLE_EXPANSION
 // ---------------------------------------------------------------------------
@@ -497,8 +498,8 @@ void cl_navgen_phase_rasterization_step()
 		// For each of the eight directions:
 		for(int i = 0; i < num_ofs; i++)
 		{
-			int ofs_x = ofs_x_vals[i] * cell_size;
-			int ofs_y = ofs_y_vals[i] * cell_size;
+			int ofs_x = ofs_x_vals[i] * navgen_cell_size;
+			int ofs_y = ofs_y_vals[i] * navgen_cell_size;
 			int next_cell_x = cell->x + ofs_x;
 			int next_cell_y = cell->y + ofs_y;
 			
@@ -517,8 +518,8 @@ void cl_navgen_phase_rasterization_step()
 
 			int obstructed = navgen_obstructed(cell_pos, next_cell_pos);
 
-			// Lift up above the floor, snap to grid of size 'cell_size'
-			int z_pos = cell->z + cell_size * floor((ceil(trace_endpos.z) - cell->z) / cell_size);
+			// Lift up above the floor, snap to grid of size 'navgen_cell_size'
+			int z_pos = cell->z + navgen_cell_size * floor((ceil(trace_endpos.z) - cell->z) / navgen_cell_size);
 
 			// If we can't walk to it, convert it to a boundary
 			if(obstructed)
