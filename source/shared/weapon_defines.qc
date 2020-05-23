@@ -3994,8 +3994,9 @@ vector (float wep) GetWeaponFlash_Offset =
 {
 		switch(wep) {
 			case W_COLT:
+                return [5488, -2742, 35300];
 			case W_BIATCH:
-				return [5488, -2742, 35300];
+				return [5088, -2742, 20300];
 			case W_KAR:
 			case W_KAR_SCOPE:
 			case W_HEADCRACKER:
@@ -4063,6 +4064,7 @@ float (float wep) GetWeaponFlash_Size = {
 
 	switch(wep) {
 		case W_COLT:
+            return 5;
 		case W_BIATCH:
 			return 5;
 		case W_KAR:

@@ -432,7 +432,10 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 			muzzlepos -= v_right * offset_y;
 			muzzlepos += v_up * (offset_z + 6);
 
-			dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '1.2 0.7 0.2' * mzlflash.alpha);
+            if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))
+                dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '0.7 0 0.7' * mzlflash.alpha);
+            else
+			    dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '1.2 0.7 0.2' * mzlflash.alpha);
 			addentity(mzlflash);
 		}
 	}
@@ -731,7 +734,7 @@ noref void() CSQC_Parse_Event =
 					pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
 			}
 			
-			if(traceent == 0)
+			if(traceent == 0 && GetFiretype(getstatf(STAT_ACTIVEWEAPON)) != 3)
 			{
 				pointparticles(particleeffectnum("weapons.impact"), pos, norm*24, 1);
 				pointparticles(particleeffectnum("weapons.impact_decal"), pos, '0 0 0', 1);

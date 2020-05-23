@@ -1433,10 +1433,10 @@ void(float side) W_Fire =
 		W_FireM2();
 	}
 
-	if (firetype == 1 || firetype == 0) {
+    // FIXME - clean this up lol
+	if (firetype == 1 || firetype == 0 || firetype == 3) {
 		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
 	}
-
 
 	//Play weapon animation and sound
 	startframe = GetFrame(self.weapon,FIRE_START);
