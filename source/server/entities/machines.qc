@@ -261,12 +261,93 @@ void() touch_perk =
 	}
 }
 
+void(entity e) Light_Red =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_RED;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 0.25;	
+	    e.color_z = 0.25;
+    }
+    #endif
+}
+
+void(entity e) Light_Green =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_GREEN;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 0.25;	
+	    e.color_y = 2;	
+	    e.color_z = 0.25;
+    }
+    #endif
+}
+
+void(entity e) Light_Blue =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_BLUE;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 0.25;	
+	    e.color_y = 0.25;	
+	    e.color_z = 2;
+    }
+    #endif
+}
+
+void(entity e) Light_Orange =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_ORANGELIGHT;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 1;	
+	    e.color_z = 0;
+    }
+    #endif
+}
+
+void(entity e) Light_Purple =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_PURPLELIGHT;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 0.25;	
+	    e.color_z = 2;
+    }
+    #endif
+}
+
 void() setup_perk =
 {
 	if (find (world, classname, "power_switch"))
 	{
 		if (self.classname == "perk_revive" && !coop && !deathmatch) {
-			self.effects = self.effects | EF_BLUE;
+            Light_Blue(self);
+			//self.effects = self.effects | EF_BLUE;
 		} else
 			self.requirespower = true;
 	}
@@ -276,26 +357,22 @@ void() setup_perk =
 		switch(self.classname)
 		{
 			case "perk_revive": 
-				self.effects = self.effects |  EF_BLUE;
+                Light_Blue(self);
 				break;
 			case "perk_juggernog":
-				self.effects = self.effects |  EF_RED;
+				Light_Red(self);
 				break;
 			case "perk_speed":
 			case "perk_mule":
-				self.effects = self.effects |  EF_GREEN;
+				Light_Green(self);
 				break;
 			case "perk_flopper":
-				self.effects = self.effects |  EF_PURPLELIGHT;
+				Light_Purple(self);
 				break;
 			case "perk_staminup":
 			case "perk_double":
 			case "perk_deadshot":
-			#ifndef PC
-				self.effects = self.effects |  EF_ORANGELIGHT;
-			#else 
-				self.effects = self.effects |  EF_ORANGE;
-			#endif
+			    Light_Orange(self);
 				break;
 			default: break;
 		
@@ -450,31 +527,22 @@ void() Turn_Lights =
 	{
 		switch(tempe.classname) {
 			case "perk_revive": 
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_BLUE;
+                Light_Blue(tempe);
 				break;
 			case "perk_juggernog":
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_RED;
+				Light_Red(tempe);
 				break;
 			case "perk_speed":
 			case "perk_mule":
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_GREEN;
+				Light_Green(tempe);
 				break;
 			case "perk_flopper":
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_PURPLELIGHT;
+				Light_Purple(tempe);
 				break;
 			case "perk_staminup":
 			case "perk_double":
 			case "perk_deadshot":
-			#ifndef PC
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_ORANGELIGHT;
-			#else 
-				tempe.effects = self.effects |  EF_ORANGE;
-			#endif
+			    Light_Orange(tempe);
 				break;
 			default: break;
 		}
