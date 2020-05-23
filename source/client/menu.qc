@@ -472,26 +472,41 @@ void(float type) Menu_Click =
 //FIXME -- credits look ugly, font scaling & such
 void() Draw_Extra_Credits = 
 {
-	drawstring([0.03*g_width, 0.15*g_height, 0], "Blubswillrule: Coding, Models, GFX, Sounds,", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.03*g_width, 0.185*g_height, 0], "               Animations, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.03*g_width, 0.15*g_height, 0], "Blubswillrule:   Coding, Models, GFX, Sounds, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
 	drawfill ([.03*g_width, 0.15*g_height + g_height*0.025 + 3, 0], [strlen("Blubswillrule")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
 			
-	drawstring([0.03*g_width, 0.25*g_height, 0], "Ju[s]tice:     Maps, Models, GFX", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.25*g_height + g_height*0.025 + 3, 0], [strlen("Ju[s]tice")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.20*g_height, 0], "Ju[s]tice:       Maps, Models, GFX", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawfill ([.03*g_width, 0.20*g_height + g_height*0.025 + 3, 0], [strlen("Ju[s]tice")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	
+	drawstring([0.03*g_width, 0.25*g_height, 0], "Jukki:           Coding", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawfill ([.03*g_width, 0.25*g_height + g_height*0.025 + 3, 0], [strlen("Jukki")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
 
-				
-	drawstring([0.03*g_width, 0.35*g_height, 0], "Jukki:         Coding", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.35*g_height + g_height*0.025 + 3, 0], [strlen("Jukki")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
-												
-	drawstring([0.03*g_width, 0.45*g_height, 0], "Special Thanks:", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.45*g_height + g_height*0.025 + 3, 0], [strlen("Special Thanks")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.30*g_height, 0], "Biodude:         Sounds", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawfill ([.03*g_width, 0.30*g_height + g_height*0.025 + 3, 0], [strlen("Biodude")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+
+	drawstring([0.03*g_width, 0.35*g_height, 0], "Dr_Mabuse1981:   Coding", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawfill ([.03*g_width, 0.35*g_height + g_height*0.025 + 3, 0], [strlen("Dr_Mabuse1981")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+
+	drawstring([0.03*g_width, 0.40*g_height, 0], "Naievil:         Coding, NX Maintaining", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawfill ([.03*g_width, 0.40*g_height + g_height*0.025 + 3, 0], [strlen("Naievil")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+
+	drawstring([0.03*g_width, 0.45*g_height, 0], "MotoLegacy:      Coding, GFX, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawfill ([.03*g_width, 0.45*g_height + g_height*0.025 + 3, 0], [strlen("MotoLegacy")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+
+	drawstring([0.03*g_width, 0.50*g_height, 0], "Derped_Crusader: Models, GFX", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawfill ([.03*g_width, 0.50*g_height + g_height*0.025 + 3, 0], [strlen("Derped_Crusader")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+
+	drawstring([0.03*g_width, 0.60*g_height, 0], "Special Thanks:", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawfill ([.03*g_width, 0.60*g_height + g_height*0.025 + 3, 0], [strlen("Special Thanks")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
 			
-	drawstring([0.25*g_width, 0.525*g_height, 0], "- Spike", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.25*g_width, 0.575*g_height, 0], "- Shpuld", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.25*g_width, 0.625*g_height, 0], "- DR_Mabuse1981", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.25*g_width, 0.675*g_height, 0], "- Naievil", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1); 
-	drawstring([0.25*g_width, 0.725*g_height, 0], "- Biodude", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.25*g_width, 0.775*g_height, 0], "- MotoLegacy", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.03*g_width, 0.640*g_height, 0], "- Spike:     FTEQW", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
+    drawstring([0.03*g_width, 0.660*g_height, 0], "- Shpuld:    Clean-CSQC", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
+    drawstring([0.03*g_width, 0.680*g_height, 0], "- Crow_Bar:  DQuake", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
+    drawstring([0.03*g_width, 0.700*g_height, 0], "- st1x51:    DQuakePlus", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.03*g_width, 0.720*g_height, 0], "- fgsfdsfgs: QuakespasmNX", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.03*g_width, 0.740*g_height, 0], "- Azenn:     GFX help", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1); 
+	drawstring([0.03*g_width, 0.760*g_height, 0], "- tavo:      Music help", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.03*g_width, 0.780*g_height, 0], "- BCDeshiG:  Heavy bug testing", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
 }
 
 void() Draw_Extra_Restart =
