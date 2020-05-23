@@ -1584,6 +1584,9 @@ void velocity_reduce_output() {
     makevectors(self.owner.angles);
 	self.velocity = [0,0,0];
 	setorigin(self, self.owner.origin + v_forward*25);
+
+    //start floating back into pap
+    self.velocity = v_forward*-1.5;
 }
 
 //Self = floating gun
