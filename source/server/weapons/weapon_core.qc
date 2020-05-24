@@ -256,9 +256,19 @@ void() W_TakeOut =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
+
+    self.isBuying = false;
 	
 	Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, SUB_Null, modelname, false, S_BOTH);//FIXME
 	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+}
+
+float(entity who) hasWeapon =
+{
+    if (other.weapon || other.secondaryweapon || other.thirdweapon)
+        return true;
+
+    return false;
 }
 
 
@@ -1871,7 +1881,7 @@ void() checkHold =
 
 
 void() W_Betty = {
-	if (self.throw_delay > time || self.zoom || self.downed || self.secondary_grenades < 1)
+	if (self.throw_delay > time || self.zoom || self.downed || self.secondary_grenades < 1 || self.isBuying)
 		return;
 
 	Set_W_Frame (0, 18, 0, 0, GRENADE, checkHoldB, "progs/VModels/v_betty.mdl", true, S_RIGHT);
@@ -1883,7 +1893,7 @@ void() W_Betty = {
 
 void() W_Grenade =
 {
-	if (self.throw_delay > time || self.zoom || self.downed || self.primary_grenades < 0)
+	if (self.throw_delay > time || self.zoom || self.downed || self.primary_grenades < 1 || self.isBuying)
 		return;
 
 	Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true, S_RIGHT);

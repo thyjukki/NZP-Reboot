@@ -1681,6 +1681,8 @@ void PapUpgrade(entity pap, entity buyer) {
 	self.secondarymag = 0;
 	self.secondarymag2 = 0;
 
+    self.isBuying = true;
+
 	Set_W_Frame (0, 39, 0, 0, 0, W_TakeOut, "models/machines/v_pap.mdl", true, S_BOTH);
 	self.weapon2model = "";
 	UpdateV2model(self.weapon2model, 0);

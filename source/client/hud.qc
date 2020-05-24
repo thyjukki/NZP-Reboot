@@ -1322,7 +1322,9 @@ void(float width, float height) HUD_Draw =
 {
 	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10) && !score_show)
 	{
-		Draw_Crosshair();
+        
+        if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "")
+		    Draw_Crosshair();
 
 		if (!cvar("waypoint_mode")) {
 			HUD_Health(width, height);
@@ -1331,14 +1333,20 @@ void(float width, float height) HUD_Draw =
 			HUD_Perks(width, height);
 			HUD_Progressbar(width, height);
 			HUD_Powerups();
-			HUD_AmmoString();
+
+            if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "")
+			    HUD_AmmoString();
+
 			HUD_Achievements(width, height);
 		
 			if (HUD_Change_time > time)
 			{
-				HUD_Ammo(width, height);
-				HUD_Grenades(width, height);
-				HUD_Weaponstring(width, height);
+                HUD_Grenades(width, height);
+
+                if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "") {
+                    HUD_Ammo(width, height);
+				    HUD_Weaponstring(width, height);
+                }
 			}
 				
 			if (useprint_time > time) 
