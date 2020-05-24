@@ -91,81 +91,9 @@ void() navgen_start =
 	cl_navgen_phase_rasterization_start();
 }
 
-int do_once;
 
 void() navgen_logic =
 {
-	// if(!do_once)
-	// {
-	// 	do_once = TRUE;
-	// 	// cl_navgen_phase_rectangle_vectorization_start();
-	// 	// remove_cell_from_rectangle(cell1, rect2);
-
-	// 	navgen_cell *cell1 = create_cell(0,0,0);
-	// 	navgen_cell *cell2 = create_cell(0,0,0);
-	// 	navgen_cell *cell3 = create_cell(0,0,0);
-	// 	navgen_cell *cell4 = create_cell(0,0,0);
-	// 	navgen_cell *cell5 = create_cell(0,0,0);
-	// 	navgen_rectangle *rect1 = create_rect();
-	// 	navgen_rectangle *rect2 = create_rect();
-	// 	navgen_rectangle *rect3 = create_rect();
-	// 	navgen_rectangle *rect4 = create_rect();
-	// 	navgen_rectangle *rect5 = create_rect();
-
-	// 	print("Add cell1 to rect1\n");
-	// 	add_cell_to_rectangle(cell1, rect1);
-	// 	print("Is cell1 in rect1? (1) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
-	// 	print("Is cell1 in rect2? (0) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
-	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
-	// 	print("Is cell2 in rect2? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
-
-	// 	print("Add cell1 to rect2\n");
-	// 	add_cell_to_rectangle(cell1, rect2);
-	// 	print("Is cell1 in rect1? (1) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
-	// 	print("Is cell1 in rect2? (1) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
-	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
-	// 	print("Is cell2 in rect2? (0) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
-	// 	print("Do cell1 & cell2 share a rect? (0) ",ftos(cells_share_membership(cell1,cell2)),"\n");
-
-	// 	print("Add cell2 to rect2\n");
-	// 	add_cell_to_rectangle(cell2, rect2);
-	// 	print("Is cell1 in rect1? (1) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
-	// 	print("Is cell1 in rect2? (1) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
-	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
-	// 	print("Is cell2 in rect2? (1) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
-	// 	print("Do cell1 & cell2 share a rect? (1) ",ftos(cells_share_membership(cell1,cell2)),"\n");
-
-	// 	print("Add cell1 to rect3\n");
-	// 	add_cell_to_rectangle(cell1, rect3);
-	// 	print("Is cell1 in rect1? (1) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
-	// 	print("Is cell1 in rect2? (1) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
-	// 	print("Is cell1 in rect3? (1) ",ftos(is_cell_in_rectangle(cell1, rect3)),"\n");
-	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
-	// 	print("Is cell2 in rect2? (1) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
-	// 	print("Is cell2 in rect3? (0) ",ftos(is_cell_in_rectangle(cell2, rect3)),"\n");
-	// 	print("Do cell1 & cell2 share a rect? (1) ",ftos(cells_share_membership(cell1,cell2)),"\n");
-
-	// 	print("Remove cell1 from rect1\n");
-	// 	remove_cell_from_rectangle(cell1, rect1);
-	// 	print("Is cell1 in rect1? (0) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
-	// 	print("Is cell1 in rect2? (1) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
-	// 	print("Is cell1 in rect3? (1) ",ftos(is_cell_in_rectangle(cell1, rect3)),"\n");
-	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
-	// 	print("Is cell2 in rect2? (1) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
-	// 	print("Is cell2 in rect3? (0) ",ftos(is_cell_in_rectangle(cell2, rect3)),"\n");
-	// 	print("Do cell1 & cell2 share a rect? (1) ",ftos(cells_share_membership(cell1,cell2)),"\n");
-
-	// 	print("Remove cell1 from rect2\n");
-	// 	remove_cell_from_rectangle(cell1, rect2);
-	// 	print("Is cell1 in rect1? (0) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
-	// 	print("Is cell1 in rect2? (0) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
-	// 	print("Is cell1 in rect3? (1) ",ftos(is_cell_in_rectangle(cell1, rect3)),"\n");
-	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
-	// 	print("Is cell2 in rect2? (1) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
-	// 	print("Is cell2 in rect3? (0) ",ftos(is_cell_in_rectangle(cell2, rect3)),"\n");
-	// 	print("Do cell1 & cell2 share a rect? (0) ",ftos(cells_share_membership(cell1,cell2)),"\n");
-		
-	// }
 	if(navgen_phase == NAVGEN_PHASE_RASTERIZATION)
 	{
 		cl_navgen_phase_rasterization_step();
@@ -1035,47 +963,6 @@ void(navgen_rectangle *rect) remove_cells_from_rectangle =
 	}
 }
 
-
-// int(navgen_cell *cell) get_cell_rect_membership_count =
-// {
-// 	int count = 0;
-
-// 	navgen_cell_rectangle_membership *membership = cell->rect_memberships;
-// 	while(membership != 0)
-// 	{
-// 		count++;
-// 		membership = membership->cell_next_membership;
-// 	}
-// 	return count;
-// }
-
-// navgen_cell_rectangle_membership *(navgen_cell *cell, int i) get_cell_rect_membership_at_index = 
-// {
-// 	int current_index = 0;
-
-// 	navgen_cell_rectangle_membership *membership = cell->rect_memberships;
-// 	while(membership != 0)
-// 	{
-// 		if(current_index == 0)
-// 			return membership;
-
-// 		current_index++;
-// 		membership = membership->cell_next_membership;
-// 	}
-// 	return 0;
-// }
-
-// navgen_rectangle *(navgen_cell *cell, int i) get_cell_membership_rect_at_index = 
-// {
-	
-// 	navgen_cell_rectangle_membership *membership = get_cell_rect_membership_at_index(cell,i);
-
-// 	if(membership != 0)
-// 		return membership->rect;
-	
-// 	return 0;
-// }
-
 // Returns TRUE if cell1 and cell2 share membership in at least rectangle
 int (navgen_cell *cell1, navgen_cell *cell2) cells_share_membership =
 {
@@ -1170,17 +1057,8 @@ void cl_navgen_phase_rectangle_expansion_start()
 }
 
 
-int counter;
-
 void cl_navgen_phase_rectangle_expansion_step()
 {
-	counter++;
-	if(counter < 60)
-	{
-		return;
-	}
-	counter = 0;
-
 	int g_verbose = 0;
 	int n_verbose = 1;
 	// if(verbose) print("---- Navgen logic tick start ----\n");
@@ -1629,73 +1507,6 @@ void cl_navgen_draw_phase_rectangle_expansion()
 // ===========================================================================================================
 void cl_navgen_phase_rectangle_vectorization_start()
 {
-	// // FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME 
-	// // START temp fixme remove this
-	// navgen_cell *cell1 = create_cell(0,0,0);
-	// navgen_cell *cell2 = create_cell(0,0,0);
-	// navgen_cell *cell3 = create_cell(0,0,0);
-	// navgen_cell *cell4 = create_cell(0,0,0);
-	// navgen_cell *cell5 = create_cell(0,0,0);
-	// navgen_rectangle *rect1 = create_rect();
-	// navgen_rectangle *rect2 = create_rect();
-	// navgen_rectangle *rect3 = create_rect();
-	// navgen_rectangle *rect4 = create_rect();
-	// navgen_rectangle *rect5 = create_rect();
-
-	// add_cell_to_rectangle(cell1, rect1);
-	// add_cell_to_rectangle(cell1, rect2);
-	// add_cell_to_rectangle(cell2, rect2);
-	// // add_cell_to_rectangle(cell1, rect3);
-	// // add_cell_to_rectangle(cell2, rect4);
-	// // add_cell_to_rectangle(cell2, rect5);
-	// remove_cell_from_rectangle(cell1, rect1);
-	// print("Do cell1 & cell2 share a rect? (1) ",ftos(cells_share_membership(cell1,cell2)),"\n");
-
-	// int mem_id;
-	// navgen_cell_rectangle_membership *mem;
-	
-	// print("-- iterating through cell1 memberships --\n");
-	// mem = cell1->rect_memberships;
-	// mem_id = 0;
-	// while(mem != 0)
-	// {
-	// 	print("\tmembership[",ftos(mem_id),"] = ");
-	// 	if(mem->rect == rect1) print(" rect1\n");
-	// 	else if(mem->rect == rect2) print(" rect2\n");
-	// 	else if(mem->rect == rect3) print(" rect3\n");
-	// 	else if(mem->rect == rect4) print(" rect4\n");
-	// 	else if(mem->rect == rect5) print(" rect5\n");
-	// 	else print(" unknown rect\n");			
-
-	// 	mem_id++;
-	// 	mem = mem->cell_next_membership;
-	// }
-
-
-
-
-	// print("-- iterating through cell2 memberships --\n");
-	// mem = cell2->rect_memberships;
-	// mem_id = 0;
-	// while(mem != 0)
-	// {
-	// 	print("\tmembership[",ftos(mem_id),"] = ");
-	// 	if(mem->rect == rect1) print(" rect1\n");
-	// 	else if(mem->rect == rect2) print(" rect2\n");
-	// 	else if(mem->rect == rect3) print(" rect3\n");
-	// 	else if(mem->rect == rect4) print(" rect4\n");
-	// 	else if(mem->rect == rect5) print(" rect5\n");
-	// 	else print(" unknown rect\n");			
-
-	// 	mem_id++;
-	// 	mem = mem->cell_next_membership;
-	// }
-
-	// // END temp fixme remove this
-	// // FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME 
-
-
-	// TODO - Anything to de-alloc?
 	// Delete all rectangle vertices
 	navgen_rectangle *rect = navgen_rectangles;
 
