@@ -926,30 +926,23 @@ void(navgen_cell *cell, navgen_rectangle *rect) remove_cell_from_rectangle =
 	if(membership == 0)
 		return;
 
-	navgen_cell_rectangle_membership **prev_next_cell_membership = &(cell->rect_memberships);
-	navgen_cell_rectangle_membership **prev_next_rect_membership = &(rect->cells);
+	navgen_cell_rectangle_membership **prev_cell_membership = &(cell->rect_memberships);
+	navgen_cell_rectangle_membership **prev_rect_membership = &(rect->cells);
 
-	if(*prev_next_cell_membership != membership)
+	while(*prev_cell_membership != membership)
 	{
-		// Find the cell membership that points to membership
-		while((*prev_next_cell_membership)->cell_next_membership != membership)
-		{
-			prev_next_cell_membership = &((*prev_next_cell_membership)->cell_next_membership);
+		prev_cell_membership = &((*prev_cell_membership)->cell_next_membership);
 		}
-	}
 
-	if(*prev_next_rect_membership != membership)
+
+	while(*prev_rect_membership != membership)
 	{
-		// Find the rect membership that points to membership
-		while((*prev_next_rect_membership)->rect_next_membership != membership)
-		{
-			prev_next_rect_membership = &((*prev_next_rect_membership)->rect_next_membership);
+		prev_rect_membership = &((*prev_rect_membership)->rect_next_membership);
 		}
-	}
 
 	// Unlink it
-	*prev_next_cell_membership = membership->cell_next_membership;
-	*prev_next_rect_membership = membership->rect_next_membership;
+	*prev_cell_membership = membership->cell_next_membership;
+	*prev_rect_membership = membership->rect_next_membership;
 	
 	memfree(membership);
 }
