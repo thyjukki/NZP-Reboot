@@ -53,6 +53,7 @@ navgen_cell_rectangle_membership *(navgen_cell *cell, navgen_rectangle *rect) ge
 void(navgen_cell *cell, navgen_rectangle *rect) add_cell_to_rectangle;
 int(navgen_cell *cell, navgen_rectangle *rect) is_cell_in_rectangle;
 void(navgen_rectangle *rect) remove_cells_from_rectangle;
+int (navgen_cell *cell1, navgen_cell *cell2) cells_share_membership;
 // Data
 navgen_rectangle *navgen_rectangles;
 navgen_cell *cells_in_rects_list_root_node;
@@ -90,8 +91,81 @@ void() navgen_start =
 	cl_navgen_phase_rasterization_start();
 }
 
+int do_once;
+
 void() navgen_logic =
 {
+	// if(!do_once)
+	// {
+	// 	do_once = TRUE;
+	// 	// cl_navgen_phase_rectangle_vectorization_start();
+	// 	// remove_cell_from_rectangle(cell1, rect2);
+
+	// 	navgen_cell *cell1 = create_cell(0,0,0);
+	// 	navgen_cell *cell2 = create_cell(0,0,0);
+	// 	navgen_cell *cell3 = create_cell(0,0,0);
+	// 	navgen_cell *cell4 = create_cell(0,0,0);
+	// 	navgen_cell *cell5 = create_cell(0,0,0);
+	// 	navgen_rectangle *rect1 = create_rect();
+	// 	navgen_rectangle *rect2 = create_rect();
+	// 	navgen_rectangle *rect3 = create_rect();
+	// 	navgen_rectangle *rect4 = create_rect();
+	// 	navgen_rectangle *rect5 = create_rect();
+
+	// 	print("Add cell1 to rect1\n");
+	// 	add_cell_to_rectangle(cell1, rect1);
+	// 	print("Is cell1 in rect1? (1) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
+	// 	print("Is cell1 in rect2? (0) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
+	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
+	// 	print("Is cell2 in rect2? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
+
+	// 	print("Add cell1 to rect2\n");
+	// 	add_cell_to_rectangle(cell1, rect2);
+	// 	print("Is cell1 in rect1? (1) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
+	// 	print("Is cell1 in rect2? (1) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
+	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
+	// 	print("Is cell2 in rect2? (0) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
+	// 	print("Do cell1 & cell2 share a rect? (0) ",ftos(cells_share_membership(cell1,cell2)),"\n");
+
+	// 	print("Add cell2 to rect2\n");
+	// 	add_cell_to_rectangle(cell2, rect2);
+	// 	print("Is cell1 in rect1? (1) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
+	// 	print("Is cell1 in rect2? (1) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
+	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
+	// 	print("Is cell2 in rect2? (1) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
+	// 	print("Do cell1 & cell2 share a rect? (1) ",ftos(cells_share_membership(cell1,cell2)),"\n");
+
+	// 	print("Add cell1 to rect3\n");
+	// 	add_cell_to_rectangle(cell1, rect3);
+	// 	print("Is cell1 in rect1? (1) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
+	// 	print("Is cell1 in rect2? (1) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
+	// 	print("Is cell1 in rect3? (1) ",ftos(is_cell_in_rectangle(cell1, rect3)),"\n");
+	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
+	// 	print("Is cell2 in rect2? (1) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
+	// 	print("Is cell2 in rect3? (0) ",ftos(is_cell_in_rectangle(cell2, rect3)),"\n");
+	// 	print("Do cell1 & cell2 share a rect? (1) ",ftos(cells_share_membership(cell1,cell2)),"\n");
+
+	// 	print("Remove cell1 from rect1\n");
+	// 	remove_cell_from_rectangle(cell1, rect1);
+	// 	print("Is cell1 in rect1? (0) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
+	// 	print("Is cell1 in rect2? (1) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
+	// 	print("Is cell1 in rect3? (1) ",ftos(is_cell_in_rectangle(cell1, rect3)),"\n");
+	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
+	// 	print("Is cell2 in rect2? (1) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
+	// 	print("Is cell2 in rect3? (0) ",ftos(is_cell_in_rectangle(cell2, rect3)),"\n");
+	// 	print("Do cell1 & cell2 share a rect? (1) ",ftos(cells_share_membership(cell1,cell2)),"\n");
+
+	// 	print("Remove cell1 from rect2\n");
+	// 	remove_cell_from_rectangle(cell1, rect2);
+	// 	print("Is cell1 in rect1? (0) ",ftos(is_cell_in_rectangle(cell1, rect1)),"\n");
+	// 	print("Is cell1 in rect2? (0) ",ftos(is_cell_in_rectangle(cell1, rect2)),"\n");
+	// 	print("Is cell1 in rect3? (1) ",ftos(is_cell_in_rectangle(cell1, rect3)),"\n");
+	// 	print("Is cell2 in rect1? (0) ",ftos(is_cell_in_rectangle(cell2, rect1)),"\n");
+	// 	print("Is cell2 in rect2? (1) ",ftos(is_cell_in_rectangle(cell2, rect2)),"\n");
+	// 	print("Is cell2 in rect3? (0) ",ftos(is_cell_in_rectangle(cell2, rect3)),"\n");
+	// 	print("Do cell1 & cell2 share a rect? (0) ",ftos(cells_share_membership(cell1,cell2)),"\n");
+		
+	// }
 	if(navgen_phase == NAVGEN_PHASE_RASTERIZATION)
 	{
 		cl_navgen_phase_rasterization_step();
@@ -518,7 +592,7 @@ void cl_navgen_phase_rasterization_start()
 void cl_navgen_phase_rasterization_step()
 {
 	int verbose = 0;
-	if(verbose) print("---- Navgen logic tick start ----\n");
+	// if(verbose) print("---- Navgen logic tick start ----\n");
 
 	navgen_cell *cur_open_list = open_list_root_node;
 	navgen_cell *new_open_list = 0;
@@ -962,6 +1036,104 @@ void(navgen_rectangle *rect) remove_cells_from_rectangle =
 }
 
 
+// int(navgen_cell *cell) get_cell_rect_membership_count =
+// {
+// 	int count = 0;
+
+// 	navgen_cell_rectangle_membership *membership = cell->rect_memberships;
+// 	while(membership != 0)
+// 	{
+// 		count++;
+// 		membership = membership->cell_next_membership;
+// 	}
+// 	return count;
+// }
+
+// navgen_cell_rectangle_membership *(navgen_cell *cell, int i) get_cell_rect_membership_at_index = 
+// {
+// 	int current_index = 0;
+
+// 	navgen_cell_rectangle_membership *membership = cell->rect_memberships;
+// 	while(membership != 0)
+// 	{
+// 		if(current_index == 0)
+// 			return membership;
+
+// 		current_index++;
+// 		membership = membership->cell_next_membership;
+// 	}
+// 	return 0;
+// }
+
+// navgen_rectangle *(navgen_cell *cell, int i) get_cell_membership_rect_at_index = 
+// {
+	
+// 	navgen_cell_rectangle_membership *membership = get_cell_rect_membership_at_index(cell,i);
+
+// 	if(membership != 0)
+// 		return membership->rect;
+	
+// 	return 0;
+// }
+
+// Returns TRUE if cell1 and cell2 share membership in at least rectangle
+int (navgen_cell *cell1, navgen_cell *cell2) cells_share_membership =
+{
+	navgen_cell_rectangle_membership *membership = cell1->rect_memberships;
+	while(membership != 0)
+	{
+		if(is_cell_in_rectangle(cell2, membership->rect))
+			return TRUE;
+		membership = membership->cell_next_membership;
+	}
+	return FALSE;
+}
+
+// Computes the area of intersecting the rectangle with mins 'r1_min' and maxs 'r1_max', 
+// with the rectangle with mins 'r2_min' and maxs 'r2_max'
+float (navgen_cell *r1_min, navgen_cell *r1_max, navgen_cell *r2_min, navgen_cell *r2_max) area_of_intersection =
+{
+	vector r1_min_pos = [r1_min->x, r1_min->y, r1_min->z];
+	vector r1_max_pos = [r1_max->x, r1_max->y, r1_max->z];
+	vector r2_min_pos = [r2_min->x, r2_min->y, r2_min->z];
+	vector r2_max_pos = [r2_max->x, r2_max->y, r2_max->z];
+
+	if(r1_min_pos.x > r2_max_pos.x)
+		return 0;
+	if(r1_max_pos.x < r2_min_pos.x)
+		return 0;
+	if(r1_min_pos.y > r2_max_pos.y)
+		return 0;
+	if(r1_max_pos.y < r2_min_pos.y)
+		return 0;
+
+	float width  = min(r1_max_pos.x - r2_min_pos.x, r2_max_pos.x - r1_min_pos.x);
+	float height = min(r1_max_pos.y - r2_min_pos.y, r2_max_pos.y - r1_min_pos.y);
+	return width * height;
+}
+
+// Returns TRUE if rectangle formed by min & max intersects with any rectangles in list 'rectangles'
+// If 'skip' is specified, we don't check against that rectangle.
+// Returns FALSE if it does not intersect.
+int intersects_with_rectangles(navgen_cell *min, navgen_cell *max, navgen_rectangle *rect_list, navgen_rectangle *skip)
+{
+	navgen_rectangle *rect;
+
+	for(rect = rect_list; rect != 0; rect = rect->next)
+	{
+		if(rect == skip)
+			continue;
+
+		navgen_cell *other_min = rect->min;
+		navgen_cell *other_max = rect->max;
+
+		if(area_of_intersection(min,max,other_min,other_max) > 0)
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
 // ------------------------------------------------------------------------------------------------------
 
 
@@ -996,10 +1168,22 @@ void cl_navgen_phase_rectangle_expansion_start()
 	}
 
 }
+
+
+int counter;
+
 void cl_navgen_phase_rectangle_expansion_step()
 {
-	int verbose = 0;
-	if(verbose) print("---- Navgen logic tick start ----\n");
+	counter++;
+	if(counter < 60)
+	{
+		return;
+	}
+	counter = 0;
+
+	int g_verbose = 0;
+	int n_verbose = 1;
+	// if(verbose) print("---- Navgen logic tick start ----\n");
 
 
 	navgen_cell *cell = closed_list_root_node;
@@ -1017,20 +1201,32 @@ void cl_navgen_phase_rectangle_expansion_step()
 		add_cell_to_list(cell, &cells_in_rects_list_root_node);
 		add_cell_to_rectangle(cell, rect);
 
-		if(verbose)
+		if(n_verbose || g_verbose)
 		{
-			print("\tCreated rectangle at: (",ftos(cell->x),",",ftos(cell->y),",",ftos(cell->z),")\n");
-			print("\t\tRectangle bounds: (",ftos((rect->min)->x),",",ftos((rect->min)->y),",",ftos((rect->min)->z),") -> (");
+			print("Created rectangle at: (",ftos(cell->x),",",ftos(cell->y),",",ftos(cell->z),")\n");
+			print("\tRectangle bounds: (",ftos((rect->min)->x),",",ftos((rect->min)->y),",",ftos((rect->min)->z),") -> (");
 			print(ftos((rect->max)->x),",",ftos((rect->max)->y),",",ftos((rect->max)->z),")\n");
 		}
+
+		// Only let the rectangle advance one step into another rectangle's region
+		// (We only want the edge cells to be shared)
+		int top_is_shared = FALSE;
+		int right_is_shared = FALSE;
+		int bottom_is_shared = FALSE;
+		int left_is_shared = FALSE;
+
+
+		// FIXME FIXME FIXME, y+ seems to go 1 cell too far into neighbors
+		// FIXME FIXME FIXME, x- seems to not go far enough into neighbors
+		// Could it be that the bottom nodes aren't being properly marked as "in a rectangle?"
 
 		// Expand the rectangle in each direction as far as possible:
 		while(TRUE)
 		{
-			if(verbose)
+			if(n_verbose || g_verbose)
 			{
-				print("\t-- Sweep iteration --\n");
-				print("\t\tRectangle bounds: (",ftos((rect->min)->x),",",ftos((rect->min)->y),",",ftos((rect->min)->z),") -> (");
+				// print("\t-- Sweep iteration --\n");
+				print("\tRectangle bounds: (",ftos((rect->min)->x),",",ftos((rect->min)->y),",",ftos((rect->min)->z),") -> (");
 				print(ftos((rect->max)->x),",",ftos((rect->max)->y),",",ftos((rect->max)->z),")\n");
 			}
 
@@ -1038,237 +1234,287 @@ void cl_navgen_phase_rectangle_expansion_step()
 			int expanded = FALSE;
 			int can_expand;
 			navgen_cell *temp_cell;
-			navgen_cell *last_temp_cell;
+			navgen_cell *temp_cell2;
+			navgen_cell *last_neighbor;
+
+			navgen_cell *temp_min;
+			navgen_cell *temp_max;
+
+			// top_is_shared = FALSE;
+			// right_is_shared = FALSE;
+			// bottom_is_shared = FALSE;
+			// left_is_shared = FALSE;
+
 
 			// ---------------------------------------------------
 			// Increasing in +y direction
 			// ---------------------------------------------------
-			if(verbose) print("\t\t-- Checking +y --\n");
+			if(!top_is_shared)
+			{
 			can_expand = TRUE;
-			last_temp_cell = 0;
-
-			// Sweep from top-right to top-left, checking if each node has a y_next neighbor in the closed list
-			temp_cell = rect->max;
-			// if(verbose) print("\t\tSweeping from ",ftos(temp_cell->x)," to ",ftos((rect->min)->x),"\n");
-
-			while(temp_cell != 0 && temp_cell->x >= (rect->min)->x)
+				if(g_verbose || n_verbose) print("\t\t-- Checking +y --\n");
+				// ----------------------------------------------------------------------
+				// Checking if the map geometry allows us to expand
+				// ----------------------------------------------------------------------
+				last_neighbor = 0;
+				// Sweep from top-right to top-left, checking if each node has a valid y_next neighbor
+				for(temp_cell = rect->max; temp_cell != 0 && temp_cell->x >= (rect->min)->x; temp_cell = temp_cell->x_prev)
 			{
 				// If cell doesn't have a y_next neighbor
 				if(temp_cell->y_next == 0)
 				{
-					if(verbose) print("\t\t+y failed. Reason: no neighbor.\n");
-					can_expand = FALSE;
-					break;
-				}
-				// If neighbor is not in closed list, then it already belongs to another rectangle
-				if(!cell_in_list(temp_cell->y_next, &closed_list_root_node))
-				{
-					if(verbose) print("\t\t+y failed. Reason: neighbor not in closed list.\n");
+						if(g_verbose) print("\t\t+y failed. Reason: no neighbor.\n");
 					can_expand = FALSE;
 					break;
 				}
 				// If this cell's y_next is not neighbors with the last cell's y_next, then we can't expand
-				if(last_temp_cell != 0 && !cells_are_neighbors(temp_cell->y_next, last_temp_cell->y_next))
+					if(last_neighbor != 0 && !cells_are_neighbors(temp_cell->y_next, last_neighbor))
 				{
-					if(verbose) print("\t\t+y failed. Reason: Two consecutive y_nexts are not neighbors.\n");
+						if(g_verbose) print("\t\t+y failed. Reason: Two consecutive y_nexts are not neighbors.\n");
 					can_expand = FALSE;
 					break;
 
 				}
-
-				last_temp_cell = temp_cell;
-				temp_cell = temp_cell->x_prev;
+					last_neighbor = temp_cell->y_next;
 			}
-			// if(verbose) print("\t\tFound all neighbors, can_expand: ",ftos(can_expand),"\n");
+				// ----------------------------------------------------------------------
+				// Checking if we are expanding into another rectangle
+				// ----------------------------------------------------------------------
+				if(can_expand)
+				{
+					temp_min = rect->min;
+					temp_max = (rect->max)->y_next;
 
+					if(intersects_with_rectangles(temp_min, temp_max, navgen_rectangles, rect))
+					{
+						top_is_shared = TRUE;
+					}
+				}
+				// ----------------------------------------------------------------------
 			// If we got to the edge and found them all, expand the rectangle
-			if(can_expand)
+				// ----------------------------------------------------------------------
+				if(can_expand && !top_is_shared)
 			{
 				// Sweep again, adding all the nodes to the rect
-				temp_cell = rect->max;
-				// if(verbose) print("\t\tSweeping from ",ftos(temp_cell->x)," to ",ftos((rect->min)->x),"\n");
-
-				while(temp_cell != 0 && temp_cell->x >= (rect->min)->x)
+					for(temp_cell = rect->max; temp_cell != 0 && temp_cell->x >= (rect->min)->x; temp_cell = temp_cell->x_prev)
+					{
+						if(cell_in_list(temp_cell->y_next, &closed_list_root_node))
 				{
 					remove_cell_from_list(temp_cell->y_next, &closed_list_root_node);
+							add_cell_to_list(temp_cell->y_next, &cells_in_rects_list_root_node);
+						}
 					add_cell_to_rectangle(temp_cell->y_next, rect);
-					temp_cell = temp_cell->x_prev;
 				}
 
 				// Update top-right node
 				rect->max = (rect->max)->y_next;
 				expanded = TRUE;		
 				
-				if(verbose) print("\t\tExpanded rectangle at +y\n");
+					if(n_verbose || g_verbose) print("\t\tExpanded rectangle at +y\n");
+				}
 			}
 			// ---------------------------------------------------
 
 			// ---------------------------------------------------
 			// Increasing in +x direction
 			// ---------------------------------------------------
-			if(verbose) print("\t\t-- Checking +x --\n");
+			if(!right_is_shared)
+			{
+				if(n_verbose || g_verbose) print("\t\t-- Checking +x --\n");
 			can_expand = TRUE;
-			last_temp_cell = 0;
-
-			// Sweep from top-right to bottom-right, checking if each node has a x_next neighbor in the closed list
-			temp_cell = rect->max;
-			while(temp_cell != 0 && temp_cell->y >= (rect->min)->y)
+                // ----------------------------------------------------------------------
+				// Checking if the map geometry allows us to expand
+				// ----------------------------------------------------------------------
+				last_neighbor = 0;
+                // Sweep from top-right to bottom-right, checking if each node has a valid x_next neighbor
+				for(temp_cell = rect->max; temp_cell != 0 && temp_cell->y >= (rect->min)->y; temp_cell = temp_cell->y_prev)
 			{
 				// If cell doesn't have a x_next neighbor
 				if(temp_cell->x_next == 0)
 				{
-					if(verbose) print("\t\t+x failed. Reason: no neighbor.\n");
-					can_expand = FALSE;
-					break;
-				}
-				// If neighbor is not in closed list, then it already belongs to another rectangle
-				// FIXME FIXME FIXME
-				if(!cell_in_list(temp_cell->x_next, &closed_list_root_node))
-				{
-					if(verbose) print("\t\t+x failed. Reason: neighbor not in closed list.\n");
+						if(g_verbose) print("\t\t+x failed. Reason: no neighbor.\n");
 					can_expand = FALSE;
 					break;
 				}
 				// If this cell's x_next is not neighbors with the last cell's x_next, then we can't expand
-				if(last_temp_cell != 0 && !cells_are_neighbors(temp_cell->x_next, last_temp_cell->x_next))
+					if(last_neighbor != 0 && !cells_are_neighbors(temp_cell->x_next, last_neighbor))
 				{
-					if(verbose) print("\t\t+x failed. Reason: Two consecutive x_nexts are not neighbors.\n");
+						if(g_verbose) print("\t\t+x failed. Reason: Two consecutive x_nexts are not neighbors.\n");
 					can_expand = FALSE;
 					break;
 				}
+					last_neighbor = temp_cell->x_next;
+				}
+				// ----------------------------------------------------------------------
+				// Checking if we are expanding into another rectangle
+				// ----------------------------------------------------------------------
+				if(can_expand)
+				{
+					temp_min = rect->min;
+					temp_max = (rect->max)->x_next;
 
-			    last_temp_cell = temp_cell;
-				temp_cell = temp_cell->y_prev;
+					if(intersects_with_rectangles(temp_min, temp_max, navgen_rectangles, rect))
+					{
+						right_is_shared = TRUE;
+					}
 			}
+				// ----------------------------------------------------------------------
 			// If we got to the edge and found them all, expand the rectangle
-			if(can_expand)
+				// ----------------------------------------------------------------------
+				if(can_expand && !right_is_shared)
+				{
+					for(temp_cell = rect->max; temp_cell != 0 && temp_cell->y >= (rect->min)->y; temp_cell = temp_cell->y_prev)
 			{
-				// Sweep again, adding all the nodes to the rect
-				temp_cell = rect->max;
-				while(temp_cell != 0 && temp_cell->y >= (rect->min)->y)
+						if(cell_in_list(temp_cell->x_next, &closed_list_root_node))
 				{
 					remove_cell_from_list(temp_cell->x_next, &closed_list_root_node);
+							add_cell_to_list(temp_cell->x_next, &cells_in_rects_list_root_node);
+						}
 					add_cell_to_rectangle(temp_cell->x_next, rect);
-					temp_cell = temp_cell->y_prev;
 				}
 
 				// Update top-right node
 				rect->max = (rect->max)->x_next;
 				expanded = TRUE;
 
-				if(verbose) print("\t\tExpanded rectangle at +x\n");
+					if(n_verbose || g_verbose) print("\t\tExpanded rectangle at +x\n");
+				}
 			}
 			// ---------------------------------------------------
 
 			// ---------------------------------------------------
 			// Increasing in -y direction
 			// ---------------------------------------------------
-			if(verbose) print("\t\t-- Checking -y --\n");
+			if(!bottom_is_shared)
+			{
+				if(n_verbose || g_verbose) print("\t\t-- Checking -y --\n");
 			can_expand = TRUE;
-			last_temp_cell = 0;
-
-			// Sweep from bottom-left to bottom-right, checking if each node has a y_prev neighbor in the closed list
-			temp_cell = rect->min;
-			while(temp_cell != 0 && temp_cell->x <= (rect->max)->x)
+				// ----------------------------------------------------------------------
+				// Checking if the map geometry allows us to expand
+				// ----------------------------------------------------------------------
+				last_neighbor = 0;
+				// Sweep from bottom-left to bottom-right, checking if each node has a valid y_prev neighbor
+				for(temp_cell = rect->min; temp_cell != 0 && temp_cell->x <= (rect->max)->x; temp_cell = temp_cell->x_next)
 			{
 				// If cell doesn't have a y_prev neighbor
 				if(temp_cell->y_prev == 0)
 				{
-					if(verbose) print("\t\t-y failed. Reason: no neighbor.\n");
-					can_expand = FALSE;
-					break;
-				}
-				// If neighbor is not in closed list, then it already belongs to another rectangle
-				if(!cell_in_list(temp_cell->y_prev, &closed_list_root_node))
-				{
-					if(verbose) print("\t\t-y failed. Reason: neighbor not in closed list.\n");
+						if(g_verbose) print("\t\t-y failed. Reason: no neighbor.\n");
 					can_expand = FALSE;
 					break;
 				}
 				// If this cell's y_prev is not neighbors with the last cell's y_prev, then we can't expand
-				if(last_temp_cell != 0 && !cells_are_neighbors(temp_cell->y_prev, last_temp_cell->y_prev))
+					if(last_neighbor != 0 && !cells_are_neighbors(temp_cell->y_prev, last_neighbor))
 				{
-					if(verbose) print("\t\t-y failed. Reason: Two consecutive y_prevs are not neighbors.\n");
+						if(g_verbose) print("\t\t-y failed. Reason: Two consecutive y_prevs are not neighbors.\n");
 					can_expand = FALSE;
 					break;
 				}
+					last_neighbor = temp_cell->y_prev;
+				}
+				// ----------------------------------------------------------------------
+				// Checking if we are expanding into another rectangle
+				// ----------------------------------------------------------------------
+				if(can_expand)
+				{
+					temp_min = (rect->min)->y_prev;
+					temp_max = rect->max;
 
-				last_temp_cell = temp_cell;
-				temp_cell = temp_cell->x_next;
+					if(intersects_with_rectangles(temp_min, temp_max, navgen_rectangles, rect))
+					{
+						bottom_is_shared = TRUE;
+					}
 			}
+				// ----------------------------------------------------------------------
 			// If we got to the edge and found them all, expand the rectangle
-			if(can_expand)
+				// ----------------------------------------------------------------------
+				if(can_expand && !bottom_is_shared)
 			{
 				// Sweep again, adding all the nodes to the rect
-				temp_cell = rect->min;
-				while(temp_cell != 0 && temp_cell->x <= (rect->max)->x)
+					for(temp_cell = rect->min; temp_cell != 0 && temp_cell->x <= (rect->max)->x; temp_cell = temp_cell->x_next)
+					{
+						if(cell_in_list(temp_cell->y_prev, &closed_list_root_node))
 				{
 					remove_cell_from_list(temp_cell->y_prev, &closed_list_root_node);
+							add_cell_to_list(temp_cell->y_prev, &cells_in_rects_list_root_node);
+						}
 					add_cell_to_rectangle(temp_cell->y_prev, rect);
-					temp_cell = temp_cell->x_next;
 				}
 
 				// Update bottom-left node
 				rect->min = (rect->min)->y_prev;
 				expanded = TRUE;
 
-				if(verbose) print("\t\tExpanded rectangle at -y\n");
+					if(n_verbose || g_verbose) print("\t\tExpanded rectangle at -y\n");
+				}
 			}
 			// ---------------------------------------------------
 
 			// ---------------------------------------------------
 			// Increasing in -x direction
 			// ---------------------------------------------------
-			if(verbose) print("\t\t-- Checking -x --\n");
+			if(!left_is_shared)
+			{
+				if(n_verbose || g_verbose) print("\t\t-- Checking -x --\n");
 			can_expand = TRUE;
-			last_temp_cell = 0;
-
-			// Sweep from bottom-left to top-left, checking if each node has a x_prev neighbor in the closed list
-			temp_cell = rect->min;
-			while(temp_cell != 0 && temp_cell->y <= (rect->max)->y)
+				// ----------------------------------------------------------------------
+				// Checking if the map geometry allows us to expand
+				// ----------------------------------------------------------------------
+				last_neighbor = 0;
+				// Sweep from bottom-left to top-left, checking if each node has a valid x_prev neighbor
+				for(temp_cell = rect->min; temp_cell != 0 && temp_cell->y <= (rect->max)->y; temp_cell = temp_cell->y_next)
 			{
 				// If cell doesn't have a x_prev neighbor
 				if(temp_cell->x_prev == 0)
 				{
-					if(verbose) print("\t\t-x failed. Reason: no neighbor.\n");
-					can_expand = FALSE;
-					break;
-				}
-				// If neighbor is not in closed list, then it already belongs to another rectangle
-				if(!cell_in_list(temp_cell->x_prev, &closed_list_root_node))
-				{
-					if(verbose) print("\t\t-x failed. Reason: neighbor not in closed list.\n");
+						if(g_verbose) print("\t\t-x failed. Reason: no neighbor.\n");
 					can_expand = FALSE;
 					break;
 				}
 				// If this cell's x_prev is not neighbors with the last cell's x_prev, then we can't expand
-				if(last_temp_cell != 0 && !cells_are_neighbors(temp_cell->x_prev, last_temp_cell->x_prev))
+					if(last_neighbor != 0 && !cells_are_neighbors(temp_cell->x_prev, last_neighbor))
 				{
-					if(verbose) print("\t\t-x failed. Reason: Two consecutive x_prevs are not neighbors.\n");
+						if(g_verbose) print("\t\t-x failed. Reason: Two consecutive x_prevs are not neighbors.\n");
 					can_expand = FALSE;
 					break;
 				}
+					last_neighbor = temp_cell->x_prev;
+				}
+				// ----------------------------------------------------------------------
+				// Checking if we are expanding into another rectangle
+				// ----------------------------------------------------------------------
+				if(can_expand)
+				{
+					temp_min = (rect->min)->x_prev;
+					temp_max = rect->max;
 
-				last_temp_cell = temp_cell;
-				temp_cell = temp_cell->y_next;
+					if(intersects_with_rectangles(temp_min, temp_max, navgen_rectangles, rect))
+					{
+						left_is_shared = TRUE;
+					}
 			}
+				// ----------------------------------------------------------------------
 			// If we got to the edge and found them all, expand the rectangle
-			if(can_expand)
+				// ----------------------------------------------------------------------
+				if(can_expand && !left_is_shared)
 			{
 				// Sweep again, adding all the nodes to the rect
-				temp_cell = rect->min;
-				while(temp_cell != 0 && temp_cell->y <= (rect->max)->y)
+					for(temp_cell = rect->min; temp_cell != 0 && temp_cell->y <= (rect->max)->y; temp_cell = temp_cell->y_next)
+					{
+						if(cell_in_list(temp_cell->x_prev, &closed_list_root_node))
 				{
 					remove_cell_from_list(temp_cell->x_prev, &closed_list_root_node);
+							add_cell_to_list(temp_cell->x_prev, &cells_in_rects_list_root_node);
+						}
 					add_cell_to_rectangle(temp_cell->x_prev, rect);
-					temp_cell = temp_cell->y_next;
 				}
 
 				// Update bottom-left node
 				rect->min = (rect->min)->x_prev;
 				expanded = TRUE;
 
-				if(verbose) print("\t\tExpanded rectangle at -x\n");
+					if(n_verbose || g_verbose) print("\t\tExpanded rectangle at -x\n");
+				}
 			}
 			// ---------------------------------------------------
 
@@ -1360,12 +1606,95 @@ void cl_navgen_draw_phase_rectangle_expansion()
 
 		rect = rect->next;
 	}
+
+
+	// // ------------------------------------------------------------------------
+	// // Draw all of the cells that belong to a rectangle
+	// // ------------------------------------------------------------------------
+	// vector cell_in_rect_color = [0.8,0.8,0.2];
+	// float cell_in_rect_alpha = 0.1;
+	
+	// navgen_cell *cell = cells_in_rects_list_root_node;
+
+	// while(cell != 0)
+	// {
+	// 	if(cell->rect_memberships != 0)
+	// 		cl_navmesh_draw_vert([cell->x, cell->y, cell->z],cell_in_rect_color,cell_in_rect_alpha);
+	// 	cell = cell->next;
+	// }
+
 }
 // ===========================================================================================================
 // NAVGEN_PHASE_RECTANGLE_VECTORIZATION
 // ===========================================================================================================
 void cl_navgen_phase_rectangle_vectorization_start()
 {
+	// // FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME 
+	// // START temp fixme remove this
+	// navgen_cell *cell1 = create_cell(0,0,0);
+	// navgen_cell *cell2 = create_cell(0,0,0);
+	// navgen_cell *cell3 = create_cell(0,0,0);
+	// navgen_cell *cell4 = create_cell(0,0,0);
+	// navgen_cell *cell5 = create_cell(0,0,0);
+	// navgen_rectangle *rect1 = create_rect();
+	// navgen_rectangle *rect2 = create_rect();
+	// navgen_rectangle *rect3 = create_rect();
+	// navgen_rectangle *rect4 = create_rect();
+	// navgen_rectangle *rect5 = create_rect();
+
+	// add_cell_to_rectangle(cell1, rect1);
+	// add_cell_to_rectangle(cell1, rect2);
+	// add_cell_to_rectangle(cell2, rect2);
+	// // add_cell_to_rectangle(cell1, rect3);
+	// // add_cell_to_rectangle(cell2, rect4);
+	// // add_cell_to_rectangle(cell2, rect5);
+	// remove_cell_from_rectangle(cell1, rect1);
+	// print("Do cell1 & cell2 share a rect? (1) ",ftos(cells_share_membership(cell1,cell2)),"\n");
+
+	// int mem_id;
+	// navgen_cell_rectangle_membership *mem;
+	
+	// print("-- iterating through cell1 memberships --\n");
+	// mem = cell1->rect_memberships;
+	// mem_id = 0;
+	// while(mem != 0)
+	// {
+	// 	print("\tmembership[",ftos(mem_id),"] = ");
+	// 	if(mem->rect == rect1) print(" rect1\n");
+	// 	else if(mem->rect == rect2) print(" rect2\n");
+	// 	else if(mem->rect == rect3) print(" rect3\n");
+	// 	else if(mem->rect == rect4) print(" rect4\n");
+	// 	else if(mem->rect == rect5) print(" rect5\n");
+	// 	else print(" unknown rect\n");			
+
+	// 	mem_id++;
+	// 	mem = mem->cell_next_membership;
+	// }
+
+
+
+
+	// print("-- iterating through cell2 memberships --\n");
+	// mem = cell2->rect_memberships;
+	// mem_id = 0;
+	// while(mem != 0)
+	// {
+	// 	print("\tmembership[",ftos(mem_id),"] = ");
+	// 	if(mem->rect == rect1) print(" rect1\n");
+	// 	else if(mem->rect == rect2) print(" rect2\n");
+	// 	else if(mem->rect == rect3) print(" rect3\n");
+	// 	else if(mem->rect == rect4) print(" rect4\n");
+	// 	else if(mem->rect == rect5) print(" rect5\n");
+	// 	else print(" unknown rect\n");			
+
+	// 	mem_id++;
+	// 	mem = mem->cell_next_membership;
+	// }
+
+	// // END temp fixme remove this
+	// // FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME 
+
+
 	// TODO - Anything to de-alloc?
 	// Delete all rectangle vertices
 	navgen_rectangle *rect = navgen_rectangles;
