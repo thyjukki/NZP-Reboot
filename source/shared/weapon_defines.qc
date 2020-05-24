@@ -3996,7 +3996,7 @@ vector (float wep) GetWeaponFlash_Offset =
 			case W_COLT:
                 return [5488, -2742, 35300];
 			case W_BIATCH:
-				return [5088, -2742, 20300];
+				return [8588, -3842, 35300];
 			case W_KAR:
 			case W_KAR_SCOPE:
 			case W_HEADCRACKER:

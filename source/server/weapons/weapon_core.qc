@@ -758,7 +758,7 @@ void() LungeKnifeHit =
 	}
 }
 
-void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAttack =
+void(float damage, vector dir, vector org, vector plane, entity hit_ent, float side) TraceAttack =
 {
 	vector  vel;
 	float f_damage;
@@ -836,6 +836,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
 	WriteEntity(MSG_MULTICAST, self);
+    WriteFloat(MSG_MULTICAST, side);
 	WriteCoord(MSG_MULTICAST, org_x);
 	WriteCoord(MSG_MULTICAST, org_y);
 	WriteCoord(MSG_MULTICAST, org_z);
@@ -848,7 +849,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 	
 };
 
-void (float shotcount, float sprd, float Damage/*, float headmulti, float legmulti*/) FireTrace =
+void (float shotcount, float sprd, float Damage, float side) FireTrace =
 {
 	float count, r, ru, penetration_times, do_break;
 	vector dir, src, trace_start_org;
@@ -898,7 +899,7 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 			}
 			
 			if (trace_fraction != 1.0)
-				TraceAttack (Damage, dir, trace_endpos, trace_plane_normal, trace_ent);
+				TraceAttack (Damage, dir, trace_endpos, trace_plane_normal, trace_ent, side);
 			trace_start_org = trace_endpos;
 			penetration_times++;
 			if (!trace_ent.takedamage)
@@ -1138,7 +1139,7 @@ void() W_FireTesla =
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 
-	FireTrace(1, 0, 0);
+	FireTrace(1, 0, 0, 0);
 
 	#ifdef PC
 	te_lightning2(self, source, trace_endpos);
@@ -1435,7 +1436,7 @@ void(float side) W_Fire =
 
     // FIXME - clean this up lol
 	if (firetype == 1 || firetype == 0 || firetype == 3) {
-		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
+		FireTrace(shotcount, spread, damage, side);
 	}
 
 	//Play weapon animation and sound
@@ -1559,6 +1560,7 @@ void () W_Knife =
 			WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 			WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
 			WriteEntity(MSG_MULTICAST, self);
+            WriteFloat(MSG_MULTICAST, 0);
 			WriteCoord(MSG_MULTICAST, org_x);
 			WriteCoord(MSG_MULTICAST, org_y);
 			WriteCoord(MSG_MULTICAST, org_z);

@@ -693,10 +693,10 @@ noref void() CSQC_Parse_Event =
 
 	switch (first) {
 		case EVENT_PISTOLFIRE:			
-			local float entnum, traceent;
+			local float entnum, traceent, side;
 			local vector pos, norm;
 			entnum = readentitynum();
-			
+			side = readfloat();
 			pos_x = readcoord();
 			pos_y = readcoord();
 			pos_z = readcoord();
@@ -714,6 +714,10 @@ noref void() CSQC_Parse_Event =
 				muzzlepos = getviewprop(VF_ORIGIN);
 				
 				local vector muzzle_offset = GetWeaponFlash_Offset(getstatf(STAT_ACTIVEWEAPON))/1000;
+                
+                // Firing from the left? Flip x-axis for muzzleflash
+                if (side == 0 && IsDualWeapon(getstatf(STAT_ACTIVEWEAPON)))
+                    muzzle_offset[0] = -muzzle_offset[0];
 				
 				muzzlepos += v_forward * muzzle_offset_z;
 				muzzlepos += v_right * muzzle_offset_x;
