@@ -757,7 +757,14 @@ noref void() CSQC_Parse_Event =
 				splat.predraw = alphafade;
 			}
 			break;
-		
+		case EVENT_EXPLOSION:
+            local vector org;
+            org_x = readcoord();
+            org_y = readcoord();
+            org_z = readcoord();
+
+            pointparticles(particleeffectnum("weapons.explode"), org, '0 0 0', 1);
+            break;
 		case EVENT_WEAPONCHANGE:
 			local float to;
 			to = readbyte();

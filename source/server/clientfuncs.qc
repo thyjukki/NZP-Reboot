@@ -44,6 +44,22 @@ void(entity to, float type, float cost, float weapon) useprint = {
 #endif
 #endif
 
+void(vector org) CallExplosion = {
+    #ifndef PC
+    WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, org_x);
+	WriteCoord (MSG_BROADCAST, org_y);
+	WriteCoord (MSG_BROADCAST, org_z);
+    #else
+    WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+	WriteByte(MSG_ALL, EVENT_EXPLOSION);
+	WriteCoord(MSG_ALL, org_x);
+	WriteCoord(MSG_ALL, org_y);
+	WriteCoord(MSG_ALL, org_z);
+    #endif
+}
+
 void NotifyNewRound(float to) {
 	#ifndef PSP
 	#ifndef NX
@@ -384,7 +400,7 @@ float() crandom =
 }
 
 void WeaponSwitch(entity player) {
-	float wep, cmag, cmag2, cammo;
+	/*float wep, cmag, cmag2, cammo;
 
 	wep = other.weapon;
 	other.weapon = other.secondaryweapon;
@@ -400,7 +416,7 @@ void WeaponSwitch(entity player) {
 
 	cammo = other.currentammo;
 	other.currentammo = other.secondaryammo;
-	other.secondaryammo = cammo;
+	other.secondaryammo = cammo;*/
 
 	entity tempe = self;
 	self = player;

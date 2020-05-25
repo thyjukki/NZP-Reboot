@@ -1684,14 +1684,10 @@ void() GrenadeExplode =
 		DamgageExplode (self, self.owner, 1200, 1000, 128); //explosive weapons are more powerful :)
 	
 	#ifdef PC
-	te_explosionquad(self.origin);
-	#else
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
+    te_customflash(self.origin, 128, 300, '1 1 1');
 	#endif
+
+    CallExplosion(self.origin);
 	
 	SUB_Remove ();
 };

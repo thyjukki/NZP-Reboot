@@ -639,7 +639,6 @@ void() ClientDisconnect =
 	bprint(PRINT_HIGH, " has left the game.\n");
 	player_count--;
 	UpdatePlayerCount(player_count);
-	remove(self);
 };
 
 
