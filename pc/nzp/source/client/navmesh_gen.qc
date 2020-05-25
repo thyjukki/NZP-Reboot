@@ -349,6 +349,10 @@ void mark_cells_as_neighbors(navgen_cell *a, navgen_cell *b, int ofs_x, int ofs_
 	}
 }
 
+vector get_cell_pos(navgen_cell *cell) = 
+{
+	return [cell->x, cell->y, cell->z];
+}
 // ------------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------------
@@ -1453,8 +1457,8 @@ void cl_navgen_phase_rectangle_expansion_step()
 
 int cl_navgen_phase_rectangle_expansion_finished()
 {
-	return FALSE;
-	// return zones_to_process == 0;
+	// return FALSE;
+	return zones_to_process == 0;
 }
 void cl_navgen_draw_phase_rectangle_expansion()
 {
@@ -1510,170 +1514,175 @@ void cl_navgen_phase_rectangle_vectorization_step()
 	navgen_rectangle *rect1;
 	navgen_rectangle *rect2;
 
-	// for(rect1 = navgen_rectangles; rect1 != 0; rect1 = rect1->next)
-	// {
-	// 	// Add the four corners of rect1 to rect1's list of verts
-	// 	navgen_cell *tr = rect1->max;
-	// 	navgen_cell *br = get_bottom_right_cell(rect1);
-	// 	navgen_cell *bl = rect1->min;
-	// 	navgen_cell *tl = get_top_left_cell(rect1);
+	for(rect1 = navgen_rectangles; rect1 != 0; rect1 = rect1->next)
+	{
+		// Add the four corners of rect1 to rect1's list of verts
+		navgen_cell *tr = (rect1->max)->tr_cell;
+		navgen_cell *br = get_bottom_right_zone(rect1)->br_cell;
+		navgen_cell *bl = (rect1->min)->bl_cell;
+		navgen_cell *tl = get_top_left_zone(rect1)->tl_cell;
 
-	// 	// Create a cell vert for each of these corners
-	// 	navgen_cell *tr_vert = create_cell(tr->x, tr->y, tr->z);
-	// 	navgen_cell *br_vert = create_cell(br->x, br->y, br->z);
-	// 	navgen_cell *bl_vert = create_cell(bl->x, bl->y, bl->z);
-	// 	navgen_cell *tl_vert = create_cell(tl->x, tl->y, tl->z);
+		// Create a cell vert for each of these corners
+		navgen_cell *tr_vert = create_cell(tr->x, tr->y, tr->z);
+		navgen_cell *br_vert = create_cell(br->x, br->y, br->z);
+		navgen_cell *bl_vert = create_cell(bl->x, bl->y, bl->z);
+		navgen_cell *tl_vert = create_cell(tl->x, tl->y, tl->z);
 
-	// 	// Add these four cell verts to rect1's list of verts
-	// 	add_cell_to_list(tr_vert, &(rect1->verts));
-	// 	add_cell_to_list(br_vert, &(rect1->verts));
-	// 	add_cell_to_list(bl_vert, &(rect1->verts));
-	// 	add_cell_to_list(tl_vert, &(rect1->verts));
-
-	// 	for(rect2 = navgen_rectangles; rect2 != 0; rect2 = rect2->next)
-	// 	{
-	// 		if(rect1 == rect2)
-	// 			continue;
-
-	// 		// Check if the rectangles are neighbors
-
-	// 		// Easy early-out test, Check if the mins / maxs of the rectangles are within 2 cells of each other
-	// 		// If they're not, then it's impossible for these rectangles to be neighbors
-	// 		vector r1_min_pos = [(rect1->min)->x, (rect1->min)->y, (rect1->min)->z];
-	// 		vector r1_max_pos = [(rect1->max)->x, (rect1->max)->y, (rect1->max)->z];
-	// 		vector r2_min_pos = [(rect2->min)->x, (rect2->min)->y, (rect2->min)->z];
-	// 		vector r2_max_pos = [(rect2->max)->x, (rect2->max)->y, (rect2->max)->z];
-
-	// 		if(r1_min_pos.x > r2_max_pos.x + 2 * navgen_cell_size)
-	// 			continue;
-	// 		if(r1_max_pos.x < r2_min_pos.x - 2 * navgen_cell_size)
-	// 			continue;
-	// 		if(r1_min_pos.y > r2_max_pos.y + 2 * navgen_cell_size)
-	// 			continue;
-	// 		if(r1_max_pos.y < r2_min_pos.y - 2 * navgen_cell_size)
-	// 			continue;
+		// Add these four cell verts to rect1's list of verts
+		add_cell_to_list(tr_vert, &(rect1->verts));
+		add_cell_to_list(br_vert, &(rect1->verts));
+		add_cell_to_list(bl_vert, &(rect1->verts));
+		add_cell_to_list(tl_vert, &(rect1->verts));
 
 
-	// 		// At this point... the rectangles are close enough that they _might_ be neighbors
-	// 		navgen_cell *r1_cell;
-	// 		navgen_cell *r2_cell;
-	// 		navgen_cell *first_shared_cell = 0;
-	// 		navgen_cell *last_shared_cell = 0;
+		vector r1_min = get_cell_pos((rect1->min)->bl_cell);
+		vector r1_max = get_cell_pos((rect1->max)->tr_cell);
 
-	// 		// ---------------------------------------------------------------------
-	// 		// Check rect1's top edge
-	// 		// ---------------------------------------------------------------------
-	// 		// Only check this if we don't have a shared edge
-	// 		// (NOTE: This is always true for the top edge check, but the rest of the edges have it, so keep it.)
-	// 		if(first_shared_cell == 0 || last_shared_cell != first_shared_cell)
-	// 		{
-	// 			// Sweep rect1's top edge from top right to top left
-	// 			for(r1_cell = rect1->max; TRUE; r1_cell = r1_cell->x_prev)
-	// 			{
-	// 				// Sweep rect2's bottom edge from bottom left to bottom right
-	// 				for(r2_cell = rect2->min; TRUE; r2_cell = r2_cell->x_next)
-	// 				{
-	// 					if(cells_are_neighbors(r1_cell, r2_cell))
-	// 					{
-	// 						first_shared_cell = first_shared_cell == 0 ? r1_cell : first_shared_cell;
-	// 						last_shared_cell = r1_cell;
-	// 					}
-	// 					if(r2_cell->x == (rect2->max)->x) break;
-	// 				}
-	// 				if(r1_cell->x == (rect1->min)->x) break;
-	// 			}
-	// 		}
+		for(rect2 = navgen_rectangles; rect2 != 0; rect2 = rect2->next)
+		{
+			if(rect1 == rect2)
+				continue;
 
-	// 		// ---------------------------------------------------------------------
-	// 		// Check rect1's right edge
-	// 		// ---------------------------------------------------------------------
-	// 		// Only check this if we don't have a shared edge
-	// 		if(first_shared_cell == 0 || last_shared_cell != first_shared_cell)
-	// 		{
-	// 			// Sweep rect1's right edge from top right to bottom right
-	// 			for(r1_cell = rect1->max; TRUE; r1_cell = r1_cell->y_prev)
-	// 			{
-	// 				// Sweep rect2's left edge from bottom left to top left
-	// 				for(r2_cell = rect2->min; TRUE; r2_cell = r2_cell->y_next)
-	// 				{
-	// 					if(cells_are_neighbors(r1_cell, r2_cell))
-	// 					{
-	// 						first_shared_cell = first_shared_cell == 0 ? r1_cell : first_shared_cell;
-	// 						last_shared_cell = r1_cell;
-	// 					}
-	// 					if(r2_cell->y == (rect2->max)->y) break;
-	// 				}
-	// 				if(r1_cell->y == (rect1->min)->y) break;
-	// 			}
-	// 		}
+			vector r2_min = get_cell_pos((rect2->min)->bl_cell);
+			vector r2_max = get_cell_pos((rect2->max)->tr_cell);
 
-	// 		// ---------------------------------------------------------------------
-	// 		// Check rect1's bottom edge
-	// 		// ---------------------------------------------------------------------
-	// 		// Only check this if we don't have a shared edge
-	// 		if(first_shared_cell == 0 || last_shared_cell != first_shared_cell)
-	// 		{
-	// 			// Sweep rect1's bottom edge from bottom left to bottom right
-	// 			for(r1_cell = rect1->min; TRUE; r1_cell = r1_cell->x_next)
-	// 			{
-	// 				// Sweep rect2's top edge from top right to top left
-	// 				for(r2_cell = rect2->max; TRUE; r2_cell = r2_cell->x_prev)
-	// 				{
-	// 					if(cells_are_neighbors(r1_cell, r2_cell))
-	// 					{
-	// 						first_shared_cell = first_shared_cell == 0 ? r1_cell : first_shared_cell;
-	// 						last_shared_cell = r1_cell;
-	// 					}
-	// 					if(r2_cell->x == (rect2->min)->x) break;
-	// 				}
-	// 				if(r1_cell->x == (rect1->max)->x) break;
-	// 			}
-	// 		}
+			// Check if the rectangles are neighbors
+			// Easy early-out test, Check if the mins / maxs of the rectangles are within 2 cells of each other
+			// If they're not, then it's impossible for these rectangles to be neighbors
 
-	// 		// ---------------------------------------------------------------------
-	// 		// Check rect1's left edge
-	// 		// ---------------------------------------------------------------------
-	// 		// Only check this if we don't have a shared edge
-	// 		if(first_shared_cell == 0 || last_shared_cell != first_shared_cell)
-	// 		{
-	// 			// Sweep rect1's left edge from bottom left to top left
-	// 			for(r1_cell = rect1->min; TRUE; r1_cell = r1_cell->y_next)
-	// 			{
-	// 				// Sweep rect2's right edge from top right to bottom right
-	// 				for(r2_cell = rect2->max; TRUE; r2_cell = r2_cell->y_prev)
-	// 				{
-	// 					if(cells_are_neighbors(r1_cell, r2_cell))
-	// 					{
-	// 						first_shared_cell = first_shared_cell == 0 ? r1_cell : first_shared_cell;
-	// 						last_shared_cell = r1_cell;
-	// 					}
-	// 					if(r2_cell->y == (rect2->min)->y) break;
-	// 				}
-	// 				if(r1_cell->y == (rect1->max)->y) break;
-	// 			}
-	// 		}
+			if(r1_min.x > r2_max.x + 2 * navgen_cell_size)
+				continue;
+			if(r1_max.x < r2_min.x - 2 * navgen_cell_size)
+				continue;
+			if(r1_min.y > r2_max.y + 2 * navgen_cell_size)
+				continue;
+			if(r1_max.y < r2_min.y - 2 * navgen_cell_size)
+				continue;
 
-	// 		// ---------------------------------------------------------------------
 
-	// 		if(first_shared_cell != 0)
-	// 		{
-	// 			// A single cell does not an edge make
-	// 			if(first_shared_cell != last_shared_cell)
-	// 			{
-	// 				navgen_cell *first_cell_vert;
-	// 				navgen_cell *last_cell_vert;
+			// At this point... the rectangles are close enough that they _might_ be neighbors
+			navgen_zone *r1_zone;
+			navgen_zone *r2_zone;
 
-	// 				// Create a cell vert for these two points
-	// 				first_cell_vert = create_cell(first_shared_cell->x, first_shared_cell->y, first_shared_cell->z);
-	// 				last_cell_vert = create_cell(last_shared_cell->x, last_shared_cell->y, last_shared_cell->z);
+			navgen_zone *first_neighbor_zone = 0;
+			navgen_zone *last_neighbor_zone = 0;
+			navgen_cell *first_neighbor_cell = 0;
+			navgen_cell *last_neighbor_cell = 0;
+
+			// ---------------------------------------------------------------------
+			// Check rect1's top edge
+			// ---------------------------------------------------------------------
+			// Only check this if we don't have a shared edge
+			// (NOTE: This is always true for the top edge check, but the rest of the edges have it, so keep it.)
+			if(first_neighbor_zone == 0 || last_neighbor_zone != first_neighbor_zone)
+			{
+				// Sweep rect1's top edge from top right to top left
+				for(r1_zone = 0; top_edge_iter(&r1_zone, rect1);)
+				{
+					// Sweep rect2's bottom edge from bottom left to bottom right
+					for(r2_zone = 0; bottom_edge_iter(&r2_zone, rect2);)
+					{
+						if(zones_are_neighbors(r1_zone, r2_zone))
+						{
+							first_neighbor_zone = first_neighbor_zone == 0 ? r1_zone : first_neighbor_zone;
+							last_neighbor_zone = r1_zone;
+							first_neighbor_cell = first_neighbor_zone == 0 ? r1_zone->tr_cell : first_neighbor_cell;
+							last_neighbor_cell = r1_zone->tl_cell;
+						}
+					}
+				}
+			}
+
+			// ---------------------------------------------------------------------
+			// Check rect1's right edge
+			// ---------------------------------------------------------------------
+			// Only check this if we don't have a shared edge
+			if(first_neighbor_zone == 0 || last_neighbor_zone != first_neighbor_zone)
+			{
+				// Sweep rect1's right edge from top right to bottom right
+				for(r1_zone = 0; right_edge_iter(&r1_zone, rect1);)
+				{
+					// Sweep rect2's left edge from bottom left to top left
+					for(r2_zone = 0; left_edge_iter(&r2_zone, rect2);)
+					{
+						if(zones_are_neighbors(r1_zone, r2_zone))
+						{
+							first_neighbor_zone = first_neighbor_zone == 0 ? r1_zone : first_neighbor_zone;
+							last_neighbor_zone = r1_zone;
+							first_neighbor_cell = first_neighbor_zone == 0 ? r1_zone->tr_cell : first_neighbor_cell;
+							last_neighbor_cell = r1_zone->br_cell;
+						}
+					}
+				}
+			}
+
+			// ---------------------------------------------------------------------
+			// Check rect1's bottom edge
+			// ---------------------------------------------------------------------
+			// Only check this if we don't have a shared edge
+			if(first_neighbor_zone == 0 || last_neighbor_zone != first_neighbor_zone)
+			{
+				// Sweep rect1's bottom edge from bottom left to bottom right
+				for(r1_zone = 0; bottom_edge_iter(&r1_zone, rect1);)
+				{
+					// Sweep rect2's top edge from top right to top left
+					for(r2_zone = 0; top_edge_iter(&r2_zone, rect2);)
+					{
+						if(zones_are_neighbors(r1_zone, r2_zone))
+						{
+							first_neighbor_zone = first_neighbor_zone == 0 ? r1_zone : first_neighbor_zone;
+							last_neighbor_zone = r1_zone;
+							first_neighbor_cell = first_neighbor_zone == 0 ? r1_zone->bl_cell : first_neighbor_cell;
+							last_neighbor_cell = r1_zone->br_cell;
+						}
+					}
+				}
+			}
+
+			// ---------------------------------------------------------------------
+			// Check rect1's left edge
+			// ---------------------------------------------------------------------
+			// Only check this if we don't have a shared edge
+			if(first_neighbor_zone == 0 || last_neighbor_zone != first_neighbor_zone)
+			{
+				// Sweep rect1's left edge from bottom left to top left
+				for(r1_zone = 0; left_edge_iter(&r1_zone, rect1);)
+				{
+					// Sweep rect2's right edge from top right to bottom right
+					for(r2_zone = 0; right_edge_iter(&r2_zone, rect2);)
+					{
+						if(zones_are_neighbors(r1_zone, r2_zone))
+						{
+							first_neighbor_zone = first_neighbor_zone == 0 ? r1_zone : first_neighbor_zone;
+							last_neighbor_zone = r1_zone;
+							first_neighbor_cell = first_neighbor_zone == 0 ? r1_zone->bl_cell : first_neighbor_cell;
+							last_neighbor_cell = r1_zone->tl_cell;
+						}
+					}
+				}
+			}
+
+			// ---------------------------------------------------------------------
+
+			if(first_neighbor_zone != 0)
+			{
+				// A single cell does not an edge make
+				if(first_neighbor_zone != last_neighbor_zone)
+				{
+					navgen_cell *first_cell_vert;
+					navgen_cell *last_cell_vert;
+
+					// Create a cell vert for these two points
+					first_cell_vert = create_cell(first_neighbor_cell->x, first_neighbor_cell->y, first_neighbor_cell->z);
+					last_cell_vert = create_cell(last_neighbor_cell->x, last_neighbor_cell->y, last_neighbor_cell->z);
 		
-	// 				// Add these two cell verts to rect1's list of verts
-	// 				add_cell_to_list(first_cell_vert, &(rect1->verts));
-	// 				add_cell_to_list(last_cell_vert, &(rect1->verts));
-	// 			}
-	// 		}	
-	// 	}
-	// }
+					// Add these two cell verts to rect1's list of verts
+					add_cell_to_list(first_cell_vert, &(rect1->verts));
+					add_cell_to_list(last_cell_vert, &(rect1->verts));
+				}
+			}
+		}
+	}
 }
 int cl_navgen_phase_rectangle_vectorization_finished()
 {
