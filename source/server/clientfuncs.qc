@@ -400,7 +400,7 @@ float() crandom =
 }
 
 void WeaponSwitch(entity player) {
-	/*float wep, cmag, cmag2, cammo;
+	float wep, cmag, cmag2, cammo;
 
 	wep = other.weapon;
 	other.weapon = other.secondaryweapon;
@@ -416,7 +416,7 @@ void WeaponSwitch(entity player) {
 
 	cammo = other.currentammo;
 	other.currentammo = other.secondaryammo;
-	other.secondaryammo = cammo;*/
+	other.secondaryammo = cammo;
 
 	entity tempe = self;
 	self = player;
