@@ -20,6 +20,7 @@ const float EVENT_PLAYERUPDATE = 31;
 const float EVENT_WEAPONUPDATE = 32;
 const float EVENT_HUDUPDATE = 33;
 const float EVENT_EXPLOSION = 34;
+const float EVENT_BLOOD = 35;
 
 // Define our PC version if we don't have NX or PSP 
 #ifndef NX

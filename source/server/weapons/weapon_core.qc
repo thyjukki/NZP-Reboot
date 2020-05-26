@@ -557,7 +557,13 @@ void(vector org, vector vel, float damage) SpawnBlood =
 	local entity f;
   
   	#ifdef PC
-	te_blood(org, vel, 1);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_BLOOD);
+	WriteCoord(MSG_MULTICAST, org_x);
+	WriteCoord(MSG_MULTICAST, org_y);
+	WriteCoord(MSG_MULTICAST, org_z);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
 	#else
 	particle (org, vel*0.1, 73, damage*2);
 	#endif
@@ -570,7 +576,13 @@ void(vector where) spawn_gibs = {
 	#ifndef PC
 	particle(where, where*0.1, 225, 1);
 	#else
-	te_blood(where, where, 1);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_BLOOD);
+	WriteCoord(MSG_MULTICAST, where_x);
+	WriteCoord(MSG_MULTICAST, where_y);
+	WriteCoord(MSG_MULTICAST, where_z);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
 	#endif
 }
 
@@ -2232,8 +2244,10 @@ void() CheckPlayer =
 				sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
 				DamgageExplode (self, self, 225, 75, 128);
 				#ifdef PC
-				te_explosionquad(self.origin);
+				te_customflash(self.origin, 128, 300, '1 1 1');
 				#endif
+
+				CallExplosion(self.origin);
 			}
 			self.dive = 0;
 		}
