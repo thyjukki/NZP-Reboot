@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "*.qc": "c",
-        "*.gsc": "c",
-        "*.q1": "c"
-    }
-}
