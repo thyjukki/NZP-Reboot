@@ -39,6 +39,8 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("stopwalk");
 	registercommand("promptjoin");
 	registercommand("showscores");
+
+	cvar_set("sv_cheats", ftos(1));
 		
 	//print("CSQC Started\n");
 	dummy = spawn();
@@ -48,11 +50,13 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 
 	projBr = cvar("gamma");
 
+	// default button binds
+
 	buttonBind[0] = "+forward";
 	buttonBind[1] = "+back";
 	buttonBind[2] = "+moveleft";
 	buttonBind[3] = "+moveright";
-	buttonBind[4] = "+jump";
+	buttonBind[4] = "impulse 10";
 	buttonBind[5] = "+sprint";
 	buttonBind[6] = "impulse 30";
 	buttonBind[7] = "impulse 110";
@@ -62,6 +66,59 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	buttonBind[11] = "+button6";
 	buttonBind[12] = "+button3";
 	buttonBind[13] = "impulse 25";
+
+	// intialize screen resolutions
+
+	// default/current width and height
+	active_swidth = cvar("vid_width");
+	active_sheight = cvar("vid_height");
+	fullscreenval = cvar("vid_fullscreen_standalone");
+
+	// 5:4
+	screen_width_54[0] = 1280;
+	screen_height_54[0] = 1024;
+	//4:3
+	screen_width_43[0] = 640;
+	screen_height_43[0] = 480;
+	screen_width_43[1] = 800;
+	screen_height_43[1] = 600;
+	screen_width_43[2] = 1024;
+	screen_height_43[2] = 768;
+	//16:10
+	screen_width_1610[0] = 1280;
+	screen_height_1610[0] = 800;
+	screen_width_1610[1] = 1440;
+	screen_height_1610[1] = 900;
+	screen_width_1610[2] = 1680;
+	screen_height_1610[2] = 1050;
+	screen_width_1610[3] = 1920;
+	screen_height_1610[3] = 1200;
+	//16:9
+	screen_width_169[0] = 640;
+	screen_height_169[0] = 360;
+	screen_width_169[1] = 1280;
+	screen_height_169[1] = 720;
+	screen_width_169[2] = 1360;
+	screen_height_169[2] = 768;
+	screen_width_169[3] = 1366;
+	screen_height_169[3] = 768;
+	screen_width_169[4] = 1536;
+	screen_height_169[4] = 864;
+	screen_width_169[5] = 1600;
+	screen_height_169[5] = 900;
+	screen_width_169[6] = 1920;
+	screen_height_169[6] = 1080;
+	screen_width_169[7] = 2048;
+	screen_height_169[7] = 1152;
+	screen_width_169[8] = 2560;
+	screen_height_169[8] = 1440;
+	screen_width_169[9] = 3840;
+	screen_height_169[9] = 2160;
+	//21:9
+	screen_width_219[0] = 2560;
+	screen_height_219[0] = 1080;
+	screen_width_219[1] = 3440;
+	screen_height_219[1] = 1440;
 };
 
 noref void() CSQC_WorldLoaded =
@@ -732,16 +789,21 @@ noref void() CSQC_Parse_Event =
 					muzzlepos = vmodel_currentpos;
 				}
 
-				if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))				
-					pointparticles(particleeffectnum("muzzle.muzzle_pap_part0"), muzzlepos, norm*24, 1);
-				else
-					pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
+				if (cvar("nzp_particles")) {
+					if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))				
+						pointparticles(particleeffectnum("muzzle.muzzle_pap_part0"), muzzlepos, norm*24, 1);
+					else
+						pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
+				}
 			}
 			
 			if(traceent == 0 && GetFiretype(getstatf(STAT_ACTIVEWEAPON)) != 3)
 			{
-				pointparticles(particleeffectnum("weapons.impact"), pos, norm*24, 1);
-				pointparticles(particleeffectnum("weapons.impact_decal"), pos, '0 0 0', 1);
+				if (cvar("nzp_particles"))
+					pointparticles(particleeffectnum("weapons.impact"), pos, norm*24, 1);
+
+				if (cvar("nzp_decals"))
+					pointparticles(particleeffectnum("weapons.impact_decal"), pos, '0 0 0', 1);
 			}
 			else
 			{
@@ -763,9 +825,12 @@ noref void() CSQC_Parse_Event =
             org_y = readcoord();
             org_z = readcoord();
 
-            pointparticles(particleeffectnum("weapons.explode"), org, '0 0 0', 1);
+			if (cvar("nzp_decals"))
+            	pointparticles(particleeffectnum("weapons.explode"), org, '0 0 0', 1);
             break;
 		case EVENT_BLOOD:
+			if (!cvar("nzp_particles"))
+				return;
 			local vector loc;
 
 			loc_x = readcoord();

@@ -3,6 +3,7 @@
 // 	Typos FTW!
 //
 
+searchhandle maps;
 
 void() menu_single =
 {
@@ -62,6 +63,7 @@ void() menu_back =
 	} else if (in_menu == MENU_IGS) {
 		in_menu = MENU_PAUSE;
 	} else if (in_menu == MENU_CUSTOMS) {
+		search_end(maps);
 		in_menu = MENU_SINGLE;
 	} else
 		in_menu = MENU_MAIN;
@@ -185,6 +187,274 @@ void() settings_brite2 = {
 	cvar_set("gamma", ftos(br));
 }
 
+void() settings_fov = {
+	// Increase FOV by 5
+	local float fov = cvar("fov");
+
+	if (fov < 120)
+		fov += 5;
+
+	cvar_set("fov", ftos(fov));
+}
+
+void() settings_fov2 = {
+	// Decrease FOV by 5
+	local float fov = cvar("fov");
+
+	if (fov > 50)
+		fov -= 5;
+
+	cvar_set("fov", ftos(fov));
+}
+
+void() settings_mfps = {
+	// Increase max fps by 5
+	if (cvar("vid_vsync"))
+		return;
+
+	local float fps = cvar("cl_maxfps");
+
+	if (fps < 500)
+		fps += 5;
+
+	cvar_set("cl_maxfps", ftos(fps));
+}
+
+void() settings_mfps2 = {
+	// Decrease max fps by 5
+	if (cvar("vid_vsync"))
+		return;
+
+	local float fps = cvar("cl_maxfps");
+
+	if (fps > 20)
+		fps -= 5;
+
+	cvar_set("cl_maxfps", ftos(fps));
+}
+
+void() settings_vs = {
+	local float vs = cvar("vid_vsync");
+
+	if (vs == 0)
+		vs = 1;
+	else
+		vs = 0;
+
+	cvar_set("vid_vsync", ftos(vs));
+}
+
+void() settings_fs = {
+	if (fullscreenval == 0)
+		fullscreenval = 1;
+	else
+		fullscreenval = 0;
+}
+
+void() settings_dc = {
+	local float dc = cvar("nzp_decals");
+
+	if (dc == 0)
+		dc = 1;
+	else
+		dc = 0;
+
+	cvar_set("nzp_decals", ftos(dc));
+}
+
+void() settings_pt = {
+	local float pt = cvar("nzp_particles");
+
+	if (pt == 0)
+		pt = 1;
+	else
+		pt = 0;
+
+	cvar_set("nzp_particles", ftos(pt));
+}
+
+void() settings_fb = {
+	local float fb = cvar("r_fullbright");
+
+	if (fb == 0)
+		fb = 1;
+	else
+		fb = 0;
+
+	cvar_set("r_fullbright", ftos(fb));
+}
+
+void() UpdateResolutions = {
+	switch(aspectratio) {
+		case 0:
+			active_swidth = screen_width_43[0];
+			active_sheight = screen_height_43[0];
+			break;
+		case 1:
+			active_swidth = screen_width_54[0];
+			active_sheight = screen_height_54[0];
+			break;
+		case 2:
+			active_swidth = screen_width_169[0];
+			active_sheight = screen_height_169[0];
+			break;
+		case 3:
+			active_swidth = screen_width_1610[0];
+			active_sheight = screen_height_1610[0];
+			break;
+		case 4:
+			active_swidth = screen_width_219[0];
+			active_sheight = screen_height_219[0];
+			break;
+	}
+}
+
+void() settings_ar = {
+	// aspect ratio up
+	// 0 - 4:3
+	// 1 - 5:4
+	// 2 - 16:9
+	// 3 - 16:10
+	// 4 - 21:9
+	aspectratio++;
+
+	if (aspectratio > 4)
+		aspectratio = 0;
+
+	UpdateResolutions();
+}
+
+void() settings_ar2 = {
+	// aspect ratio down
+	// 0 - 4:3
+	// 1 - 5:4
+	// 2 - 16:9
+	// 3 - 16:10
+	// 4 - 21:9
+	aspectratio--;
+
+	if (aspectratio < 0)
+		aspectratio = 4;
+
+	UpdateResolutions();
+}
+
+void() settings_re = {
+	float neww, newh;
+	neww = 0;
+	newh = 0;
+
+	switch(aspectratio) {
+		case 0:
+			if (active_swidth == screen_width_43[MAX_43-1]) {
+				neww = screen_width_43[0];
+				newh = screen_height_43[0];
+			} else {
+				for(float i = 0; i < MAX_43; i++) {
+					if (active_swidth == screen_width_43[i]) {
+						neww = screen_width_43[i+1];
+						newh = screen_height_43[i+1];
+					}
+				}
+
+				// if still 0, different aspect ratio
+				if (neww == 0) {
+					neww = screen_width_43[0];
+					newh = screen_height_43[0];
+				}
+			}
+			break;
+		case 1:
+			if (active_swidth == screen_width_43[MAX_54-1]) {
+				neww = screen_width_54[0];
+				newh = screen_height_54[0];
+			} else {
+				for(float i = 0; i < MAX_54; i++) {
+					if (active_swidth == screen_width_54[i]) {
+						neww = screen_width_54[i+1];
+						newh = screen_height_54[i+1];
+					}
+				}
+
+				// if still 0, different aspect ratio
+				if (neww == 0) {
+					neww = screen_width_54[0];
+					newh = screen_height_54[0];
+				}
+			}
+			break;
+		case 2:
+			if (active_swidth == screen_width_169[MAX_169-1]) {
+				neww = screen_width_169[0];
+				newh = screen_height_169[0];
+			} else {
+				for(float i = 0; i < MAX_169; i++) {
+					if (active_swidth == screen_width_169[i]) {
+						neww = screen_width_169[i+1];
+						newh = screen_height_169[i+1];
+					}
+				}
+
+				// if still 0, different aspect ratio
+				if (neww == 0) {
+					neww = screen_width_169[0];
+					newh = screen_height_169[0];
+				}
+			}
+			break;
+		case 3:
+			if (active_swidth == screen_width_1610[MAX_1610-1]) {
+				neww = screen_width_1610[0];
+				newh = screen_height_1610[0];
+			} else {
+				for(float i = 0; i < MAX_1610; i++) {
+					if (active_swidth == screen_width_1610[i]) {
+						neww = screen_width_1610[i+1];
+						newh = screen_height_1610[i+1];
+					}
+				}
+
+				// if still 0, different aspect ratio
+				if (neww == 0) {
+					neww = screen_width_1610[0];
+					newh = screen_height_1610[0];
+				}
+			}
+			break;
+		case 4:
+			if (active_swidth == screen_width_219[MAX_219-1]) {
+				neww = screen_width_219[0];
+				newh = screen_height_219[0];
+			} else {
+				for(float i = 0; i < MAX_219; i++) {
+					if (active_swidth == screen_width_219[i]) {
+						neww = screen_width_219[i+1];
+						newh = screen_height_219[i+1];
+					}
+				}
+
+				// if still 0, different aspect ratio
+				if (neww == 0) {
+					neww = screen_width_219[0];
+					newh = screen_height_219[0];
+				}
+			}
+			break;
+		default:
+			break;
+	}
+
+	active_swidth = neww;
+	active_sheight = newh;
+}
+
+void() settings_apply = {
+	localcmd(strcat("vid_width ", ftos(active_swidth), "\n"));
+	localcmd(strcat("vid_height ", ftos(active_sheight), "\n"));
+	localcmd(strcat("vid_fullscreen_standalone ", ftos(fullscreenval), "\n"));
+	localcmd("vid_restart\n");
+}
+
 void() bind_walkf = {
 	if (editBind[0] == FALSE)
 		editBind[0] = TRUE;
@@ -290,7 +560,7 @@ void() null = {
 
 /*
 
-	MENU GUIDELINES (to perserve consistency)
+	MENU GUIDELINES (to preserve consistency)
 	
 	* Buttons that belong to the same category should have a spacing
 	difference of 0.05.
@@ -313,11 +583,11 @@ var struct
 {
 	//Main
 	{[0.025, 0.175, 0], "Solo", -1, menu_single, null, MENU_MAIN},
-	{[0.025, 0.225, 0], "Cooperative", -1, menu_multi, null, MENU_MAIN},
+	//{[0.025, 0.225, 0], "Cooperative", -1, menu_multi, null, MENU_MAIN},
 	{[0.025, 0.300, 0], "Settings", -1, menu_settings, null, MENU_MAIN},
-	{[0.025, 0.375, 0], "Achievements", -1, menu_achievements, null, MENU_MAIN},
-	{[0.025, 0.450, 0], "Credits", -1, menu_about, null, MENU_MAIN},
-	{[0.025, 0.525, 0], "Quit", -1, menu_quit, null, MENU_MAIN},
+	{[0.025, 0.350, 0], "Achievements", -1, menu_achievements, null, MENU_MAIN},
+	{[0.025, 0.425, 0], "Credits", -1, menu_about, null, MENU_MAIN},
+	{[0.025, 0.500, 0], "Exit", -1, menu_quit, null, MENU_MAIN},
 
 	//Solo
 	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, null, MENU_SINGLE},
@@ -339,8 +609,18 @@ var struct
 	{[0.025, 0.225, 0], "Controls", -1, menu_controls, null, MENU_SETTINGS + MENU_IGS},
 
 	//Graphics
-	{[0.025, 0.175, 0], "Show FPS", -1, settings_fps, settings_fps, MENU_GSETTINGS},
-	{[0.025, 0.225, 0], "Brightness", -1, settings_brite, settings_brite2, MENU_GSETTINGS},
+	{[0.025, 0.175, 0], "Resolution", -1, settings_re, settings_re, MENU_GSETTINGS},
+	{[0.025, 0.225, 0], "Aspect Ratio", -1, settings_ar, settings_ar2, MENU_GSETTINGS},
+	{[0.025, 0.275, 0], "Fullscreen", -1, settings_fs, settings_fs, MENU_GSETTINGS},
+	{[0.025, 0.325, 0], "Show FPS", -1, settings_fps, settings_fps, MENU_GSETTINGS},
+	{[0.025, 0.375, 0], "Max FPS", -1, settings_mfps, settings_mfps2, MENU_GSETTINGS},
+	{[0.025, 0.425, 0], "VSync", -1, settings_vs, settings_vs, MENU_GSETTINGS},
+	{[0.025, 0.475, 0], "Field of View", -1, settings_fov, settings_fov2, MENU_GSETTINGS},
+	{[0.025, 0.525, 0], "Brightness", -1, settings_brite, settings_brite2, MENU_GSETTINGS},	
+	{[0.025, 0.575, 0], "Decals", -1, settings_dc, settings_dc, MENU_GSETTINGS},
+	{[0.025, 0.625, 0], "Particles", -1, settings_pt, settings_pt, MENU_GSETTINGS},
+	{[0.025, 0.675, 0], "Fullbright", -1, settings_fb, settings_fb, MENU_GSETTINGS},
+	{[0.025, 0.750, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS},
 
 	//Controls
 	{[0.025, 0.175, 0], "Walk Forward", -1, bind_walkf, null, MENU_CSETTINGS},
@@ -367,7 +647,7 @@ var struct
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 34;
+const float BUTTONS_COUNT = 43;
 float lastActive;
 
 
@@ -415,9 +695,7 @@ void(float index) Update_Button =
 
 	if(buttons[index].active > 0)
 	{
-		buttons[index].active -= frametime * 15;
-		if(buttons[index].active < 0)
-			buttons[index].active = 0;
+		buttons[index].active = 0;
 	}
 };
 
@@ -442,9 +720,6 @@ void(float index, float type) Button_Click =
 	local vector pos = buttons[index].pos;
 	pos_x *= g_width;
 	pos_y *= g_height;
-	//local vector scale = buttons[index].scale;
-	//scale_x *= g_width;
-	//scale_y *= g_height;
 	
 	if (cursor_pos_x > pos_x && cursor_pos_x < pos_x + (g_height * 0.6) && cursor_pos_y > pos_y && cursor_pos_y < pos_y + btnscale) {
 		if (type == 0) { //left click
@@ -468,6 +743,109 @@ void(float type) Menu_Click =
 	}
 };
 
+void() Draw_Extra_Main =
+{
+	local string main_desc = "";
+
+	// Draw darkened co-op button
+	drawstring([0.025*g_width, 0.225*g_height, 0], "Co-Op (Coming Soon!)", [g_height * 0.03, g_height * 0.03, 1], [0.5, 0.5, 0.5], 1, 1);
+	
+	// Division lines
+	drawfill ([0.025*g_width, 0.275*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+	drawfill ([0.025*g_width, 0.400*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+	drawfill ([0.025*g_width, 0.475*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+
+	// Get description for menu option
+	switch(lastActive) {
+		case 0:
+			main_desc = "Take on the Hordes by yourself.";
+			break;
+		case 1:
+			main_desc = "Adjust your Settings to Optimize your Experience.";
+			break;
+		case 2:
+			main_desc = "View locked or unlocked Achievements.";
+			break;
+		case 3:
+			main_desc = "See who made NZ:P possible.";
+			break;
+		case 4:
+			main_desc = "Return to System.";
+			break;
+		default:
+			main_desc = "";
+			break;
+	}
+
+	// Draw desc
+	drawstring([0.025*g_width, 0.865*g_height, 0], main_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+}
+
+void() Draw_Extra_Solo =
+{
+	local string solo_desc = "";
+	local string solo_desc2 = "";
+	local string solo_desc3 = "";
+	local string solo_img = "";
+
+	// Division lines
+	drawfill ([0.025*g_width, 0.275*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+
+	// Map descriptions
+	switch(lastActive) {
+		case 5:
+			solo_desc = "Lock and Load; Crashed Plane.";
+			solo_desc2 = "Divided. Thousands of Undead.";
+			solo_desc3 = "This is the Night of the Dead.";
+			solo_img = "gfx/menu/nacht_der_untoten.png";
+			break;
+		case 6:
+			solo_desc = "Old Warehouse full of Zombies!";
+			solo_desc2 = "Fight your way to the Power";
+			solo_desc3 = "Switch through the Hordes!";
+			solo_img = "gfx/menu/warehouse.png";
+			break;
+		case 7:
+			solo_desc = "Custom Maps made by Community";
+			solo_desc2 = "on the Forum and Discord!";
+			solo_img = "gfx/menu/custom.png";
+			break;
+		default:
+			solo_desc = "";
+			solo_img = "";
+			break;
+	}
+
+	// Map img
+	if (solo_img != "")
+		drawpic([0.510*g_width, 0.150*g_height, 0], solo_img, [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
+
+	// Draw desc
+	drawstring([0.475*g_width, 0.575*g_height, 0], solo_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.475*g_width, 0.625*g_height, 0], solo_desc2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.475*g_width, 0.675*g_height, 0], solo_desc3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+}
+
+void() Draw_Extra_Settings =
+{
+	local string set_desc = "";
+
+	// Descriptions
+	switch(lastActive) {
+		case 14:
+			set_desc = "Adjust settings relating to Graphical Fidelity.";
+			break;
+		case 15:
+			set_desc = "Customize your Control Scheme.";
+			break;
+		default:
+			set_desc = "";
+			break;
+	}
+
+	// Draw desc
+	drawstring([0.025*g_width, 0.865*g_height, 0], set_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+}
 
 //FIXME -- credits look ugly, font scaling & such
 void() Draw_Extra_Credits = 
@@ -518,16 +896,151 @@ void() Draw_Extra_Restart =
 void() Draw_Extra_GSettings =
 {
 	local string fpsval;
+	local string vsyncval;
+	local string decalval;
+	local string partval;
+	local string fullval;
+	local string sval;
+	local string arval = "";
+	local string resval;
+	local string gset_desc = "";
 
+	// Resolution
+	resval = strcat(ftos(active_swidth), "x", ftos(active_sheight));
+	drawstring([0.475*g_width, 0.175*g_height, 0], resval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	// Aspect Ratio
+	switch(aspectratio) {
+		case 0:
+			arval = "4:3";
+			break;
+		case 1:
+			arval = "5:4";
+			break;
+		case 2:
+			arval = "16:9";
+			break;
+		case 3:
+			arval = "16:10";
+			break;
+		case 4:
+			arval = "21:9";
+			break;
+		default:
+			arval = "ERR";
+			break;
+	}
+	drawstring([0.475*g_width, 0.225*g_height, 0], arval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	// Fullscreen
+	if (fullscreenval == 0)
+		sval = S_DISABLED;
+	else
+		sval = S_ENABLED;
+
+	drawstring([0.475*g_width, 0.275*g_height, 0], sval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	// Show FPS
 	if (cvar("show_fps") == 0)
 		fpsval = S_DISABLED;
 	else
 		fpsval = S_ENABLED;
 
-	drawstring([0.475*g_width, 0.175*g_height, 0], fpsval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.325*g_height, 0], fpsval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
 
-	//have to use a drawfill because of how gamma values are subtracted.. for some reason
-	drawfill ([0.475*g_width, 0.2255*g_height, 0], [g_height * (projBr/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1);
+	// Max FPS
+	// can't adjust when vsync is enabled, so grey out
+	if (!cvar("vid_vsync"))
+		drawstring([0.475*g_width, 0.375*g_height, 0], ftos(cvar("cl_maxfps")), [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	else 
+		drawstring([0.475*g_width, 0.375*g_height, 0], ftos(cvar("cl_maxfps")), [g_height * 0.030, g_height * 0.030, 1], [0.4,0.4,0.4], 1, 1);
+
+	// VSync
+	if (cvar("vid_vsync") == 0)
+		vsyncval = S_DISABLED;
+	else
+		vsyncval = S_ENABLED;
+
+	drawstring([0.475*g_width, 0.425*g_height, 0], vsyncval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	
+	// Field of View
+	drawstring([0.475*g_width, 0.475*g_height, 0], ftos(cvar("fov")), [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	// Brightness
+	// have to use a drawfill because of how gamma values are subtracted.. for some reason
+	drawfill ([0.475*g_width, 0.5255*g_height, 0], [g_height * (projBr/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1);
+
+	// Decals
+	if (cvar("nzp_decals") == 0)
+		decalval = S_DISABLED;
+	else
+		decalval = S_ENABLED;
+
+	drawstring([0.475*g_width, 0.575*g_height, 0], decalval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	// Particles
+	if (cvar("nzp_particles") == 0)
+		partval = S_DISABLED;
+	else
+		partval = S_ENABLED;
+
+	drawstring([0.475*g_width, 0.625*g_height, 0], partval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	// Fullbright
+	if (cvar("r_fullbright") == 0)
+		fullval = S_DISABLED;
+	else
+		fullval = S_ENABLED;
+
+	drawstring([0.475*g_width, 0.675*g_height, 0], fullval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	// Descriptions
+	switch(lastActive) {
+		case 16:
+			gset_desc = "Adjust Window Resolution.";
+			break;
+		case 17:
+			gset_desc = "Change Window Aspect Ratio.";
+			break;
+		case 18:
+			gset_desc = "Toggle Fullscreen (May fail depending on GPU).";
+			break;
+		case 19:
+			gset_desc = "Toggle Framerate Overlay.";
+			break;
+		case 20:
+			gset_desc = "Increase of Decrease Max Frames per Second.";
+			break;
+		case 21:
+			gset_desc = "Toggle Vertical Sync.";
+			
+			break;
+		case 22:
+			gset_desc = "Adjust Game Field of View.";
+			break;
+		case 23:
+			gset_desc = "Increase or Decrease Game Brightness.";
+			
+			break;
+		case 24:
+			gset_desc = "Toggle Bullet and Explosive Decals.";
+			break;
+		case 25:
+			gset_desc = "Toggle Appearence of (most) Particles.";
+			break;
+		case 26:
+			gset_desc = "Toggle all non-realtime lights (Requires Map Restart).";
+			break;
+		default:
+			gset_desc = "";
+			break;
+	}
+
+	// Division lines
+	drawfill ([0.025*g_width, 0.725*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+
+	// Draw desc
+	drawstring([0.025*g_width, 0.865*g_height, 0], gset_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 }
 
 void() Draw_Extra_Controls =
@@ -564,18 +1077,14 @@ string(string s) strip_custominfo =
 	return s2;
 }
 
-void() Menu_Click_Customs =
-{
-
-}
-
 string custom_map_name[10];
 void() Draw_Extra_Customs =
 {
 	float items;
+	float pic;
 
 	// get all .BSPs in the maps folder
-	searchhandle maps = search_begin("maps/*.bsp", 0, 0);
+	maps = search_begin("maps/*.bsp", 0, 0);
 
 	// the amount of maps in the folder
 	float mapcount = search_getsize(maps);
@@ -597,9 +1106,17 @@ void() Draw_Extra_Customs =
 		if (cursor_pos_x > 0.025*g_width && cursor_pos_x < (0.025*g_width + g_height * 0.6) && cursor_pos_y > (0.175 + (0.05 * i))*g_height && cursor_pos_y < (0.175 + (0.05 * i))*g_height + (0.030*g_height)) {
 			lastActive = -1;
 			if (customs_interact) {
+				search_end(maps);
 				localcmd(strcat("map ", custom_map_name[i]));
 			}
 				
+			// Draw custom pic if exists
+			pic = fopen(strcat("menu/", custom_map_name[i], ".png"), FILE_READ);
+
+			if (pic != -1) {
+				drawpic([0.510*g_width, 0.150*g_height, 0], strcat("data/menu/", custom_map_name[i], ".png"), [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
+				fclose(pic);
+			}
 			
 			drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_name[i], [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
 		} else {
@@ -638,8 +1155,13 @@ void() Draw_Menu =
 			drawpic([0,0,0], "menu/bg", [g_width, g_height, 1], [1, 1, 1], 1);
 	}
 
-	//Gradient on the background
-	drawpic([0,0,0], "menu/gradient_l2r", [0.75*g_width, g_height, 1], [1, 1, 1], 1);
+	// Darken the BG
+	drawfill ([0, 0, 0], [g_width, g_height, 1], [0, 0, 0], 0.4);
+
+	// version string
+	if (in_menu == MENU_MAIN || in_menu == MENU_ABOUT || in_menu == MENU_SINGLE || in_menu == MENU_ACHIEVEMENTS 
+		|| in_menu == MENU_CUSTOMS || in_menu == MENU_SETTINGS)
+		drawstring([0.925*g_width, 0.025*g_height, 0], VERSION_STRING, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 
 	//menu title
 	local string title = "";
@@ -647,9 +1169,11 @@ void() Draw_Menu =
 	{
 		case MENU_MAIN:
 			title = "MAIN MENU";
+			Draw_Extra_Main();
 			break;
 		case MENU_SINGLE:
 			title = "SOLO";
+			Draw_Extra_Solo();
 			break;
 		case MENU_MULTI:
 			title = "COOP";
@@ -664,6 +1188,7 @@ void() Draw_Menu =
 		case MENU_IGS:
 		case MENU_SETTINGS:
 			title = "SETTINGS";
+			Draw_Extra_Settings();
 			break;
 		case MENU_GSETTINGS:
 			title = "GRAPHICS SETTINGS";
@@ -699,7 +1224,8 @@ void() Draw_Menu =
 		Update_Button(i);
 	}
 
-	if (cvar("in_xinput")) {
+	// TODO - Controller Support
+	/*if (cvar("in_xinput")) {
 		Controller_UpdateButton();
-	}
+	}*/
 };
