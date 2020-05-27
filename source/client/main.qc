@@ -829,15 +829,14 @@ noref void() CSQC_Parse_Event =
             	pointparticles(particleeffectnum("weapons.explode"), org, '0 0 0', 1);
             break;
 		case EVENT_BLOOD:
-			if (!cvar("nzp_particles"))
-				return;
 			local vector loc;
 
 			loc_x = readcoord();
             loc_y = readcoord();
             loc_z = readcoord();
 			
-			pointparticles(particleeffectnum("blood.blood_particle"), loc, '0 0 0', 1);
+			if (cvar("nzp_particles"))
+				pointparticles(particleeffectnum("blood.blood_particle"), loc, '0 0 0', 1);
 			break;
 		case EVENT_WEAPONCHANGE:
 			local float to;
