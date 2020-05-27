@@ -1389,9 +1389,10 @@ static int HexToInt(char c)
 
 extern cvar_t scr_coloredtext;
 
-void Draw_ColoredString (int x, int y, char *text, int red)
+// Creds to UP Team for scale code - Moto
+void Draw_ColoredString(int x, int y, char *text, float r, float g, float b, float a, int scale)
 {
-	int r, g, b, num;
+	int num;
 	qboolean white = qtrue;
 
 	if (y <= -8)
@@ -1399,47 +1400,22 @@ void Draw_ColoredString (int x, int y, char *text, int red)
 
 	if (!*text)
 		return;
-
+	
 	GL_Bind (char_texture);
-
+	
+	
+	
 	if (scr_coloredtext.value)
 		sceGuTexFunc(GU_TFX_MODULATE , GU_TCC_RGBA);
 
 	for ( ; *text; text++)
 	{
 
-		if (*text == '&')
-		{
-			if (text[1] == 'c' && text[2] && text[3] && text[4])
-			{
-				r = HexToInt(text[2]);
-				g = HexToInt(text[3]);
-				b = HexToInt(text[4]);
-				if (r >= 0 && g >= 0 && b >= 0)
-				{
-					if (scr_coloredtext.value)
-					{
-						sceGuColor(GU_COLOR(r / 16.0, g / 16.0, b / 16.0, 1.0));
-						white = qfalse;
-					}
-					text += 5;
-				}
-            }
-			else if (text[1] == 'r')
-			{
-				if (!white)
-				{
-					sceGuColor(GU_COLOR(1,1,1,1));
-					white = qtrue;
-				}
-				text += 2;
-			}
-		}
+		// MotoLegacy - Added 0-255 RGBA support (5/26/2020)
+		sceGuColor(GU_COLOR(r/255, g/255, b/255, a/255));
 
 		num = *text & 255;
-		if (!scr_coloredtext.value && red)
-			num |= 128;
-
+		
 		if (num != 32 && num != (32 | 128))
 		{
             float frow, fcol;
@@ -1463,13 +1439,13 @@ void Draw_ColoredString (int x, int y, char *text, int red)
 
 	        vertices[1].u = (fcol + 1) * 8;
 	        vertices[1].v = (frow + 1) * 8;
-	        vertices[1].x = x + 8;
-	        vertices[1].y = y + 8;
+	        vertices[1].x = x + (8*scale);
+	        vertices[1].y = y + (8*scale);
 	        vertices[1].z = 0;
 
 	        sceGuDrawArray(GU_SPRITES, GU_TEXTURE_16BIT | GU_VERTEX_16BIT | GU_TRANSFORM_2D, 2, 0, vertices);
 		}
-		x += 8;
+		x += 8*scale;
 	}
 
 	if (!white)

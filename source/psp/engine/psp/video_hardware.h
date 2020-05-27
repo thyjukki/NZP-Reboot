@@ -211,6 +211,7 @@ extern	int	playertextures;
 extern	int	skytexturenum;		// index in cl.loadmodel, not gl texture object
 
 extern	cvar_t  scr_conheight;
+extern 	cvar_t 	scr_fov;
 
 extern	cvar_t	r_partalpha;
 
@@ -297,6 +298,10 @@ extern  cvar_t	r_decal_bullets;
 extern  cvar_t	r_decal_sparks;
 extern  cvar_t	r_decal_explosions;
 extern  cvar_t  r_coronas;
+
+// MotoLegacy - simplified cvars for decals/particles (5/27/2020)
+extern cvar_t 	nzp_particles;
+extern cvar_t 	nzp_decals;
 
 
 extern	int			mirrortexturenum;	// quake texturenum, not gltexturenum

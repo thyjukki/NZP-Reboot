@@ -165,6 +165,10 @@ cvar_t	r_flametype	        = {"r_flametype",        "2",qtrue};
 //Shpuld
 cvar_t  r_model_brightness = { "r_model_brightness", "1", qtrue};   // Toggle high brightness model lighting
 
+//MotoLegacy
+cvar_t 	nzp_decals 			= {"nzp_decals", 		 "1", qtrue};
+cvar_t 	nzp_particles 		= {"nzp_particles", 	 "1", qtrue};
+
 extern cvar_t cl_maxfps;
 
 

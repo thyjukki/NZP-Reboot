@@ -272,7 +272,7 @@ void HUD_EndScreen (void)
 
 	l = scoreboardlines;
 
-	Draw_ColoredString ((vid.width - 9*8)/2, 40, "&cF00GAME OVER", 0);
+	Draw_ColoredString((vid.width - 9*8)/2, 40, "GAME OVER", 255, 0, 0, 255, 1);
 
 	sprintf (str,"You survived %3i rounds", cl.stats[STAT_ROUNDS]);
 	Draw_String ((vid.width - strlen (str)*8)/2, 52, str);
@@ -430,9 +430,9 @@ void HUD_Point_Change (void)
 		if (point_change[i].points)
 		{
 			if (point_change[i].negative)
-				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("&cF00-%i", point_change[i].points),0);
+				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("-%i", point_change[i].points), 255, 0, 0, 255, 1);
 			else
-				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("&cFF0+%i", point_change[i].points),0);
+				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("+%i", point_change[i].points), 255, 255, 0, 255, 1);
 			point_change[i].y = point_change[i].y + point_change[i].move_y;
 			point_change[i].x = point_change[i].x - point_change[i].move_x;
 			if (point_change[i].alive_time && point_change[i].alive_time < Sys_FloatTime())
@@ -1089,36 +1089,42 @@ int IsDualWeapon(int weapon)
 void HUD_Ammo (void)
 {
 	char str[12];
-	char str2[12];
-    int xplus, xplus2;
+    int xplus;
 	char *magstring;
-	char *mag2string;
 
 	y_value = vid.height - 16;
+
+	magstring = va("%i", cl.stats[STAT_CURRENTMAG]);
+
+	xplus = HUD_itoa(cl.stats[STAT_CURRENTMAG], str);
+
+	// Magazine
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
-		magstring = va ("&cF00%i",cl.stats[STAT_CURRENTMAG]);
+		Draw_ColoredString(vid.width - 42 - (xplus*8), y_value, magstring, 255, 0, 0, 255, 1);
 	else
-		magstring = va ("%i",cl.stats[STAT_CURRENTMAG]);
+		Draw_ColoredString(vid.width - 42 - (xplus*8), y_value, magstring, 255, 255, 255, 255, 1);
 
-	xplus = HUD_itoa (cl.stats[STAT_CURRENTMAG], str);
-	Draw_ColoredString (vid.width - 42 - (xplus*8), y_value, magstring, 0);
-
-	mag2string = va("%i", cl.stats[STAT_CURRENTMAG2]);
-	xplus2 = HUD_itoa (cl.stats[STAT_CURRENTMAG2], str2);
-
+	// Second mag for dual weps
 	if (IsDualWeapon(cl.stats[STAT_ACTIVEWEAPON])) {
-		Draw_ColoredString (vid.width - 56 - (xplus2*8), y_value, mag2string, 0);
+		magstring = va("%i", cl.stats[STAT_CURRENTMAG2]);
+		xplus = HUD_itoa(cl.stats[STAT_CURRENTMAG2], str);
+
+		if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG2])
+			Draw_ColoredString(vid.width - 56 - (xplus*8), y_value, magstring, 255, 0, 0, 255, 1);
+		else
+			Draw_ColoredString(vid.width - 56 - (xplus*8), y_value, magstring, 255, 255, 255, 255, 1);
 	}
 
+	// Reserve ammo
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO])
 	{
-		Draw_ColoredString (vid.width - 42, y_value, "&cF00/", 0);
-		Draw_ColoredString (vid.width - 34, y_value, va ("&cF00%i",cl.stats[STAT_AMMO]), 0);
+		Draw_ColoredString (vid.width - 42, y_value, "/", 255, 0, 0, 255, 1);
+		Draw_ColoredString (vid.width - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 255, 0, 0, 255, 1);
 	}
 	else
 	{
-		Draw_Character (vid.width - 42, y_value, '/');
-		Draw_ColoredString (vid.width - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 0);
+		Draw_ColoredString (vid.width - 42, y_value, "/", 255, 255, 255, 255, 1);
+		Draw_ColoredString (vid.width - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 255, 255, 255, 255, 1);
 	}
 }
 
@@ -1130,26 +1136,16 @@ HUD_AmmoString
 
 void HUD_AmmoString (void)
 {
-	char str[12];
-	int len = 0;
-	
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
 	{
 		if (0 < cl.stats[STAT_AMMO] && cl.stats[STAT_CURRENTMAG] >= 0) {
-			len = 6;
-			strcpy(str, "Reload");
+			Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, "Reload", 255, 255, 255, 255, 1);
 		} else if (0 < cl.stats[STAT_CURRENTMAG]) {
-			len = 8;
-			strcpy(str, "&cFF0LOW AMMO");
+			Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, "LOW AMMO", 255, 255, 0, 255, 1);
 		} else {
-			len = 7;
-			strcpy(str, "&cF00NO AMMO");
+			Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, "NO AMMO", 255, 0, 0, 255, 1);
 		}
 	}
-
-	if (len > 0)
-		Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, str, 0);
-		//Draw_ColoredString ((vid.width - len*8)/2, (vid.height)/2 + 40, str, 0);
 }
 
 /*
@@ -1171,7 +1167,7 @@ void HUD_Grenades (void)
 	{
 		Draw_StretchPic (x_value, y_value, fragpic, 22, 22);
 		if (cl.stats[STAT_PRIGRENADES] <= 0)
-			Draw_ColoredString (x_value + 12, y_value + 12, va ("&cF00%i",cl.stats[STAT_PRIGRENADES]), 0);
+			Draw_ColoredString (x_value + 12, y_value + 12, va ("%i",cl.stats[STAT_PRIGRENADES]), 255, 0, 0, 255, 1);
 		else
 			Draw_String (x_value + 12, y_value + 12, va ("%i",cl.stats[STAT_PRIGRENADES]));
 	}

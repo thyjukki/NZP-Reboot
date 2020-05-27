@@ -684,30 +684,27 @@ void SCR_DrawFPS (void)
 	//Draw_FrontText(st, 0,  0, 0xFF0000FF, 0);
 
 	if(lastfps < 20)
-	   sprintf(st,"&cF00%3d &cF00FPS", lastfps);
+	   sprintf(st,"%3d FPS", lastfps);
 	else if(lastfps > 20 && lastfps < 40)
-       sprintf(st,"&c0F0%3d &cF00FPS", lastfps);
+       sprintf(st,"%3d FPS", lastfps);
 	else
-       sprintf(st,"&c00F%3d &cF00FPS", lastfps);
+       sprintf(st,"%3d FPS", lastfps);
 
 	if(averge_fps < 20)
-	   sprintf(st2,"  &cF00%3d &cF00AVG", averge_fps);
+	   sprintf(st2,"  %3d AVG", averge_fps);
 	else if(averge_fps > 20 && averge_fps < 40)
-       sprintf(st2,"  &c0F0%3d &cF00AVG", averge_fps);
+       sprintf(st2,"  %3d AVG", averge_fps);
 	else
-       sprintf(st2,"  &c00F%3d &cF00AVG", averge_fps);
+       sprintf(st2,"  %3d AVG", averge_fps);
 
     strcat(st,st2);
 
 	x = vid.width - strlen(st1) * 8;
 	y = 0 ;
 
-	Draw_ColoredString (x, y, st, 0);
+	Draw_ColoredString(x, y, st, 255, 255, 255, 255, 1);
 
 	game_fps = lastfps;
-
-	//"&cF20 C &cF50 r &cF80 o &c883 w &cA85 _ &cA85 b &c668 a &c55A r"
-	//
 }
 
 #include <psppower.h>
@@ -803,16 +800,27 @@ int Random_Int (int max_int)
 SCR_DrawLoadScreen
 ==============
 */
+
+/*
+	Creds to the following people from the 2020
+	Loading Screen Hint Submission/Contest:
+
+	* BCDeshiG
+	* Derped_Crusader
+	* Aidan
+	* yasen
+*/
 double loadingtimechange;
 int loadingdot;
 char *lodinglinetext;
+qpic_t *awoo;
 char *ReturnLoadingtex (void)
 {
-    int StringNum = Random_Int(37);
+    int StringNum = Random_Int(47);
     switch(StringNum)
     { // NOTE: 59-character limit before message goes off-screen
         case 1:
-            return  "The original Quake came out in 1996 (22 years ago as of 2018!)";
+            return  "The original Quake came out in 1996 (24 years ago as of 2020!)";
             break;
         case 2:
             return  "Use the Kar98-k to be the hero we need!";
@@ -821,7 +829,7 @@ char *ReturnLoadingtex (void)
             return  "There is a huge number of modern engines based on Quake!";
             break;
         case 4:
-            return  "Development for NZP officially started on September 27 2009";
+            return  "Development for NZP officially started on September 27, 2009";
             break;
         case 5:
             return  "The first release of NZ:P was released on December 25, 2010";
@@ -851,10 +859,10 @@ char *ReturnLoadingtex (void)
             return  "We had a lot of fun making this game.";
             break;
         case 14:
-            return  "You can make your own custom map, check the readme file!";
+            return  "Did you know you can make your own Custom Map?";
             break;
         case 15:
-            return  "Try Retro mode in the graphics settings!";
+            return  "Try Retro Mode (it's in the Graphics Settings)!";
             break;
         case 16:
             return  "Tired of Nacht der Untoten? Make your own map!";
@@ -896,8 +904,7 @@ char *ReturnLoadingtex (void)
             return  "Shoot zombies to kill them. Or knife them. You choose.";
             break;
         case 29:
-            //return  "Be sure to also check out \"Cause of War: 1944\" for the PSP!"; // rip
-	    return "Be sure to also check out \"Perfect Dark: Reloaded\" for the PSP!"; // shameless
+            return 	"How many people forgot to Compile today?";
             break;
         case 30:
             return  "ggnore";
@@ -923,6 +930,36 @@ char *ReturnLoadingtex (void)
         case 37:
             return  "Thanks for being an awesome fan!";
             break;
+		case 38:
+			return 	"Removed Herobrine";
+			break;
+		case 39:
+			return 	"Pack-a-Punch the Kar98k to get to round infinity.";
+			break;
+		case 40:
+			return 	"I feel like I'm being gaslit.";
+			break;
+		case 41:
+			return 	"Heads up! You will die if you are killed!";
+			break;
+		case 42:
+			return 	"Zombies legally can't kill you if you say no!";
+			break;
+		case 43:
+			return 	"Please help me find the meaning of   . Thanks.";
+			break;
+		case 44:
+			return 	"MotoLegacy, or, \"Ian\", is from Ohio";
+			break;
+		case 45:
+			return 	"Get rid of the 21% cooler tip, it's an MLP reference";
+			break;
+		case 46:
+			return 	"You're playing on a PSP!";
+			break;
+		case 47:
+			return 	"Don't leak the beta!";
+			break;
     }
     return "wut wut";
 }
@@ -980,8 +1017,14 @@ void SCR_DrawLoadScreen (void)
         loadingtimechange = Sys_FloatTime () + 5;
 	}
 
-	if (key_dest == key_game)
+	if (key_dest == key_game) {
 		Draw_String (0, 0, lodinglinetext);
+
+		if (lodinglinetext == "Please help me find the meaning of   . Thanks.") {
+			awoo = Draw_CacheImg("gfx/menu/awoo");
+			Draw_Pic(284, 0, awoo);
+		}
+	}
 
 }
 
