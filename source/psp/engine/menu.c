@@ -2338,7 +2338,7 @@ void M_AdjustSliders (int dir, int m_submenu, int options_cursor)
 				scr_fov.value += dir * 5;
 				if (scr_fov.value < 50)
 					scr_fov.value = 50;
-				if (scr_fov.value > 120)
+				if (scr_fov.value > 120 && dir > 0)
 					scr_fov.value = 120;
 				Cvar_SetValue ("scr_fov", scr_fov.value);
 				break;
@@ -2973,17 +2973,29 @@ void M_Options_Draw (void)
 	// Header
 	Draw_ColoredString(10, 10, "SETTINGS", 255, 255, 255, 255, 2);
 
+	// Graphics Settings
 	if (options_cursor == 0)
 		Draw_ColoredString(10, 45, "Graphics Settings", 255, 0, 0, 255, 1);
 	else
 		Draw_ColoredString(10, 45, "Graphics Settings", 255, 255, 255, 255, 1);
 
+	// Controls
 	if (options_cursor == 1)
 		Draw_ColoredString(10, 55, "Controls", 255, 0, 0, 255, 1);
 	else
 		Draw_ColoredString(10, 55, "Controls", 255, 255, 255, 255, 1);
 
+	// Divider
+	Draw_FillByColor(10, 68, 160, 2, GU_RGBA(130, 130, 130, 255));
+
+	// Console
 	if (options_cursor == 2)
+		Draw_ColoredString(10, 75, "Console", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 75, "Console", 255, 255, 255, 255, 1);
+
+	// Back
+	if (options_cursor == 3)
 		Draw_ColoredString(10, 250, "Back", 255, 0, 0, 255, 1);
 	else
 		Draw_ColoredString(10, 250, "Back", 255, 255, 255, 255, 1);
@@ -2995,6 +3007,9 @@ void M_Options_Draw (void)
 			break;
 		case 1: // Controls
 			Draw_ColoredString(10, 230, "Customize your Control Scheme.", 255, 255, 255, 255, 1);
+			break;
+		case 2: // Console
+			Draw_ColoredString(10, 230, "Open the Console to input Commands.", 255, 255, 255, 255, 1);
 			break;
 	}
 }
@@ -3023,6 +3038,11 @@ void M_Options_Key (int k)
 				M_Menu_Keys_f();
 				break;
 			case 2:
+				m_state = m_none;
+                console_enabled = true;
+                Con_ToggleConsole_f ();
+				break;
+			case 3:
 				if (key_dest == key_menu_pause)
                     M_Paused_Menu_f();
                 else
