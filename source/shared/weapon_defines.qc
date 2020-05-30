@@ -1332,15 +1332,16 @@ float(float wep, float delaytype) getWeaponDelay =
     return 0;
 }
 
-float GetWeaponWalkSpeed (float weapontype)
+float GetWeaponWalkSpeed(float perks, float weapontype)
 {
+	float spd;
 
 	if (isCustomWeapon(weapontype)) {
-		return CustomWeapons[weapontype - 70].walkspeed;
+		spd = CustomWeapons[weapontype - 70].walkspeed;
 	}
 
 	switch(weapontype) {
-		default: return 1;
+		default: spd = 1;
 		case W_KAR: 
 		case W_357:
 		case W_GEWEHR:
@@ -1353,9 +1354,9 @@ float GetWeaponWalkSpeed (float weapontype)
 		case W_WIDDER:
 		case W_ARMAGEDDON:
 		case W_HEADCRACKER:
-			return 0.9;
+			spd = 0.9;
 		case W_M2:
-			return 0.67;
+			spd = 0.67;
 		case W_MG:
 		case W_BROWNING:
 		case W_PANZER:
@@ -1363,10 +1364,15 @@ float GetWeaponWalkSpeed (float weapontype)
 		case W_BARRACUDA:
 		case W_ACCELERATOR:
 		case W_PENETRATOR:
-			return 0.75;
+			spd = 0.75;
 		case W_FIW:
-			return 0.85;
+			spd = 0.85;
 	}
+
+	if (perks & P_STAMIN)
+		spd *= 1.07;
+
+	return spd;
 }
 
 vector GetWeaponADSPos(float wep) {

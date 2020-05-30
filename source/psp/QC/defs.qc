@@ -153,6 +153,7 @@ void		end_sys_globals;		// flag for structure dumping
 .string 	Weapon_Name;
 .string		Weapon_Name_Touch;
 .float      currentmag2;
+.float      maxspeed;
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent
 
@@ -514,7 +515,6 @@ string mappath;
 #define PRINT_HIGH  	0
 
 .float isspec;
-.float maxspeed;
 
 #define		FILE_READ 	 	0
 #define		FILE_APPEND 	1

@@ -93,7 +93,6 @@ void() playgetup8		=[	9,		playgetup9		] {self.frame = 46;}
 void() playgetup9		=[	10,		playgetup10		] {self.frame = 47;}
 void() playgetup10		=[	11,		playgetup10		] {self.frame = 48;}
 
-#ifdef PC
 #define forward 	0
 #define backward 	1
 #define left 		2
@@ -101,6 +100,7 @@ void() playgetup10		=[	11,		playgetup10		] {self.frame = 48;}
 #define all_move    -1
 float(float dir) checkMovement =
 {
+	makevectors(self.movement);
 	string a = vtos(self.movement);
 	float x, y;
 
@@ -133,7 +133,6 @@ float(float dir) checkMovement =
 			return 0;
 	}
 }
-#endif
 
 void() PlayerJump =
 {
@@ -212,7 +211,7 @@ void() PlayerPreThink =
 			if (checkMovement(-1))
 				self.punchangle_x = 0.25*sin(time*15);		
 		#endif
-		} else if (self.zoom == 1) {
+		} else if (self.zoom != 3) {
 			self.maxspeed *= 0.5;
 		} if (self.damagetimer > time) {
 			self.maxspeed *= 0.5;
@@ -227,12 +226,15 @@ void() PlayerPreThink =
 				break;		
 		}
 
-		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
-		
 		#ifdef PC
-		if (!checkMovement(forward))
-			self.maxspeed -= self.maxspeed*0.25;
+		if (checkMovement(backward)) {
+			self.maxspeed *= 0.7;
+		} else if (checkMovement(left) || checkMovement(right)) {
+			self.maxspeed *= 0.8;
+		}
 		#endif
+
+		self.maxspeed *= GetWeaponWalkSpeed(self.perks, self.weapon);
 	}
 	if(self.isspec != 0 && !self.downed)
 	{
@@ -390,9 +392,6 @@ void() PlayerPostThink =
 		#else 
 		self.stamina = self.stamina + (0.1*fabs(sin(frametime*75)));
 		#endif
-		if (self.stamina > 3) {
-			self.stamina = 3;
-		}
 	}
 
 	self.oldvelocity = self.velocity;
