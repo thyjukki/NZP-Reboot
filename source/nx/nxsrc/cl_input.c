@@ -427,7 +427,7 @@ void CL_BaseMove (usercmd_t *cmd)
 	if (cl.stats[STAT_HEALTH] < 20)
 		cl_backspeed = cl_forwardspeed = cl_sidespeed = 30;
 	else
-		cl_backspeed = cl_forwardspeed = cl_sidespeed = 175;//190
+		cl_backspeed = cl_forwardspeed = cl_sidespeed = 140;//190
 
 	cl_sidespeed = cl_sidespeed*speed_reduce(cl.stats[STAT_ACTIVEWEAPON]);
 

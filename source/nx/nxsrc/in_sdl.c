@@ -51,8 +51,8 @@ static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE};
 // SDL2 Game Controller cvars
 cvar_t	joy_deadzone = { "joy_deadzone", "0.175", CVAR_ARCHIVE };
 cvar_t	joy_deadzone_trigger = { "joy_deadzone_trigger", "0.2", CVAR_ARCHIVE };
-cvar_t	joy_sensitivity_yaw = { "joy_sensitivity_yaw", "300", CVAR_ARCHIVE };
-cvar_t	joy_sensitivity_pitch = { "joy_sensitivity_pitch", "150", CVAR_ARCHIVE };
+cvar_t	joy_sensitivity_yaw = { "joy_sensitivity_yaw", "250", CVAR_ARCHIVE };
+cvar_t	joy_sensitivity_pitch = { "joy_sensitivity_pitch", "125", CVAR_ARCHIVE };
 cvar_t	joy_invert = { "joy_invert", "0", CVAR_ARCHIVE };
 cvar_t	joy_exponent = { "joy_exponent", "3", CVAR_ARCHIVE };
 cvar_t	joy_exponent_move = { "joy_exponent_move", "3", CVAR_ARCHIVE };
@@ -715,6 +715,8 @@ void IN_JoyMove (usercmd_t *cmd)
 		speed = speed*0.5;
 	else if (cl.stats[STAT_ZOOM] == 2)
 		speed = speed*0.25;
+
+	speed = speed * (sensitivity.value / 11.0);
 
 	//shpuld end
 	cl.viewangles[YAW] -= lookEased.x * speed * joy_sensitivity_yaw.value * host_frametime;
