@@ -93,6 +93,12 @@ void() W_SprintStop =
 }
 
 void W_SprintStart () {
+
+#ifdef NX
+	if (!self.sprintflag) {
+		return;
+	}
+#endif
 	
 	if (self.fire_delay > time ||
 		self.fire_delay2 > time ||
@@ -1845,6 +1851,14 @@ void () Impulse_Functions =
 			else
 				Change_Stance();
 			break;
+		#ifdef NX
+		case 31:
+			self.sprintflag = 0;
+			break;
+		case 32:
+			self.sprintflag = 1;
+			break;
+		#endif
 		case 110:
 			CheckButton(1);
 			break;
@@ -1953,6 +1967,12 @@ void() CheckPlayer =
 {
 	CheckPowerups(self);
 	CheckRevive(self);
+
+#ifdef NX
+	if (!self.sprintflag && self.sprinting) {
+		W_SprintStop();
+	}
+#endif 
 
 	// FIXME - can't do frame independent stance changing.. ofs starts spazzing..
 	if (self.view_ofs_z > self.new_ofs_z) {
@@ -2190,7 +2210,7 @@ void () Weapon_Logic =
 	
 	if (self.button6 && !self.semiknife)
 	{ 
-		#ifndef PC
+		#ifdef PSP
 		if (self.sprinting) {
 			dolphin_dive();
 			return;

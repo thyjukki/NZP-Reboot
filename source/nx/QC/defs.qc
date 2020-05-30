@@ -474,6 +474,7 @@ float   AS_MISSILE              = 4;
 .float          distance;
 .float          volume;
 	
+.float 			sprintflag;
 
 //
 // builtin functions
@@ -604,7 +605,7 @@ vector VEC_VIEW_OFS = '0 0 32';
 #define	VEC_HULL2_MAX  '32 32 64'
 
 .string fog;
-string world_fog;
+//string world_fog;
 
 .float button3;
 .float button4;

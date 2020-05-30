@@ -239,7 +239,12 @@ void() PlayerPreThink =
 	}
 	
 
-	if(self.button2) { //motolegacy (FIXME) -- prevent jumping unless standing
+	if(self.button2) {
+		// naievil -- stop sprinting if we jump, which is a real mechanic from the game that we never implemented 
+		if (self.sprinting) {
+			W_SprintStop();
+		}
+
 		if (self.downed)
 			return;
 			
