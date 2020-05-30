@@ -926,7 +926,7 @@ void SCR_DrawLoading (void)
 	scr_tileclear_updates = 0; //johnfitz
 }
 
-cvar_t	crosshair;
+//cvar_t	crosshair;
 extern cvar_t crosshair;
 extern qboolean croshhairmoving;
 //extern cvar_t cl_zoom;

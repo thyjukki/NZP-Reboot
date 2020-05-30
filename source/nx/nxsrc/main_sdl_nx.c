@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/iosupport.h>
+#include <errno.h>
 
 #define SDL_MIN_X	2
 #define SDL_MIN_Y	0
@@ -50,6 +51,8 @@ void userAppExit (void)
 	socketExit();
 }
 
+SDL_Window	*draw_context;
+
 static void Sys_InitSDL (void)
 {
 	SDL_version v;
@@ -67,13 +70,22 @@ static void Sys_InitSDL (void)
 			  "You need a library version in the line of %d.%d.%d\n", SDL_MIN_X,SDL_MIN_Y,SDL_MIN_Z);
 	}
 
-	if (SDL_Init(0) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		Sys_Error("Couldn't init SDL: %s", SDL_GetError());
 	}
+
+	char		caption[50];
+	q_snprintf(caption, sizeof(caption), "QuakeSpasm " QUAKESPASM_VER_STRING);
+	int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
+	draw_context = SDL_CreateWindow (caption, 0, 0, 1280, 720, 0);
+
+	if (!draw_context) {
+		Sys_Error ("SDLINIT: SDL_CreateWindow: Couldn't create window | %s", SDL_GetError());
+	}
 }
 
-#define DEFAULT_MEMORY (256 * 1024 * 1024) // ericw -- was 72MB (64-bit) / 64MB (32-bit)
+#define DEFAULT_MEMORY (512 * 1024 * 1024) // ericw -- was 72MB (64-bit) / 64MB (32-bit)
 
 static quakeparms_t	parms;
 
@@ -161,6 +173,7 @@ int main(int argc, char *argv[])
 	int mem_mb = MemAvailable();
 	// leave at least 256 MB for stuff, or else it crashes on taxing maps in applet mode
 	parms.memsize = (mem_mb > 512) ? DEFAULT_MEMORY : DEFAULT_MEMORY / 2;
+
 	if (COM_CheckParm("-heapsize"))
 	{
 		t = COM_CheckParm("-heapsize") + 1;
@@ -170,8 +183,10 @@ int main(int argc, char *argv[])
 
 	parms.membase = malloc (parms.memsize);
 
-	if (!parms.membase)
-		Sys_Error ("Not enough memory free; check disk space\n");
+	if (!parms.membase) {
+
+		Sys_Error ("Not enough memory free; check disk space\ntried to allocate %d bytes\nOnly have %d MB available\nerrno = %s\n", parms.memsize, mem_mb, strerror(errno));
+	}
 
 	Sys_Printf("Quake %1.2f (c) id Software\n", VERSION);
 	Sys_Printf("GLQuake %1.2f (c) id Software\n", GLQUAKE_VERSION);

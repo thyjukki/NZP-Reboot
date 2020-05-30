@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 
 vec3_t vec3_origin = {0,0,0};
-
+float _mathlib_temp_float1, _mathlib_temp_float2, _mathlib_temp_float3;
 /*-----------------------------------------------------------------*/
 
 

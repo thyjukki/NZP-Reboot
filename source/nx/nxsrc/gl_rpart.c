@@ -194,7 +194,7 @@ typedef struct particle_texture_s
 static	float	sint[7] = {0.000000, 0.781832, 0.974928, 0.433884, -0.433884, -0.974928, -0.781832};
 static	float	cost[7] = {1.000000, 0.623490, -0.222521, -0.900969, -0.900969, -0.222521, 0.623490};
 
-particle_t			*particles, *free_particles;
+extern particle_t			*particles, *free_particles;
 static			particle_type_t		particle_types[num_particletypes];//R00k
 static	int		particle_type_index[num_particletypes];
 static			particle_texture_t	particle_textures[num_particletextures];

@@ -349,10 +349,13 @@ void IN_Init (void)
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
 #else
+	/*
 	if (textmode)
 		SDL_StartTextInput();
 	else
 		SDL_StopTextInput();
+	*/
+
 #endif
 	if (safemode || COM_CheckParm("-nomouse"))
 	{
@@ -788,6 +791,7 @@ void IN_UpdateInputMode (void)
 		if (in_debugkeys.value)
 			Con_Printf("SDL_EnableUNICODE %d time: %g\n", textmode, Sys_DoubleTime());
 #else
+		/*
 		if (textmode)
 		{
 			SDL_StartTextInput();
@@ -800,6 +804,8 @@ void IN_UpdateInputMode (void)
 			if (in_debugkeys.value)
 				Con_Printf("SDL_StopTextInput time: %g\n", Sys_DoubleTime());
 		}
+		*/
+		
 #endif
 	}
 }
@@ -1165,6 +1171,7 @@ void IN_SendKeyEvents (void)
 		default:
 			break;
 		}
+
 	}
 }
 
