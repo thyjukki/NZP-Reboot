@@ -172,6 +172,7 @@ void            end_sys_globals;
 .vector         Flash_Offset;
 .float 			Flash_Size;
 .float          currentmag2;
+.float          maxspeed;
 void            end_sys_fields; 
 
 /*
@@ -379,7 +380,6 @@ float   AS_MISSILE              = 4;
 .float          walkframe;
 
 // Zoid Additions
-.float		maxspeed;		// Used to set Maxspeed on a player
 .float		gravity;		// Gravity Multiplier (0 to 1.0)
 
 
