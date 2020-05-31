@@ -1253,7 +1253,7 @@ void V_CalcRefdef (void)
 
 	view->model = cl.model_precache[cl.stats[STAT_WEAPON]];
 	view->frame = cl.stats[STAT_WEAPONFRAME];
-	//view->skinnum = cl.stats[STAT_WEAPONSKIN]; // naievil -- fixme
+	view->skinnum = cl.stats[STAT_WEAPONSKIN];
 	view->colormap = vid.colormap;
 
 	view2->model = cl.model_precache[cl.stats[STAT_WEAPON2]];
