@@ -1185,7 +1185,7 @@ void Load_Achivements (void)
 {
     int i;
     FILE *f;
-	f = fopen (va("%s/data/stat.dat",com_gamedir), "r");
+	f = fopen (va("%s/data/ach.dat",com_gamedir), "r");
 	if (f == NULL)
 		return;
 
@@ -1200,7 +1200,7 @@ void Save_Achivements (void)
 {
     int i;
     FILE *f;
-	f = fopen (va("%s/data/stat.dat",com_gamedir), "w");
+	f = fopen (va("%s/data/ach.dat",com_gamedir), "w");
 
     for (i = 0; i < MAX_ACHIEVEMENTS; i++)
     {
@@ -2950,7 +2950,8 @@ void M_Gameplay_Key (int key)
 }
 
 int options_cursor;
-#define OPTIONS_ITEMS 3
+#define OPTIONS_ITEMS 4
+
 void M_Menu_Options_f (void)
 {
 	key_dest = key_menu;
@@ -2985,17 +2986,23 @@ void M_Options_Draw (void)
 	else
 		Draw_ColoredString(10, 55, "Controls", 255, 255, 255, 255, 1);
 
+	// Control Settings
+	if (options_cursor == 2)
+		Draw_ColoredString(10, 65, "Control Settings", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 65, "Control Settings", 255, 255, 255, 255, 1);
+
 	// Divider
-	Draw_FillByColor(10, 68, 160, 2, GU_RGBA(130, 130, 130, 255));
+	Draw_FillByColor(10, 78, 160, 2, GU_RGBA(130, 130, 130, 255));
 
 	// Console
-	if (options_cursor == 2)
-		Draw_ColoredString(10, 75, "Console", 255, 0, 0, 255, 1);
+	if (options_cursor == 3)
+		Draw_ColoredString(10, 85, "Console", 255, 0, 0, 255, 1);
 	else
-		Draw_ColoredString(10, 75, "Console", 255, 255, 255, 255, 1);
+		Draw_ColoredString(10, 85, "Console", 255, 255, 255, 255, 1);
 
 	// Back
-	if (options_cursor == 3)
+	if (options_cursor == 4)
 		Draw_ColoredString(10, 250, "Back", 255, 0, 0, 255, 1);
 	else
 		Draw_ColoredString(10, 250, "Back", 255, 255, 255, 255, 1);
@@ -3038,11 +3045,14 @@ void M_Options_Key (int k)
 				M_Menu_Keys_f();
 				break;
 			case 2:
+                M_Menu_Gameplay_f ();
+                break;
+			case 3:
 				m_state = m_none;
                 console_enabled = true;
                 Con_ToggleConsole_f ();
 				break;
-			case 3:
+			case 4:
 				if (key_dest == key_menu_pause)
                     M_Paused_Menu_f();
                 else

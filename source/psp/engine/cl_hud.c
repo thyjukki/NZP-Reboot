@@ -1212,6 +1212,7 @@ void HUD_Draw (void)
 
 	scr_copyeverything = 1;
 
+
 	if (waypoint_mode.value)
 	{
 		Draw_String (vid.width - 112, 0, "WAYPOINTMODE");

@@ -124,7 +124,8 @@ float V_CalcBob (float speed,float which)//0 = regular, 1 = side bobbing
 	float sprint = 1;
 
 	if(cl.stats[STAT_ZOOM] == 3)
-		sprint = 1.8 * (sv_player->v.maxspeed/148); //this gets sprinting speed in comparison to walk speed per weapon
+		sprint = 1.8;
+	
 	if(cl.stats[STAT_ZOOM] == 2)
 		return 0;
 

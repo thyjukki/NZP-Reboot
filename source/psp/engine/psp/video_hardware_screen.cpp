@@ -816,29 +816,29 @@ char *lodinglinetext;
 qpic_t *awoo;
 char *ReturnLoadingtex (void)
 {
-    int StringNum = Random_Int(47);
+    int StringNum = Random_Int(48);
     switch(StringNum)
-    { // NOTE: 59-character limit before message goes off-screen
+    {
         case 1:
             return  "The original Quake came out in 1996 (24 years ago as of 2020!)";
             break;
         case 2:
-            return  "Use the Kar98-k to be the hero we need!";
+            return  "Use the Kar98-k to be the hero we want you to be!";
             break;
         case 3:
             return  "There is a huge number of modern engines based on Quake!";
             break;
         case 4:
-            return  "Development for NZP officially started on September 27, 2009";
+            return  "Development for NZ:P officially started on September 27, 2009";
             break;
         case 5:
-            return  "The first release of NZ:P was released on December 25, 2010";
+            return  "NZ:P was first released on December 25, 2010";
             break;
         case 6:
-            return  "The 1.1 release of NZ:P (original) has a total of over 90,000 downloads!";
+            return  "The 1.1 release of NZ:P has over 90,000 downloads!";
             break;
         case 7:
-            return  "NZ:P has been downloaded a total of 461,723 times as of December 25, 2014";
+            return  "NZ:P has been downloaded over 400,00 times!";
             break;
         case 8:
             return  "The original NZP was made mainly by 3 guys around the world.";
@@ -862,7 +862,7 @@ char *ReturnLoadingtex (void)
             return  "Did you know you can make your own Custom Map?";
             break;
         case 15:
-            return  "Try Retro Mode (it's in the Graphics Settings)!";
+            return  "Try Retro Mode, it's in the Graphics Settings!";
             break;
         case 16:
             return  "Tired of Nacht der Untoten? Make your own map!";
@@ -910,7 +910,7 @@ char *ReturnLoadingtex (void)
             return  "ggnore";
             break;
         case 31:
-            return  "Try this game on PC or PS Vita as well as PSP!";
+            return  "Have you tried NZ:P on PC or NX?";
             break;
         case 32:
             return  "Submerge your device in water for godmode!";
@@ -922,7 +922,7 @@ char *ReturnLoadingtex (void)
             return  "Also check out \"No Bugs Allowed\" for the PSP!";
             break;
         case 35:
-            return  "Loading..."; // "ripperoni" made me think the game crashed while loading
+            return 	"MotoLegacy, or \"Ian\", is from the USA.";
             break;
         case 36:
             return  "Zombies don't like bullets.";
@@ -949,7 +949,7 @@ char *ReturnLoadingtex (void)
 			return 	"Please help me find the meaning of   . Thanks.";
 			break;
 		case 44:
-			return 	"MotoLegacy, or, \"Ian\", is from Ohio";
+			return  "Loading..."; // "ripperoni" made me think the game crashed while loading
 			break;
 		case 45:
 			return 	"Get rid of the 21% cooler tip, it's an MLP reference";

@@ -154,17 +154,6 @@ void() NewRound =
 	}
 
 	set_z_health();
-
-	//temp dog stuff
-	/*if (gotdog) {
-		switch(rounds) {
-			case 5:
-				Remaining_Zombies = Total_Zombies = 10; break;
-			case 10:
-			case 15:
-				Remaining_Zombies = Total_Zombies = 15; break;
-		}
-	}*/
 	
 	maxreward = 50 * rounds;
 	if (maxreward > 500)
@@ -196,9 +185,12 @@ void() NewRound =
 	Remaining_Zombies = Total_Zombies = getZombieTotal();
 	#ifndef NX
 	#ifdef PSP
-	//local entity e = find(world, classname, "player");
-	//if (rounds == 2)
-		//achievement(e, 1);
+	local entity e = find(world, classname, "player");
+	switch(rounds) {
+		case 5: achievement(e, 0); break;
+		case 10: achievement(e, 1); break;
+		case 15: achievement(e, 2);; break;
+	}
 	#else
 	switch(rounds) {
 		case 5: GiveAchievement(0, pl1); break;
