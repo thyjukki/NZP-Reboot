@@ -1323,7 +1323,7 @@ void(float width, float height) HUD_Draw =
 	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10) && !score_show)
 	{
         
-        if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "")
+        if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "" || getstatf(STAT_WEAPONZOOM) == 2)
 		    Draw_Crosshair();
 
 		if (!cvar("waypoint_mode")) {

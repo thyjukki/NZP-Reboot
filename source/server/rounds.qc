@@ -189,7 +189,7 @@ void() NewRound =
 	switch(rounds) {
 		case 5: achievement(e, 0); break;
 		case 10: achievement(e, 1); break;
-		case 15: achievement(e, 2);; break;
+		case 15: achievement(e, 2); break;
 	}
 	#else
 	switch(rounds) {

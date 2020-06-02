@@ -426,7 +426,7 @@ void WeaponSwitch(entity player) {
 
 void(entity person, float expamt, float doublepoint) addmoney =
 {
-	if (person.classname != "player")
+	if (person.classname != "player" || person.downed)
 		return;
 
 	if (expamt > 0 && doublepoint == TRUE && x2_finished > time) {

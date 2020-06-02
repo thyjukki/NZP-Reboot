@@ -433,11 +433,11 @@ void() ClientConnect =
 		
 			// Get values and transmute it a bit if necessary
 			//	Originally: start | end | R | G | B
-			fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3.5);
+			fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3);
 		
-			fog_R = ftos(stof(argv(2))/255);
-			fog_G = ftos(stof(argv(3))/255);
-			fog_B = ftos(stof(argv(4))/255);
+			fog_R = ftos(stof(argv(2))/255 * 2);
+			fog_G = ftos(stof(argv(3))/255 * 2);
+			fog_B = ftos(stof(argv(4))/255 * 2);
 
 			// Restore into our world.fog
 			world_fog = strcat(fog_start_end, " ", fog_R, " ", fog_G, " ", fog_B);

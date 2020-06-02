@@ -126,7 +126,7 @@ void W_SprintStart () {
 
 void() W_Switch =
 {
-	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button7)
+	if (self.secondaryweapon && self.secondaryweapon != 0 && !self.new_anim_stop && !other.button7)
 	{      
 		float tempf,tempf1,tempf2,tempf3,tempf4;
 		float startframe;
@@ -135,6 +135,9 @@ void() W_Switch =
 
 		// un-zoom camera
 		self.zoom = false;
+
+		// fix fire rate exploit
+		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = true;
 
 		// just do normal weapon swapping if we don't have mule..
 		if (!(self.perks & P_MULE) || !self.thirdweapon) {
@@ -1696,7 +1699,7 @@ void() GrenadeExplode =
 		DamgageExplode (self, self.owner, 1200, 1000, 128); //explosive weapons are more powerful :)
 	
 	#ifdef PC
-    te_customflash(self.origin, 128, 300, '1 1 1');
+    te_customflash(self.origin, 178, 300, '1 1 1');
 	#endif
 
     CallExplosion(self.origin);
@@ -1913,8 +1916,7 @@ void() W_Grenade =
 } 
 
 void(float wepnum) CheckButton = {
-	if (self.weaponnum == wepnum)
-		W_PutOut();
+	W_PutOut();
 }
 
 void() Change_Stance = {

@@ -771,6 +771,14 @@ noref void() CSQC_Parse_Event =
 				muzzlepos = getviewprop(VF_ORIGIN);
 				
 				local vector muzzle_offset = GetWeaponFlash_Offset(getstatf(STAT_ACTIVEWEAPON))/1000;
+
+				// ADS offset
+				if(getstatf(STAT_WEAPONZOOM) == 1)
+				{  
+					muzzle_offset += GetWeaponADSPos(weapon);
+
+					muzzle_offset[0] -= 2;
+				}
                 
                 // Firing from the left? Flip x-axis for muzzleflash
                 if (side == 0 && IsDualWeapon(getstatf(STAT_ACTIVEWEAPON)))
@@ -780,14 +788,6 @@ noref void() CSQC_Parse_Event =
 				muzzlepos += v_right * muzzle_offset_x;
 				muzzlepos += v_up * muzzle_offset_y;			
 				mzlflash.alpha = 1;
-				
-				float ads = getstatf(STAT_WEAPONZOOM); //get the zoomtoggle value 
-				if(ads == 1)
-				{  
-					// FIXME: naievil -- need ADS fix!!!
-					local vector adsoffset = GetWeaponADSPos(weapon);
-					muzzlepos = vmodel_currentpos;
-				}
 
 				if (cvar("nzp_particles")) {
 					if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))				
@@ -912,7 +912,7 @@ noref void() CSQC_Parse_Event =
 						Hitmark_time = time + 0.2;
 					break;
 				case 4:
-					zoom_2_time = time + 0.25;
+					zoom_2_time = time + 0.20;
 					break;
 				case 5:
 					crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));
