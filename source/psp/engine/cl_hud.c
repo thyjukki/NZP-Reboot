@@ -91,6 +91,7 @@ typedef struct
 } point_change_t;
 
 point_change_t point_change[10];
+
 /*
 ===============
 HUD_Init
@@ -487,6 +488,66 @@ void HUD_Blood (void)
 
 /*
 ===============
+HUD_GetWorldText
+===============
+*/
+
+// modified from scatter's worldspawn parser
+// FIXME - unoptimized, could probably save a bit of
+// memory here in the future.
+void HUD_WorldText(int alpha)
+{
+	// for parser
+	char key[128], value[4096];
+	char *data;
+
+	// first, parse worldspawn
+	data = COM_Parse(cl.worldmodel->entities);
+
+	if (!data)
+		return; // err
+	if (com_token[0] != '{')
+		return; // err
+
+	while(1) {
+		data = COM_Parse(data);
+
+		if (!data)
+			return; // err
+		if (com_token[0] == '}')
+			break; // end of worldspawn
+		
+		if (com_token[0] == '_')
+			strcpy(key, com_token + 1);
+		else
+			strcpy(key, com_token);
+		
+		while (key[strlen(key)-1] == ' ') // remove trailing spaces
+			key[strlen(key)-1] = 0;
+		
+		data = COM_Parse(data);
+		if (!data)
+			return; // err
+
+		strcpy(value, com_token);
+
+		if (!strcmp("location", key)) // search for location key
+		{
+			Draw_ColoredString(4, vid.height/2 + 50, value, 255, 255, 255, alpha, 1);
+		}
+		if (!strcmp("date", key)) // search for date key
+		{
+			Draw_ColoredString(4, vid.height/2 + 60, value, 255, 255, 255, alpha, 1);
+		}
+		if (!strcmp("person", key)) // search for person key
+		{
+			Draw_ColoredString(4, vid.height/2 + 70, value, 255, 255, 255, alpha, 1);
+		}
+	}
+}
+
+/*
+===============
 HUD_Rounds
 ===============
 */
@@ -496,6 +557,9 @@ float 	color_shift_end[3];
 float 	color_shift_steps[3];
 int		color_shift_init;
 int 	blinking;
+int 	textstate;
+int 	value, value2;
+
 void HUD_Rounds (void)
 {
 	int i, x_offset, icon_num, savex;
@@ -503,8 +567,77 @@ void HUD_Rounds (void)
 	x_offset = 0;
 	savex = 0;
 
+	// Round and Title text - moto
+	// extra creds to scatterbox for some x/y vals
+	// ------------------
+	// First, fade from white to red, ~3s duration
+	if (!textstate) {
+		if (!value)
+			value = 255;
+
+		Draw_ColoredString(vid.width/2 - strlen("Round")*8, 80, "Round", 255, value, value, 255, 2);
+		
+		value -= cl.time * 0.4;
+
+		// prep values for next stage
+		if (value <= 0) {
+			value = 255;
+			value2 = 0;
+			textstate = 1;
+		}
+	} 
+	// Now, fade out, and start fading worldtext in
+	// ~3s for fade out, 
+	else if (textstate == 1) {
+		Draw_ColoredString(vid.width/2 - strlen("Round")*8, 80, "Round", 255, 0, 0, value, 2);
+
+		HUD_WorldText(value2);
+		Draw_ColoredString(4, vid.height/2 + 40, "'Nazi Zombies'", 255, 255, 255, value2, 1);
+		
+		value -= cl.time * 0.4;
+		value2 += cl.time * 0.4;
+
+		// prep values for next stage
+		if (value <= 0) {
+			value2 = 0;
+			textstate = 2;
+		}
+	}
+	// Hold world text for a few seconds
+	else if (textstate == 2) {
+		HUD_WorldText(255);
+		Draw_ColoredString(4, vid.height/2 + 40, "'Nazi Zombies'", 255, 255, 255, 255, 1);
+
+		value2 += cl.time * 0.4;
+
+		if (value2 >= 255) {
+			value2 = 255;
+			textstate = 3;
+		}
+	}
+	// Fade worldtext out, finally.
+	else if (textstate == 3) {
+		HUD_WorldText(value2);
+		Draw_ColoredString(4, vid.height/2 + 40, "'Nazi Zombies'", 255, 255, 255, value2, 1);
+
+		value2 -= cl.time * 0.4;
+
+		// prep values for next stage
+		if (value2 <= 0) {
+			textstate = -1;
+		}
+	}
+	// ------------------
+	// End Round and Title text - moto
+
 	if (cl.stats[STAT_ROUNDCHANGE] == 1)//this is the rounds icon at the middle of the screen
 	{
+		if (textstate == -1) {
+			value = 0;
+			value2 = 0;
+			textstate = 0;
+		}
+
 		Draw_ColorPic ((vid.width - sb_round[0]->width) /2, (vid.height - sb_round[0]->height) /2, sb_round[0], 107, 1, 0, alphabling);
 
 		alphabling = alphabling + 15;
@@ -517,8 +650,8 @@ void HUD_Rounds (void)
 	else if (cl.stats[STAT_ROUNDCHANGE] == 2)//this is the rounds icon moving from middle
 	{
 		Draw_ColorPic (round_center_x, round_center_y, sb_round[0], 107, 1, 0, 255);
-		round_center_x = round_center_x - (229/108)*2 - 0.2;
-		round_center_y = round_center_y + 2;
+		round_center_x = round_center_x - (229/108) - 0.2;
+		round_center_y = round_center_y + 1;
 		if (round_center_x <= 5)
 			round_center_x = 5;
 		if (round_center_y >= 220)
