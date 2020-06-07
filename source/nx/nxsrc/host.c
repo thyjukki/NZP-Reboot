@@ -827,14 +827,14 @@ void Preload (void)
 {
 	Mod_ForName ("models/player.mdl", true);
 
-	Mod_ForName ("models/ai/zb#.mdl",true);
-	Mod_ForName ("models/ai/zal(.mdl",true);
-	Mod_ForName ("models/ai/zar(.mdl",true);
-	Mod_ForName ("models/ai/zh^.mdl",true);
-	Mod_ForName ("models/ai/zbc#.mdl",true);
-	Mod_ForName ("models/ai/zalc(.mdl",true);
-	Mod_ForName ("models/ai/zarc(.mdl",true);
-	Mod_ForName ("models/ai/zhc^.mdl",true);
+	Mod_ForName ("models/ai/zbod.mdl",true);
+	Mod_ForName ("models/ai/zlarm.mdl",true);
+	Mod_ForName ("models/ai/zrarm.mdl",true);
+	Mod_ForName ("models/ai/zhead.mdl",true);
+	Mod_ForName ("models/ai/zcbod.mdl",true);
+	Mod_ForName ("models/ai/zclarm.mdl",true);
+	Mod_ForName ("models/ai/zcrarm.mdl",true);
+	Mod_ForName ("models/ai/zchead.mdl",true);
 
 	Mod_ForName ("models/ai/zfull.mdl",true);
 	Mod_ForName ("models/ai/zcfull.mdl",true);

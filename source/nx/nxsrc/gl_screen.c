@@ -92,7 +92,7 @@ cvar_t		scr_clock = {"scr_clock", "0", CVAR_NONE};
 //johnfitz
 
 cvar_t		scr_viewsize = {"viewsize","100", CVAR_ARCHIVE};
-cvar_t		scr_fov = {"fov","74",CVAR_NONE};	// 10 - 170
+cvar_t		scr_fov = {"fov","70",CVAR_NONE};	// 10 - 170
 cvar_t		scr_fov_adapt = {"fov_adapt","1",CVAR_ARCHIVE};
 cvar_t		scr_conspeed = {"scr_conspeed","500",CVAR_ARCHIVE};
 cvar_t		scr_centertime = {"scr_centertime","2",CVAR_NONE};
@@ -926,7 +926,7 @@ void SCR_DrawLoading (void)
 	scr_tileclear_updates = 0; //johnfitz
 }
 
-cvar_t	crosshair;
+//cvar_t	crosshair;
 extern cvar_t crosshair;
 extern qboolean croshhairmoving;
 //extern cvar_t cl_zoom;

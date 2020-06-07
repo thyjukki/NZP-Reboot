@@ -160,6 +160,7 @@ typedef struct
 	vec3_t  Flash_Offset;
 	float   Flash_Size;
 	float   currentmag2;
+	float   maxspeed;
 } entvars_t;
 
 #define PROGHEADER_CRC 5927

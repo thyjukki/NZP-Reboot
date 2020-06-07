@@ -12,6 +12,11 @@ A faithful recreation of Call of Duty Zombies for the PC and PlayStation Portabl
 
 <hr>
 
+## Nintendo Switch Port
+When launching the Nintendo Switch Port, additional memory allocation is necessary. Update to the latest Atmosphere and hold R over a title installed. Then, select Nazi Zombies Portable from the homebrew menu.
+
+<hr>
+
 ## Bug Reporting
 Bugs can be reported by either creating an issue in this repository or joining the [Discord server](discord.gg/ChX7Fjr) and posting in the #bug-reports channel.
 

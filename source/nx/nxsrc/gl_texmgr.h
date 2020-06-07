@@ -67,8 +67,8 @@ typedef struct gltexture_s {
 } gltexture_t;
 
 #define	MAX_GLTEXTURES	2048
-gltexture_t	gltextures[2048];
-int numgltextures;
+extern gltexture_t	gltextures[2048];
+extern int numgltextures;
 
 extern gltexture_t *notexture;
 extern gltexture_t *nulltexture;

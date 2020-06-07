@@ -46,9 +46,9 @@ cvar_t	cl_bobcycle = {"cl_bobcycle","0.06", false};
 cvar_t	cl_bobup = {"cl_bobup","0.02", false};//BLUB changed to 0.02
 
 cvar_t	cl_sidebobbing = {"cl_sidebobbing","1"};
-cvar_t	cl_bobside = {"cl_bobside","0.02"};
-cvar_t	cl_bobsidecycle = {"cl_bobsidecycle","0.9"};
-cvar_t	cl_bobsideup = {"cl_bobsideup","0.5"};
+cvar_t	cl_bobside = {"cl_bobside","0.04"};
+cvar_t	cl_bobsidecycle = {"cl_bobsidecycle","1.2"};
+cvar_t	cl_bobsideup = {"cl_bobsideup","0.55"};
 
 cvar_t	v_kicktime = {"v_kicktime", "0.5", CVAR_NONE};
 cvar_t	v_kickroll = {"v_kickroll", "0.6", CVAR_NONE};
@@ -1253,7 +1253,7 @@ void V_CalcRefdef (void)
 
 	view->model = cl.model_precache[cl.stats[STAT_WEAPON]];
 	view->frame = cl.stats[STAT_WEAPONFRAME];
-	//view->skinnum = cl.stats[STAT_WEAPONSKIN]; // naievil -- fixme
+	view->skinnum = cl.stats[STAT_WEAPONSKIN];
 	view->colormap = vid.colormap;
 
 	view2->model = cl.model_precache[cl.stats[STAT_WEAPON2]];

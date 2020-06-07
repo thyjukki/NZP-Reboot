@@ -106,6 +106,7 @@ extern int history_line; //johnfitz
 
 void Con_ToggleConsole_f (void)
 {
+
 	if (key_dest == key_console/* || (key_dest == key_game && con_forcedup)*/)
 	{
 		key_lines[edit_line][1] = 0;	// clear any typing

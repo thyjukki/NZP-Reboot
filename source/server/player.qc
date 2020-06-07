@@ -165,6 +165,10 @@ void(float override) JumpCheck =
 			return;
 			
 		if (self.stance == 2) {
+      // naievil -- stop sprinting if we jump, which is a real mechanic from the game that we never implemented 
+		  if (self.sprinting) {
+			  W_SprintStop();
+		  }
 			PlayerJump();
 		} else if (self.view_ofs_z == self.new_ofs_z && (self.flags & FL_ONGROUND)) {
 			switch(self.stance) {
@@ -533,7 +537,6 @@ void() PlayerSpawn =
 	self.currentammo = G_STARTWEAPON[2];
 	self.currentmag = G_STARTWEAPON[1];
 	self.weapon = G_STARTWEAPON[0];
-
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
 	
 	if (rounds)
@@ -548,6 +551,7 @@ void() PlayerSpawn =
 		addmoney(self, G_STARTPOINTS, 0);
 
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
+	self.weapon2model = GetWeapon2Model(self.weapon);
 
 	SwitchWeapon(self.weapon);
 

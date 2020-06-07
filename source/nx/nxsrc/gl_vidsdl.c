@@ -78,7 +78,7 @@ static int		nummodes;
 static qboolean	vid_initialized = false;
 
 #if defined(USE_SDL2)
-static SDL_Window	*draw_context;
+extern SDL_Window	*draw_context;
 static SDL_GLContext	gl_context;
 #else
 static SDL_Surface	*draw_context;
@@ -650,7 +650,7 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 #endif
 
 		if (!draw_context)
-			Sys_Error ("Couldn't create window");
+			Sys_Error ("SDL_CreateWindow: Couldn't create window | %s", SDL_GetError());
 
 		previous_display = -1;
 	}

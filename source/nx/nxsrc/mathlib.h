@@ -72,8 +72,8 @@ static inline int IS_NAN (float x) {
 		VectorScale(_v, _y.f, _v);\
 	}\
 }
-
-float _mathlib_temp_float1, _mathlib_temp_float2, _mathlib_temp_float3;
+extern float _mathlib_temp_float1, _mathlib_temp_float2, _mathlib_temp_float3;
+extern 
 #define VectorSupCompare(v, w, m)								\
 	(_mathlib_temp_float1 = m,									\
 	(v)[0] - (w)[0] > -_mathlib_temp_float1 && (v)[0] - (w)[0] < _mathlib_temp_float1 &&	\

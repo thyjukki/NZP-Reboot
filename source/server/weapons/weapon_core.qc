@@ -95,7 +95,15 @@ void() W_SprintStop =
 		playwalk();
 }
 
+
 void W_SprintStart () {	
+
+#ifdef NX
+	if (!self.sprintflag) {
+		return;
+	}
+#endif
+	
 	if (self.fire_delay > time ||
 		self.fire_delay2 > time ||
 		self.new_anim_stop ||
@@ -1316,7 +1324,6 @@ void() W_FireM2 =
 	setsize(flamespr, '0 0 0', '0 0 0');
 }
 
-
 void(float side) W_Fire =
 {
 	if (self.weapon == W_M2 || self.weapon == W_FIW && self.cooldown)
@@ -1579,7 +1586,7 @@ void () W_Knife =
 		sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife_hit.wav", 1, ATTN_NORM);			
 		
 		/* naievil (FIXME) add weapon decal here */
-	
+
 		#ifdef PC
 		if (self.weapon != W_RAY && self.weapon != W_PORTER) {
 			WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
@@ -1596,13 +1603,11 @@ void () W_Knife =
 			multicast(trace_endpos, MULTICAST_PHS);
 		}	
 		#else
-		#ifdef PSP
 		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
 		WriteCoord (MSG_BROADCAST, org_x);
 		WriteCoord (MSG_BROADCAST, org_y);
 		WriteCoord (MSG_BROADCAST, org_z);
-		#endif
 		#endif
 	}
 
@@ -2047,6 +2052,14 @@ void () Impulse_Functions =
 			else
 				Change_Stance();
 			break;
+		#ifdef NX
+		case 31:
+			self.sprintflag = 0;
+			break;
+		case 32:
+			self.sprintflag = 1;
+			break;
+		#endif
 		/*case 110:
 			CheckButton(1);
 			break;
@@ -2159,6 +2172,12 @@ void() CheckPlayer =
 {
 	CheckPowerups(self);
 	CheckRevive(self);
+
+#ifdef NX
+	if (!self.sprintflag && self.sprinting) {
+		W_SprintStop();
+	}
+#endif 
 
 	// FIXME - can't do frame independent stance changing.. ofs starts spazzing..
 	if (self.view_ofs_z > self.new_ofs_z) {
@@ -2400,7 +2419,7 @@ void () Weapon_Logic =
 	
 	if (self.button6 && !self.semiknife)
 	{ 
-		#ifndef PC
+		#ifdef PSP
 		if (self.sprinting) {
 			dolphin_dive();
 			return;

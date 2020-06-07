@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern cvar_t gl_fullbrights, r_drawflat, gl_overbright, r_oldwater; //johnfitz
 extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
 
-int		gl_lightmap_format;
+extern int		gl_lightmap_format;
 int		lightmap_bytes;
 
 #define	BLOCK_WIDTH	128

@@ -2524,6 +2524,35 @@ string(float wep, float gorvmodel) GetWeaponModel =
     return ("");
 }
 
+string(float wep) GetWeapon2Model =
+{
+
+	// naievil -- fixme, add support for custom weapon2models
+	/*
+	if (isCustomWeapon(wep)) {
+		if (gorvmodel)
+			return CustomWeapons[wep - 70].gmodel;
+		else
+			return CustomWeapons[wep - 70].vmodel;
+	}
+	*/
+
+	switch (wep)
+	{
+		case W_BIATCH:
+			return ("models/weapons/m1911/v_biatch_left.mdl");		
+		case W_KAR_SCOPE:
+    	case W_HEADCRACKER:
+			return ("models/weapons/kar/v_karscope.mdl");
+    	case W_SNUFF:
+			return ("models/weapons/sawnoff/v_snuff_left.mdl");
+		default:
+			return "";
+    }
+
+    return ("");
+}
+
 string(float wep) GetWeaponSound =
 {
 

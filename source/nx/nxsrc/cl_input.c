@@ -427,7 +427,7 @@ void CL_BaseMove (usercmd_t *cmd)
 	if (cl.stats[STAT_HEALTH] < 20)
 		cl_backspeed = cl_forwardspeed = cl_sidespeed = 30;
 	else
-		cl_backspeed = cl_forwardspeed = cl_sidespeed = 175;//190
+		cl_backspeed = cl_forwardspeed = cl_sidespeed = 140;//190
 
 	cl_sidespeed = cl_sidespeed*speed_reduce(cl.stats[STAT_ACTIVEWEAPON]);
 
@@ -444,8 +444,23 @@ void CL_BaseMove (usercmd_t *cmd)
 	cl_backspeed = cl_forwardspeed = cl_sidespeed;
 	cl_sidespeed = cl_sidespeed*0.8;
 	cl_backspeed = cl_backspeed*0.7;
+
 	if (waypoint_mode.value)
 		cl_backspeed = cl_forwardspeed = cl_sidespeed *= 1.5;
+
+
+
+	// Limit max 
+	if (cl_backspeed > sv_player->v.maxspeed) {
+		cl_backspeed = sv_player->v.maxspeed;
+	}
+	if (cl_sidespeed > sv_player->v.maxspeed) {
+		cl_sidespeed = sv_player->v.maxspeed;
+	}
+	if (cl_forwardspeed > sv_player->v.maxspeed) {
+		cl_forwardspeed = sv_player->v.maxspeed;
+	}
+
 
 	if (in_strafe.state & 1)
 	{

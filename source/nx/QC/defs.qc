@@ -172,6 +172,7 @@ void            end_sys_globals;
 .vector         Flash_Offset;
 .float 			Flash_Size;
 .float          currentmag2;
+.float          maxspeed;
 void            end_sys_fields; 
 
 /*
@@ -379,7 +380,6 @@ float   AS_MISSILE              = 4;
 .float          walkframe;
 
 // Zoid Additions
-.float		maxspeed;		// Used to set Maxspeed on a player
 .float		gravity;		// Gravity Multiplier (0 to 1.0)
 
 
@@ -474,6 +474,7 @@ float   AS_MISSILE              = 4;
 .float          distance;
 .float          volume;
 	
+.float 			sprintflag;
 
 //
 // builtin functions
@@ -604,7 +605,7 @@ vector VEC_VIEW_OFS = '0 0 32';
 #define	VEC_HULL2_MAX  '32 32 64'
 
 .string fog;
-string world_fog;
+//string world_fog;
 
 .float button3;
 .float button4;
