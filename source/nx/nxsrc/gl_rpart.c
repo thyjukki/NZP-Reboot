@@ -571,6 +571,7 @@ void QMB_InitParticles (void)
 		Sys_Error("Cannot load textures/particles/mzfl0\n");
 		return;
 	}
+
 	//max_s = max_t = 256.0;
 	ADD_PARTICLE_TEXTURE(ptex_muzzleflash, glpic, 0, 1, 0, 0, 128, 128);
 
@@ -1335,6 +1336,7 @@ void QMB_RunParticleEffect (vec3_t org, vec3_t dir, int col, int count)
 			else
 
 			{
+				// type, origin, count, size, time, color, dir
 				AddParticle (p_smoke, org, 1, 4, 0.825f + ((rand() % 10) - 5) / 40.0, NULL, zerodir);
 			}
 		}
@@ -1358,7 +1360,6 @@ void QMB_RunParticleEffect (vec3_t org, vec3_t dir, int col, int count)
 			AddParticle (p_bubble, org, 1, 2, 0.825f + ((rand() % 10) - 5) / 40.0, NULL, zerodir);
 		}
 		else
-
 		{
 			AddParticle (p_smoke, org, 3, 12, 1.225 + ((rand() % 10) - 5) / 40.0, NULL, zerodir);
 		}
@@ -1762,37 +1763,55 @@ inline static void QMB_UpdateParticles(void)
 	}
 }
 
+// naievil -- hacky particle drawing...NOT OPTIMIZED
+void DRAW_PARTICLE_BILLBOARD(particle_texture_t *ptex, particle_t *p, vec3_t *coord) {
 
-#define DRAW_PARTICLE_BILLBOARD(_ptex, _p, _coord)		\
-	/*GL_SetCanvas(CANVAS_USEPRINT); */\
-	glPushMatrix ();									\
-														\
-    glTranslatef((float)_p->org[0], (float)_p->org[1], (float)_p->org[2] );                      	\
-														\
-	glScalef(_p->size, _p->size, _p->size);			    \
-														\
-	glColor4f(_p->color[0], _p->color[1], _p->color[2], _p->color[3]); \
-														\
-	struct vertex                                       \
-	{                                                   \
-	  unsigned short u, v;                              \
-	  unsigned short x, y, z;                           \
-	};                                                  \
-	struct vertex* const df = (struct vertex*)(malloc(sizeof(struct vertex) * 4));\
-														\
-	df[0].u = _ptex->coords[_p->texindex][0]; df[0].v = _ptex->coords[_p->texindex][3];\
-	df[0].x = _coord[0][0]; df[0].y = _coord[0][1]; df[0].z = _coord[0][2];            \
-	df[1].u = _ptex->coords[_p->texindex][0]; df[1].v = _ptex->coords[_p->texindex][1];\
-	df[1].x = _coord[1][0]; df[1].y = _coord[1][1]; df[1].z = _coord[1][2];            \
-	df[2].u = _ptex->coords[_p->texindex][2]; df[2].v = _ptex->coords[_p->texindex][1];\
-	df[2].x = _coord[2][0]; df[2].y = _coord[2][1]; df[2].z = _coord[2][2];            \
-	df[3].u = _ptex->coords[_p->texindex][2]; df[3].v = _ptex->coords[_p->texindex][3];\
-	df[3].x = _coord[3][0]; df[3].y = _coord[3][1]; df[3].z = _coord[3][2];            \
-	glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, df); \
-    glColor4f(1,1,1,1);        							\
-														\
-	glPopMatrix ();        
-//	GL_SetCanvas(CANVAS_DEFAULT);
+	float			scale;
+	vec3_t			up, right, p_up, p_right, p_upright;
+	GLubyte			color[4], *c;
+
+	VectorScale (vup, 1.5, up);
+	VectorScale (vright, 1.5, right);
+
+	glEnable (GL_BLEND);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glDepthMask (GL_FALSE);
+	glBegin (GL_QUADS);
+
+	scale = p->size;
+	color[0] = p->color[0];
+	color[1] = p->color[1];
+	color[2] = p->color[2];
+	color[3] = p->color[3];
+	glColor4ubv(color);
+
+	glTexCoord2f (0,0);
+	glVertex3fv (p->org);
+
+	glTexCoord2f (1,0);
+	VectorMA (p->org, scale, up, p_up);
+	glVertex3fv (p_up);
+
+	glTexCoord2f (1,1);
+	VectorMA (p_up, scale, right, p_upright);
+	glVertex3fv (p_upright);
+
+	glTexCoord2f (0,1);
+	VectorMA (p->org, scale, right, p_right);
+	glVertex3fv (p_right);
+
+	glEnd ();
+	//
+	//
+	//
+
+	glDepthMask (GL_TRUE); //johnfitz -- fix for particle z-buffer bug
+	glDisable (GL_BLEND);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glColor3f(1,1,1);
+
+}
+
                           
 	
     
@@ -1813,18 +1832,14 @@ void QMB_DrawParticles (void)
 
 	particle_time = cl.time;
 
-	if (!cl.paused)
+	if (!cl.paused) {
 		QMB_UpdateParticles ();
+	}
 
 	VectorAdd (vup, vright, billboard[2]);
 	VectorSubtract (vright, vup, billboard[3]);
 	VectorNegate (billboard[2], billboard[0]);
 	VectorNegate (billboard[3], billboard[1]);
-
- //  	glDepthMask (GL_TRUE);
-//	glEnable (GL_BLEND);
-//	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-//	glShadeModel (GL_SMOOTH);
 
 	for (i = 0 ; i < num_particletypes ; i++)
 	{
@@ -1989,6 +2004,7 @@ void QMB_DrawParticles (void)
 		case pd_billboard:
 			ptex = &particle_textures[pt->texture];
 			GL_Bind (ptex->gltexture);			
+
 			for (p = pt->start ; p ; p = p->next)
 			{
 				if (particle_time < p->start || particle_time >= p->die) {
@@ -2004,13 +2020,7 @@ void QMB_DrawParticles (void)
 					}
 				}
 				
-				if(pt->texture == ptex_muzzleflash || pt->texture == ptex_muzzleflash2 || pt->texture == ptex_muzzleflash3)
-					glDepthRange(0, 19660);
-				
 				DRAW_PARTICLE_BILLBOARD(ptex, p, billboard);
-				
-				if(pt->texture == ptex_muzzleflash || pt->texture == ptex_muzzleflash2 || pt->texture == ptex_muzzleflash3)
-					glDepthRange(0, 65535);
 
 			}
 			break;
