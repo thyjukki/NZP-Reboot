@@ -2618,26 +2618,20 @@ void QMB_RayFlash(vec3_t org, float weapon)
 	}
 	color[2] = 0;
 
-	// could possibly remove water calc in future
-	if (!(ISUNDERWATER(TruePointContents(org))))
-	{
-		//endorg = org;
-		org[1] += 4;
-		org[2] -= 2;
-		endorg[0] = org[0] - 50;		// x = forward & back
-		endorg[1] = org[1] + 6;			// y = left & right
-		endorg[2] = org[2] + 5;			// z = up & down
-		AddParticleTrail (p_alphatrail, org, endorg, 8, 1, color);
-	}
 	QMB_MuzzleFlash(org);
 }
 
 //R00k added particle muzzleflashes
 void QMB_MuzzleFlash(vec3_t org)
 {
+	if (!qmb_initialized) {
+		return;
+	}
+
 	float	frametime = fabs(cl.ctime - cl.oldtime);
 	col_t	color;
 
+	// change color if PaP
 	if (pap_detr(cl.stats[STAT_ACTIVEWEAPON]) == 0) {
     	color[0] = color[1] = color[2] = 255;
 	} else {
@@ -2646,9 +2640,16 @@ void QMB_MuzzleFlash(vec3_t org)
 	  color[2] = 139;
 	}
 
-	if (!qmb_initialized) {
-		return;
-	}
+	// lower origin based on player stance
+	if (sv_player->v.view_ofs[2] >= 0)
+		org[2] -= 32 - sv_player->v.view_ofs[2];
+	else
+		org[2] -= 32 + abs(sv_player->v.view_ofs[2]);
+	/*if (sv_player->v.view_ofs[2] == 8) {
+		org[2] -= 24;
+	} else if (sv_player->v.view_ofs[2] == -10) {
+		org[2] -= 42;
+	}*/
 
 	float size;
 
