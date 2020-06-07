@@ -767,85 +767,94 @@ void(float width, float height) HUD_Rounds =
 
 void(float width, float height) HUD_Useprint =
 {
-
-		string usestring, usebutton;
-		float print_width, x;
+	string usestring, usebutton, usespace;
+	float print_width, x, button_width;
 		
-		tokenize(findkeysforcommand("+button7"));
-		usebutton = strtoupper(keynumtostring(stof(argv(0))));
+	tokenize(findkeysforcommand("+button7"));
+	usebutton = strtoupper(keynumtostring(stof(argv(0))));
 
-		switch (useprint_type) {
-			case 0://clear
-				usestring = "";
-				break;
-			case 1://door
-				usestring = strcat("Hold ",usebutton, " to open door [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 2://debris
-				usestring = strcat("Hold ",usebutton, " to remove debris [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 3://ammo
-				usestring = strcat("Hold ",usebutton, " to buy ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 4://weapon
-				usestring = strcat("Hold ",usebutton, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 5://window
-				usestring = strcat("Hold ",usebutton, " to Rebuild Barrier");
-				break;
-			case 6://box
-				usestring = strcat("Hold ",usebutton, " to buy a random weapon [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 7://box take
-				usestring = strcat("Hold ",usebutton, " to take weapon");
-				break;
-			case 8://power
-				usestring = "The power must be activated first";
-				break;
-			case 9://perk
-				usestring = strcat("Hold ",usebutton, " to buy ", GetPerkName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
-				break;
-			case 10://turn on power
-				usestring = strcat("Hold ",usebutton, " to turn on the power");
-				break;
-			case 11://turn on trap
-				usestring = strcat("Hold ",usebutton, " to active the electric barrier [Cost:", ftos(useprint_cost), "]");
-				break;
-			case 12://packapunch
-				usestring = strcat("Hold ",usebutton, " to Pack a Punch [Cost:", ftos(useprint_cost), "]");
-				break;
-			case 13://revive
-				usestring = strcat("Hold ",usebutton, " to revive player");
-				break;
-			case 14://use teleporter (free)
-				usestring = strcat("Hold ", usebutton, " to use Teleporter");
-				break;
-			case 15://use teleporter (cost)
-				usestring = strcat("Hold ", usebutton, " to use Teleporter [Cost: ", ftos(useprint_cost), "]");
-				break;
-			case 16://tp cooldown
-				usestring = "Teleporter is cooling down";
-				break;
-			case 17://link
-				usestring = strcat("Hold ", usebutton, " to initate link to pad");
-				break;
-			case 18://no link
-				usestring = "Link not active";
-				break;
-			case 19://finish link
-				usestring = strcat("Hold ", usebutton, " to link pad with core");
-				break;
-			case 20://buyable ending
-				usestring = strcat("Hold ", usebutton, " to End the Game [Cost: ", ftos(useprint_cost), "]");
-				break;
-			default:
-				usestring = "This should not happen you dum fuck"; //yikes
-				break;
-		}
-			print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
-			x = (width - print_width)/2;
-			drawstring([x, 0.67*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	for(float i = 0; i < strlen(usebutton); i++) {
+		usespace = strcat(usespace, " ");
+	}
 
+	switch (useprint_type) {
+		case 0://clear
+			usestring = "";
+			break;
+		case 1://door
+			usestring = strcat("Hold ",usespace, " to open Door [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 2://debris
+			usestring = strcat("Hold ",usespace, " to remove Debris [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 3://ammo
+			usestring = strcat("Hold ",usespace, " to buy Ammo for ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 4://weapon
+			usestring = strcat("Hold ",usespace, " to buy ", GetWeaponName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 5://window
+			usestring = strcat("Hold ",usespace, " to Rebuild Barrier");
+			break;
+		case 6://box
+			usestring = strcat("Hold ",usespace, " to buy a Random Weapon [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 7://box take
+			usestring = strcat("Hold ",usespace, " to take Weapon");
+			break;
+		case 8://power
+			usestring = "The Power must be Activated first";
+			break;
+		case 9://perk
+			usestring = strcat("Hold ",usespace, " to buy ", GetPerkName(useprint_weapon), " [Cost:", ftos(useprint_cost),"]");
+			break;
+		case 10://turn on power
+			usestring = strcat("Hold ",usespace, " to Turn On the Power");
+			break;
+		case 11://turn on trap
+			usestring = strcat("Hold ",usespace, " to Activate the Trap [Cost:", ftos(useprint_cost), "]");
+			break;
+		case 12://packapunch
+			usestring = strcat("Hold ",usespace, " to Pack-a-Punch [Cost:", ftos(useprint_cost), "]");
+			break;
+		case 13://revive
+			usestring = strcat("Hold ",usespace, " to Revive Player");
+			break;
+		case 14://use teleporter (free)
+			usestring = strcat("Hold ", usespace, " to use Teleporter");
+			break;
+		case 15://use teleporter (cost)
+			usestring = strcat("Hold ", usespace, " to use Teleporter [Cost: ", ftos(useprint_cost), "]");
+			break;
+		case 16://tp cooldown
+			usestring = "Teleporter is cooling down";
+			break;
+		case 17://link
+			usestring = strcat("Hold ", usespace, " to initate link to pad");
+			break;
+		case 18://no link
+			usestring = "Link not active";
+			break;
+		case 19://finish link
+			usestring = strcat("Hold ", usespace, " to link pad with core");
+			break;
+		case 20://buyable ending
+			usestring = strcat("Hold ", usespace, " to End the Game [Cost: ", ftos(useprint_cost), "]");
+			break;
+		default:
+			usestring = "This should not happen you dum fuck"; //yikes
+			break;
+	}
+
+	print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
+	x = (width - print_width)/2;
+	drawstring([x, 0.67*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+
+	// Draw highlighted usebutton (or button icon in the future)
+	if (substring(usestring, 0, 4) == "Hold") {
+		button_width = x + stringwidth ("Hold ", 0, [0.015*width, 0.015*width, 0]);
+		drawstring([button_width, 0.67*height, 0], usebutton, [0.015*width, 0.015*width, 0], [1, 1, 0], 1, 1);
+	}
 }
 
 /*******************
@@ -862,7 +871,7 @@ void(float width, float height) HUD_Perks =
 	int y = height - 100 - 22;
 	int x = 2;	
 			
-	for (i = 0; i < 8; i = i + 1)
+	for (i = 0; i < 9; i = i + 1)
 	{
 		if (perk_order[i])
 		{
@@ -918,6 +927,14 @@ void(float width, float height) HUD_Perks =
 			else if (perk_order[i] == P_DEAD)
 			{
 				drawpic([x,y,0], getImage("dead.tga"), [20, 20, 1], [1,1,1], 1);
+				if (G_HUDHOR)
+					x += 22;
+				else
+					y -= 22;
+			}
+			else if (perk_order[i] == P_MULE)
+			{
+				drawpic([x,y,0], getImage("mule.tga"), [20, 20, 1], [1,1,1], 1);
 				if (G_HUDHOR)
 					x += 22;
 				else
@@ -986,25 +1003,48 @@ void() HUD_Hitmark =
 float croshhairmoving; // naievil --used t o see if we are moving or not
 float cur_spread;
 float crosshair_offset_step;
+float crosshair_opacity;
+vector crosshair_color;
 
 void() Draw_Crosshair =
 {
+	if (!crosshair_opacity)
+		crosshair_opacity = 1;
+
 	if (K_BACKDOWN || K_FORWARDDOWN || K_LEFTDOWN || K_RIGHTDOWN || input_buttons == 2) {
 		croshhairmoving = 1;
+
+		crosshair_opacity -= frametime;
+
+		if (crosshair_opacity < 0.5)
+			crosshair_opacity = 0.5;
 		
 		if (cur_spread >= CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE))) {
 			cur_spread = CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE));
 		} else {
-			cur_spread += (frametime*250);
+			cur_spread += (frametime*80);
+
 		}
 	} else {
 		croshhairmoving = 0;
 		
 		if (cur_spread > 0)
-			cur_spread -= (frametime*250);
+			cur_spread -= (frametime*80);
 		else 
 			cur_spread = 0;
-	}	
+
+		crosshair_opacity += frametime;
+
+		if (crosshair_opacity > 1)
+			crosshair_opacity = 1;
+	}
+
+	// Update values to be red if we're facing an enemy
+	// FIXME - this should be handled COMPLETELY client side, NOT as a stat.
+	if (getstatf(STAT_FACINGENEMY))
+		crosshair_color = TEXT_RED;
+	else
+		crosshair_color = [1, 1, 1];
 
 	if (getstatf(STAT_WEAPONZOOM) == 2 && zoom_2_time < time)
     {
@@ -1037,18 +1077,15 @@ void() Draw_Crosshair =
 		}
     }
 
-	if (getstatf(STAT_ACTIVEWEAPON) == W_M2)
+	if (getstatf(STAT_ACTIVEWEAPON) == W_M2 || getstatf(STAT_ACTIVEWEAPON) == W_TESLA || getstatf(STAT_ACTIVEWEAPON) == W_DG3)
 	{
-		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1);
+		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, 1, 1);
 	}
 	else if (getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER && getstatf(STAT_ACTIVEWEAPON) != W_LONGINUS) // naievil (FIXME) crosshair cvar
     {
         int x_value, y_value;
         int crosshair_offset;
         
-        /*if (sv_player->v.view_ofs[2] != 32) // naievil -- changed weapon spread if crouched or not
-         crosshair_offset = CrossHairWeapon()*(.8) + cur_spread;
-        else*/
         crosshair_offset = CrossHairWeapon(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE)) + cur_spread;
         
 		if (CrossHairMaxSpread(getstatf(STAT_ACTIVEWEAPON), getstatf(STAT_PLAYERSTANCE)) < crosshair_offset)
@@ -1059,21 +1096,25 @@ void() Draw_Crosshair =
 
 		crosshair_offset_step += (crosshair_offset - crosshair_offset_step) * 0.5;
 
-		x_value = ((480 - 8)/2 - crosshair_offset_step)*(g_width/480);
-		y_value = ((272 - 8)/2)*g_height/272;
-		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		// Left
+		x_value = g_width/2 - crosshair_offset_step*2;
+		y_value = g_height/2;
+		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
 
-		x_value = ((480 - 8)/2 + crosshair_offset_step)*(g_width/480);
-		y_value = ((272 - 8)/2)*g_height/272;
-		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		// Right
+		x_value = g_width/2 + crosshair_offset_step*2;
+		y_value = g_height/2;
+		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
 
-		x_value = ((480 - 8)/2)*(g_width/480);
-		y_value = ((272 - 8)/2 - crosshair_offset_step)*g_height/272;
-		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		// Down
+		x_value = g_width/2;
+		y_value = g_height/2 - crosshair_offset_step*2;
+		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
 
-		x_value = ((480 - 8)/2)*(g_width/480);
-		y_value = ((272 - 8)/2 + crosshair_offset_step)*g_height/272;
-		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		// Up
+		x_value = g_width/2;
+		y_value = g_height/2 + crosshair_offset_step*2;
+		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
 
     }
     else if (/*crosshair.value && */getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2) // naievil (FIXME) crosshair cvar
@@ -1247,6 +1288,32 @@ void(float width, float height) HUD_Achievements = {
 	}
 }
 
+string(float index) GetButtonString =
+{
+	// place holder
+	if (index == 100)
+		return "LMOUSE";
+	else if (index == 101)
+		return "RMOUSE";
+
+	tokenize(findkeysforcommand(buttonBind[index]));
+	string temps = strtoupper(keynumtostring(stof(argv(0))));
+
+	return temps;
+}
+
+void(float width, float height) HUD_Waypoint =
+{
+	drawstring([0.015*width, 0.015*height, 0], "WAYPOINT MODE", [0.030*width, 0.030*width, 0], [1, 1, 1], 1, 1);
+	drawfill([0.015*width, 0.035*height + height*0.035, 0], [strlen("WAYPOINT MODE")*0.030*width, 0.005*width, 0], [1, 1,1], 1);
+	drawstring([0.015*width, 0.095*height, 0], strcat("Press ", GetButtonString(100), " to Create a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.125*height, 0], strcat("Press ", GetButtonString(9), " to Select a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.155*height, 0], strcat("Press ", GetButtonString(101), " to Link a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.185*height, 0], strcat("Press ", GetButtonString(11), " to Remove a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.215*height, 0], strcat("Press ", GetButtonString(7), " to Move a Waypoint Here"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.245*height, 0], strcat("Press ", GetButtonString(10), " to Create a Special Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+}
+
 /*******************
 *     HUD Draw     *
 *******************/
@@ -1255,34 +1322,47 @@ void(float width, float height) HUD_Draw =
 {
 	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10) && !score_show)
 	{
-		Draw_Crosshair();
-		HUD_Health(width, height);
-		HUD_Points(width, height);
-		HUD_Rounds(width, height);
-		HUD_Perks(width, height);
-		HUD_Progressbar(width, height);
-		HUD_Powerups();
-		HUD_AmmoString();
-		HUD_Achievements(width, height);
-	
-		if (HUD_Change_time > time)
-		{
-			HUD_Ammo(width, height);
-			HUD_Grenades(width, height);
-			HUD_Weaponstring(width, height);
-		}
-			
-		if (useprint_time > time) 
-			HUD_Useprint(width, height);
-		
-		if (Hitmark_time > time)
-			HUD_Hitmark();
+        
+        if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "" || getstatf(STAT_WEAPONZOOM) == 2)
+		    Draw_Crosshair();
 
-		if (stext) {
-			HUD_ScrollText(width, height);
+		if (!cvar("waypoint_mode")) {
+			HUD_Health(width, height);
+			HUD_Points(width, height);
+			HUD_Rounds(width, height);
+			HUD_Perks(width, height);
+			HUD_Progressbar(width, height);
+			HUD_Powerups();
+
+            if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "")
+			    HUD_AmmoString();
+
+			HUD_Achievements(width, height);
+		
+			if (HUD_Change_time > time)
+			{
+                HUD_Grenades(width, height);
+
+                if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "") {
+                    HUD_Ammo(width, height);
+				    HUD_Weaponstring(width, height);
+                }
+			}
+				
+			if (useprint_time > time) 
+				HUD_Useprint(width, height);
+			
+			if (Hitmark_time > time)
+				HUD_Hitmark();
+
+			if (stext) {
+				HUD_ScrollText(width, height);
+			} else {
+				scrollopacity = 1;
+				scrollheight = 0.80;
+			}
 		} else {
-			scrollopacity = 1;
-			scrollheight = 0.80;
+			HUD_Waypoint(width, height);
 		}
 	}
 	
@@ -1303,14 +1383,14 @@ void(float width, float height) HUD_Draw =
 void UpdatePerks(float newperks) {
 	float s;
 
-	for(float i = 1; i < 65; i *= 2) {
+	for(float i = 1; i < 129; i *= 2) {
 		if (newperks & i && !(perks & i)) {
 			perk_order[current_perk_order] = i;
 			current_perk_order += 1;
 		}
 	}
 
-	for(float i = 1; i < 65; i *= 2) {
+	for(float i = 1; i < 129; i *= 2) {
 		if (perks & i && !(newperks & i)) 
 		{
 			for(s = 0; s < 8; s++) 

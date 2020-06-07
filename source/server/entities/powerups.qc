@@ -81,6 +81,12 @@ void() carpenter =
 	local entity oldself;
 	local entity who;
 	oldself = self;
+	local float exp;
+  
+	if (x2_finished > time)
+		exp = 2;
+	else
+		exp = 1;
 	
 	
 	who = find(world,classname,"window");
@@ -100,7 +106,7 @@ void() carpenter =
 	who = find(world,classname,"player");
 	while(who)
 	{
-		addmoney(who,200,1);
+		addmoney(who,200*exp,1);
 		
 		who = find(who,classname,"player");
 	}
@@ -197,59 +203,72 @@ void() powerup_flash =
 	}
 };
 
+void() powerup_play_sound =
+{
+	// play the VO clip
+	sound(self, CHAN_VOICE, self.powerup_vo, 1, ATTN_NONE);
+
+	// finally, remove the (invisible/inactive) powerup.
+	remove(self);
+}
+
 void() powerup_touch =
 {
   local float t;
-  local float exp;
-  
-  if (x2_finished > time)
-	exp = 2;
-  else
-	exp = 1;
   
   t = random();
   
 	if(other.classname == "player")
 	{
+		// pickup sound
 		sound(self.owner,CHAN_VOICE,"sounds/pu/pickup.wav",1,ATTN_NONE);
 
-		//centerprint(other, ftos(self.zombie_drop_id));
-		
-		if(self.zombie_drop_id == 1)
-		{
-			sound(self,CHAN_VOICE,"sounds/pu/maxammo.wav",1,ATTN_NONE);
-			maxammo();
-		}
-		else if(self.zombie_drop_id == 2)
-		{
-			sound(self,CHAN_VOICE,"sounds/pu/double_points.wav",1,ATTN_NONE);   
+		// add a slight delay before sound play
+		self.think = powerup_play_sound;
+		self.nextthink = time + 1;
 
-			x2_finished = time + 30;
-			other.x2_icon = true;
-		}
-		else if(self.zombie_drop_id == 3)
-		{
-			sound(self,CHAN_VOICE,"sounds/pu/insta_kill.wav",1,ATTN_NONE);
-			instakill_finished = time + 30;
-			other.insta_icon = true;
-		}
-		else if(self.zombie_drop_id == 4)
-		{
-			sound(self,CHAN_VOICE,"sounds/pu/nuke.wav",1,ATTN_NONE);
-			nuke();
-		}
-		else if(self.zombie_drop_id == 5)
-		{
-			addmoney(other, 200*exp, 0);
-			carpenter();
-		}
-		else if(self.zombie_drop_id == 6)
-		{
-			give_perk();
-		}
-		stuffcmd(other, "bf\n");
+		// hide powerup until we remove (after sound)
+		setmodel(self, "");
+		self.effects = 0;
+		self.touch = SUB_Null;
 		remove(self.owner);
-		remove(self);
+
+		// slight screen flash
+		stuffcmd(other, "bf\n");
+
+		// powerup effects
+		switch(self.zombie_drop_id) {
+			// max ammo
+			case 1:
+				maxammo();
+				break;
+			// double points
+			case 2:
+				x2_finished = time + 30;
+				other.x2_icon = true;
+				break;
+			// insta kill
+			case 3:
+				instakill_finished = time + 30;
+				other.insta_icon = true;
+				break;
+			// nuke
+			case 4:
+				nuke();
+				break;
+			// carpenter
+			case 5:
+				carpenter();
+				break;
+			// free perk
+			case 6:
+				give_perk();
+				break;
+			// broken!
+			default:
+				centerprint(other, strcat("INVALID POWER-UP ID: ", ftos(self.zombie_drop_id)));
+				break;
+		}
 	}
 };
 
@@ -277,6 +296,7 @@ void() sparkle_think =
 	
 };
 
+// the powerup's model
 string(float type) getPowerupModel = 
 {
 	switch(type) {
@@ -287,6 +307,20 @@ string(float type) getPowerupModel =
 		case 5: return "progs/Misc/carpenter!.mdl"; break;
 		default: return ""; break;
 	}
+}
+
+// the powerup's pick up voice clip
+string(float type) getPowerupVO =
+{
+	switch(type) {
+		case 1: return "sounds/pu/maxammo.wav"; break;
+		case 2: return "sounds/pu/double_points.wav"; break;
+		case 3: return "sounds/pu/insta_kill.wav"; break;
+		case 4: return "sounds/pu/nuke.wav"; break;
+		case 5: return "sounds/pu/carpenter.wav"; break;
+		default: return ""; break;
+	}
+
 }
 
 float last_pu;
@@ -305,11 +339,12 @@ void(vector where, float type) Spawn_Powerup =
 	setsize (new_powerup, VEC_HULL_MIN, VEC_HULL_MAX);
 	new_powerup.movetype = MOVETYPE_NONE;
 
-	//#ifdef PSP
-	new_powerup.effects = EF_GREEN;
-	new_powerup.effects = new_powerup.effects | EF_FULLBRIGHT;
-	//#endif
-	//new_powerup.effects = new_powerup.effects | EF_BRIGHTLIGHT;
+    new_powerup.effects = EF_FULLBRIGHT;
+    #ifndef PC
+    new_powerup.effects = EF_GREEN;
+    #else
+    Light_Green(new_powerup);
+    #endif
 	
 	//=================== Sparkle Effects =====================
 	
@@ -334,6 +369,7 @@ void(vector where, float type) Spawn_Powerup =
 	if (type) {
 		setmodel(new_powerup, getPowerupModel(type));
 		new_powerup.zombie_drop_id = type;
+		new_powerup.powerup_vo = getPowerupVO(type);
 	} else {
 		//
 		// Instead of making weird checks to change our divisible number, let's just
@@ -375,6 +411,7 @@ void(vector where, float type) Spawn_Powerup =
 		// finally, assign the id and model to our id.
 		setmodel(new_powerup, getPowerupModel(id));
 		new_powerup.zombie_drop_id = id;
+		new_powerup.powerup_vo = getPowerupVO(id);
 	}
 	
 	last_pu = new_powerup.zombie_drop_id;

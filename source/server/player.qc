@@ -93,7 +93,6 @@ void() playgetup8		=[	9,		playgetup9		] {self.frame = 46;}
 void() playgetup9		=[	10,		playgetup10		] {self.frame = 47;}
 void() playgetup10		=[	11,		playgetup10		] {self.frame = 48;}
 
-#ifdef PC
 #define forward 	0
 #define backward 	1
 #define left 		2
@@ -101,6 +100,7 @@ void() playgetup10		=[	11,		playgetup10		] {self.frame = 48;}
 #define all_move    -1
 float(float dir) checkMovement =
 {
+	makevectors(self.movement);
 	string a = vtos(self.movement);
 	float x, y;
 
@@ -133,8 +133,6 @@ float(float dir) checkMovement =
 			return 0;
 	}
 }
-#endif
-
 
 void() PlayerJump =
 {
@@ -147,14 +145,46 @@ void() PlayerJump =
 			
 	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
 	sound(self, CHAN_VOICE, "sounds/player/jump.wav", 1, 1.75);
-	self.button2 = 0;
+
+	if (self.button2)
+		self.button2 = 0;
 	
 	self.oldz = self.origin_z;
 
-	// jumping needs to be handled manually on psp and switch
+	self.velocity_z = 230;
+}
+
+void(float override) JumpCheck =
+{
 	#ifndef PC
-	self.velocity_z = self.velocity_z + 270;
+	override = 0;
 	#endif 
+
+	if(self.button2 || override) {
+		if (self.downed)
+			return;
+			
+		if (self.stance == 2) {
+      // naievil -- stop sprinting if we jump, which is a real mechanic from the game that we never implemented 
+		  if (self.sprinting) {
+			  W_SprintStop();
+		  }
+			PlayerJump();
+		} else if (self.view_ofs_z == self.new_ofs_z && (self.flags & FL_ONGROUND)) {
+			switch(self.stance) {
+				case 0:
+					self.new_ofs_z = self.view_ofs_z + 42;
+					self.stance = 2;
+					break;
+				case 1:
+					self.new_ofs_z = self.view_ofs_z + 24;
+					self.stance = 2;
+					break;
+				default: break;
+			}
+		}
+	} else
+		self.flags = self.flags | FL_JUMPRELEASED;
 }
 
 void() PlayerPreThink =
@@ -185,7 +215,7 @@ void() PlayerPreThink =
 			if (checkMovement(-1))
 				self.punchangle_x = 0.25*sin(time*15);		
 		#endif
-		} else if (self.zoom == 1) {
+		} else if (self.zoom != 3) {
 			self.maxspeed *= 0.5;
 		} if (self.damagetimer > time) {
 			self.maxspeed *= 0.5;
@@ -200,7 +230,15 @@ void() PlayerPreThink =
 				break;		
 		}
 
-		self.maxspeed *= GetWeaponWalkSpeed(self.weapon);
+		#ifdef PC
+		if (checkMovement(backward)) {
+			self.maxspeed *= 0.7;
+		} else if (checkMovement(left) || checkMovement(right)) {
+			self.maxspeed *= 0.8;
+		}
+		#endif
+
+		self.maxspeed *= GetWeaponWalkSpeed(self.perks, self.weapon);
 	}
 	if(self.isspec != 0 && !self.downed)
 	{
@@ -237,34 +275,23 @@ void() PlayerPreThink =
 	} else {
 		Weapon_Logic();
 	}
-	
 
-	if(self.button2) {
-		// naievil -- stop sprinting if we jump, which is a real mechanic from the game that we never implemented 
-		if (self.sprinting) {
-			W_SprintStop();
+	JumpCheck(0);
+
+	// refuel/cool m2
+	if (self.ltime < time) {
+		if (self.currentmag == 0 && !self.cooldown) {
+			self.cooldown = true;
 		}
 
-		if (self.downed)
-			return;
-			
-		if (self.stance == 2)
-			PlayerJump();
-		else {
-			switch(self.stance) {
-				case 0:
-					self.new_ofs_z = self.view_ofs_z + 42;
-					self.stance = 2;
-					break;
-				case 1:
-					self.new_ofs_z = self.view_ofs_z + 24;
-					self.stance = 2;
-					break;
-				default: break;
-			}
-		}
-	} else
-		self.flags = self.flags | FL_JUMPRELEASED;
+		if (self.cooldown && self.currentmag > 20)
+			self.cooldown = false;
+		
+		if (self.weapon == W_M2 || self.weapon == W_FIW && self.currentmag < getWeaponMag(self.weapon))
+			self.currentmag += 1;
+
+		self.ltime = time + 0.1;
+	}
 };
 
 void() PlayerPostThink =
@@ -334,7 +361,6 @@ void() PlayerPostThink =
 		}
 	}
 
-
 	if (self.sprinting) {
 		#ifndef PC
 		if (!self.velocity || self.stance != 2) {
@@ -370,12 +396,28 @@ void() PlayerPostThink =
 		#else 
 		self.stamina = self.stamina + (0.1*fabs(sin(frametime*75)));
 		#endif
-		if (self.stamina > 3) {
-			self.stamina = 3;
-		}
 	}
 
 	self.oldvelocity = self.velocity;
+
+	// Check if we are currently looking at an enemy
+	// This should NOT be handled server-side, yet here we are
+	// FIXME - MotoLegacy
+	#ifdef PC
+	vector	source;
+
+	makevectors (self.v_angle);
+	source = self.origin + self.view_ofs;
+
+	traceline (source, source + v_forward*800*1.2, 0, self); // naievil -- ^^
+
+	if (trace_ent.classname == "ai_zombie" || trace_ent.classname == "ai_zombie_head" 
+	|| trace_ent.classname == "ai_zombie_rarm" ||trace_ent.classname == "ai_zombie_larm" 
+	|| trace_ent.classname == "ai_dog")
+		self.facingenemy = true;
+	else
+		self.facingenemy = false;
+	#endif
 };
 
 void() ClientKill = {};
@@ -395,11 +437,11 @@ void() ClientConnect =
 		
 			// Get values and transmute it a bit if necessary
 			//	Originally: start | end | R | G | B
-			fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3.5);
+			fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3);
 		
-			fog_R = ftos(stof(argv(2))/255);
-			fog_G = ftos(stof(argv(3))/255);
-			fog_B = ftos(stof(argv(4))/255);
+			fog_R = ftos(stof(argv(2))/255 * 2);
+			fog_G = ftos(stof(argv(3))/255 * 2);
+			fog_B = ftos(stof(argv(4))/255 * 2);
 
 			// Restore into our world.fog
 			world_fog = strcat(fog_start_end, " ", fog_R, " ", fog_G, " ", fog_B);
@@ -412,8 +454,10 @@ void() ClientConnect =
 	}
 	#endif
 	
-	bprint(PRINT_HIGH, self.netname); //print player name
-	bprint(PRINT_HIGH, " connected.\n");
+	if(cvar("developer") || player_count > 1) {
+		bprint(PRINT_HIGH, self.netname); //print player name
+		bprint(PRINT_HIGH, " connected.\n");
+	}	
 };
 
 void() PollPlayerPoints =
@@ -443,7 +487,7 @@ void() PlayerSpawn =
 	
 	self.isspec = FALSE;
 	self.classname = "player";
-	self.solid = SOLID_SLIDEBOX;
+	self.solid = SOLID_BBOX;
 	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
 	self.max_health = self.health = 100;
@@ -492,8 +536,7 @@ void() PlayerSpawn =
 
 	self.currentammo = G_STARTWEAPON[2];
 	self.currentmag = G_STARTWEAPON[1];
-	self.weapon =  G_STARTWEAPON[0];
-	
+	self.weapon = G_STARTWEAPON[0];
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
 	
 	if (rounds)
@@ -519,8 +562,6 @@ void() PlayerSpawn =
 	SetPerk(self, self.perks);
 	
 	self.zoom = 1;			// This is to fix an aimin bug for the kar scope
-
-	self.teslacount = 20;
 	
 	if (!self.playernum) {
 		self.playernum = player_count + 1;
@@ -580,8 +621,10 @@ void() SpectatorSpawn =
 //called when a client loads a map
 void() PutClientInServer =
 {
-	bprint(PRINT_HIGH, self.netname);
-	bprint(PRINT_HIGH, " has joined the game.\n");
+	if(cvar("developer") || player_count > 1) {
+		bprint(PRINT_HIGH, self.netname);
+		bprint(PRINT_HIGH, " has joined the game.\n");
+	}
 	
 	if (spawn_time > time || !rounds)
 		PlayerSpawn();
@@ -599,7 +642,6 @@ void() ClientDisconnect =
 	bprint(PRINT_HIGH, " has left the game.\n");
 	player_count--;
 	UpdatePlayerCount(player_count);
-	remove(self);
 };
 
 
@@ -693,6 +735,8 @@ void(string com) SV_ParseClientCommand =
 					if (IsDualWeapon(wep)) {
 						self.currentmag2 = self.currentmag;
 					}
+
+					self.weaponskin = GetWepSkin(self.weapon);
 
 					startframe = GetFrame(self.weapon,TAKE_OUT_START);
 					endframe = GetFrame(self.weapon,TAKE_OUT_END);

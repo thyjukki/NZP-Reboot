@@ -185,6 +185,9 @@ void() GetDown =
 		default: break;
 	}
 
+	// remove third weapon
+	self.thirdweapon = 0;
+
 	self.velocity = '-80 0 -80';           			// Stop any old movement
 	self.zoom = 0;
 	self.downed = true;
@@ -367,6 +370,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 			self = old_self;
 		}
 	} else if (victim.classname == "player" && !victim.downed) {
+
 		if (victim.flags & FL_GODMODE) {
 			return;
 		}
@@ -376,6 +380,25 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 		
 		victim.health = victim.health - damage;
 		victim.health_delay = time + 2;
+
+		// shake the camera on impact
+		local vector distance;
+		distance = attacker.angles - victim.angles;
+
+		// just to prevent radical punchangles
+		while(distance_x > 10 || distance_x < -10) {
+			distance_x /= 2;
+		}
+		while(distance_y > 10 || distance_y < -10) {
+			distance_y /= 2;
+		}
+
+		// apply
+		victim.punchangle_x = distance_x;
+		victim.punchangle_y = distance_y;
+
+		// play hurt sound
+		sound (self, CHAN_AUTO, "sounds/player/pain4.wav", 1, ATTN_NORM);
 
 		if (victim.health <= 20)
 		{

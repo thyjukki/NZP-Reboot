@@ -19,6 +19,8 @@ const float EVENT_ACHIEVEMENT = 30;
 const float EVENT_PLAYERUPDATE = 31;
 const float EVENT_WEAPONUPDATE = 32;
 const float EVENT_HUDUPDATE = 33;
+const float EVENT_EXPLOSION = 34;
+const float EVENT_BLOOD = 35;
 
 // Define our PC version if we don't have NX or PSP 
 #ifndef NX
@@ -149,6 +151,7 @@ const float EVENT_HUDUPDATE = 33;
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
 #define 	P_DEAD 		64
+#define 	P_MULE 		128
 
 #define STAT_CURRENTMAG         50
 #define STAT_CURRENTMAG2        51
@@ -166,6 +169,7 @@ const float EVENT_HUDUPDATE = 33;
 #define STAT_SPECTATING			63
 #define STAT_PLAYERNUM			64
 #define STAT_PLAYERSTANCE 		65
+#define STAT_FACINGENEMY 		66
 
 //
 // invert float takes in float value between 0 and 1, inverts position

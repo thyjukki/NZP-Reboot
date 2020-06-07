@@ -37,6 +37,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern "C"
 {
 #include "../quakedef.h"
+#include "m33libs/kubridge.h"
+#include "iridlibs/perflib.h"
 }
 
 #include "battery.hpp"
@@ -77,16 +79,23 @@ namespace quake
 		static size_t  heapSize	= 16 * 1024 * 1024;
 	#else
 		static size_t  heapSize	= 17 * 1024 * 1024;
-	#endif // KERNEL_MODE
-#else
+	#endif
+#endif // PSP_SOFTWARE_VIDEO
+#ifdef KERNEL_MODE
 	#ifdef SLIM
 		// How big a heap to allocate.
-		// darkduke/IPQ's recommended heap size
 		static size_t  heapSize	= 34 * 1024 * 1024;
 	#else
 		static size_t  heapSize	= 10 * 1024 * 1024;
-	#endif // KERNEL_MODE
-#endif // PSP_SOFTWARE_VIDEO
+	#endif
+#else
+	#ifdef SLIM
+		// How big a heap to allocate.
+		static size_t  heapSize	= 34 * 1024 * 1024;
+	#else
+		static size_t  heapSize	= 10 * 1024 * 1024;
+	#endif
+#endif
 
 		// Should the main loop stop running?
 		static volatile bool	quit			= false;
@@ -527,6 +536,8 @@ int user_main(SceSize argc, void* argp)
 	// operations.
 	disableFloatingPointExceptions();
 
+	// init perflib
+	PFL_Init(true);
 
 	// Initialise the Common module.
 #if 0
@@ -605,11 +616,15 @@ int user_main(SceSize argc, void* argp)
 
 #ifdef PSP_SOFTWARE_VIDEO
 	// Bump up the clock frequency.
-	if (!COM_CheckParm("-cpu222"))
+	if (!COM_CheckParm("-cpu222")) {
 		scePowerSetClockFrequency(333, 333, 166);
+		//PFL_SetCPUFrequency(222);
+	}
 #else
-	if (COM_CheckParm("-cpu333"))
+	if (COM_CheckParm("-cpu333")) {
 		scePowerSetClockFrequency(333, 333, 166);
+		//PFL_SetCPUFrequency(333);
+	}
 #endif
 
 	// Catch exceptions from here.
@@ -635,6 +650,9 @@ int user_main(SceSize argc, void* argp)
 		// Enter the main loop.
 		while (!quit)
 		{
+			// start cpu profiling
+			PFL_BeginCPURecord();
+
 			// Handle suspend & resume.
 			if (suspended)
 			{
@@ -670,6 +688,9 @@ int user_main(SceSize argc, void* argp)
 			Host_Frame(deltaSeconds);
 			// Remember the time for next frame.
 			lastTicks = ticks;
+
+			// end cpu profiling
+			PFL_EndCPURecord();
 		}
 	}
 	catch (const std::exception& e)
@@ -726,4 +747,40 @@ void Sys_ReadCommandLineFile (char* netpath)
 
 	if (in > 0)
 		Sys_FileClose (in);
+}
+
+char* Sys_GetPSPModel(void) 
+{
+	// check for the vita prx
+	int vitaprx = sceIoOpen("flash0:/kd/registry.prx", PSP_O_RDONLY | PSP_O_WRONLY, 0777);
+
+	if (vitaprx >= 0) {
+		sceIoClose(vitaprx);
+		return "PS Vita (PSP2)";
+	}
+
+	// normal psp models
+	char* modelstring;
+	switch(kuKernelGetModel()) {
+		case 0:
+			modelstring = "PSP Phat (1000)";
+			break;
+		case 1:
+			modelstring = "PSP Slim (2000)";
+			break;
+		case 2:
+			modelstring = "PSP Brite (3000)";
+			break;
+		case 4:
+			modelstring = "PSP GO (4000)";
+			break;
+		default: // a little unoptimized but hopefully in the future we get the street num implemented
+			char mnum[32];
+			sprintf(mnum, "%d)", kuKernelGetModel());
+			modelstring = "Unkown Model (kuKernelGetModel returns ";
+			strcat(modelstring, mnum);
+			break;
+	}
+
+	return modelstring;
 }

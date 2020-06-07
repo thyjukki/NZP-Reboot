@@ -164,22 +164,35 @@ void() func_button =
 	self.pos2 = self.pos1 + self.movedir*(fabs(self.movedir*self.size) - self.lip);
 };
 
-void() flame_update = {		
+void() flame_update = {	
+	#ifndef PC	
 	particle (self.origin, v_up, 111, 0);
+	#else
+	te_flamejet(self.origin, v_up, 10);
+	#endif
 	self.think = flame_update;
 	self.nextthink = time + random()+0.1;
 }
 void() place_fire =
 {
+	#ifndef PC
 	particle (self.origin, v_up*8, self.frame, 0);
+	#else
+	te_flamejet(self.origin, v_up*8, 10);
+	#endif
 	self.think = flame_update;
 	self.nextthink = time + random()+0.1;
 };
 
 void() place_model =
 {  
-  precache_model (self.model);
-  setmodel (self, self.model);
+	#ifdef PSP
+	if (self.spawnflags & 2)
+		remove(self);
+	#endif
+
+	precache_model (self.model);
+	setmodel (self, self.model);
   
 	self.skin = 0;
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
@@ -197,11 +210,11 @@ void() place_model =
 void () buy_weapon_touch =
 {
 	entity oldent;
-	local float tempf, tempf1, tempf2;
+	local float tempf, tempf1, tempf2, tempf3;
 	local float startframe,endframe;
 	local string modelname;
 
-	if (other.classname != "player" || other.downed || other.isBuying) {
+	if (other.classname != "player" || other.downed || other.isBuying/* || !isFacing(other, self)*/) {
 		return;
 	}
 	
@@ -364,15 +377,35 @@ void () buy_weapon_touch =
 			tempf2 = other.weapon;
 			other.weapon = other.secondaryweapon;
 			other.secondaryweapon = tempf2;
+
+			tempf3 = other.currentmag2;
+			other.currentmag2 = other.secondarymag2;
+			other.secondarymag2 = tempf3;
 		} else if (other.weapon && other.secondaryweapon) {
-		
+			if ((other.perks & P_MULE) && !other.thirdweapon) {
+				// store secondary weapon
+				tempf = other.secondaryweapon;
+				tempf1 = other.secondarymag;
+				tempf2 = other.secondaryammo;
+				tempf3 = other.secondarymag2;
+				// move primary to secondary
+				other.secondaryweapon = other.weapon;
+				other.secondarymag = other.currentmag;
+				other.secondarymag2 = other.currentmag2;
+				other.secondaryammo = other.currentammo;
+				// move secondary to tertiary
+				other.thirdweapon = tempf;
+				other.thirdmag = tempf1;
+				other.thirdammo = tempf2;
+				other.thirdmag2 = tempf3;
+			}
+
+			// free current slot
 			other.currentammo = 0;
 			other.currentmag = 0;
 			other.weapon = 0;
-			
 		}
 		
-		/* insert here mule kick thingy*/
 		sound(other, 0,"sounds/misc/ching.wav", 1, 1);
 		other.reload_delay = 0;
 		addmoney(other, -1*self.cost, 0);
@@ -448,14 +481,10 @@ void() BarrelExplode =
 	DamgageExplode (self, self.enemy, 500, 75, 200);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
 	
 	#ifdef PC
-	te_explosionquad(self.origin);
-	#else
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
+    te_customflash(self.origin, 128, 300, '1 1 1');
 	#endif
+
+    CallExplosion(self.origin);
 
 	SUB_Remove ();
 };
@@ -574,18 +603,37 @@ void zap_zombie () {
 
 void zapper_play () {
 	entity zents = find(world, targetname, self.target);
+	local vector org = self.origin;
+	local vector targetorg = zents.origin;
 
 	if (zents) {
-		//TEMPORARY
 		#ifdef PC
 		te_lightning2(self, self.origin, zents.origin);
+		#endif
+		#ifdef PSP
+		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+		WriteEntity (MSG_BROADCAST, self);
+		WriteCoord (MSG_BROADCAST, org_x);
+		WriteCoord (MSG_BROADCAST, org_y);
+		WriteCoord (MSG_BROADCAST, org_z);
+		WriteCoord (MSG_BROADCAST, targetorg_x);
+		WriteCoord (MSG_BROADCAST, targetorg_y);
+		WriteCoord (MSG_BROADCAST, targetorg_z);
 		#endif
 	}
 
 	zents.touch = zap_zombie;
 	
 	self.think = zapper_play;
-	self.nextthink = time + (1*random());
+	self.nextthink = time + (0.5*random());
+}
+
+void() zapper_touch;
+void() zapper_cooldown =
+{
+	offswitch2();
+	self.touch = zapper_touch;
 }
 
 void zapper_stop() {
@@ -601,7 +649,8 @@ void zapper_stop() {
 			tempe = self;
 			self = zents;
 			self.state = 0;
-			offswitch2();
+			self.think = zapper_cooldown;
+			self.nextthink = time + 30;
 			self = tempe;
 		} else if (zents.classname == "zapper_node" && zents.target) {
 			zents.think = SUB_Null;
@@ -642,13 +691,11 @@ void zapper_start(string zapper) {
 	tempe.zappername = zapper;
 }
 
-
 void zapper_touch () {
-
 	if (other.classname != "player") {
 		return;
 	}
-    
+
 	if (self.requirespower == true && !isPowerOn) {
 		useprint (other, 8, 0, 0);
 		return;
@@ -657,11 +704,10 @@ void zapper_touch () {
 	if (self.state == 0) {
 		useprint (other, 11, self.cost, self.weapon);
 
-		if (!other.button7 || other.semiuse) {
+		if (!other.button7) {
 			return;
 		}
 
-		other.semiuse = true;
 		if (other.points < self.cost) {
 			centerprint(other, "You do not have enough points\n");
 			return;
@@ -676,12 +722,12 @@ void() zapper_switch =
 {
 	precache_model ("models/machines/zapper/z_switch.mdl");
 	self.movetype = MOVETYPE_NONE;
+	self.solid = SOLID_TRIGGER;
 	self.classname = "zapper_switch";
 	setmodel(self, "models/machines/zapper/z_switch.mdl");
 	setsize (self, '-4 -4 -4', '4 4 4');
 
 	self.state = 0;
-	self.solid = SOLID_TRIGGER;
 	self.touch = zapper_touch;
 };
 

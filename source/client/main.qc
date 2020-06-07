@@ -39,6 +39,8 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	registercommand("stopwalk");
 	registercommand("promptjoin");
 	registercommand("showscores");
+
+	cvar_set("sv_cheats", ftos(1));
 		
 	//print("CSQC Started\n");
 	dummy = spawn();
@@ -48,11 +50,13 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 
 	projBr = cvar("gamma");
 
+	// default button binds
+
 	buttonBind[0] = "+forward";
 	buttonBind[1] = "+back";
 	buttonBind[2] = "+moveleft";
 	buttonBind[3] = "+moveright";
-	buttonBind[4] = "+jump";
+	buttonBind[4] = "impulse 10";
 	buttonBind[5] = "+sprint";
 	buttonBind[6] = "impulse 30";
 	buttonBind[7] = "impulse 110";
@@ -62,6 +66,59 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	buttonBind[11] = "+button6";
 	buttonBind[12] = "+button3";
 	buttonBind[13] = "impulse 25";
+
+	// intialize screen resolutions
+
+	// default/current width and height
+	active_swidth = cvar("vid_width");
+	active_sheight = cvar("vid_height");
+	fullscreenval = cvar("vid_fullscreen_standalone");
+
+	// 5:4
+	screen_width_54[0] = 1280;
+	screen_height_54[0] = 1024;
+	//4:3
+	screen_width_43[0] = 640;
+	screen_height_43[0] = 480;
+	screen_width_43[1] = 800;
+	screen_height_43[1] = 600;
+	screen_width_43[2] = 1024;
+	screen_height_43[2] = 768;
+	//16:10
+	screen_width_1610[0] = 1280;
+	screen_height_1610[0] = 800;
+	screen_width_1610[1] = 1440;
+	screen_height_1610[1] = 900;
+	screen_width_1610[2] = 1680;
+	screen_height_1610[2] = 1050;
+	screen_width_1610[3] = 1920;
+	screen_height_1610[3] = 1200;
+	//16:9
+	screen_width_169[0] = 640;
+	screen_height_169[0] = 360;
+	screen_width_169[1] = 1280;
+	screen_height_169[1] = 720;
+	screen_width_169[2] = 1360;
+	screen_height_169[2] = 768;
+	screen_width_169[3] = 1366;
+	screen_height_169[3] = 768;
+	screen_width_169[4] = 1536;
+	screen_height_169[4] = 864;
+	screen_width_169[5] = 1600;
+	screen_height_169[5] = 900;
+	screen_width_169[6] = 1920;
+	screen_height_169[6] = 1080;
+	screen_width_169[7] = 2048;
+	screen_height_169[7] = 1152;
+	screen_width_169[8] = 2560;
+	screen_height_169[8] = 1440;
+	screen_width_169[9] = 3840;
+	screen_height_169[9] = 2160;
+	//21:9
+	screen_width_219[0] = 2560;
+	screen_height_219[0] = 1080;
+	screen_width_219[1] = 3440;
+	screen_height_219[1] = 1440;
 };
 
 noref void() CSQC_WorldLoaded =
@@ -69,8 +126,8 @@ noref void() CSQC_WorldLoaded =
 	//precache_model("models/weapons/mg/mzl.iqm");
 	//precache_model("models/blood.iqm");
 	
-	//if(!player)
-	//	player = edict_num(player_localentnum);
+	if(!player)
+		player = edict_num(player_localnum);
 	if(!vmodel)
 		vmodel = spawn();
 	if(!v2model)
@@ -323,7 +380,7 @@ void() Update_Vmodel =
 noref void(float isnew) CSQC_Ent_Update =
 {
 	if(isnew)
-		print(strcat(etos(self),"\n"));
+		addentity(self);
 }
 
 
@@ -432,7 +489,10 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 			muzzlepos -= v_right * offset_y;
 			muzzlepos += v_up * (offset_z + 6);
 
-			dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '1.2 0.7 0.2' * mzlflash.alpha);
+            if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))
+                dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '0.7 0 0.7' * mzlflash.alpha);
+            else
+			    dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '1.2 0.7 0.2' * mzlflash.alpha);
 			addentity(mzlflash);
 		}
 	}
@@ -552,6 +612,8 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 			{
 				if(scanx == K_MOUSE1) {
 					Menu_Click(0);
+					if (in_menu == MENU_CUSTOMS)
+						customs_interact = TRUE;
 					return TRUE;
 				} else if (scanx == K_MOUSE2) {
 					Menu_Click(1);
@@ -688,10 +750,10 @@ noref void() CSQC_Parse_Event =
 
 	switch (first) {
 		case EVENT_PISTOLFIRE:			
-			local float entnum, traceent;
+			local float entnum, traceent, side;
 			local vector pos, norm;
 			entnum = readentitynum();
-			
+			side = readfloat();
 			pos_x = readcoord();
 			pos_y = readcoord();
 			pos_z = readcoord();
@@ -709,30 +771,39 @@ noref void() CSQC_Parse_Event =
 				muzzlepos = getviewprop(VF_ORIGIN);
 				
 				local vector muzzle_offset = GetWeaponFlash_Offset(getstatf(STAT_ACTIVEWEAPON))/1000;
+
+				// ADS offset
+				if(getstatf(STAT_WEAPONZOOM) == 1)
+				{  
+					muzzle_offset += GetWeaponADSPos(weapon);
+
+					muzzle_offset[0] -= 2;
+				}
+                
+                // Firing from the left? Flip x-axis for muzzleflash
+                if (side == 0 && IsDualWeapon(getstatf(STAT_ACTIVEWEAPON)))
+                    muzzle_offset[0] = -muzzle_offset[0];
 				
 				muzzlepos += v_forward * muzzle_offset_z;
 				muzzlepos += v_right * muzzle_offset_x;
 				muzzlepos += v_up * muzzle_offset_y;			
 				mzlflash.alpha = 1;
-				
-				float ads = getstatf(STAT_WEAPONZOOM); //get the zoomtoggle value 
-				if(ads == 1)
-				{  
-					// FIXME: naievil -- need ADS fix!!!
-					local vector adsoffset = GetWeaponADSPos(weapon);
-					muzzlepos = vmodel_currentpos;
-				}
 
-				if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))				
-					pointparticles(particleeffectnum("muzzle.muzzle_pap_part0"), muzzlepos, norm*24, 1);
-				else
-					pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
+				if (cvar("nzp_particles")) {
+					if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))				
+						pointparticles(particleeffectnum("muzzle.muzzle_pap_part0"), muzzlepos, norm*24, 1);
+					else
+						pointparticles(particleeffectnum("muzzle.muzzle_part0"), muzzlepos, norm*24, 1);
+				}
 			}
 			
-			if(traceent == 0)
+			if(traceent == 0 && GetFiretype(getstatf(STAT_ACTIVEWEAPON)) != 3)
 			{
-				pointparticles(particleeffectnum("weapons.impact"), pos, norm*24, 1);
-				pointparticles(particleeffectnum("weapons.impact_decal"), pos, '0 0 0', 1);
+				if (cvar("nzp_particles"))
+					pointparticles(particleeffectnum("weapons.impact"), pos, norm*24, 1);
+
+				if (cvar("nzp_decals"))
+					pointparticles(particleeffectnum("weapons.impact_decal"), pos, '0 0 0', 1);
 			}
 			else
 			{
@@ -748,7 +819,25 @@ noref void() CSQC_Parse_Event =
 				splat.predraw = alphafade;
 			}
 			break;
-		
+		case EVENT_EXPLOSION:
+            local vector org;
+            org_x = readcoord();
+            org_y = readcoord();
+            org_z = readcoord();
+
+			if (cvar("nzp_decals"))
+            	pointparticles(particleeffectnum("weapons.explode"), org, '0 0 0', 1);
+            break;
+		case EVENT_BLOOD:
+			local vector loc;
+
+			loc_x = readcoord();
+            loc_y = readcoord();
+            loc_z = readcoord();
+			
+			if (cvar("nzp_particles"))
+				pointparticles(particleeffectnum("blood.blood_particle"), loc, '0 0 0', 1);
+			break;
 		case EVENT_WEAPONCHANGE:
 			local float to;
 			to = readbyte();
@@ -823,7 +912,7 @@ noref void() CSQC_Parse_Event =
 						Hitmark_time = time + 0.2;
 					break;
 				case 4:
-					zoom_2_time = time + 0.25;
+					zoom_2_time = time + 0.20;
 					break;
 				case 5:
 					crosshair_spread_time = time + 70/getWeaponRecoilReturn(getstatf(STAT_ACTIVEWEAPON));

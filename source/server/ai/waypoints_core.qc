@@ -489,6 +489,10 @@ void() Load_Waypoints
 					new_way.touch = creator_way_touch;
 					point = 1;
 					targetcount = 0;
+				} else if (h == "Waypoint") {
+					bprint(PRINT_HIGH, "Identified .way as legacy..\n");
+					point = 99;
+					Load_Waypoints_Legacy();
 				} else {
 					bprint(PRINT_HIGH, strcat("Error: unknown point ", strcat(h, "\n")));
 				}
@@ -617,7 +621,25 @@ void() Load_Waypoints_Legacy
 		h = (fgets(file));
 		trg8 = substring(h, 10, 20);
 		
+		#ifndef PC
 		Create_Waypoint(where, which, special, trg, trg2, trg3, trg4, trg5, trg6, trg7, trg8);
+		#else
+		waypoint_ai waypoint;
+		waypoint = waypoints[which];
+
+		waypoints[which].id = which;
+		waypoints[which].org = where;
+		waypoints[which].targetdoor = special;
+
+		waypoints[which].target_id[0] = stof(trg);
+		waypoints[which].target_id[1] = stof(trg2);
+		waypoints[which].target_id[2] = stof(trg3);
+		waypoints[which].target_id[3] = stof(trg4);
+		waypoints[which].target_id[4] = stof(trg5);
+		waypoints[which].target_id[5] = stof(trg6);
+		waypoints[which].target_id[6] = stof(trg7);
+		waypoints[which].target_id[7] = stof(trg8);
+		#endif
 
 		h = (fgets(file));
 		h = (fgets(file));

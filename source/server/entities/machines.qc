@@ -28,6 +28,9 @@ void GivePerk(float perk) {
 		case P_DEAD:
 			self.perks = self.perks | 64;
 			break;
+		case P_MULE:
+			self.perks = self.perks | 128;
+			break;
 		default:
 			break;
 	}
@@ -49,6 +52,7 @@ void() give_speedcola = { GivePerk(P_SPEED); }
 void() give_flopper = { GivePerk(P_FLOP); }
 void() give_staminup = { GivePerk(P_STAMIN); }
 void() give_deadshot = { GivePerk(P_DEAD); }
+void() give_mulekick = { GivePerk(P_MULE); }
 
 
 void DrinkPerk(float perk) {
@@ -84,6 +88,11 @@ void DrinkPerk(float perk) {
 			other.weaponskin = 5;
 			func = give_deadshot;
 			break;
+		case P_MULE:
+			//other.weaponskin = 6;
+			other.weaponskin = 2; //FIXME - add muleskin
+			func = give_mulekick;
+			break;
 		default:
 			break;
 	}
@@ -92,7 +101,9 @@ void DrinkPerk(float perk) {
 	self = other;
 	
 	if (self.sprinting)
-		W_SprintStop();
+		self.sprinting = 0;
+
+	self.maxspeed *= GetWeaponWalkSpeed(self.perks, self.weapon);
 	
 	self.knife_delay = self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;		
 	Set_W_Frame (0, 22, 0, 0, PERK, func, "models/machines/v_perk.mdl", true, S_RIGHT);
@@ -103,7 +114,7 @@ void DrinkPerk(float perk) {
 
 void() touch_perk =
 {  
-	if (other.classname != "player" || other.downed || other.isBuying == true)
+	if (other.classname != "player" || other.downed || other.isBuying == true || !isFacing(other, self))
 		return;
 
 	if (other.stance == 0 && self.collected == false && G_PRONEPOINTS != 0) {
@@ -128,7 +139,6 @@ void() touch_perk =
 	
 	if (self.classname == "perk_revive" && !(other.perks & P_REVIVE) && other.fire_delay < time)
 	{
-
 		if (!deathmatch && !coop)
 		{
 			useprint (other, 9, 500, 1);
@@ -236,6 +246,99 @@ void() touch_perk =
 			centerprint (other, "Not enough points\n");
 		}
 	}
+	if (self.classname == "perk_mule" && !(other.perks & P_MULE) && self.fire_delay < time)
+	{
+		useprint (other, 9, self.cost, 8);
+		if (other.points >= self.cost && other.button7)
+		{
+			addmoney (other, -self.cost, 0);
+			DrinkPerk(P_MULE);
+		}
+		else if (other.button7)
+		{
+			centerprint (other, "Not enough points\n");
+		}
+	}
+}
+
+void(entity e) Light_Red =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_RED;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 0.25;	
+	    e.color_z = 0.25;
+    }
+    #endif
+}
+
+void(entity e) Light_Green =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_GREEN;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 0.25;	
+	    e.color_y = 2;	
+	    e.color_z = 0.25;
+    }
+    #endif
+}
+
+void(entity e) Light_Blue =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_BLUE;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 0.25;	
+	    e.color_y = 0.25;	
+	    e.color_z = 2;
+    }
+    #endif
+}
+
+void(entity e) Light_Orange =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_ORANGELIGHT;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 1;	
+	    e.color_z = 0;
+    }
+    #endif
+}
+
+void(entity e) Light_Purple =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_PURPLELIGHT;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 0.25;	
+	    e.color_z = 2;
+    }
+    #endif
 }
 
 void() setup_perk =
@@ -243,7 +346,8 @@ void() setup_perk =
 	if (find (world, classname, "power_switch"))
 	{
 		if (self.classname == "perk_revive" && !coop && !deathmatch) {
-			self.effects = self.effects | EF_BLUE;
+            Light_Blue(self);
+			//self.effects = self.effects | EF_BLUE;
 		} else
 			self.requirespower = true;
 	}
@@ -253,25 +357,22 @@ void() setup_perk =
 		switch(self.classname)
 		{
 			case "perk_revive": 
-				self.effects = self.effects |  EF_BLUE;
+                Light_Blue(self);
 				break;
 			case "perk_juggernog":
-				self.effects = self.effects |  EF_RED;
+				Light_Red(self);
 				break;
 			case "perk_speed":
-				self.effects = self.effects |  EF_GREEN;
+			case "perk_mule":
+				Light_Green(self);
 				break;
 			case "perk_flopper":
-				self.effects = self.effects |  EF_PURPLELIGHT;
+				Light_Purple(self);
 				break;
 			case "perk_staminup":
 			case "perk_double":
 			case "perk_deadshot":
-			#ifndef PC
-				self.effects = self.effects |  EF_ORANGELIGHT;
-			#else 
-				self.effects = self.effects |  EF_ORANGE;
-			#endif
+			    Light_Orange(self);
 				break;
 			default: break;
 		
@@ -396,6 +497,24 @@ void() perk_deadshot =
 	#endif
 };
 
+void() perk_mule =
+{
+	self.solid = SOLID_TRIGGER;
+	precache_model ("models/machines/mulekick.mdl");
+	precache_model ("models/machines/v_perk.mdl");
+	precache_sound ("sounds/machines/perk_drink.wav");
+	setorigin(self, self.origin);
+	setmodel (self, "models/machines/mulekick.mdl");
+	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.classname = "perk_mule";
+	self.touch = touch_perk;
+
+	self.think = setup_perk;
+	self.nextthink = time + 0.1;
+
+	self.cost = 4000;
+}
+
 void()	turnpower1	=[	1,		turnpower2	] {self.frame = 1;};
 void()	turnpower2	=[	2,		turnpower3	] {self.frame = 2;};
 void()	turnpower3	=[	3,		turnpower4	] {self.frame = 3;};
@@ -408,30 +527,22 @@ void() Turn_Lights =
 	{
 		switch(tempe.classname) {
 			case "perk_revive": 
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_BLUE;
+                Light_Blue(tempe);
 				break;
 			case "perk_juggernog":
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_RED;
+				Light_Red(tempe);
 				break;
 			case "perk_speed":
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_GREEN;
+			case "perk_mule":
+				Light_Green(tempe);
 				break;
 			case "perk_flopper":
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_PURPLELIGHT;
+				Light_Purple(tempe);
 				break;
 			case "perk_staminup":
 			case "perk_double":
 			case "perk_deadshot":
-			#ifndef PC
-				tempe.effects = self.effects |  EF_FULLBRIGHT;
-				tempe.effects = self.effects |  EF_ORANGELIGHT;
-			#else 
-				tempe.effects = self.effects |  EF_ORANGE;
-			#endif
+			    Light_Orange(tempe);
 				break;
 			default: break;
 		}
@@ -821,7 +932,7 @@ float CheckWeapon (float w, entity user) =
 		return 1;
 	}
 	else*/
-		if (user.weapon == w || user.secondaryweapon == w)
+		if (user.weapon == w || user.secondaryweapon == w || user.thirdweapon == w)
 			return 0;
 		else if (EqualNonPapWeapon(user.weapon) == w || EqualNonPapWeapon(user.secondaryweapon == w))
       return 0;
@@ -946,12 +1057,13 @@ void() Float_Change =
 			return;
 		}
 		else {
+			addmoney(self.owner.owner, 950, 0);
 			self.model = "progs/Misc/teddy.mdl";
 			setmodel(self, self.model);
 			self.angles_y = self.angles_y - 90;
 			self.nextthink = time + 5;
 			self.think = remove_box;
-			sound (self, CHAN_ITEM, "sounds/music/end.wav", 1, ATTN_NORM);	//naievil FIXME -- change sound
+			sound (self, CHAN_ITEM, "sounds/pu/byebye.wav", 1, ATTN_NORM);	//naievil FIXME -- change sound
 			return;
 		}
 	}
@@ -1067,8 +1179,27 @@ void() mystery_touch =
 				other.reload_delay = 0;
 				self.boxstatus = 0;
 				self.owner = world;
-				if (other.weapon != self.boxweapon.weapon && other.secondaryweapon != self.boxweapon.weapon && other.secondaryweapon)
-				{		
+				if (other.weapon != self.boxweapon.weapon && other.secondaryweapon != self.boxweapon.weapon && other.secondaryweapon && other.thirdweapon != self.boxweapon.weapon)
+				{	
+					if ((other.perks & P_MULE) && !other.thirdweapon) {
+						// store secondary weapon
+						local float tempf = other.secondaryweapon;
+						local float tempf1 = other.secondarymag;
+						local float tempf2 = other.secondaryammo;
+						local float tempf3 = other.secondarymag2;
+						// move primary to secondary
+						other.secondaryweapon = other.weapon;
+						other.secondarymag = other.currentmag;
+						other.secondarymag2 = other.currentmag2;
+						other.secondaryammo = other.currentammo;
+						// move secondary to tertiary
+						other.thirdweapon = tempf;
+						other.thirdmag = tempf1;
+						other.thirdammo = tempf2;
+						other.thirdmag2 = tempf3;
+					}	
+
+					// give boxweapon
 					other.weapon = self.boxweapon.weapon;
           			other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
 					other.currentmag = getWeaponMag(self.boxweapon.weapon);
@@ -1094,6 +1225,11 @@ void() mystery_touch =
 					other.secondaryammo = getWeaponAmmo(self.boxweapon.weapon);
 					other.secondarymag = getWeaponMag(self.boxweapon.weapon);
 				}
+				else if (other.thirdweapon == self.boxweapon.weapon)
+				{
+					other.thirdammo = getWeaponAmmo(self.boxweapon.weapon);
+					other.thirdmag = getWeaponMag(self.boxweapon.weapon);
+				}
 				else if (!other.secondaryweapon)
 				{
 					WeaponSwitch(other);
@@ -1106,6 +1242,10 @@ void() mystery_touch =
 					other.Flash_Size = GetWeaponFlash_Size(self.boxweapon.weapon);
 					other.Weapon_Name = GetWeaponName(self.boxweapon.weapon);
 					#endif
+				}
+				else if (!other.thirdweapon && (other.perks & P_MULE))
+				{
+					
 				}
 				sound(self, 0,"sounds/misc/ching.wav", 1, 1);
 				tempe = self;
@@ -1444,6 +1584,9 @@ void velocity_reduce_output() {
     makevectors(self.owner.angles);
 	self.velocity = [0,0,0];
 	setorigin(self, self.owner.origin + v_forward*25);
+
+    //start floating back into pap
+    self.velocity = v_forward*-1.5;
 }
 
 //Self = floating gun
@@ -1538,7 +1681,11 @@ void PapUpgrade(entity pap, entity buyer) {
 	self.secondarymag = 0;
 	self.secondarymag2 = 0;
 
+    self.isBuying = true;
+
 	Set_W_Frame (0, 39, 0, 0, 0, W_TakeOut, "models/machines/v_pap.mdl", true, S_BOTH);
+	self.weapon2model = "";
+	UpdateV2model(self.weapon2model, 0);
 
 	#ifndef PC
 	self.Weapon_Name = "";
@@ -1552,7 +1699,7 @@ void PapUpgrade(entity pap, entity buyer) {
 
 void touch_pap() {
   
-	if (other.classname != "player" || other.downed) {
+	if (other.classname != "player" || other.downed || !isFacing(other, self)) {
 		return;
 	}
     
@@ -1599,9 +1746,14 @@ void touch_pap() {
 			endframe = GetFrame(other.weapon,TAKE_OUT_END);
 			modelname = GetWeaponModel(other.weapon, 0);
 			other.weaponmodel = GetWeaponModel(other.weapon, 0);// Give weapon model
+		
+			// Kar Scope
+			if (other.weapon == W_HEADCRACKER)
+				other.weapon2model = "models/weapons/kar/v_karscope.mdl";
 
 			self = other;
 			SwitchWeapon(self.weapon);
+			UpdateV2model(other.weapon2model, 0);
 			Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, true, S_BOTH);//FIXME
 
 			#ifndef PC
@@ -1674,6 +1826,9 @@ void() perk_random =
 	if ((find(world,classname,"perk_deadshot") && (self.spawnflags & 64))) {
 		self.spawnflags -= self.spawnflags & 64;
 	}
+	if ((find(world,classname,"perk_mule") && (self.spawnflags & 128))) {
+		self.spawnflags -= self.spawnflags & 128;
+	}
 
 	// obj error because there are no possible perks for us to obtain
 	if (self.spawnflags == 0) {
@@ -1684,51 +1839,58 @@ void() perk_random =
 	while (foundperk == false) {
 		i = random();
 		// Quick Revive
-		if (i < (1/7) && (self.spawnflags & 1)) {
+		if (i < (1/8) && (self.spawnflags & 1)) {
 			if !(find(world, classname, "perk_revive")) {
 				perk_revive();
 				foundperk = true;
 			}
 		}
 		// Jugger-Nog 
-		else if (i < (2/7) && (self.spawnflags & 2)) {
+		else if (i < (2/8) && (self.spawnflags & 2)) {
 			if !(find(world, classname, "perk_juggernog")) {
 				perk_juggernog();
 				foundperk = true;
 			}
 		}
 		// Speed Cola
-		else if (i < (3/7) && (self.spawnflags & 4)) {
+		else if (i < (3/8) && (self.spawnflags & 4)) {
 			if !(find(world, classname, "perk_speed")) {
 				perk_speed();
 				foundperk = true;
 			}
 		}
 		// Double Tap
-		else if (i < (4/7) && (self.spawnflags & 8)) {
+		else if (i < (4/8) && (self.spawnflags & 8)) {
 			if !(find(world, classname, "perk_double")) {
 				perk_double();
 				foundperk = true;
 			}
 		}
 		// PhD Flopper
-		else if (i < (5/7) && (self.spawnflags & 16)) {
+		else if (i < (5/8) && (self.spawnflags & 16)) {
 			if !(find(world, classname, "perk_flopper")) {
 				perk_flopper();
 				foundperk = true;
 			}
 		}
 		// Stamin-Up
-		else if (i < (6/7) && (self.spawnflags & 32)) {
+		else if (i < (6/8) && (self.spawnflags & 32)) {
 			if !(find(world, classname, "perk_staminup")) {
 				perk_staminup();
 				foundperk = true;
 			}
 		}
 		// Deadshot Daiquiri
-		else if (i < 1 && (self.spawnflags & 64)) {
+		else if (i < (7/8) && (self.spawnflags & 64)) {
 			if (!find(world, classname, "perk_deadshot")) {
 				perk_deadshot();
+				foundperk = true;
+			}
+		}
+		// Mule Kick
+		else if (i < 1 && (self.spawnflags & 128)) {
+			if (!find(world, classname, "perk_mule")) {
+				perk_mule();
 				foundperk = true;
 			}
 		}

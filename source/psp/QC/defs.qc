@@ -153,6 +153,7 @@ void		end_sys_globals;		// flag for structure dumping
 .string 	Weapon_Name;
 .string		Weapon_Name_Touch;
 .float      currentmag2;
+.float      maxspeed;
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent
 
@@ -242,6 +243,8 @@ vector(entity zombie,vector start,vector min, vector max) Get_First_Waypoint = #
 void(string s) Close_Waypoint = #89;
 
 void(entity plr, float achievement) achievement = #79;
+
+void(string trackname) songegg = #500;
 /*
 type 0 = clear
 type 1 = buy door
@@ -417,17 +420,19 @@ string(float num) argv = #442;
 #define	SVC_USEPRINT			 38
 
 #define	TE_SPIKE		 0
-#define	TE_SUPERSPIKE	 1
+#define	TE_SUPERSPIKE	 	 1
 #define	TE_GUNSHOT		 2
-#define	TE_EXPLOSION	 3
-#define	TE_TAREXPLOSION	 4
-#define	TE_LIGHTNING1	 5
-#define	TE_LIGHTNING2	 6
+#define	TE_EXPLOSION	 	 3
+#define	TE_TAREXPLOSION	 	 4
+#define	TE_LIGHTNING1	 	 5
+#define	TE_LIGHTNING2	 	 6
 #define	TE_WIZSPIKE		 7
-#define	TE_KNIGHTSPIKE	 8
-#define	TE_LIGHTNING3	 9
-#define	TE_LAVASPLASH	 10
+#define	TE_KNIGHTSPIKE	 	 8
+#define	TE_LIGHTNING3	 	 9
+#define	TE_LAVASPLASH	 	 10
 #define	TE_TELEPORT		 11
+#define TE_RAYSPLASHGREEN 	 14
+#define TE_RAYSPLASHRED 	 15
 
 // sound channels
 // channel 0 never willingly overrides
@@ -466,6 +471,8 @@ string(float num) argv = #442;
 #define EF_DARKLIGHT			1024
 #define EF_DARKFIELD			2048
 #define EF_PURPLELIGHT    		4096
+#define EF_RAYRED		 	8196
+#define EF_RAYGREEN		 	16384
 
 // messages
 #define	MSG_BROADCAST	 0		// unreliable to all
@@ -508,7 +515,6 @@ string mappath;
 #define PRINT_HIGH  	0
 
 .float isspec;
-.float maxspeed;
 
 #define		FILE_READ 	 	0
 #define		FILE_APPEND 	1

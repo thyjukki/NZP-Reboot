@@ -8,6 +8,7 @@ A faithful recreation of Call of Duty Zombies for the PC and PlayStation Portabl
 * Extract the archive
 * Navigate to NZP-Reboot/source and run fteqccgui.exe
 * Hit the "Compile" button on the bottom left corner of the window.
+* Move respective game data files from root directory into NX/PSP OR run the PC executable.
 
 <hr>
 
@@ -29,18 +30,30 @@ Please make sure the bug in question has not already been reported before postin
 <hr>
 
 ## Credits
-__Blubswillrule__: Coding, Models, GFX, Sounds, Animation, & Music
+__Blubswillrule__: Coding, Models, GFX, Sounds, Music
 <br>
 __Ju[s]tice__: Maps, Models, GFX
 <br>
 __Jukki__: Coding
+<br>
+__Biodude__: Sounds
+<br>
+__Dr_Mabuse1981__: Sounds
+<br>
+__Naievil__: Coding, NX Maintaining
+<br>
+__MotoLegacy__: Coding, GFX, Music
+<br>
+__Derped_Crusader__: Models, GFX
 
 
 
 __Special Thanks__:
-* Spike
-* Shpuld
-* DR_Mabuse1981
-* Naievil
-* Biodude
-* MotoLegacy
+* Spike: FTEQW
+* Shpuld: Clean-CSQC
+* Crow_Bar: DQuake
+* st1x51: DQuakePlus
+* fgsfdsfgs: QuakespasmNX
+* Azenn: GFX help
+* tavo: Music help
+* BCDeshiG: Heavy bug testing

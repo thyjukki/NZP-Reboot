@@ -28,4 +28,4 @@ void CDAudio_Update(void);
 void CDAudio_Next(void);
 void CDAudio_Prev(void);
 void CDAudio_PrintMusicList(void);
-
+void CDAudio_Track(char* trackname);

@@ -46,6 +46,7 @@ const float MENU_RES = 256;
 const float MENU_GSETTINGS = 512;
 const float MENU_CSETTINGS = 1024;
 const float MENU_CUSTOMS = 2048;
+const float MENU_ACHIEVEMENTS = 4096;
 
 
 float useprint_type;
@@ -113,6 +114,8 @@ vector TEXT_RED       = [1, 0, 0];
 float fade_time;
 float fade_type;
 
+float customs_interact;
+
 vector camang;		// used for punches
 
 //world text
@@ -137,6 +140,27 @@ float editBind[MAX_BINDS];
 string buttonBind[MAX_BINDS];
 string tempBind[MAX_BINDS];
 
+// resolution
+#define MAX_43      3
+#define MAX_54      1
+#define MAX_1610    4
+#define MAX_169     10
+#define MAX_219     2
+float aspectratio;
+float fullscreenval;
+float active_swidth;
+float active_sheight;
+float screen_width_43[MAX_43];
+float screen_height_43[MAX_43];
+float screen_width_54[MAX_54];
+float screen_height_54[MAX_54];
+float screen_width_1610[MAX_1610];
+float screen_height_1610[MAX_1610];
+float screen_width_169[MAX_169];
+float screen_height_169[MAX_169];
+float screen_width_219[MAX_219];
+float screen_height_219[MAX_219];
+
 //controller buttons
 
 /*
@@ -152,3 +176,5 @@ string tempBind[MAX_BINDS];
 
 */
 float GPActive[32];
+
+#define VERSION_STRING  "v1.0"

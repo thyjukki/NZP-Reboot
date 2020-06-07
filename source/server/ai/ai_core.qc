@@ -73,7 +73,8 @@ entity(entity blarg) find_new_enemy =
 		return closest;
 		
 	}
-	bprint(PRINT_HIGH, "Error: Find_New_Enemy returns world! \n");
+	if (self.classname != "wunder")
+		bprint(PRINT_HIGH, "Error: Find_New_Enemy returns world! \n");
 	return world;
 };
 

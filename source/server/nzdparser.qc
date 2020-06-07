@@ -239,7 +239,8 @@ void() load_nzd = {
 	
 	if (file == -1)
 	{
-		dprint(".NZD file not found, using default settings..\n");
+		if (cvar("developer"))
+			dprint(".NZD file not found, using default settings..\n");
 		return;
 	}
 

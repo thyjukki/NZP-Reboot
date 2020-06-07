@@ -20,6 +20,9 @@ void() ReturnWeaponModel =
 
 void() W_AimIn =
 {
+	if (self.weapon == W_TESLA || self.weapon == W_DG3)
+		return;
+		
 	if (IsDualWeapon(self.weapon) ||
 		self.zoom ||
 		self.reload_delay > time ||
@@ -92,7 +95,8 @@ void() W_SprintStop =
 		playwalk();
 }
 
-void W_SprintStart () {
+
+void W_SprintStart () {	
 
 #ifdef NX
 	if (!self.sprintflag) {
@@ -130,32 +134,69 @@ void W_SprintStart () {
 
 void() W_Switch =
 {
-	if (self.secondaryweapon && self.secondaryweapon !=0 && !self.new_anim_stop && !other.button7)
+	if (self.secondaryweapon && self.secondaryweapon != 0 && !self.new_anim_stop && !other.button7)
 	{      
-		float tempf,tempf1,tempf2,tempf3;
+		float tempf,tempf1,tempf2,tempf3,tempf4;
 		float startframe;
 		float endframe;
 		string modelname;
-			
-		tempf = self.currentammo;
-		self.currentammo = self.secondaryammo;
-		self.secondaryammo = tempf;
 
-		tempf1 = self.currentmag;
-		self.currentmag = self.secondarymag;
-		self.secondarymag = tempf1;
+		// un-zoom camera
+		self.zoom = false;
 
-		tempf1 = self.currentmag2;
-		self.currentmag2 = self.secondarymag2;
-		self.secondarymag2 = tempf1;
+		// fix fire rate exploit
+		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = true;
 
-		tempf2 = self.weapon;
-		self.weapon = self.secondaryweapon;
-		self.secondaryweapon = tempf2;
+		// just do normal weapon swapping if we don't have mule..
+		if (!(self.perks & P_MULE) || !self.thirdweapon) {
+			tempf = self.currentammo;
+			self.currentammo = self.secondaryammo;
+			self.secondaryammo = tempf;
 
-		tempf3 = self.weaponskin;
-		self.weaponskin = self.secondaryweaponskin;
-		self.secondaryweaponskin = tempf3;
+			tempf1 = self.currentmag;
+			self.currentmag = self.secondarymag;
+			self.secondarymag = tempf1;
+
+			tempf1 = self.currentmag2;
+			self.currentmag2 = self.secondarymag2;
+			self.secondarymag2 = tempf1;
+
+			tempf2 = self.weapon;
+			self.weapon = self.secondaryweapon;
+			self.secondaryweapon = tempf2;
+
+			tempf3 = self.weaponskin;
+			self.weaponskin = self.secondaryweaponskin;
+			self.secondaryweaponskin = tempf3;
+		} else {
+			// store primary weapon
+			tempf = self.weapon;
+			tempf1 = self.currentmag;
+			tempf2 = self.currentmag2;
+			tempf3 = self.currentammo;
+			tempf4 = self.weaponskin;
+
+			// set primary weapon to third weapon
+			self.weapon = self.thirdweapon;
+			self.currentmag = self.thirdmag;
+			self.currentmag2 = self.thirdmag2;
+			self.currentammo = self.thirdammo;
+			self.weaponskin = self.thirdweaponskin;
+
+			// set third weapon to secondary weapon
+			self.thirdweapon = self.secondaryweapon;
+			self.thirdmag = self.secondarymag;
+			self.thirdmag2 = self.secondarymag2;
+			self.thirdammo = self.secondaryammo;
+			self.thirdweaponskin = self.secondaryweaponskin;
+
+			// set secondary weapon to primary weapon
+			self.secondaryweapon = tempf;
+			self.secondarymag = tempf1;
+			self.secondarymag2 = tempf2;
+			self.secondaryammo = tempf3;
+			self.secondaryweaponskin = tempf4;
+		}
 
 		startframe = GetFrame(self.weapon,TAKE_OUT_START);
 		endframe = GetFrame(self.weapon,TAKE_OUT_END);
@@ -165,7 +206,16 @@ void() W_Switch =
 
 		if (IsDualWeapon(self.weapon)) {
 			self.weapon2model = GetLeftWeaponModel(self.weapon);
-		}
+		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
+			self.weapon2model = "models/weapons/kar/v_karscope.mdl";
+		else 
+			self.weapon2model = "";
+
+		UpdateV2model(self.weapon2model, 0);
+
+		// TEMP
+		if (self.weapon == W_M2 || self.weapon == W_FIW)
+			UpdateVmodel(modelname, GetWepSkin(self.weapon));
 	
 		
 		//UpdateWeapons(1);
@@ -180,11 +230,6 @@ void() W_Switch =
 		self.Weapon_Name = GetWeaponName(self.weapon);
 		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
 		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
-		
-		if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
-			self.weapon2model = "models/weapons/kar/v_karscope.mdl";
-		else 
-			self.weapon2model = "";
 		#endif
 	}
 }
@@ -222,9 +267,19 @@ void() W_TakeOut =
 	startframe = GetFrame(self.weapon,TAKE_OUT_START);
 	endframe = GetFrame(self.weapon,TAKE_OUT_END);
 	modelname = GetWeaponModel(self.weapon, 0);
+
+    self.isBuying = false;
 	
 	Set_W_Frame (startframe, endframe, (endframe - startframe)/10, 0, SWITCHWEP, SUB_Null, modelname, false, S_BOTH);//FIXME
 	self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0;
+}
+
+float(entity who) hasWeapon =
+{
+    if (other.weapon || other.secondaryweapon || other.thirdweapon)
+        return true;
+
+    return false;
 }
 
 
@@ -328,6 +383,9 @@ void() ContinueReload = //Special reloads
 
 void(float side) W_Reload =
 {
+	if (self.weapon == W_M2 || self.weapon == W_FIW)
+		return;
+	
 	//TEMPORARY
 	#ifdef PC
 	self.viewzoom = 1;
@@ -510,7 +568,13 @@ void(vector org, vector vel, float damage) SpawnBlood =
 	local entity f;
   
   	#ifdef PC
-	te_blood(org, vel, 1);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_BLOOD);
+	WriteCoord(MSG_MULTICAST, org_x);
+	WriteCoord(MSG_MULTICAST, org_y);
+	WriteCoord(MSG_MULTICAST, org_z);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
 	#else
 	particle (org, vel*0.1, 73, damage*2);
 	#endif
@@ -523,7 +587,13 @@ void(vector where) spawn_gibs = {
 	#ifndef PC
 	particle(where, where*0.1, 225, 1);
 	#else
-	te_blood(where, where, 1);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_BLOOD);
+	WriteCoord(MSG_MULTICAST, where_x);
+	WriteCoord(MSG_MULTICAST, where_y);
+	WriteCoord(MSG_MULTICAST, where_z);
+	msg_entity = self;
+	multicast('0 0 0', MULTICAST_ONE);
 	#endif
 }
 
@@ -547,7 +617,7 @@ void Parse_Damage () = // DO NOT TOUCH
 			if (ent.classname == "ai_zombie_head")
 				head_hit = 1;
 			
-			if (ent.classname != "ai_zombie" || ent.classname == "ai_dog") //limb
+			if (ent.classname != "ai_zombie" && ent.classname != "ai_dog") //limb
 				body_ent = ent.owner;
 			else
 				body_ent = ent;
@@ -662,12 +732,10 @@ void() LungeKnifeHit =
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 
-	self.solid = SOLID_BBOX;
 	if (self.weapon == W_BK)
 		traceline (source, source + v_forward*80*1.2, 0, self); // naievil -- added some extra length
 	else
 		traceline (source, source + v_forward*64*1.2, 0, self); // naievil -- ^^
-	self.solid = SOLID_SLIDEBOX;
 	
 	org = trace_endpos - v_forward*3; // naievil -- changed to factor of 3 from 4
 	
@@ -723,7 +791,7 @@ void() LungeKnifeHit =
 	}
 }
 
-void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAttack =
+void(float damage, vector dir, vector org, vector plane, entity hit_ent, float side) TraceAttack =
 {
 	vector  vel;
 	float f_damage;
@@ -757,9 +825,25 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 		}
 		
 		SpawnBlood (org, vel, damage*10);
-		
 
-		f_damage = damage;
+		switch(hit_ent.classname) {
+			case "ai_zombie_head":
+				f_damage = damage*getWeaponMultiplier(self.weapon, HEAD_X);
+				break;
+			case "ai_zombie_larm":
+			case "ai_zombie_rarm":
+				f_damage = damage*getWeaponMultiplier(self.weapon, LIMBS_X);
+				break;
+			case "ai_zombie":
+				if (trace_endpos_z < hit_ent.origin_z)
+					f_damage = damage*getWeaponMultiplier(self.weapon, LOWER_TORSO_X);
+				else
+					f_damage = damage*getWeaponMultiplier(self.weapon, UPPER_TORSO_X);
+				break;
+			default:
+				f_damage = damage;
+				break;
+		}
 
 		hit_ent.washit = 1;
 		hit_ent.hitamount = hit_ent.hitamount + f_damage;
@@ -785,6 +869,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 	WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
 	WriteEntity(MSG_MULTICAST, self);
+    WriteFloat(MSG_MULTICAST, side);
 	WriteCoord(MSG_MULTICAST, org_x);
 	WriteCoord(MSG_MULTICAST, org_y);
 	WriteCoord(MSG_MULTICAST, org_z);
@@ -797,7 +882,7 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent) TraceAt
 	
 };
 
-void (float shotcount, float sprd, float Damage/*, float headmulti, float legmulti*/) FireTrace =
+void (float shotcount, float sprd, float Damage, float side) FireTrace =
 {
 	float count, r, ru, penetration_times, do_break;
 	vector dir, src, trace_start_org;
@@ -847,7 +932,7 @@ void (float shotcount, float sprd, float Damage/*, float headmulti, float legmul
 			}
 			
 			if (trace_fraction != 1.0)
-				TraceAttack (Damage, dir, trace_endpos, trace_plane_normal, trace_ent);
+				TraceAttack (Damage, dir, trace_endpos, trace_plane_normal, trace_ent, side);
 			trace_start_org = trace_endpos;
 			penetration_times++;
 			if (!trace_ent.takedamage)
@@ -908,7 +993,14 @@ void() RayBulletExplode =
 	te_smallflash(self.origin);
 	#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	#ifdef PSP
+	if (self.effects & EF_RAYGREEN)
+		WriteByte (MSG_BROADCAST, TE_RAYSPLASHGREEN);
+	else
+		WriteByte (MSG_BROADCAST, TE_RAYSPLASHRED);
+	#else
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	#endif
 	WriteCoord (MSG_BROADCAST, self.origin_x);
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
@@ -956,16 +1048,27 @@ void() W_FireRay =
 	porter.v_angle = '0 0 200';
 
 	porter.touch = velocity_increase_ray;
-	setmodel(porter, "progs/shark.mdl");
+	setmodel(porter, "progs/raybeam.mdl");
 	setsize(porter, '0 0 0', '0 0 0');
+
+	
+	if (self.weapon == W_PORTER) {
+		#ifdef PSP
+		porter.effects = EF_RAYRED;
+		#else
+		porter.effects = EF_RED;
+		#endif
+	} else {
+		#ifdef PSP
+		porter.effects = EF_RAYGREEN;
+		#else
+		porter.effects = EF_GREEN;
+		#endif
+	}
+	
+
 	porter.origin = self.origin + self.view_ofs;
 	porter.origin += v_forward * 0;
-
-	if (self.weapon == W_PORTER) {
-		porter.effects = EF_RED;
-	} else {
-		porter.effects = EF_GREEN;
-	}
 
 	setorigin(porter, porter.origin);
 
@@ -973,87 +1076,46 @@ void() W_FireRay =
 	self.callfuncat = 0;
 }
 
-void(entity who) FindNewTeslaTarget;
-
-// Spawn a clone in the place of lightning'd zombies.
-void(vector org, float frame, vector ang) SpawnLightningClone =
-{
-	local entity clone;
-
-	clone = spawn();
-
-	setmodel(clone, "models/machines/juggernog.mdl");
-	setorigin(clone, org);
-
-	clone.angles = ang;
-
-	clone.classname = "tesla_clone";
-
-	self.teslacount--;
-
-	centerprint(self, strcat("kills left: ", ftos(self.teslacount)));
-
-	// If we can chain more, try to look for another zombie
-	if (self.teslacount > 0) {
-		FindNewTeslaTarget(clone);
-	} else {
-		self.teslacount = 20;
-	}
-}
-
 // Remove zombie, add money, request clone spawn.
 void(entity hit_ent) LightningHit =
 {
-	//we do a hacky thing here: spawn a clone, kill zomb, and use the clone to
-	//dictate our next target. zom's think function is waay too much to handle lol
-	hit_ent.classname = "dead_zombie";
+	local entity tempe;
 
-	SpawnLightningClone(hit_ent.origin, hit_ent.frame, hit_ent.angles);
-
-	if (hit_ent.head) {
-		remove(hit_ent.head);
-	} if (hit_ent.larm) {
-		remove(hit_ent.larm);
-	} if (hit_ent.rarm) {
-		remove(hit_ent.rarm);
-	}
-
-	remove(hit_ent);
-
-	Current_Zombies -= 1;
-	
+	// 50 points for waffe kills
 	addmoney(self, 50, true);
+
+	// set lib models to null
+	// (if we remove them RelinkZombies will cry)
+	if (hit_ent.head)
+		setmodel(hit_ent.head, "");
+	if (hit_ent.larm)
+		setmodel(hit_ent.larm, "");
+	if (hit_ent.rarm)
+		setmodel(hit_ent.rarm, "");
+
+	// window hop fix
+	if (self.state == 1 || self.hop_step != 0) {
+		self.state = self.hop_step = 0;
+	}
+
+	// change classname so it can't be re-targted
+	hit_ent.classname = "wunder";
+
+	// own it!
+	hit_ent.owner = self;
+
+	// we're the start of a chain
+	hit_ent.teslacount = 1;
+
+	// play our wunder-ful anim
+	tempe = self;
+	self = hit_ent;
+	self.th_diewunder();
+	self = tempe;
+
+	// kill
+	self.kills += 1;
 };
-
-// Look for a zombie in radius to chain to, if one's not there, we can start killing.
-void(entity who) FindNewTeslaTarget =
-{
-	local entity ent, newtarg;
-	ent = findradius(who.origin, 200);
-		
-	while(ent != world)
-	{
-		if (ent.classname == "ai_zombie") {
-			newtarg = ent;
-			#ifdef PC
-			te_lightning2(who, who.origin, newtarg.origin);
-			#endif
-		}
-		ent = ent.chain;
-		
-		if (newtarg != world)
-			ent = world;
-	}
-
-	// couldn't find a new target
-	if (newtarg == world) {
-		// TODO: tell all of our clones the death clock is ticking
-		self.teslacount = 2;
-		return;
-	}
-
-	LightningHit(newtarg);
-}
 
 // Initial Zombie impact, creds to Naievil/UP
 void(vector p1, vector p2, entity from, float damage) LightningDamage =
@@ -1074,6 +1136,9 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 	//traceline (p1, p2, false, self);
 	
 	hit_ent = trace_ent;
+
+	if (hit_ent == world)
+		return;
 
 	if (hit_ent.classname == "ai_zombie_head" || hit_ent.classname == "ai_zombie_larm" || hit_ent.classname == "ai_zombie_rarm")
 		hit_ent = hit_ent.owner;
@@ -1107,19 +1172,163 @@ void() W_FireTesla =
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 
-	self.solid = SOLID_BBOX;
-	FireTrace(1, 0, 0);
-	self.solid = SOLID_SLIDEBOX;
+	FireTrace(1, 0, 0, 0);
 
 	#ifdef PC
-	te_lightning2(self, self.origin, trace_endpos);
+	te_lightning2(self, source, trace_endpos);
+	#endif
+	#ifdef PSP
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+	WriteEntity (MSG_BROADCAST, self);
+	WriteCoord (MSG_BROADCAST, source_x);
+	WriteCoord (MSG_BROADCAST, source_y);
+	WriteCoord (MSG_BROADCAST, source_z);
+	WriteCoord (MSG_BROADCAST, trace_endpos_x);
+	WriteCoord (MSG_BROADCAST, trace_endpos_y);
+	WriteCoord (MSG_BROADCAST, trace_endpos_z);
 	#endif
 
 	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30);
 }
 
+void() Flame_LingerThink =
+{
+	#ifdef PC
+	te_flamejet(self.origin, v_up*8, 5);
+	#else
+	particle (self.origin, v_up*8, 0, 0);
+	#endif
+
+	if (self.ltime < time)
+		remove(self);
+
+	self.nextthink = time + 0.1;
+}
+
+// spawn linger effect/entity
+void(vector org, entity whodunit) Flame_Linger =
+{
+	local entity linger = spawn();
+
+	setorigin(linger, org);
+
+	linger.owner = whodunit.owner;
+	linger.think = Flame_LingerThink;
+	linger.nextthink = time + 0.1;
+	linger.ltime = time + 5;
+}
+
+void() Flame_Touch =
+{
+	if (other == world) {
+		Flame_Linger(self.origin, self);
+		remove(self);
+	} else {
+		if (other.onfire || other.owner.onfire)
+			return;
+		if (other.classname == "ai_zombie_head" || other.classname == "ai_zombie_larm" 
+		|| other.classname == "ai_zombie_rarm") {
+			other.owner.onfire = true;
+			other.owner.ltime = time + 2;
+			addmoney(self.owner, 10, true);
+		} else if (other.classname == "ai_zombie" || other.classname == "ai_dog") {
+			other.onfire = true;
+			other.firer = self.owner;
+			other.ltime = time + 2;
+			addmoney(self.owner, 10, true);
+		}
+	}
+}
+
+// fallen flame touches something
+void() Flame_DropCatch =
+{
+	if (other == world) {
+		Flame_Linger(self.origin + '0 0 5', self);
+		remove(self);
+	}
+}
+
+// drop didn't make it to the ground in time to spread
+void() Flame_DropDissapate =
+{
+	remove(self);
+}
+
+// rare chance some falls
+void() Flame_Drop =
+{
+	local entity drop = spawn();
+
+	drop.owner = self.owner;
+
+	setmodel(drop, "models/misc/flame.spr");
+	setsize(drop, '0 0 0', '0 0 0');
+	setorigin(drop, self.origin);
+
+	drop.touch = Flame_DropCatch;
+	drop.think = Flame_DropDissapate;
+	drop.nextthink = time + 0.8;
+	drop.solid = SOLID_TRIGGER;
+	drop.movetype = MOVETYPE_BOUNCE;
+
+	drop.velocity = v_up*-55;
+}
+
+// increase frames, remove/drop
+void() Flame_Buildup =
+{
+	self.frame++;
+
+	if (self.frame > 11) {
+		if (random() > 0.75)
+			Flame_Drop();
+		remove(self);
+	}
+
+	self.nextthink = time + 0.05;
+}
+
+void() W_FireM2 =
+{
+
+	local entity flamespr;
+	local vector rand_angle;
+
+	flamespr = spawn();
+	flamespr.owner = self;
+	flamespr.movetype = MOVETYPE_FLYMISSILE;
+	flamespr.solid = SOLID_TRIGGER;
+	flamespr.classname = "flamethrower_sprite";
+	flamespr.state = 0;
+	flamespr.finaldest = self.v_angle;
+
+	// calc some randomness
+	rand_angle = self.v_angle;
+	rand_angle_x += random()*10;
+	rand_angle_y += random()*10;
+
+	makevectors(rand_angle);
+	flamespr.velocity = aim(self, 1000);
+	flamespr.velocity *= 600;
+
+	flamespr.owner = self;
+
+	flamespr.think = Flame_Buildup;
+	flamespr.nextthink = time + 0.01;
+	flamespr.touch = Flame_Touch;
+
+	setmodel(flamespr, "models/misc/flame.spr");
+	setorigin(flamespr, self.origin + self.view_ofs - '0 0 10');
+	setsize(flamespr, '0 0 0', '0 0 0');
+}
+
 void(float side) W_Fire =
 {
+	if (self.weapon == W_M2 || self.weapon == W_FIW && self.cooldown)
+		return;
+
 	//First check that we can actualy fire
 	if (side == S_RIGHT &&
 		(time < self.fire_delay ||
@@ -1253,14 +1462,14 @@ void(float side) W_Fire =
 		W_FireRay();
 	} else if (firetype == 5) {
 		W_FireTesla();
+	} else if (firetype == 6) {
+		W_FireM2();
 	}
 
-	if (firetype == 1 || firetype == 0) {
-		self.solid = SOLID_BBOX;
-		FireTrace(shotcount, spread, damage/* , self.weaponslot1.headx, self.weaponslot1.legx */);
-		self.solid = SOLID_SLIDEBOX;
+    // FIXME - clean this up lol
+	if (firetype == 1 || firetype == 0 || firetype == 3) {
+		FireTrace(shotcount, spread, damage, side);
 	}
-
 
 	//Play weapon animation and sound
 	startframe = GetFrame(self.weapon,FIRE_START);
@@ -1300,8 +1509,7 @@ void(float side) W_Fire =
 
 	// REFORMAT THIS 
 	#ifndef PC
-	if (self.weapon != W_RAY && self.weapon != W_PORTER)
-		self.effects = self.effects | EF_MUZZLEFLASH;
+	self.effects = self.effects | EF_MUZZLEFLASH;
 	#else 
 	// psp takes care of this in engine
 	if (self.perks & P_DEAD)
@@ -1366,6 +1574,12 @@ void () W_Knife =
 			hit_ent = trace_ent;
 		if (hit_ent.classname == "ai_zombie")
 			hit = true;
+
+		// if zombie has a head and it's instakill, gib for  a e s t h e t i c
+		if (hit_ent.head && instakill_finished >= time) {
+			spawn_gibs(hit_ent.head.origin);
+			setmodel(hit_ent.head, "");
+		}
 	}
 	else if (trace_fraction < 1.0)
 	{	// hit wall
@@ -1378,6 +1592,7 @@ void () W_Knife =
 			WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 			WriteByte(MSG_MULTICAST, EVENT_PISTOLFIRE);
 			WriteEntity(MSG_MULTICAST, self);
+            WriteFloat(MSG_MULTICAST, 0);
 			WriteCoord(MSG_MULTICAST, org_x);
 			WriteCoord(MSG_MULTICAST, org_y);
 			WriteCoord(MSG_MULTICAST, org_z);
@@ -1486,17 +1701,13 @@ void() GrenadeExplode =
 	if (self.classname == "grenade")
 		DamgageExplode (self, self.owner, 225, 75, 128);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...	
 	else
-		DamgageExplode (self, self.owner, 125, 300, 128); //explosive weapons have a smaller radius but are more powerful :)
+		DamgageExplode (self, self.owner, 1200, 1000, 128); //explosive weapons are more powerful :)
 	
 	#ifdef PC
-	te_explosionquad(self.origin);
-	#else
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
-	WriteCoord (MSG_BROADCAST, self.origin_x);
-	WriteCoord (MSG_BROADCAST, self.origin_y);
-	WriteCoord (MSG_BROADCAST, self.origin_z);
+    te_customflash(self.origin, 178, 300, '1 1 1');
 	#endif
+
+    CallExplosion(self.origin);
 	
 	SUB_Remove ();
 };
@@ -1686,50 +1897,36 @@ void() checkHold =
 
 
 void() W_Betty = {
-	if (self.throw_delay > time || self.zoom || self.downed)
+	if (self.throw_delay > time || self.zoom || self.downed || self.secondary_grenades < 1 || self.isBuying)
 		return;
 
 	Set_W_Frame (0, 18, 0, 0, GRENADE, checkHoldB, "progs/VModels/v_betty.mdl", true, S_RIGHT);
 	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
-	self.secondary_grenades = self.secondary_grenades - 1;
+	self.secondary_grenades -= 1;
 	self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
 	self.semiswitch = true;
 }
 
 void() W_Grenade =
 {
-	if (self.throw_delay > time || self.zoom || self.downed)
+	if (self.throw_delay > time || self.zoom || self.downed || self.primary_grenades < 1 || self.isBuying)
 		return;
 
-	if (self.primary_grenades > 0 || self.secondary_grenades > 0) {         
-	  	if (self.pri_grenade_state == 0 && self.primary_grenades > 0)
-      	{
-			Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true, S_RIGHT);
-			sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
-			self.primary_grenades = self.primary_grenades - 1;
-			self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
-			self.grenade_delay = time + 5;
-    	} else if (self.pri_grenade_state == 1 && self.secondary_grenades > 0) {  
-			Set_W_Frame (0, 18, 0, 0, GRENADE, checkHold, "progs/VModels/v_betty.mdl", true, S_RIGHT);
-			sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
-			self.secondary_grenades = self.secondary_grenades - 1;
-			self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
-      	}
-    	self.semiswitch = true;
-   	} else if (self.pri_grenade_state == 1 && self.secondary_grenades > 0) {  
-		W_Betty();
-    }
+	Set_W_Frame (0, 2, 0, 0, GRENADE, checkHold, "progs/VModels/v_nade.mdl", true, S_RIGHT);
+	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/prime.wav", 1, ATTN_NORM);	
+	self.primary_grenades -= 1;
+	self.reload_delay2 = self.fire_delay2 = self.throw_delay = self.reload_delay = self.fire_delay = time + 6;
+	self.grenade_delay = time + 5;
     self.semiswitch = true;
 } 
 
 void(float wepnum) CheckButton = {
-	if (self.weaponnum == wepnum)
-		W_PutOut();
+	W_PutOut();
 }
 
 void() Change_Stance = {
 
-	if (self.downed || !(self.flags & FL_ONGROUND) || self.changestance == true)
+	if (self.downed || !(self.flags & FL_ONGROUND) || self.changestance == true || self.new_ofs_z != self.view_ofs_z)
 		return;
 
 	switch(self.stance) {
@@ -1788,15 +1985,16 @@ void() dolphin_dive =		//naievil
 	makevectors (self.v_angle);
     self.velocity = self.velocity * 1.2;		
 	self.velocity_z = self.velocity_z + 270;
-	
-	self.new_ofs_z = self.view_ofs_z - 42;
-	self.stance = 0;
 
-	self.button2 = 0;
+	if (self.button2)
+		self.button2 = 0;
+
 	self.dive = 1;
 	W_SprintStop();
 
 	self.oldz = self.origin_z;
+	self.new_ofs_z = self.view_ofs_z - 42;
+	self.stance = 0;
 }
 
 
@@ -1807,6 +2005,12 @@ void () Impulse_Functions =
 		
 	switch (self.impulse)
 	{		
+		case 10:
+			#ifdef PC
+			// FTE handles jumping on PC, which we don't want.. so we use impulses to override.
+			JumpCheck(1);
+			#endif
+			break;
 		case 22:
 			addmoney(self, 10000, 0);
 			rounds += 4;
@@ -1856,12 +2060,16 @@ void () Impulse_Functions =
 			self.sprintflag = 1;
 			break;
 		#endif
-		case 110:
+		/*case 110:
 			CheckButton(1);
 			break;
 		case 111:
 			CheckButton(0);
-			break;		
+			break;	*/
+		case 110:
+		case 111:
+			W_PutOut();
+			break;	
 		case 100:
 			cvar_set("waypoint_mode", "1");
 			
@@ -2057,8 +2265,10 @@ void() CheckPlayer =
 				sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
 				DamgageExplode (self, self, 225, 75, 128);
 				#ifdef PC
-				te_explosionquad(self.origin);
+				te_customflash(self.origin, 128, 300, '1 1 1');
 				#endif
+
+				CallExplosion(self.origin);
 			}
 			self.dive = 0;
 		}
@@ -2117,7 +2327,6 @@ void () Weapon_Logic =
 			self.semi2 = FALSE;
 			#endif
 		}
-		
 	} else {
 		if (self.button0) {
 			W_Fire(S_RIGHT);
@@ -2190,7 +2399,10 @@ void () Weapon_Logic =
 	
 	if (self.button3 && self.isBuying != true && self.semiswitch != true)
 	{
-		W_Grenade();
+        if (self.pri_grenade_state == 0)
+		    W_Grenade();
+        else
+            W_Betty();
 		self.semiswitch = true;
 	}
 	else if (!self.button3)

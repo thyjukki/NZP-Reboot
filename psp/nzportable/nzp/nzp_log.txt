@@ -4,3 +4,5 @@ map ndu
 map ndu
 restart
 addmoney 12345
+r_speeds 1
+give 20

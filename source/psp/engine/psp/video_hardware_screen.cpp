@@ -103,7 +103,7 @@ qboolean	scr_initialized;		// ready to draw
 
 qpic_t      *hitmark;
 qpic_t      *ls_wahnsinn;
-qpic_t      *ls_anstieg;
+//qpic_t      *ls_anstieg;
 
 int			scr_fullupdate;
 
@@ -124,6 +124,8 @@ qboolean	scr_drawloading;
 float		scr_disabled_time;
 
 qboolean	block_drawing;
+
+extern 	int 	game_fps;
 
 void SCR_ScreenShot_f (void);
 
@@ -354,6 +356,8 @@ char *GetPerkName (int perk)
 			return "PhD Flopper";
 		case 7:
 			return "Deadshot Daiquiri";
+		case 8:
+			return "Mule Kick";
 		default:
 			return "NULL";
 	}
@@ -369,15 +373,15 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			strcpy(s, "");
 			break;
 		case 1://door
-			strcpy(s, va("Hold %s to open door [Cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to open Door [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 2://debris
-			strcpy(s, va("Hold %s to remove debris [Cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to remove Debris [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 3://ammo
-			strcpy(s, va("Hold %s to buy ammo for %s [Cost:%i]\n", GetUseButtonL(), pr_strings+sv_player->v.Weapon_Name_Touch, cost));
+			strcpy(s, va("Hold %s to buy Ammo for %s [Cost:%i]\n", GetUseButtonL(), pr_strings+sv_player->v.Weapon_Name_Touch, cost));
 			button_pic_x = 5;
 			break;
 		case 4://weapon
@@ -389,15 +393,15 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			button_pic_x = 5;
 			break;
 		case 6://box
-			strcpy(s, va("Hold %s to buy a random weapon [cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to buy a Random Weapon [cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 7://box take
-			strcpy(s, va("Press %s to take weapon\n", GetUseButtonL()));
+			strcpy(s, va("Press %s to take Weapon\n", GetUseButtonL()));
 			button_pic_x = 6;
 			break;
 		case 8://power
-			strcpy(s, "The power must be activated first\n");
+			strcpy(s, "The Power must be Activated first\n");
 			button_pic_x = 100;
 			break;
 		case 9://perk
@@ -405,15 +409,15 @@ void SCR_UsePrint (int type, int cost, int weapon)
 			button_pic_x = 5;
 			break;
 		case 10://turn on power
-			strcpy(s, va("Hold %s to turn on the power\n", GetUseButtonL()));
+			strcpy(s, va("Hold %s to Turn On the Power\n", GetUseButtonL()));
 			button_pic_x = 5;
 			break;
 		case 11://turn on trap
-			strcpy(s, va("Hold %s to activate the electric barrier [Cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to Activate the Trap [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 12://PAP
-			strcpy(s, va("Hold %s to Pack a Punch [Cost:%i]\n", GetUseButtonL(), cost));
+			strcpy(s, va("Hold %s to Pack-a-Punch [Cost:%i]\n", GetUseButtonL(), cost));
 			button_pic_x = 5;
 			break;
 		case 13://revive
@@ -601,7 +605,8 @@ void SCR_Init (void)
 
     hitmark = Draw_CachePic("gfx/hud/hit_marker");
 	ls_wahnsinn = Draw_CachePic ("gfx/lscreen/psp_wahnsinn.lmp");
-	ls_anstieg = Draw_CachePic ("gfx/lscreen/psp_anstieg");
+	//ls_anstieg = Draw_CachePic ("gfx/lscreen/psp_anstieg");
+	//Sys_Error("pass");
 
 	scr_initialized = qtrue;
 }
@@ -679,28 +684,27 @@ void SCR_DrawFPS (void)
 	//Draw_FrontText(st, 0,  0, 0xFF0000FF, 0);
 
 	if(lastfps < 20)
-	   sprintf(st,"&cF00%3d &cF00FPS", lastfps);
+	   sprintf(st,"%3d FPS", lastfps);
 	else if(lastfps > 20 && lastfps < 40)
-       sprintf(st,"&c0F0%3d &cF00FPS", lastfps);
+       sprintf(st,"%3d FPS", lastfps);
 	else
-       sprintf(st,"&c00F%3d &cF00FPS", lastfps);
+       sprintf(st,"%3d FPS", lastfps);
 
 	if(averge_fps < 20)
-	   sprintf(st2,"  &cF00%3d &cF00AVG", averge_fps);
+	   sprintf(st2,"  %3d AVG", averge_fps);
 	else if(averge_fps > 20 && averge_fps < 40)
-       sprintf(st2,"  &c0F0%3d &cF00AVG", averge_fps);
+       sprintf(st2,"  %3d AVG", averge_fps);
 	else
-       sprintf(st2,"  &c00F%3d &cF00AVG", averge_fps);
+       sprintf(st2,"  %3d AVG", averge_fps);
 
     strcat(st,st2);
 
 	x = vid.width - strlen(st1) * 8;
 	y = 0 ;
 
-	Draw_ColoredString (x, y, st, 0);
+	Draw_ColoredString(x, y, st, 255, 255, 255, 255, 1);
 
-	//"&cF20 C &cF50 r &cF80 o &c883 w &cA85 _ &cA85 b &c668 a &c55A r"
-	//
+	game_fps = lastfps;
 }
 
 #include <psppower.h>
@@ -796,34 +800,45 @@ int Random_Int (int max_int)
 SCR_DrawLoadScreen
 ==============
 */
+
+/*
+	Creds to the following people from the 2020
+	Loading Screen Hint Submission/Contest:
+
+	* BCDeshiG
+	* Derped_Crusader
+	* Aidan
+	* yasen
+*/
 double loadingtimechange;
 int loadingdot;
 char *lodinglinetext;
+qpic_t *awoo;
 char *ReturnLoadingtex (void)
 {
-    int StringNum = Random_Int(37);
+    int StringNum = Random_Int(48);
     switch(StringNum)
-    { // NOTE: 59-character limit before message goes off-screen
+    {
         case 1:
-            return  "The original Quake came out in 1996 (22 years ago as of 2018!)";
+            return  "The original Quake came out in 1996 (24 years ago as of 2020!)";
             break;
         case 2:
-            return  "Use the Kar98-k to be the hero we need!";
+            return  "Use the Kar98-k to be the hero we want you to be!";
             break;
         case 3:
             return  "There is a huge number of modern engines based on Quake!";
             break;
         case 4:
-            return  "Development for NZP officially started on September 27 2009";
+            return  "Development for NZ:P officially started on September 27, 2009";
             break;
         case 5:
-            return  "The first release of NZ:P was released on December 25, 2010";
+            return  "NZ:P was first released on December 25, 2010";
             break;
         case 6:
-            return  "The 1.1 release of NZ:P (original) has a total of over 90,000 downloads!";
+            return  "The 1.1 release of NZ:P has over 90,000 downloads!";
             break;
         case 7:
-            return  "NZ:P has been downloaded a total of 461,723 times as of December 25, 2014";
+            return  "NZ:P has been downloaded over 400,00 times!";
             break;
         case 8:
             return  "The original NZP was made mainly by 3 guys around the world.";
@@ -844,10 +859,10 @@ char *ReturnLoadingtex (void)
             return  "We had a lot of fun making this game.";
             break;
         case 14:
-            return  "You can make your own custom map, check the readme file!";
+            return  "Did you know you can make your own Custom Map?";
             break;
         case 15:
-            return  "Try Retro mode in the graphics settings!";
+            return  "Try Retro Mode, it's in the Graphics Settings!";
             break;
         case 16:
             return  "Tired of Nacht der Untoten? Make your own map!";
@@ -889,14 +904,13 @@ char *ReturnLoadingtex (void)
             return  "Shoot zombies to kill them. Or knife them. You choose.";
             break;
         case 29:
-            //return  "Be sure to also check out \"Cause of War: 1944\" for the PSP!"; // rip
-	    return "Be sure to also check out \"Perfect Dark: Reloaded\" for the PSP!"; // shameless
+            return 	"How many people forgot to Compile today?";
             break;
         case 30:
             return  "ggnore";
             break;
         case 31:
-            return  "Try this game on PC or PS Vita as well as PSP!";
+            return  "Have you tried NZ:P on PC or NX?";
             break;
         case 32:
             return  "Submerge your device in water for godmode!";
@@ -908,7 +922,7 @@ char *ReturnLoadingtex (void)
             return  "Also check out \"No Bugs Allowed\" for the PSP!";
             break;
         case 35:
-            return  "Loading..."; // "ripperoni" made me think the game crashed while loading
+            return 	"MotoLegacy, or \"Ian\", is from the USA.";
             break;
         case 36:
             return  "Zombies don't like bullets.";
@@ -916,6 +930,36 @@ char *ReturnLoadingtex (void)
         case 37:
             return  "Thanks for being an awesome fan!";
             break;
+		case 38:
+			return 	"Removed Herobrine";
+			break;
+		case 39:
+			return 	"Pack-a-Punch the Kar98k to get to round infinity.";
+			break;
+		case 40:
+			return 	"I feel like I'm being gaslit.";
+			break;
+		case 41:
+			return 	"Heads up! You will die if you are killed!";
+			break;
+		case 42:
+			return 	"Zombies legally can't kill you if you say no!";
+			break;
+		case 43:
+			return 	"Please help me find the meaning of   . Thanks.";
+			break;
+		case 44:
+			return  "Loading..."; // "ripperoni" made me think the game crashed while loading
+			break;
+		case 45:
+			return 	"Get rid of the 21% cooler tip, it's an MLP reference";
+			break;
+		case 46:
+			return 	"You're playing on a PSP!";
+			break;
+		case 47:
+			return 	"Don't leak the beta!";
+			break;
     }
     return "wut wut";
 }
@@ -955,8 +999,8 @@ void SCR_DrawLoadScreen (void)
 	}*/
 	if (loadingScreen == 1)
 		Draw_Pic (scr_vrect.x, scr_vrect.y, ls_wahnsinn);
-	else if (loadingScreen == 2)
-		Draw_Pic (scr_vrect.x, scr_vrect.y, ls_anstieg);/*
+	//else if (loadingScreen == 2)
+		/*Draw_Pic (scr_vrect.x, scr_vrect.y, ls_anstieg);*//*
 	else if (loadingScreen == 3)
 	{
 		pic = Draw_CachePic ("gfx/lscreen/psp_ch");
@@ -973,8 +1017,14 @@ void SCR_DrawLoadScreen (void)
         loadingtimechange = Sys_FloatTime () + 5;
 	}
 
-	if (key_dest == key_game)
+	if (key_dest == key_game) {
 		Draw_String (0, 0, lodinglinetext);
+
+		if (lodinglinetext == "Please help me find the meaning of   . Thanks.") {
+			awoo = Draw_CacheImg("gfx/menu/awoo");
+			Draw_Pic(284, 0, awoo);
+		}
+	}
 
 }
 

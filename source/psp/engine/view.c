@@ -116,73 +116,16 @@ V_CalcBob
 
 ===============
 */
-/*float V_CalcBob (void)
-{
-	float	bob;
-	float	cycle;
 
-	cycle = cl.time - (int)(cl.time/cl_bobcycle.value)*cl_bobcycle.value;
-	cycle /= cl_bobcycle.value;
-	if (cycle < cl_bobup.value)
-		cycle = M_PI * cycle / cl_bobup.value;
-	else
-		cycle = M_PI + M_PI*(cycle-cl_bobup.value)/(1.0 - cl_bobup.value);
-
-// bob is proportional to velocity in the xy plane
-// (don't count Z, or jumping messes it up)
-
-	bob = sqrtf(cl.velocity[0]*cl.velocity[0] + cl.velocity[1]*cl.velocity[1]) * cl_bob.value;
-//Con_Printf ("speed: %5.1f\n", Length(cl.velocity));
-	bob = bob*0.3 + bob*0.7*sinf(cycle * 1.4);
-	if (bob > 4)
-		bob = 4;
-	else if (bob < -7)
-		bob = -7;
-	return bob;
-
-}*/
-
-/*
-===============
-V_CalcBobSide
-
-===============
-*/
-/*float V_CalcBobSide (void)
-{
-	float	bobside;
-	float	cycle;
-
-
-	cycle = cl.time - (int)(cl.time/cl_bobsidecycle.value)*cl_bobsidecycle.value;
-	cycle /= cl_bobsidecycle.value;
-	if (cycle < cl_bobsideup.value)
-		cycle = M_PI * cycle / cl_bobsideup.value;
-	else
-		cycle = M_PI + M_PI*(cycle-cl_bobsideup.value)/(1.0 - cl_bobsideup.value);
-
-// bob is proportional to velocity in the xy plane
-// (don't count Z, or jumping messes it up)
-
-	bobside = sqrt(cl.velocity[0]*cl.velocity[0] + cl.velocity[1]*cl.velocity[1]) * cl_bobside.value * 4;
-s//Con_Printf ("speed: %5.1f\n", Length(cl.velocity));
-	bobside = bobside*0.3 + bobside*0.7*sin(cycle);
-	if (bobside > 8)//4
-		bobside = 8;
-	else if (bobside < -14)//7
-		bobside = -14;
-
-	return bobside;
-}*/
 // Blub's new V_CalcBob code, both side and pitch are in one, dictated by the (which) parameter
- float speed_reduce (int weapontype);
-
 float V_CalcBob (float speed,float which)//0 = regular, 1 = side bobbing
 {
 	float bob = 0;
 	float sprint = 1;
+
 	if(cl.stats[STAT_ZOOM] == 3)
-		sprint = 1.8 * speed_reduce (cl.stats[STAT_ACTIVEWEAPON]);//this gets sprinting speed in comparison to walk speed per weapon
+		sprint = 1.8;
+	
 	if(cl.stats[STAT_ZOOM] == 2)
 		return 0;
 
@@ -194,6 +137,7 @@ float V_CalcBob (float speed,float which)//0 = regular, 1 = side bobbing
 
 	return bob;
 }
+
 //===================================================== View Bobbing =====================================================
 static int lastSound;
 float PlayStepSound(void)
@@ -233,10 +177,11 @@ float V_CalcVBob(float speed, float which)
 	float sprint = 1;
 
 	if(cl.stats[STAT_ZOOM] == 3)
-		sprint = 1.8 * speed_reduce (cl.stats[STAT_ACTIVEWEAPON]);
+		sprint = 1.8;
 
 	if(cl.stats[STAT_ZOOM] == 2)
 		return 0;
+
 	if(sprint == 1)
 	{
 		if(which == 0)
@@ -249,7 +194,7 @@ float V_CalcVBob(float speed, float which)
 	else
 	{
 		if(which == 0)
-			bob = speed * 8.6 * (1/sprint) *  cos((cl.time * 6.25 * sprint));
+			bob = speed * 8.6 * (1/sprint) * cos((cl.time * 6.25 * sprint));
 		else if(which == 1)
 			bob = speed * 8.6 * (1/sprint) * cos((cl.time * 12.5 * sprint));
 		else if(which == 2)

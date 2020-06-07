@@ -43,6 +43,8 @@ typedef	byte	col_t[4];
 typedef	enum
 {
 	p_spark,
+	p_rayspark,
+	p_raysmoke,
 	p_smoke,
 	p_fire,
 	p_fire2,
@@ -641,6 +643,7 @@ void QMB_InitParticles (void)
 	ADD_PARTICLE_TYPE(p_inferno_trail, pd_billboard, GU_SRC_ALPHA, GU_ONE_MINUS_SRC_ALPHA, ptex_generic, 204, 0, 0, pm_die, 0);
 	ADD_PARTICLE_TYPE(p_trailpart, pd_billboard, GU_SRC_ALPHA, GU_ONE_MINUS_SRC_ALPHA, ptex_generic, 230, 0, 0, pm_static, 0);
 	ADD_PARTICLE_TYPE(p_smoke, pd_billboard, GU_SRC_ALPHA, GU_FIX, ptex_smoke, 140, 3, 0, pm_normal, 0);
+	ADD_PARTICLE_TYPE(p_raysmoke, pd_billboard, GU_SRC_ALPHA, GU_FIX, ptex_smoke, 140, 3, 0, pm_normal, 0);
 	ADD_PARTICLE_TYPE(p_dpfire, pd_billboard, GU_SRC_ALPHA, GU_ONE_MINUS_SRC_ALPHA, ptex_dpsmoke, 144, 0, 0, pm_die, 0);
 
 	loading_cur_step++;
@@ -771,7 +774,23 @@ __inline static void AddParticle (part_type_t type, vec3_t org, int count, float
 			p->vel[1] = (rand() % (int)tempSize) - ((int)tempSize / 2);
 			p->vel[2] = (rand() % (int)tempSize) - ((int)tempSize / 2);
 			break;
+		case p_rayspark:
+			p->size = 1.175;
+			VectorCopy (org, p->org);
+			tempSize = size * 2;
+			p->vel[0] = (rand() % (int)tempSize) - ((int)tempSize/6);
+			p->vel[1] = (rand() % (int)tempSize) - ((int)tempSize/6);
+			p->vel[2] = /*(rand() % (int)tempSize) - (*/(int)tempSize;
+			break;
+		case p_raysmoke:
+			for (j=0 ; j<3 ; j++)
+				p->org[j] = org[j] + ((rand() & 31) - 16) / 2.0;
 
+			p->vel[0] = ((rand() % 10)+2);
+			p->vel[1] = ((rand() % 10)+2);
+			p->vel[2] = ((rand() % 10)+2)*5;
+			p->growth = 7.5;
+			break;
 		case p_smoke:
 			for (j=0 ; j<3 ; j++)
 				p->org[j] = org[j] + ((rand() & 31) - 16) / 2.0;
@@ -779,7 +798,6 @@ __inline static void AddParticle (part_type_t type, vec3_t org, int count, float
 				p->vel[j] = ((rand() % 10) - 5) / 20.0;
 			p->growth = 4.5;
 			break;
-
 		case p_fire:
 			VectorCopy (org, p->org);
 			for (j=0 ; j<3 ; j++)
@@ -2376,7 +2394,18 @@ void QMB_RunParticleEffect (vec3_t org, vec3_t dir, int col, int count)
 			AddParticle (p_spark, org, 1, 100, 1.0f,  color, zerodir);//modified
 		}
 		break;
-
+	case 256:
+		color[2] = 1.0f;
+		AddParticle (p_raysmoke, org, 3, 25, 1.225f + ((rand() % 10) - 2) / 40.0, color, zerodir);
+		AddParticle (p_rayspark, org, 12, 75, 0.6f,  color, zerodir);
+		break;
+	case 512:
+		color[1] = 1.0f;
+		color[2] = 0;
+		color[3] = 0;
+		AddParticle (p_raysmoke, org, 3, 25, 1.225f + ((rand() % 10) - 2) / 40.0, color, zerodir);
+		AddParticle (p_rayspark, org, 12, 75, 0.6f,  color, zerodir);
+		break;
 	default:
 /*
 		else if (nehahra)
@@ -2569,6 +2598,40 @@ float pap_detr(int weapon)
 	return 0;
 }
 
+// MotoLegacy - Raygun barrel trail
+void QMB_RayFlash(vec3_t org, float weapon)
+{
+	// if we're ADS, just flat out end here to avoid useless calcs/defs
+	if (cl.stats[STAT_ZOOM] || !qmb_initialized)
+		return;
+
+	col_t 	color;
+	vec3_t 	endorg;
+
+	// green trail
+	if (weapon == W_RAY) {
+		color[0] = 0;
+		color[1] = 255;
+	} else { // red trail
+		color[0] = 255;
+		color[1] = 0;
+	}
+	color[2] = 0;
+
+	// could possibly remove water calc in future
+	if (!(ISUNDERWATER(TruePointContents(org))))
+	{
+		//endorg = org;
+		org[1] += 4;
+		org[2] -= 2;
+		endorg[0] = org[0] - 50;		// x = forward & back
+		endorg[1] = org[1] + 6;			// y = left & right
+		endorg[2] = org[2] + 5;			// z = up & down
+		AddParticleTrail (p_alphatrail, org, endorg, 8, 1, color);
+	}
+	QMB_MuzzleFlash(org);
+}
+
 //R00k added particle muzzleflashes
 void QMB_MuzzleFlash(vec3_t org)
 {
@@ -2723,7 +2786,18 @@ void QMB_RocketTrail (vec3_t start, vec3_t end, trail_type_t type)
 	case NEHAHRA_SMOKE:
 		AddParticleTrail (p_smoke, start, end, 0.8, 0.825, NULL);
 		break;
-
+	case RAYGREEN_TRAIL:
+		color[0] = 0;
+		color[1] = 255;
+		color[2] = 0;
+		AddParticleTrail (p_alphatrail, start, end, 8, 0.6, color);
+		break;
+	case RAYRED_TRAIL:
+		color[0] = 255;
+		color[1] = 0;
+		color[2] = 0;
+		AddParticleTrail (p_alphatrail, start, end, 8, 0.6, color);
+		break;
 	case ROCKET_TRAIL:
 	default:
 		color[0] = 255;

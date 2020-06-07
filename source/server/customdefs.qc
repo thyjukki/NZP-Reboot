@@ -39,6 +39,7 @@ void(entity person, float expamt , float doublepoint) addmoney;
 .float score;
 .float kills;
 .float headshots;
+.float facingenemy;
 
 //doors
 .float state;
@@ -59,6 +60,7 @@ entity activator;
 .float sprinting;
 .float weaponskin;
 .float secondaryweaponskin;
+.float thirdweaponskin;
 .float stamina;
 void() W_SprintStop;
 .float into_sprint;
@@ -75,6 +77,7 @@ void Weapon_Logic();
 .float fire_delay2;
 .float reload_delay;
 .float reload_delay2;
+.float switch_delay;
 .float health_delay;
 .float progress_bar;
 .float progress_bar_time;
@@ -86,6 +89,7 @@ void Weapon_Logic();
 .float currentmagbk2;
 .float currentammobk;
 .float secondaryammo;
+.float thirdammo;
 .float semi;
 .float semi2;
 .float semiuse;
@@ -94,6 +98,9 @@ void Weapon_Logic();
 .float secondarymag;
 .float secondarymag2;
 .float secondaryweapon;
+.float thirdmag;
+.float thirdmag2;
+.float thirdweapon;
 .float NeedLoad;
 .string weapon2model;
 .float weapon2frame;
@@ -170,12 +177,17 @@ vector	trace_plane_normal;
 void Do_Zombie_AI();
 .string aistatus;
 entity lastzombie;
+float zombie_spawn_delay; // time before spawning, in seconds.
+float zombie_spawn_timer; // the actual timer for spawn delay
 //Other AI definitions
 .vector box1, box2, box3;//used for windows and zombies
 .vector idlebox;
 .vector hop_spot;//used for windows (zombies hop to these)
 .vector goalorigin;
 .float teslacount;
+.float iszomb;
+.float onfire;
+.entity firer;
 float crawler_num;
 //==== Reference Vars ====
 #define 	WWINDOW		1
@@ -254,7 +266,6 @@ void(entity who) makeCrawler;
 void() spawnAllZombEnts;
 void() set_z_health;
 float() spawn_a_zombieA;
-float() spawn_a_dogA;
 float gotdog;
 float dogRound;
 float dogWave;
@@ -295,6 +306,7 @@ vector boxOrigin;
 .float x2_icon;
 .float insta_icon;
 #endif
+.string powerup_vo;
 float instakill_finished;
 float insta_blink;
 float x2_finished;

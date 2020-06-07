@@ -122,8 +122,6 @@ void() precaches =
 	precache_model ("models/ai/zclarm.mdl");
 	precache_model ("models/ai/zcrarm.mdl");
 	precache_model ("models/ai/zchead.mdl");
-	
-	precache_model ("models/ai/dog.mdl");
 
 	precache_model ("progs/Misc/maxammo!.mdl");
 	precache_model ("progs/Misc/x2!.mdl");
@@ -138,8 +136,7 @@ void() precaches =
 	precache_sound("sounds/player/footstep5.wav");
 	precache_sound("sounds/player/jump.wav");
 	precache_sound("sounds/player/land.wav");
-	precache_sound("sounds/items/health.wav");
-	precache_sound("sounds/items/respawn.wav");
+	precache_sound("sounds/player/pain4.wav");
 
 	precache_sound("sounds/weapons/colt/magin.wav");
 	precache_sound("sounds/weapons/colt/magout.wav");
@@ -243,12 +240,19 @@ void() precaches =
 	precache_sound ("sounds/zombie/sc1.wav");
 	//Announce
 	precache_sound ("sounds/pu/pickup.wav");
+	precache_sound ("sounds/pu/carpenter.wav");
 	precache_sound ("sounds/pu/maxammo.wav");
 	precache_sound ("sounds/pu/double_points.wav");
 	precache_sound ("sounds/pu/insta_kill.wav");
 	precache_sound ("sounds/pu/nuke.wav");
+	precache_sound ("sounds/pu/byebye.wav");
 	precache_sound ("sounds/pu/powerup.wav");
 	precache_sound ("sounds/pu/drop.wav");
+
+	#ifdef PC
+	// Moto -- FIXME: compile FTE to remove this engine sound request
+	precache_sound ("demon/dland2.wav");
+	#endif
 }
 
 //called when map loaded
@@ -274,6 +278,7 @@ void() worldspawn =
 	clientstat(STAT_SPECTATING, EV_FLOAT, isspec);
 	clientstat(STAT_PLAYERNUM, EV_FLOAT, playernum);		// literally useless but will be kept in case
 	clientstat(STAT_PLAYERSTANCE, EV_FLOAT, stance);
+	clientstat(STAT_FACINGENEMY, EV_FLOAT, facingenemy);
 	#endif
 	
 	mappath = strcat("maps/", mapname);

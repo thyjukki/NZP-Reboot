@@ -1,3 +1,5 @@
+float() spawn_a_dogA;
+
 void() Spawn_Enemy = 
 {
 	if (roundtype == 1)
@@ -18,25 +20,36 @@ void() Spawn_Enemy =
 
 float() getZombieTotal = {
 	if (roundtype == 1) {
-		if (rounds < 20) {
-			switch (player_count) {
-				case 0: float cnt[20] = {6, 8, 13, 18, 24, 27, 28, 28, 29, 33, 34, 36, 39, 41, 44, 47, 50, 53, 56}; return cnt[rounds - 1];
-				case 1: float cnt2[20] = {7, 9, 15, 21, 27, 31, 32, 33, 34, 42, 45, 49, 54, 59, 64, 70, 76, 82, 89}; return cnt2[rounds - 1];
-				case 2: float cnt3[20] = {11, 14, 23, 32, 41, 47, 48, 50, 51, 62, 68, 74, 81, 89, 97, 105, 114, 123, 133}; return cnt3[rounds - 1];
-				case 3: float cnt4[20] = {14, 18, 30, 42, 54, 62, 64, 66, 68, 83, 91, 99, 108, 118, 129, 140, 152, 164, 178}; return cnt4[rounds - 1];
-				default: return 0;
-			}
+		local float count;
+
+		count = 0;
+
+		if(player_count == 0) {
+			count += 24;
 		} else {
-			switch (player_count) {
-				case 0: return 0.09 * rounds * rounds - 0.0029 * rounds + 23.958;
-				case 1: return 0.1882 * rounds * rounds - 0.4313 * rounds + 29.212;
-				case 2: return 0.2637 * rounds * rounds + 0.1802 * rounds + 35.015;
-				case 3: return 0.35714 * rounds * rounds - 0.0714 * rounds + 50.4286;
-				default: return 0;
-			}
+			count += rint((player_count) * 24);
 		}
+
+		//bprint(PRINT_HIGH, strcat("STARTING WITH: ", ftos(count), "\n"));
+
+		if (rounds == 1) {
+			count = rint(count * 0.25);
+		} else if (rounds < 3) {
+			count = rint(count * 0.3);
+		} else if (rounds < 4) {
+			count = rint(count * 0.5);
+		} else if (rounds < 5){
+			count = rint(count * 0.7);
+		} else if (rounds < 6) {
+			count = rint(count * 0.9);
+		}
+
+		//bprint(PRINT_HIGH, strcat("GOT TOTAL AS: ", ftos(count), "\n"));
+
+		return count;
 	} else { //dogs
-		if (dogWave == 1 || dogWave == 2)
+		// 2 waves
+		if (rounds <= 14)
 			return 6 * (player_count + 1);
 
 		return 8 * (player_count + 1);
@@ -66,15 +79,18 @@ void() updateDogRound =
 	} else {
 		dogRound = rounds + 7;
 	}
-
-	dogWave++;
 }
 
 void() EndRound =
 {
 	rounds_change = 4;
 	SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
-	playSoundAtPlayers("sounds/rounds/eround.wav");
+	if (gotdog && rounds == dogRound) {
+		playSoundAtPlayers("sounds/rounds/droundend.wav");
+		dogWave = false;
+	} else {
+		playSoundAtPlayers("sounds/rounds/eround.wav");
+	}
 	round_changetime = time + 5;
 }
 
@@ -106,7 +122,12 @@ void() NewRound =
 	}
 	if (rounds != 0)
 	{
-		playSoundAtPlayers("sounds/rounds/nround.wav");
+		if (gotdog && rounds == (dogRound - 1)) {
+			playSoundAtPlayers("sounds/rounds/droundstart.wav");
+			dogWave = true;
+		} else {
+			playSoundAtPlayers("sounds/rounds/nround.wav");
+		}
 		rounds_change = 6;
 		SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
 		blink_return = time + 2;
@@ -133,21 +154,11 @@ void() NewRound =
 	}
 
 	set_z_health();
-
-	//temp dog stuff
-	/*if (gotdog) {
-		switch(rounds) {
-			case 5:
-				Remaining_Zombies = Total_Zombies = 10; break;
-			case 10:
-			case 15:
-				Remaining_Zombies = Total_Zombies = 15; break;
-		}
-	}*/
 	
 	maxreward = 50 * rounds;
 	if (maxreward > 500)
-			maxreward = 500;
+		maxreward = 500;
+
 	totalreward = 0;
 	Current_Zombies = 0;
 	spawn_delay = 0;
@@ -174,9 +185,12 @@ void() NewRound =
 	Remaining_Zombies = Total_Zombies = getZombieTotal();
 	#ifndef NX
 	#ifdef PSP
-	//local entity e = find(world, classname, "player");
-	//if (rounds == 2)
-		//achievement(e, 1);
+	local entity e = find(world, classname, "player");
+	switch(rounds) {
+		case 5: achievement(e, 0); break;
+		case 10: achievement(e, 1); break;
+		case 15: achievement(e, 2); break;
+	}
 	#else
 	switch(rounds) {
 		case 5: GiveAchievement(0, pl1); break;
@@ -185,6 +199,24 @@ void() NewRound =
 	}
 	#endif
 	#endif
+
+	// Set up delay for zombie spawning
+	local float spawndelay;
+
+	spawndelay = zombie_spawn_delay;
+
+	if (spawndelay > 0.08) {
+		zombie_spawn_delay *= 0.95;
+	} else {
+		zombie_spawn_delay = 0.08;
+	}
+
+	// 2 seconds by default
+	if (rounds == 1)
+		zombie_spawn_delay = 2;
+
+	// Actually start the timer
+	zombie_spawn_timer = 2 + time;
 }
 void() Round_Core =
 {

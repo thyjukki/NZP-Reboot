@@ -167,6 +167,17 @@ void CDAudio_VolumeChange(float bgmvolume)
 
 extern "C" int sceKernelDelayThread(int delay);
 
+void CDAudio_Track(char* trackname)
+{
+	//CDAudio_Stop();
+
+	char path[256];
+
+	sprintf(path, "%s\\sounds\\stream\\%s", host_parms.basedir, trackname);
+
+	Sys_Error(path);
+}
+
 void CDAudio_Play(byte track, qboolean looping)
 {
 	last_track = track;

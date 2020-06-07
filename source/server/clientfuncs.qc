@@ -11,7 +11,7 @@ void SetUpdate(entity client, float type, float val1, float val2, float val3)
 		msg_entity = client;
 		WriteByte(MSG_ONE, SVC_CGAMEPACKET);
 		WriteByte(MSG_ONE, EVENT_UPDATE);
-		WriteByte(MSG_ONE, type); // UT_HUD, UT_ROUNDS_CHANGE
+		WriteByte(MSG_ONE, type); // UT_HUD
 		WriteByte(MSG_ONE, val1); 
 		WriteByte(MSG_ONE, val2);
 		WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
@@ -20,7 +20,7 @@ void SetUpdate(entity client, float type, float val1, float val2, float val3)
 	{
 		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
 		WriteByte(MSG_ALL, EVENT_UPDATE);
-		WriteByte(MSG_ALL, type); // UT_HUD, UT_ROUNDS_CHANGE
+		WriteByte(MSG_ALL, type); // UT_ROUNDS_CHANGE
 		WriteByte(MSG_ALL, val1); 
 		WriteByte(MSG_ALL, val2);
 		WriteByte(MSG_ALL, val3); // misc flags/vars for later if needed
@@ -43,6 +43,22 @@ void(entity to, float type, float cost, float weapon) useprint = {
 }
 #endif
 #endif
+
+void(vector org) CallExplosion = {
+    #ifndef PC
+    WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, org_x);
+	WriteCoord (MSG_BROADCAST, org_y);
+	WriteCoord (MSG_BROADCAST, org_z);
+    #else
+    WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+	WriteByte(MSG_ALL, EVENT_EXPLOSION);
+	WriteCoord(MSG_ALL, org_x);
+	WriteCoord(MSG_ALL, org_y);
+	WriteCoord(MSG_ALL, org_z);
+    #endif
+}
 
 void NotifyNewRound(float to) {
 	#ifndef PSP
@@ -358,6 +374,26 @@ void(float ach, entity who, optional float single) GiveAchievement= {
 // Unrelated to engine, but custom functions
 // *****************************************
 
+float(entity who, entity target) isFacing =
+{
+	local float who_angle = who.angles_y;
+	local float target_angle = target.angles_y;
+
+	local float difference_angle = target_angle - who_angle;
+
+	#ifdef PSP
+	if (difference_angle < -45) {
+		difference_angle += 360;
+	}
+	#endif
+
+	// 180 = directly facing each other, 30 degree buffer.
+	if (difference_angle <= 210 && difference_angle >= 150)
+		return true;
+
+	return false;
+}
+
 float() crandom =
 {
 	return 2*(random() - 0.5);
@@ -390,7 +426,7 @@ void WeaponSwitch(entity player) {
 
 void(entity person, float expamt, float doublepoint) addmoney =
 {
-	if (person.classname != "player")
+	if (person.classname != "player" || person.downed)
 		return;
 
 	if (expamt > 0 && doublepoint == TRUE && x2_finished > time) {

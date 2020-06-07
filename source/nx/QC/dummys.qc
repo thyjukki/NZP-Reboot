@@ -1,6 +1,5 @@
 // Dummys that should be here
 void GiveAchievement(float ach, entity who, optional float single) = {};
-float spawn_a_dogA() = {return 0;};
 void print(string s) = {};
 
 float tracemove(vector start, vector min, vector max, vector end, float nomonsters, entity forent) = {return 0;};

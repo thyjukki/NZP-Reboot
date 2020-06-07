@@ -297,18 +297,28 @@ void IN_Move (usercmd_t *cmd)
 
 	// Convert the inputs to floats in the range [-1, 1].
 	// Implement the dead zone.
+	float speed;
 	float deadZone = in_tolerance.value;
-	float speed = in_sensitivity.value;
 	float acceleration = in_acceleration.value;
 	int   x_adjust = in_x_axis_adjust.value;
 	int   y_adjust = in_y_axis_adjust.value;
 
 	//shpuld begin
-	if (cl.stats[STAT_ZOOM] == 1)
-		speed = speed*0.5;
-	else if (cl.stats[STAT_ZOOM] == 2)
-		speed = speed*0.25;
+	if (!analog_strafe) {
+		speed = in_sensitivity.value;
+		if (cl.stats[STAT_ZOOM] == 1)
+			speed *= 0.5;
+		else if (cl.stats[STAT_ZOOM] == 2)
+			speed *= 0.25;
+	} else {
+		speed = sv_player->v.maxspeed/150;
+		if (cl.stats[STAT_ZOOM] == 1)
+			speed *= 2;
+		else if (cl.stats[STAT_ZOOM] == 2)
+			speed *= 4;
+	}
 	//shpuld end
+
 	float x = IN_CalcInput(pad.Lx+x_adjust, speed, deadZone, acceleration);
 	float y = IN_CalcInput(pad.Ly+y_adjust, speed, deadZone, acceleration);
 

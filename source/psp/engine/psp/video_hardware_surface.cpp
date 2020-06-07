@@ -1592,26 +1592,16 @@ void R_MarkLeaves (void)
 	byte	*vis;
 	mnode_t	*node;
 	int		i;
-	byte	solid[4096];
 
-	if (r_oldviewleaf == r_viewleaf && !r_novis.value)
+	if (r_oldviewleaf == r_viewleaf || mirror)
 		return;
 
-	if (mirror)
-		return;
-
-	r_visframecount++;
+	++r_visframecount;
 	r_oldviewleaf = r_viewleaf;
 
-	if (r_novis.value)
-	{
-		vis = solid;
-		memset (solid, 0xff, (cl.worldmodel->numleafs+7)>>3);
-	}
-	else
-		vis = Mod_LeafPVS (r_viewleaf, cl.worldmodel);
+	vis = Mod_LeafPVS (r_viewleaf, cl.worldmodel);
 
-	for (i=0 ; i<cl.worldmodel->numleafs ; i++)
+	for (i = 0; i < cl.worldmodel->numleafs; ++i)
 	{
 		if (vis[i>>3] & (1<<(i&7)))
 		{

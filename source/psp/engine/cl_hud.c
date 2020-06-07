@@ -36,6 +36,7 @@ qpic_t		*staminpic;
 qpic_t		*doublepic;
 qpic_t		*speedpic;
 qpic_t		*deadpic;
+qpic_t 		*mulepic;
 qpic_t		*fragpic;
 qpic_t		*bettypic;
 
@@ -90,6 +91,7 @@ typedef struct
 } point_change_t;
 
 point_change_t point_change[10];
+
 /*
 ===============
 HUD_Init
@@ -120,6 +122,7 @@ void HUD_Init (void)
 	doublepic = Draw_CachePic ("gfx/hud/double");
 	speedpic = Draw_CachePic ("gfx/hud/speed");
 	deadpic = Draw_CachePic ("gfx/hud/dead");
+	mulepic = Draw_CachePic ("gfx/hud/mule");
 	fragpic = Draw_CachePic ("gfx/hud/frag");
 	bettypic = Draw_CachePic ("gfx/hud/betty");
 
@@ -270,7 +273,7 @@ void HUD_EndScreen (void)
 
 	l = scoreboardlines;
 
-	Draw_ColoredString ((vid.width - 9*8)/2, 40, "&cF00GAME OVER", 0);
+	Draw_ColoredString((vid.width - 9*8)/2, 40, "GAME OVER", 255, 0, 0, 255, 1);
 
 	sprintf (str,"You survived %3i rounds", cl.stats[STAT_ROUNDS]);
 	Draw_String ((vid.width - strlen (str)*8)/2, 52, str);
@@ -428,9 +431,9 @@ void HUD_Point_Change (void)
 		if (point_change[i].points)
 		{
 			if (point_change[i].negative)
-				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("&cF00-%i", point_change[i].points),0);
+				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("-%i", point_change[i].points), 255, 0, 0, 255, 1);
 			else
-				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("&cFF0+%i", point_change[i].points),0);
+				Draw_ColoredString (point_change[i].x, point_change[i].y, va ("+%i", point_change[i].points), 255, 255, 0, 255, 1);
 			point_change[i].y = point_change[i].y + point_change[i].move_y;
 			point_change[i].x = point_change[i].x - point_change[i].move_x;
 			if (point_change[i].alive_time && point_change[i].alive_time < Sys_FloatTime())
@@ -485,6 +488,66 @@ void HUD_Blood (void)
 
 /*
 ===============
+HUD_GetWorldText
+===============
+*/
+
+// modified from scatter's worldspawn parser
+// FIXME - unoptimized, could probably save a bit of
+// memory here in the future.
+void HUD_WorldText(int alpha)
+{
+	// for parser
+	char key[128], value[4096];
+	char *data;
+
+	// first, parse worldspawn
+	data = COM_Parse(cl.worldmodel->entities);
+
+	if (!data)
+		return; // err
+	if (com_token[0] != '{')
+		return; // err
+
+	while(1) {
+		data = COM_Parse(data);
+
+		if (!data)
+			return; // err
+		if (com_token[0] == '}')
+			break; // end of worldspawn
+		
+		if (com_token[0] == '_')
+			strcpy(key, com_token + 1);
+		else
+			strcpy(key, com_token);
+		
+		while (key[strlen(key)-1] == ' ') // remove trailing spaces
+			key[strlen(key)-1] = 0;
+		
+		data = COM_Parse(data);
+		if (!data)
+			return; // err
+
+		strcpy(value, com_token);
+
+		if (!strcmp("location", key)) // search for location key
+		{
+			Draw_ColoredString(4, vid.height/2 + 50, value, 255, 255, 255, alpha, 1);
+		}
+		if (!strcmp("date", key)) // search for date key
+		{
+			Draw_ColoredString(4, vid.height/2 + 60, value, 255, 255, 255, alpha, 1);
+		}
+		if (!strcmp("person", key)) // search for person key
+		{
+			Draw_ColoredString(4, vid.height/2 + 70, value, 255, 255, 255, alpha, 1);
+		}
+	}
+}
+
+/*
+===============
 HUD_Rounds
 ===============
 */
@@ -494,6 +557,9 @@ float 	color_shift_end[3];
 float 	color_shift_steps[3];
 int		color_shift_init;
 int 	blinking;
+int 	textstate;
+int 	value, value2;
+
 void HUD_Rounds (void)
 {
 	int i, x_offset, icon_num, savex;
@@ -501,8 +567,77 @@ void HUD_Rounds (void)
 	x_offset = 0;
 	savex = 0;
 
+	// Round and Title text - moto
+	// extra creds to scatterbox for some x/y vals
+	// ------------------
+	// First, fade from white to red, ~3s duration
+	if (!textstate) {
+		if (!value)
+			value = 255;
+
+		Draw_ColoredString(vid.width/2 - strlen("Round")*8, 80, "Round", 255, value, value, 255, 2);
+		
+		value -= cl.time * 0.4;
+
+		// prep values for next stage
+		if (value <= 0) {
+			value = 255;
+			value2 = 0;
+			textstate = 1;
+		}
+	} 
+	// Now, fade out, and start fading worldtext in
+	// ~3s for fade out, 
+	else if (textstate == 1) {
+		Draw_ColoredString(vid.width/2 - strlen("Round")*8, 80, "Round", 255, 0, 0, value, 2);
+
+		HUD_WorldText(value2);
+		Draw_ColoredString(4, vid.height/2 + 40, "'Nazi Zombies'", 255, 255, 255, value2, 1);
+		
+		value -= cl.time * 0.4;
+		value2 += cl.time * 0.4;
+
+		// prep values for next stage
+		if (value <= 0) {
+			value2 = 0;
+			textstate = 2;
+		}
+	}
+	// Hold world text for a few seconds
+	else if (textstate == 2) {
+		HUD_WorldText(255);
+		Draw_ColoredString(4, vid.height/2 + 40, "'Nazi Zombies'", 255, 255, 255, 255, 1);
+
+		value2 += cl.time * 0.4;
+
+		if (value2 >= 255) {
+			value2 = 255;
+			textstate = 3;
+		}
+	}
+	// Fade worldtext out, finally.
+	else if (textstate == 3) {
+		HUD_WorldText(value2);
+		Draw_ColoredString(4, vid.height/2 + 40, "'Nazi Zombies'", 255, 255, 255, value2, 1);
+
+		value2 -= cl.time * 0.4;
+
+		// prep values for next stage
+		if (value2 <= 0) {
+			textstate = -1;
+		}
+	}
+	// ------------------
+	// End Round and Title text - moto
+
 	if (cl.stats[STAT_ROUNDCHANGE] == 1)//this is the rounds icon at the middle of the screen
 	{
+		if (textstate == -1) {
+			value = 0;
+			value2 = 0;
+			textstate = 0;
+		}
+
 		Draw_ColorPic ((vid.width - sb_round[0]->width) /2, (vid.height - sb_round[0]->height) /2, sb_round[0], 107, 1, 0, alphabling);
 
 		alphabling = alphabling + 15;
@@ -515,8 +650,8 @@ void HUD_Rounds (void)
 	else if (cl.stats[STAT_ROUNDCHANGE] == 2)//this is the rounds icon moving from middle
 	{
 		Draw_ColorPic (round_center_x, round_center_y, sb_round[0], 107, 1, 0, 255);
-		round_center_x = round_center_x - (229/108)*2 - 0.2;
-		round_center_y = round_center_y + 2;
+		round_center_x = round_center_x - (229/108) - 0.2;
+		round_center_y = round_center_y + 1;
 		if (round_center_x <= 5)
 			round_center_x = 5;
 		if (round_center_y >= 220)
@@ -907,8 +1042,9 @@ HUD_Perks
 #define 	P_FLOP		16
 #define 	P_STAMIN	32
 #define 	P_DEAD 		64
+#define 	P_MULE 		128
 
-int perk_order[8];
+int perk_order[9];
 int current_perk_order;
 
 void HUD_Perks (void)
@@ -917,7 +1053,7 @@ void HUD_Perks (void)
 	int y;
 	y = vid.height - sb_round[1]->height - jugpic->height -2;
 
-	for (i = 0; i < 8; i++)
+	for (i = 0; i < 9; i++)
 	{
 		if (perk_order[i])
 		{
@@ -954,6 +1090,11 @@ void HUD_Perks (void)
 			else if (perk_order[i] == P_DEAD)
 			{
 				Draw_StretchPic (2, y, deadpic, 20, 20);
+				y = y - 22;
+			}
+			else if (perk_order[i] == P_MULE)
+			{
+				Draw_StretchPic (2, y, mulepic, 20, 20);
 				y = y - 22;
 			}
 		}
@@ -1081,36 +1222,42 @@ int IsDualWeapon(int weapon)
 void HUD_Ammo (void)
 {
 	char str[12];
-	char str2[12];
-    int xplus, xplus2;
+    int xplus;
 	char *magstring;
-	char *mag2string;
 
 	y_value = vid.height - 16;
+
+	magstring = va("%i", cl.stats[STAT_CURRENTMAG]);
+
+	xplus = HUD_itoa(cl.stats[STAT_CURRENTMAG], str);
+
+	// Magazine
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
-		magstring = va ("&cF00%i",cl.stats[STAT_CURRENTMAG]);
+		Draw_ColoredString(vid.width - 42 - (xplus*8), y_value, magstring, 255, 0, 0, 255, 1);
 	else
-		magstring = va ("%i",cl.stats[STAT_CURRENTMAG]);
+		Draw_ColoredString(vid.width - 42 - (xplus*8), y_value, magstring, 255, 255, 255, 255, 1);
 
-	xplus = HUD_itoa (cl.stats[STAT_CURRENTMAG], str);
-	Draw_ColoredString (vid.width - 42 - (xplus*8), y_value, magstring, 0);
-
-	mag2string = va("%i", cl.stats[STAT_CURRENTMAG2]);
-	xplus2 = HUD_itoa (cl.stats[STAT_CURRENTMAG2], str2);
-
+	// Second mag for dual weps
 	if (IsDualWeapon(cl.stats[STAT_ACTIVEWEAPON])) {
-		Draw_ColoredString (vid.width - 56 - (xplus2*8), y_value, mag2string, 0);
+		magstring = va("%i", cl.stats[STAT_CURRENTMAG2]);
+		xplus = HUD_itoa(cl.stats[STAT_CURRENTMAG2], str);
+
+		if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG2])
+			Draw_ColoredString(vid.width - 56 - (xplus*8), y_value, magstring, 255, 0, 0, 255, 1);
+		else
+			Draw_ColoredString(vid.width - 56 - (xplus*8), y_value, magstring, 255, 255, 255, 255, 1);
 	}
 
+	// Reserve ammo
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO])
 	{
-		Draw_ColoredString (vid.width - 42, y_value, "&cF00/", 0);
-		Draw_ColoredString (vid.width - 34, y_value, va ("&cF00%i",cl.stats[STAT_AMMO]), 0);
+		Draw_ColoredString (vid.width - 42, y_value, "/", 255, 0, 0, 255, 1);
+		Draw_ColoredString (vid.width - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 255, 0, 0, 255, 1);
 	}
 	else
 	{
-		Draw_Character (vid.width - 42, y_value, '/');
-		Draw_ColoredString (vid.width - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 0);
+		Draw_ColoredString (vid.width - 42, y_value, "/", 255, 255, 255, 255, 1);
+		Draw_ColoredString (vid.width - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 255, 255, 255, 255, 1);
 	}
 }
 
@@ -1122,26 +1269,16 @@ HUD_AmmoString
 
 void HUD_AmmoString (void)
 {
-	char str[12];
-	int len = 0;
-	
 	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
 	{
 		if (0 < cl.stats[STAT_AMMO] && cl.stats[STAT_CURRENTMAG] >= 0) {
-			len = 6;
-			strcpy(str, "Reload");
+			Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, "Reload", 255, 255, 255, 255, 1);
 		} else if (0 < cl.stats[STAT_CURRENTMAG]) {
-			len = 8;
-			strcpy(str, "&cFF0LOW AMMO");
+			Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, "LOW AMMO", 255, 255, 0, 255, 1);
 		} else {
-			len = 7;
-			strcpy(str, "&cF00NO AMMO");
+			Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, "NO AMMO", 255, 0, 0, 255, 1);
 		}
 	}
-
-	if (len > 0)
-		Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, str, 0);
-		//Draw_ColoredString ((vid.width - len*8)/2, (vid.height)/2 + 40, str, 0);
 }
 
 /*
@@ -1163,7 +1300,7 @@ void HUD_Grenades (void)
 	{
 		Draw_StretchPic (x_value, y_value, fragpic, 22, 22);
 		if (cl.stats[STAT_PRIGRENADES] <= 0)
-			Draw_ColoredString (x_value + 12, y_value + 12, va ("&cF00%i",cl.stats[STAT_PRIGRENADES]), 0);
+			Draw_ColoredString (x_value + 12, y_value + 12, va ("%i",cl.stats[STAT_PRIGRENADES]), 255, 0, 0, 255, 1);
 		else
 			Draw_String (x_value + 12, y_value + 12, va ("%i",cl.stats[STAT_PRIGRENADES]));
 	}
@@ -1207,6 +1344,7 @@ void HUD_Draw (void)
 		return;
 
 	scr_copyeverything = 1;
+
 
 	if (waypoint_mode.value)
 	{

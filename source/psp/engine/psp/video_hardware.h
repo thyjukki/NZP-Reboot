@@ -211,6 +211,7 @@ extern	int	playertextures;
 extern	int	skytexturenum;		// index in cl.loadmodel, not gl texture object
 
 extern	cvar_t  scr_conheight;
+extern 	cvar_t 	scr_fov;
 
 extern	cvar_t	r_partalpha;
 
@@ -298,6 +299,10 @@ extern  cvar_t	r_decal_sparks;
 extern  cvar_t	r_decal_explosions;
 extern  cvar_t  r_coronas;
 
+// MotoLegacy - simplified cvars for decals/particles (5/27/2020)
+extern cvar_t 	nzp_particles;
+extern cvar_t 	nzp_decals;
+
 
 extern	int			mirrortexturenum;	// quake texturenum, not gltexturenum
 extern	qboolean	mirror;
@@ -362,6 +367,7 @@ void QMB_DrawParticles (void);
 void QMB_Q3TorchFlame (vec3_t org, float size);
 void QMB_RunParticleEffect (vec3_t org, vec3_t dir, int color, int count);
 void QMB_RocketTrail (vec3_t start, vec3_t end, trail_type_t type);
+void QMB_RayFlash (vec3_t org, float weapon);
 void QMB_BlobExplosion (vec3_t org);
 void QMB_ParticleExplosion (vec3_t org);
 void QMB_LavaSplash (vec3_t org);
