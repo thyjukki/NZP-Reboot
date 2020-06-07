@@ -492,7 +492,7 @@ void() PlayerSpawn =
 
 	self.currentammo = G_STARTWEAPON[2];
 	self.currentmag = G_STARTWEAPON[1];
-	self.weapon = G_STARTWEAPON[0];
+	self.weapon =  G_STARTWEAPON[0];
 	
 	self.grenades = self.grenades | 1;  // add frag grenades to player inventory
 	
@@ -508,6 +508,7 @@ void() PlayerSpawn =
 		addmoney(self, G_STARTPOINTS, 0);
 
 	self.weaponmodel = GetWeaponModel(self.weapon, 0);// Give weapon model
+	self.weapon2model = GetWeapon2Model(self.weapon);
 
 	SwitchWeapon(self.weapon);
 

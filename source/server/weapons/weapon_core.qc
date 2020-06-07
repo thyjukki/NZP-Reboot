@@ -1118,7 +1118,6 @@ void() W_FireTesla =
 	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30);
 }
 
-
 void(float side) W_Fire =
 {
 	//First check that we can actualy fire
@@ -1373,7 +1372,7 @@ void () W_Knife =
 		sound (self, CHAN_WEAPON, "sounds/weapons/knife/knife_hit.wav", 1, ATTN_NORM);			
 		
 		/* naievil (FIXME) add weapon decal here */
-	
+
 		#ifdef PC
 		if (self.weapon != W_RAY && self.weapon != W_PORTER) {
 			WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
@@ -1389,13 +1388,11 @@ void () W_Knife =
 			multicast(trace_endpos, MULTICAST_PHS);
 		}	
 		#else
-		#ifdef PSP
 		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
 		WriteCoord (MSG_BROADCAST, org_x);
 		WriteCoord (MSG_BROADCAST, org_y);
 		WriteCoord (MSG_BROADCAST, org_z);
-		#endif
 		#endif
 	}
 

@@ -278,6 +278,7 @@ void () GetUp =
 	modelname = GetWeaponModel(self.weapon, 0);
 	self.weaponmodel = modelname;
 	SwitchWeapon(self.weapon);
+	self.weapon2model = GetWeapon2Model(self.weapon);
 	self.movetype = MOVETYPE_WALK;
   
   	startframe = GetFrame(self.weapon,TAKE_OUT_START);
