@@ -1801,11 +1801,9 @@ void DRAW_PARTICLE_BILLBOARD(particle_texture_t *ptex, particle_t *p, vec3_t *co
 	glVertex3fv (p_right);
 
 	glEnd ();
-	//
-	//
-	//
 
-	glDepthMask (GL_TRUE); //johnfitz -- fix for particle z-buffer bug
+
+	glDepthMask (GL_TRUE);
 	glDisable (GL_BLEND);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glColor3f(1,1,1);
@@ -2168,151 +2166,58 @@ float pap_detr(int weapon)
 	switch (weapon)
 	{
 		case W_COLT:
-			return 0;
-			break;
-		case W_BIATCH:
-			return 1;
-			break;
 		case W_KAR:
-			return 0;
-			break;
 		case W_THOMPSON:
-			return 0;
-			break;
 		case W_357:
-			return 0;
-			break;
-		case W_KILLU:
-			return 1;
-			break;
 		case W_BAR:
-			return 0;
-			break;
 		case W_BK:
-			return 0;
-			break;
 		case W_BROWNING:
-			return 0;
-			break;
 		case W_DB:
-			return 0;
-			break;
 		case W_FG:
-			return 0;
-			break;
 		case W_GEWEHR:
-			return 0;
-			break;
 		case W_KAR_SCOPE:
-			return 0;
-			break;
 		case W_M1:
-			return 0;
-			break;
 		case W_M1A1:
-			return 0;
-			break;
 		case W_MP40:
-			return 0;
-			break;
 		case W_MG:
-			return 0;
-			break;
 		case W_PANZER:
-			return 0;
-			break;
 		case W_PPSH:
-			return 0;
-			break;
 		case W_PTRS:
-			return 0;
-			break;
 		case W_RAY:
-			return 0;
-			break;
 		case W_SAWNOFF:
-			return 0;
-			break;
 		case W_STG:
-			return 0;
-			break;
 		case W_TRENCH:
-			return 0;
-			break;
 		case W_TYPE:
-			return 0;
-			break;
 		case W_M2:
-			return 0;
-			break;
-		case W_COMPRESSOR:
-	     	return 1;
-	      	break;
-	    case W_M1000:
-	      	return 1;
-	      	break;
-	    case W_GIBS:
-	      	return 1;
-	      	break;
-	    case W_SAMURAI:
-	     	return 1;
-	      	break;
-	    case W_AFTERBURNER:
-	      	return 1;
-	      	break;
-	    case W_SPATZ:
-	      	return 1;
-	      	break;
-	    case W_SNUFF:
-	      	return 1;
-	      	break;
-	    case W_BORE:
-	      	return 1;
-	      	break;
-	    case W_IMPELLER:
-	     	return 1;
-	      	break;
-	    case W_BARRACUDA:
-	      	return 1;
-	      	break;
-	    case W_ACCELERATOR:
-	      	return 1;
-	      	break;
-	    case W_GUT:
-	      	return 1;
-	      	break;
-	    case W_REAPER:
-	      	return 1;
-	      	break;
-	    case W_HEADCRACKER:
-	      	return 1;
-	      	break;
-	    case W_LONGINUS:
-	      	return 1;
-	      	break;
-	    case W_PENETRATOR:
-	      	return 1;
-	      	break;
-	    case W_WIDOW:
-	      	return 1;
-	      	break;
-	    case W_PORTER:
-	      	return 1;
-	      	break;
-	    case W_ARMAGEDDON:
-	      	return 1;
-	      	break;
-	    case W_WIDDER:
-	      	return 1;
-	      	break;
-	    case W_MP5:
-	      	return 0;
-	      	break;
+		case W_MP5:
 	    case W_TESLA:
 	      	return 0;
-	      	break;
+	    case W_BIATCH:
+		case W_COMPRESSOR:  	
+	    case W_M1000:  	
+	    case W_GIBS:
+	    case W_SAMURAI:
+	    case W_AFTERBURNER:
+	    case W_SPATZ:
+	    case W_SNUFF:
+	    case W_BORE:
+	    case W_IMPELLER:
+	    case W_BARRACUDA:
+	    case W_ACCELERATOR:
+	    case W_GUT:
+	    case W_REAPER:
+	    case W_HEADCRACKER:
+	    case W_LONGINUS:
+	    case W_PENETRATOR:
+	    case W_WIDOW:
+	    case W_PORTER:
+	    case W_ARMAGEDDON:
+	    case W_WIDDER:
+	    case W_KILLU:
+			return 1;
+		default:
+			return 0;
 	}
-	return 0;
 }
 
 //R00k added particle muzzleflashes
