@@ -246,6 +246,7 @@ void(string s) Close_Waypoint = #89;
 void(entity plr, float achievement) achievement = #79;
 
 void(string trackname) songegg = #500;
+void() nzp_maxammo             = #501;
 /*
 type 0 = clear
 type 1 = buy door

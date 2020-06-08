@@ -3102,6 +3102,20 @@ void PF_SongEgg (void)
 	MSG_WriteString (&sv.reliable_datagram, trackname);
 }
 
+/*
+=================
+PF_MaxAmmo
+
+activates max ammo text in HUD
+
+nzp_maxammo()
+=================
+*/
+void PF_MaxAmmo(void)
+{
+	MSG_WriteByte(&sv.reliable_datagram, svc_maxammo);
+}
+
 
 /*
 =================
@@ -3437,6 +3451,7 @@ ebfs_builtin_t pr_ebfs_builtins[] =
   { 442, "argv", PF_ArgV },
 
   { 500, "songegg", PF_SongEgg },
+  {	501, "nzp_maxammo", PF_MaxAmmo }
 
 // 2001-11-15 DarkPlaces general builtin functions by Lord Havoc  end
 

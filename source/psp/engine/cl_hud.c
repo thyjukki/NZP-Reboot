@@ -63,6 +63,7 @@ qpic_t      *fx_blood_ld;
 qpic_t      *fx_blood_rd;
 
 qboolean	sb_showscores;
+qboolean 	domaxammo;
 
 int  x_value, y_value;
 
@@ -555,6 +556,26 @@ void HUD_WorldText(int alpha)
 
 /*
 ===============
+HUD_MaxAmmo
+===============
+*/
+int maxammoy;
+int maxammoopac;
+
+void HUD_MaxAmmo(void)
+{
+	maxammoy -= cl.time * 0.003;
+	maxammoopac -= 5;
+
+	Draw_ColoredString(vid.width/2 - strlen("MAX AMMO!")*4, maxammoy, "MAX AMMO!", 255, 255, 255, maxammoopac, 1);
+
+	if (maxammoopac <= 0) {
+		domaxammo = false;
+	}
+}
+
+/*
+===============
 HUD_Rounds
 ===============
 */
@@ -566,6 +587,11 @@ int		color_shift_init;
 int 	blinking;
 int 	textstate;
 int 	value, value2;
+
+int 	reallydumbvalue;
+int 	f222;
+int 	maxammoy;
+int 	maxammoopac;
 
 void HUD_Rounds (void)
 {
@@ -1386,4 +1412,12 @@ void HUD_Draw (void)
 	HUD_Points();
 	HUD_Point_Change();
 	HUD_Achievement();
+
+	if (domaxammo == true) {
+		if (maxammoopac <= 0) {
+			maxammoopac = 255;
+			maxammoy = 250;
+		}
+		HUD_MaxAmmo();
+	}
 }
