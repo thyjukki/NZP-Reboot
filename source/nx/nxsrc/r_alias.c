@@ -837,6 +837,15 @@ void R_DrawAliasModel (entity_t *e)
 	lerpdata_t	lerpdata;
 	qboolean	alphatest = !!(e->model->flags & MF_HOLEY);
 
+	// naievil -- super bad hack this shouldn't have been done ) : 
+	if (e == &cl.viewent) {
+
+		// naievil -- for some reason, models are not good at regular view ) :
+		if (sv_player->v.weapon == W_M1 || sv_player->v.weapon == W_M1000) { 
+			e->origin[2] -= 0.7;
+		}
+	}
+
 	//
 	// setup pose/lerp data -- do it first so we don't miss updates due to culling
 	//

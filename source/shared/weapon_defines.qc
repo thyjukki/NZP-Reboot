@@ -1497,7 +1497,14 @@ vector GetWeaponADSOfs_PSP(float wep) =
 			return [-12700, 2086.9, 0];
 		case W_GEWEHR:
 		case W_COMPRESSOR:
+			#ifdef PSP
 			return [-6550, 4400, 0];
+			#endif
+
+			// naievil -- NX just doesn't look right
+			#ifdef NX
+			return [-6550, 11250, 0];
+			#endif
 		case W_PPSH:
 		case W_REAPER:
 			return [-11000, 3700, 0];
@@ -1509,13 +1516,33 @@ vector GetWeaponADSOfs_PSP(float wep) =
 			return [-0400, -200, 0];
 		case W_STG:
 		case W_SPATZ:
+
+			#ifdef PSP
 			return [-14534, 8920, 0];
+			#endif
+
+			#ifdef NX
+			return [-14534, 19920, 0];
+			#endif
 		case W_M1:
 		case W_M1000:
+
+			#ifdef PSP
 			return [-2860, 2000, 0];
+			#endif
+
+			#ifdef NX
+			return [-2860, 2400, 0];
+			#endif
 		case W_BROWNING:
 		case W_ACCELERATOR:
-			return [-15200, 11620, 0];
+			#ifdef PSP
+				return [-15200, 11620, 0];
+			#endif 
+
+			#ifdef NX
+				return [-15700, 41220, 0];
+			#endif
 		case W_PTRS:
 		case W_PENETRATOR:
 			return [-14000, 5386.9, 0];
@@ -4028,67 +4055,135 @@ vector(float wep) GetWeaponRecoil =
 vector (float wep) GetWeaponFlash_Offset = 
 {
 		switch(wep) {
-			case W_COLT:
-                return [5488, -2742, 35300];
-			case W_BIATCH:
-				return [8588, -3842, 35300];
-			case W_KAR:
-			case W_KAR_SCOPE:
-			case W_HEADCRACKER:
-			case W_ARMAGEDDON:
-				return [5560, -4582, 75833];
-			case W_THOMPSON:
-			case W_GIBS:
-				return [6203, -5740, 57670];
-			case W_TRENCH:
-			case W_GUT:
-				return [5550, -4118, 62364];
-			case W_357:
-			case W_KILLU:
-				return [8193, -2353, 50527];
-			case W_MG:
-			case W_BARRACUDA:
-				return [6806, -9375, 81713];
-			case W_DB: 
-			case W_BORE:
-				return [5801, -4300, 83174];
-			case W_SAWNOFF:
-				return [5801, -4414, 44820];
-			case W_M1A1:
-			case W_WIDDER:
-				return [5317, -5331, 70583];
-			case W_BAR:
-			case W_WIDOW:
-				return [3899, -5021, 78199];
-			case W_FG:
-			case W_IMPELLER:
-				return [14000, -12000, 110000];
-			case W_GEWEHR:
-			case W_COMPRESSOR:
-				return [6500, -8500, 65000];
-			case W_PPSH:
-				return [11100, -9000, 86300];
-			case W_MP40:
-			case W_AFTERBURNER:
-				return [11300, -11300, 80000];
-			case W_STG:
-			case W_SPATZ:
-				return [14300, -16230, 100000];
-			case W_M1:
-			case W_M1000:
-				return [2896, -4142, 28300];
-			case W_BROWNING:
-			case W_ACCELERATOR:
-				return [15726, -23375, 170713];
-			case W_PTRS:
-			case W_PENETRATOR:
-				return [10988, -14242, 180300];
-			case W_TYPE:
-			case W_SAMURAI:
-				return [488, -2300, 25300];
-			default:
-				return [5488, -2742, 35300];
+			#ifdef PSP
+				case W_COLT:
+					return [5488, -2742, 35300];
+				case W_BIATCH:
+					return [8588, -3842, 35300];
+				case W_KAR:
+				case W_KAR_SCOPE:
+				case W_HEADCRACKER:
+				case W_ARMAGEDDON:
+					return [5560, -4582, 75833];
+				case W_THOMPSON:
+				case W_GIBS:
+					return [6203, -5740, 57670];
+				case W_TRENCH:
+				case W_GUT:
+					return [5550, -4118, 62364];
+				case W_357:
+				case W_KILLU:
+					return [8193, -2353, 50527];
+				case W_MG:
+				case W_BARRACUDA:
+					return [6806, -9375, 81713];
+				case W_DB: 
+				case W_BORE:
+					return [5801, -4300, 83174];
+				case W_SAWNOFF:
+					return [5801, -4414, 44820];
+				case W_M1A1:
+				case W_WIDDER:
+					return [5317, -5331, 70583];
+				case W_BAR:
+				case W_WIDOW:
+					return [3899, -5021, 78199];
+				case W_FG:
+				case W_IMPELLER:
+					return [14000, -12000, 110000];
+				case W_GEWEHR:
+				case W_COMPRESSOR:
+					return [6500, -8500, 65000];
+				case W_PPSH:
+				case W_REAPER:
+					return [11100, -9000, 86300];
+				case W_MP40:
+				case W_AFTERBURNER:
+					return [11300, -11300, 80000];
+				case W_STG:
+				case W_SPATZ:
+					return [14300, -16230, 100000];
+				case W_M1:
+				case W_M1000:
+					return [2896, -4142, 28300];
+				case W_BROWNING:
+				case W_ACCELERATOR:
+					return [15726, -23375, 170713];
+				case W_PTRS:
+				case W_PENETRATOR:
+					return [10988, -14242, 180300];
+				case W_TYPE:
+				case W_SAMURAI:
+					return [488, -2300, 25300];
+				default:
+					return [5488, -2742, 35300];
+			#endif
+
+			#ifdef NX
+				case W_COLT:
+				case W_BIATCH:
+					return [1950, -6250, 35300];
+				case W_KAR:
+				case W_KAR_SCOPE:
+				case W_HEADCRACKER:
+				case W_ARMAGEDDON:
+					return [-5120, -13582, 75833];
+				case W_THOMPSON:
+				case W_GIBS:
+					return [770, -12740, 57670];
+				case W_TRENCH:
+				case W_GUT:
+					return [-7450, -17918, 62364];
+				case W_357:
+				case W_KILLU:
+					return [4093, -7353, 50527];
+				case W_MG:
+				case W_BARRACUDA:
+					return [-4006, -19375, 81713];
+				case W_DB: 
+				case W_BORE:
+					return [-6700, -18300, 83174];
+				case W_SAWNOFF:
+					return [-8501, -19414, 44820];
+				case W_M1A1:
+				case W_WIDDER:
+					return [-4717, -15331, 70583];
+				case W_BAR:
+				case W_WIDOW:
+					return [-7599, -17321, 78199];
+				case W_FG:
+				case W_IMPELLER:
+					return [1800, -25500, 110000];
+				case W_GEWEHR:
+				case W_COMPRESSOR:
+					return [-2200, -17800, 65000];
+				case W_PPSH:
+				case W_REAPER:
+					return [300, -18500, 86300];
+				case W_MP40:
+				case W_AFTERBURNER:
+					return [1570, -21300, 80000];
+				case W_STG:
+				case W_SPATZ:
+					return [2500, -30230, 100000];
+				case W_M1:
+				case W_M1000:
+					return [-750, -7842, 28300];
+				case W_BROWNING:
+				case W_ACCELERATOR:
+					return [-1926, -51375, 170713];
+				case W_PTRS:
+				case W_PENETRATOR:
+					return [-7888, -37242, 180300];
+
+				case W_TYPE:
+				case W_SAMURAI:
+					return [-4488, -7800, 25300];
+				default:
+					return [5488, -2742, 35300];
+			#endif
 		}
+		return [0, 0, 0];
 }
 
 float (float wep) GetWeaponFlash_Size = {

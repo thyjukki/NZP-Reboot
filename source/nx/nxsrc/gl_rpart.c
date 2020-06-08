@@ -902,7 +902,7 @@ void AddParticle (part_type_t type, vec3_t org, int count, float size, double ti
 			VectorCopy (org, p->org);
 			p->rotspeed = (rand() & 45) - 90;
 			//p->size = size * (rand() % 6) / 4;//r00k
-			p->size = size * (0.75 +((0.05 * (rand() % 20)) * 0.5));//blubs: resultant size range: [size * 0.75, size * 1.25)
+			p->size = size * (0.85 +((0.05 * (rand() % 16)) * 0.35));//naievil: resultant size range: [size * 0.85, size * 1.1125)
 			break;
 
 		case p_teleflare:
@@ -1807,7 +1807,6 @@ void DRAW_PARTICLE_BILLBOARD(particle_texture_t *ptex, particle_t *p, vec3_t *co
 	glDisable (GL_BLEND);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glColor3f(1,1,1);
-
 }
 
                           
@@ -2238,7 +2237,9 @@ void QMB_MuzzleFlash(vec3_t org)
 		return;
 	}
 
-	float size;
+	float size, timemod;
+
+	timemod = 0.04;
 
 	if(!(ISUNDERWATER(TruePointContents(org))))
 	{
@@ -2250,16 +2251,16 @@ void QMB_MuzzleFlash(vec3_t org)
         switch(rand() % 3 + 1)
         {
             case 1:
-                AddParticle (p_muzzleflash, org, 1, size, 0.04 * frametime, color, zerodir);
+                AddParticle (p_muzzleflash, org, 1, size, timemod * frametime, color, zerodir);
                 break;
             case 2:
-                AddParticle (p_muzzleflash2, org, 1, size, 0.04 * frametime, color, zerodir);
+                AddParticle (p_muzzleflash2, org, 1, size, timemod * frametime, color, zerodir);
                 break;
             case 3:
-                AddParticle (p_muzzleflash3, org, 1, size, 0.04 * frametime, color, zerodir);
+                AddParticle (p_muzzleflash3, org, 1, size, timemod * frametime, color, zerodir);
                 break;
             default:
-                AddParticle (p_muzzleflash, org, 1, size, 0.04 * frametime, color, zerodir);
+                AddParticle (p_muzzleflash, org, 1, size, timemod * frametime, color, zerodir);
                 break;
         }
 	}
