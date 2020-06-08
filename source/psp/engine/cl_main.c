@@ -652,7 +652,12 @@ void CL_RelinkEntities (void)
 		if (ent->model->flags & EF_ROTATE)
 		{
 			ent->angles[1] = bobjrotate;
-            ent->origin[2] += (( sin(bobjrotate/90*M_PI) * 5) + 5 );
+
+			#ifdef PSP_VFPU
+            ent->origin[2] += (( vfpu_sinf(bobjrotate/90*M_PI) * 5) + 5 );
+			#else
+			ent->origin[2] += (( sin(bobjrotate/90*M_PI) * 5) + 5 );
+			#endif
 		}
 
 		if (ent->effects & EF_BRIGHTFIELD)

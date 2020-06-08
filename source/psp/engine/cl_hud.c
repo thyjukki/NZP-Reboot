@@ -22,7 +22,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include <pspgu.h>
 
-
+#ifdef PSP_VFPU
+#include <pspmath.h>
+#endif
 
 qpic_t		*sb_round[5];
 qpic_t		*sb_round_num[10];
@@ -469,7 +471,12 @@ void HUD_Blood (void)
     if (alpha <= 0.0)
         return;
     
+	#ifdef PSP_VFPU
+	float modifier = (vfpu_sinf(cl.time * 10) * 20) - 20;//always negative
+	#else
     float modifier = (sin(cl.time * 10) * 20) - 20;//always negative
+	#endif
+
     if(modifier < -35.0)
 	modifier = -35.0;
     

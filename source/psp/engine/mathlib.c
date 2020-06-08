@@ -370,8 +370,14 @@ void vectoangles (vec3_t vec, vec3_t ang)
 		#endif
 		if (yaw < 0)
 			yaw += 360;
+
+		#ifdef PSP_VFPU
+		forward = vfpu_sqrtf (vec[0] * vec[0] + vec[1] * vec[1]);
+		pitch = vfpu_atan2f (vec[2], forward) * 180 / M_PI;
+		#else
 		forward = sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
 		pitch = atan2 (vec[2], forward) * 180 / M_PI;
+		#endif
 		if (pitch < 0)
 			pitch += 360;
 	}
@@ -710,14 +716,29 @@ void AngleQuaternion( const vec3_t angles, vec4_t quaternion )
 
 	// FIXME: rescale the inputs to 1/2 angle
 	angle = angles[2] * 0.5;
+	#ifdef PSP_VFPU
+	sy = vfpu_sinf(angle);
+	cy = vfpu_cosf(angle);
+	#else
 	sy = sin(angle);
 	cy = cos(angle);
+	#endif
 	angle = angles[1] * 0.5;
+	#ifdef PSP_VFPU
+	sp = vfpu_sinf(angle);
+	cp = vfpu_cosf(angle);
+	#else
 	sp = sin(angle);
 	cp = cos(angle);
+	#endif
 	angle = angles[0] * 0.5;
+	#ifdef PSP_VFPU
+	sr = vfpu_sinf(angle);
+	cr = vfpu_cosf(angle);
+	#else
 	sr = sin(angle);
 	cr = cos(angle);
+	#endif
 
 	quaternion[0] = sr*cp*cy-cr*sp*sy; // X
 	quaternion[1] = cr*sp*cy+sr*cp*sy; // Y
@@ -764,9 +785,15 @@ void QuaternionSlerp( const vec4_t p, vec4_t q, float t, vec4_t qt )
 	if ((1.0 + cosom) > 0.00000001) {
 		if ((1.0 - cosom) > 0.00000001) {
 			omega = acos( cosom );
+			#ifdef PSP_VFPU
+			sinom = vfpu_sinf( omega );
+			sclp = vfpu_sinf( (1.0 - t)*omega) / sinom;
+			sclq = vfpu_sinf( t*omega ) / sinom;
+			#else
 			sinom = sin( omega );
 			sclp = sin( (1.0 - t)*omega) / sinom;
 			sclq = sin( t*omega ) / sinom;
+			#endif
 		}
 		else {
 			sclp = 1.0 - t;
@@ -781,8 +808,13 @@ void QuaternionSlerp( const vec4_t p, vec4_t q, float t, vec4_t qt )
 		qt[1] = p[0];
 		qt[2] = -p[3];
 		qt[3] = p[2];
+		#ifdef PSP_VFPU
+		sclp = vfpu_sinf( (1.0 - t) * 0.5 * M_PI);
+		sclq = vfpu_sinf( t * 0.5 * M_PI);
+		#else
 		sclp = sin( (1.0 - t) * 0.5 * M_PI);
 		sclq = sin( t * 0.5 * M_PI);
+		#endif
 		for (i = 0; i < 3; i++) {
 			qt[i] = sclp * p[i] + sclq * qt[i];
 		}

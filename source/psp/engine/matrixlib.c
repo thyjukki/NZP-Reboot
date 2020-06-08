@@ -442,14 +442,25 @@ void Matrix4x4_ConvertToEntity( const matrix4x4 in, vec3_t angles, vec3_t origin
 	// enough here to get angles?
 	if( xyDist > 0.001f )
 	{
+		#ifdef PSP_VFPU
+		angles[0] = RAD2DEG( vfpu_atan2f( -in[2][0], xyDist ) );
+		angles[1] = RAD2DEG( vfpu_atan2f( in[1][0], in[0][0] ) );
+		angles[2] = RAD2DEG( vfpu_atan2f( in[2][1], in[2][2] ) );
+		#else
 		angles[0] = RAD2DEG( atan2( -in[2][0], xyDist ) );
 		angles[1] = RAD2DEG( atan2( in[1][0], in[0][0] ) );
 		angles[2] = RAD2DEG( atan2( in[2][1], in[2][2] ) );
+		#endif
 	}
 	else	// forward is mostly Z, gimbal lock
 	{
+		#ifdef PSP_VFPU
+		angles[0] = RAD2DEG( vfpu_atan2f( -in[2][0], xyDist ) );
+		angles[1] = RAD2DEG( vfpu_atan2f( -in[0][1], in[1][1] ) );
+		#else
 		angles[0] = RAD2DEG( atan2( -in[2][0], xyDist ) );
 		angles[1] = RAD2DEG( atan2( -in[0][1], in[1][1] ) );
+		#endif
 		angles[2] = 0;
 	}
 

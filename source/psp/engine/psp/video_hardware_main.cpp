@@ -803,8 +803,13 @@ void R_DrawSpriteModel (entity_t *e)
 		break;
 	case SPR_VP_PARALLEL_ORIENTED: //faces view plane, but obeys roll value
 		angle = currententity->angles[ROLL] * M_PI_DIV_180;
+		#ifdef PSP_VFPU
+		sr = vfpu_sinf(angle);
+		cr = vfpu_cosf(angle);
+		#else
 		sr = sin(angle);
 		cr = cos(angle);
+		#endif
 		v_right[0] = vright[0] * cr + vup[0] * sr;
 		v_up[0] = vright[0] * -sr + vup[0] * cr;
 		v_right[1] = vright[1] * cr + vup[1] * sr;
@@ -1373,8 +1378,13 @@ void GL_DrawAliasBlendedShadow (aliashdr_t *paliashdr, int pose1, int pose2, ent
 	memset (&downtrace, 0, sizeof(downtrace));
 	SV_RecursiveHullCheck (cl.worldmodel->hulls, 0, 0, 1, e->origin, downmove, &downtrace);
 
+	#ifdef PSP_VFPU
+	s1 = vfpu_sinf( e->angles[1]/180*M_PI);
+	c1 = vfpu_cosf( e->angles[1]/180*M_PI);
+	#else
 	s1 = sin( e->angles[1]/180*M_PI);
 	c1 = cos( e->angles[1]/180*M_PI);
+	#endif
 	// Tomaz - New Shadow End
 
     verts1 = (trivertx_t *)((byte *)paliashdr + paliashdr->posedata);
@@ -1745,8 +1755,13 @@ void GL_DrawQ2AliasShadow (entity_t *e, md2_t *pheader, int lastpose, int pose, 
 	memset (&downtrace, 0, sizeof(downtrace));
 	SV_RecursiveHullCheck (cl.worldmodel->hulls, 0, 0, 1, e->origin, downmove, &downtrace);
 
+	#ifdef PSP_VFPU
+	s1 = vfpu_sinf( e->angles[1]/180*M_PI);
+	c1 = vfpu_cosf( e->angles[1]/180*M_PI);
+	#else
 	s1 = sin( e->angles[1]/180*M_PI);
 	c1 = cos( e->angles[1]/180*M_PI);
+	#endif
 	// Tomaz - New Shadow End
 
 	//new version by muff - fixes bug, easier to read, faster (well slightly)
@@ -3334,7 +3349,11 @@ void R_DrawQ3Model (entity_t *ent)
 		if (scr_fov.value <= 90)
 			scale = 1.0f;
 		else
+			#ifdef PSP_VFPU
+			scale = 1.0f / vfpu_tanf( DEG2RAD(scr_fov.value/2));
+			#else
 			scale = 1.0f / tan( DEG2RAD(scr_fov.value/2));
+			#endif
 
          const ScePspFVector3 translation =
 	     {
@@ -3397,7 +3416,11 @@ void R_DrawQ3Model (entity_t *ent)
 			shadescale = 1 / sqrt(2);
 		theta = -ent->angles[1] / 180 * M_PI;
 
+		#ifdef PSP_VFPU
+		VectorSet (shadevector, cos(theta) * shadescale, vfpu_sinf(theta) * shadescale, shadescale);
+		#else
 		VectorSet (shadevector, cos(theta) * shadescale, sin(theta) * shadescale, shadescale);
+		#endif
 
 		sceGumPushMatrix ();
 
@@ -3410,8 +3433,13 @@ void R_DrawQ3Model (entity_t *ent)
 
 		lheight = ent->origin[2] - lightspot[2];
 
+		#ifdef PSP_VFPU
+		s1 = vfpu_sinf(ent->angles[1] / 180 * M_PI);
+		c1 = vfpu_cosf(ent->angles[1] / 180 * M_PI);
+		#else
 		s1 = sin(ent->angles[1] / 180 * M_PI);
 		c1 = cos(ent->angles[1] / 180 * M_PI);
+		#endif
 
 		sceGuDepthMask (GU_TRUE);
 		sceGuDisable (GU_TEXTURE_2D);
@@ -4011,7 +4039,11 @@ void R_RenderScene (void)
 			//otherwise the effect is too dramatic at high FOV and too subtle at low FOV
 			//what a mess!
 			//fovx = atan(tan(DEG2RAD(r_refdef.fov_x) / 2) * (0.97 + sin(cl.time * 1) * 0.04)) * 2 / M_PI_DIV_180;
+			#ifdef PSP_VFPU
+			fovy = vfpu_atanf(vfpu_tanf(DEG2RAD(r_refdef.fov_y) / 2) * (1.03 - vfpu_sinf(cl.time * 2) * 0.04)) * 2 / M_PI_DIV_180;
+			#else
 			fovy = atan(tan(DEG2RAD(r_refdef.fov_y) / 2) * (1.03 - sin(cl.time * 2) * 0.04)) * 2 / M_PI_DIV_180;
+			#endif
 		}
 	}
 

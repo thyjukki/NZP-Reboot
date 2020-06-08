@@ -1965,8 +1965,13 @@ void QMB_Shockwave_Splash(vec3_t org, int radius)
 
 	for (theta = 0; theta < 6.283185307179586476925286766559; theta += 0.069813170079773183076947630739545)
 	{
+		#ifdef PSP_VFPU
+		angle[0] = vfpu_cosf(theta) * radius;
+		angle[1] = vfpu_sinf(theta) * radius;
+		#else
 		angle[0] = cos(theta) * radius;
 		angle[1] = sin(theta) * radius;
+		#endif
 		AddParticle(p_shockwave, org, 1, 2, 0.625f, NULL, angle);
 	}
 }
@@ -2885,10 +2890,17 @@ void QMB_BlobExplosion (vec3_t org)
 		color[1] = (65 + (rand() & 15));
 		color[2] = (200 + (rand() & 15));
 
+		#ifdef PSP_VFPU
+		vel[0] = vfpu_cosf(theta) * 125;
+		vel[1] = vfpu_sinf(theta) * 125;
+		neworg[0] = org[0] + vfpu_cosf(theta) * 6;
+		neworg[1] = org[1] + vfpu_sinf(theta) * 6;
+		#else
 		vel[0] = cos(theta) * 125;
 		vel[1] = sin(theta) * 125;
 		neworg[0] = org[0] + cos(theta) * 6;
 		neworg[1] = org[1] + sin(theta) * 6;
+		#endif
 		neworg[2] = org[2] + 0 - 10;
 		AddParticle (p_shockwave, neworg, 1, 4, 0.8, color, vel);
 		neworg[2] = org[2] + 0 + 10;
@@ -2896,8 +2908,13 @@ void QMB_BlobExplosion (vec3_t org)
 
 		vel[0] *= 1.15;
 		vel[1] *= 1.15;
+		#ifdef PSP_VFPU
 		neworg[0] = org[0] + cos(theta) * 13;
 		neworg[1] = org[1] + sin(theta) * 13;
+		#else
+		neworg[0] = org[0] + vfpu_cos(theta) * 13;
+		neworg[1] = org[1] + vfpu_sin(theta) * 13;
+		#endif
 		neworg[2] = org[2] + 0;
 		AddParticle (p_shockwave, neworg, 1, 6, 1.0, color, vel);
 	}
@@ -3272,14 +3289,29 @@ void QMB_EntityParticles (entity_t *ent)
 	for (i=0 ; i<NUMVERTEXNORMALS ; i++)
 	{
 		angle = cl.time * avelocities[i][0];
+		#ifdef PSP_VFPU
+		sy = vfpu_sinf(angle);
+		cy = vfpu_cosf(angle);
+		#else
 		sy = sin(angle);
 		cy = cos(angle);
+		#endif
 		angle = cl.time * avelocities[i][1];
+		#ifdef PSP_VFPU
+		sp = vfpu_sinf(angle);
+		cp = vfpu_cosf(angle);
+		#else
 		sp = sin(angle);
 		cp = cos(angle);
+		#endif
 		angle = cl.time * avelocities[i][2];
+		#ifdef PSP_VFPU
+		sr = vfpu_sinf(angle);
+		cr = vfpu_cosf(angle);
+		#else
 		sr = sin(angle);
 		cr = cos(angle);
+		#endif
 
 		forward[0] = cp*cy;
 		forward[1] = cp*sy;
@@ -3316,20 +3348,39 @@ void QMB_FlyParticles (vec3_t origin, int count)
 		for (i=0 ; i<count ; i+=2)
 		{
 			angle = cl.time * avelocities[i][0];
+			#ifdef PSP_VFPU
+			sy = vfpu_sinf(angle);
+			cy = vfpu_cosf(angle);
+			#else
 			sy = sin(angle);
 			cy = cos(angle);
+			#endif
 			angle = cl.time * avelocities[i][1];
+			#ifdef PSP_VFPU
+			sp = vfpu_sinf(angle);
+			cp = vfpu_cosf(angle);
+			#else
 			sp = sin(angle);
 			cp = cos(angle);
+			#endif
 			angle = cl.time * avelocities[i][2];
+			#ifdef PSP_VFPU
+			sr = vfpu_sinf(angle);
+			cr = vfpu_cosf(angle);
+			#else
 			sr = sin(angle);
 			cr = cos(angle);
+			#endif
 
 			forward[0] = cp*cy;
 			forward[1] = cp*sy;
 			forward[2] = -sp;
 
+			#ifdef PSP_VFPU
+			dist = vfpu_sinf(cl.time + i)*64;
+			#else
 			dist = sin(cl.time + i)*64;
+			#endif
 			org[0] = origin[0] + r_avertexnormals[i][0]*dist + forward[0]*32;
 			org[1] = origin[1] + r_avertexnormals[i][1]*dist + forward[1]*32;
 			org[2] = origin[2] + r_avertexnormals[i][2]*dist + forward[2]*32;

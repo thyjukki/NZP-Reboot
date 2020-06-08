@@ -169,7 +169,12 @@ void Chase_Update (void)
    dist = DotProduct (stop, forward);
    if (dist < 1)
       dist = 1;
+
+   #ifdef PSP_VFPU
+   r_refdef.viewangles[PITCH] = -vfpu_atanf(stop[2] / dist) / M_PI * 180;
+   #else
    r_refdef.viewangles[PITCH] = -atan(stop[2] / dist) / M_PI * 180;
+   #endif
 
    // move towards destination
    VectorCopy (chase_dest, r_refdef.vieworg);

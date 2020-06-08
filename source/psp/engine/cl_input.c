@@ -530,8 +530,14 @@ void CL_SendMove (usercmd_t *cmd)
 		vang[0] -= deltaPitch;
 		vang[1] -= deltaYaw;
 
+		#ifdef PSP_VFPU
+		deltaPitch =(vfpu_cosf(cl.time/0.7) + vfpu_cosf(cl.time) + vfpu_sinf(cl.time/1.1)) * 0.5;
+		deltaYaw = (vfpu_sinf(cl.time/0.4) + vfpu_cosf(cl.time/0.56) + vfpu_sinf(cl.time)) * 0.5;
+		#else
 		deltaPitch =(cos(cl.time/0.7) + cos(cl.time) + sin(cl.time/1.1)) * 0.5;
 		deltaYaw = (sin(cl.time/0.4) + cos(cl.time/0.56) + sin(cl.time)) * 0.5;
+		#endif
+
 		vang[0] += deltaPitch;
 		vang[1] += deltaYaw;
 		vang[0] = angledelta(vang[0]);

@@ -337,6 +337,7 @@ void SV_AirMove (void)
 	if (fmove != 0 && smove != 0)
 	{
 		newmove = sqrt(pow(fmove, 2)/2);
+
 		if (fmove < 0)
 			fmove = newmove*-1;
 		else

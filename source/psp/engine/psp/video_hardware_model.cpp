@@ -3315,9 +3315,15 @@ void Mod_LoadQ3AliasModel (model_t *mod, void *buffer)
 
 			lat = ((vert->normal >> 8) & 0xff) * M_PI / 128.0f;
 			lng = (vert->normal & 0xff) * M_PI / 128.0f;
+			#ifdef PSP_VFPU
+			vertexes[j].normal[0] = vfpu_cosf(lat) * vfpu_sinf(lng);
+			vertexes[j].normal[1] = vfpu_sinf(lat) * vfpu_sinf(lng);
+			vertexes[j].normal[2] = vfpu_cosf(lng);
+			#else
 			vertexes[j].normal[0] = cos(lat) * sin(lng);
 			vertexes[j].normal[1] = sin(lat) * sin(lng);
 			vertexes[j].normal[2] = cos(lng);
+			#endif
 
 			vectoangles (vertexes[j].normal, ang);
 			vertexes[j].anorm_pitch = ang[0] * 256 / 360;
