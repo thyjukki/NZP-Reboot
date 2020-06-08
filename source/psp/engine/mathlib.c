@@ -370,13 +370,8 @@ void vectoangles (vec3_t vec, vec3_t ang)
 		#endif
 		if (yaw < 0)
 			yaw += 360;
-		#ifdef PSP_VFPU
-		forward = vfpu_sqrtf (vec[0] * vec[0] + vec[1] * vec[1]);
-		pitch = vfpu_atan2f (vec[2], forward) * 180 / M_PI;
-		#else
 		forward = sqrt (vec[0] * vec[0] + vec[1] * vec[1]);
 		pitch = atan2 (vec[2], forward) * 180 / M_PI;
-		#endif
 		if (pitch < 0)
 			pitch += 360;
 	}
@@ -501,11 +496,7 @@ float VecLength2(vec3_t v1, vec3_t v2)
 {
 	vec3_t k;
 	VectorSubtract(v1, v2, k);
-	#ifdef PSP_VFPU
-	return vfpu_sqrtf(k[0]*k[0] + k[1]*k[1] + k[2]*k[2]);
-	#else
 	return sqrt(k[0]*k[0] + k[1]*k[1] + k[2]*k[2]);
-	#endif
 }
 
 float VectorNormalize (vec3_t v)
@@ -515,6 +506,7 @@ float VectorNormalize (vec3_t v)
 	#else
 	float length = sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 	#endif
+
 	if (length)
 	{
 		const float ilength = 1.0f / length;

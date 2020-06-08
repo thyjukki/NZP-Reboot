@@ -130,10 +130,17 @@ float V_CalcBob (float speed,float which)//0 = regular, 1 = side bobbing
 		return 0;
 
 	//12.048 -> 4.3 = 100 -> 36ish, so replace 100 with 36
+	#ifdef PSP_VFPU
 	if(which == 0)
+		bob = cl_bobup.value * 36 * speed * (sprint * sprint) * vfpu_sinf((cl.time * 12.5 * sprint));//Pitch Bobbing 10
+	else if(which == 1)
+		bob = cl_bobside.value * 36 * speed * (sprint * sprint * sprint) * vfpu_sinf((cl.time * 6.25 * sprint) - (M_PI * 0.25));//Yaw Bobbing 5
+	#else
+		if(which == 0)
 		bob = cl_bobup.value * 36 * speed * (sprint * sprint) * sin((cl.time * 12.5 * sprint));//Pitch Bobbing 10
 	else if(which == 1)
 		bob = cl_bobside.value * 36 * speed * (sprint * sprint * sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//Yaw Bobbing 5
+	#endif
 
 	return bob;
 }
@@ -184,32 +191,58 @@ float V_CalcVBob(float speed, float which)
 
 	if(sprint == 1)
 	{
+		#ifdef PSP_VFPU
+		if(which == 0)
+			bob = speed * 8.6 * (1/sprint) * vfpu_sinf((cl.time * 12.5 * sprint));//10
+		else if(which == 1)
+			bob = speed * 8.6 * (1/sprint) * vfpu_sinf((cl.time * 6.25 * sprint) - (M_PI * 0.25));//5
+		else if(which == 2)
+			bob = speed * 8.6 * (1/sprint) * vfpu_sinf((cl.time * 6.25 * sprint) - (M_PI * 0.25));//5
+		#else
 		if(which == 0)
 			bob = speed * 8.6 * (1/sprint) * sin((cl.time * 12.5 * sprint));//10
 		else if(which == 1)
 			bob = speed * 8.6 * (1/sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//5
 		else if(which == 2)
 			bob = speed * 8.6 * (1/sprint) * sin((cl.time * 6.25 * sprint) - (M_PI * 0.25));//5
+		#endif
 	}
 	else
 	{
+		#ifdef PSP_VFPU
+		if(which == 0)
+			bob = speed * 8.6 * (1/sprint) * vfpu_cosf((cl.time * 6.25 * sprint));
+		else if(which == 1)
+			bob = speed * 8.6 * (1/sprint) * vfpu_cosf((cl.time * 12.5 * sprint));
+		else if(which == 2)
+			bob = speed * 8.6 * (1/sprint) * vfpu_cosf((cl.time * 6.25 * sprint));
+		#else
 		if(which == 0)
 			bob = speed * 8.6 * (1/sprint) * cos((cl.time * 6.25 * sprint));
 		else if(which == 1)
 			bob = speed * 8.6 * (1/sprint) * cos((cl.time * 12.5 * sprint));
 		else if(which == 2)
 			bob = speed * 8.6 * (1/sprint) * cos((cl.time * 6.25 * sprint));
+		#endif
 	}
 
 
 	if(speed > 0.1 && which == 0)
 	{
+		#ifdef PSP_VFPU
+		if(canStep && vfpu_sinf(cl.time * 12.5 * sprint) < -0.8)
+		#else
 		if(canStep && sin(cl.time * 12.5 * sprint) < -0.8)
+		#endif
 		{
 			PlayStepSound();
 			canStep = 0;
 		}
+		#ifdef PSP_VFPU
+		if(vfpu_sinf(cl.time * 12.5 * sprint) > 0.9)
+		#else
 		if(sin(cl.time * 12.5 * sprint) > 0.9)
+		#endif
 		{
 			canStep = 1;
 		}

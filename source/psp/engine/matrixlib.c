@@ -438,6 +438,7 @@ void Matrix4x4_ConvertToEntity( const matrix4x4 in, vec3_t angles, vec3_t origin
 	#else
 	float xyDist = sqrtf( in[0][0] * in[0][0] + in[1][0] * in[1][0] );
 	#endif
+
 	// enough here to get angles?
 	if( xyDist > 0.001f )
 	{

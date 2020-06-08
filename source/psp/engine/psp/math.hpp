@@ -39,11 +39,8 @@ namespace quake
 
 		static inline void normalise(ScePspFVector4* v)
 		{
-			#ifdef PSP_VFPU
-			const float scale = 1.0f / vfpu_sqrtf(dot(*v, *v));
-			#else
 			const float scale = 1.0f / sqrtf(dot(*v, *v));
-			#endif
+
 			v->x *= scale;
 			v->y *= scale;
 			v->z *= scale;
