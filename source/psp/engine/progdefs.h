@@ -163,6 +163,7 @@ typedef struct
 	string_t 	Weapon_Name_Touch;
 	float 		currentmag2;
 	float 		maxspeed;
+	float 		facingenemy;
 } entvars_t;
 
 #define PROGHEADER_CRC 14116

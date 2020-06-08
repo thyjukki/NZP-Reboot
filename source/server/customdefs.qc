@@ -39,7 +39,9 @@ void(entity person, float expamt , float doublepoint) addmoney;
 .float score;
 .float kills;
 .float headshots;
+#ifdef PC
 .float facingenemy;
+#endif
 
 //doors
 .float state;

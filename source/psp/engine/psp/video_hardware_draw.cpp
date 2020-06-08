@@ -665,6 +665,63 @@ void Draw_Character (int x, int y, int num)
 	sceGuDrawArray(GU_SPRITES, GU_TEXTURE_16BIT | GU_VERTEX_16BIT | GU_TRANSFORM_2D, 2, 0, vertices);
 }
 
+
+/*
+================
+Draw_CharacterRGBA
+
+This is the same as Draw_Character, but with RGBA color codes.
+- MotoLegacy
+================
+*/
+extern cvar_t scr_coloredtext;
+void Draw_CharacterRGBA(int x, int y, int num, float r, float g, float b, float a)
+{
+	int	row, col;
+
+	if (num == 32)
+		return;		// space
+
+	num &= 255;
+
+	if (y <= -8)
+		return;			// totally off screen
+
+	row = num>>4;
+	col = num&15;
+
+	GL_Bind (char_texture);
+
+	if (scr_coloredtext.value)
+		sceGuTexFunc(GU_TFX_MODULATE , GU_TCC_RGBA);
+
+	struct vertex
+	{
+		short u, v;
+		short x, y, z;
+	};
+
+	vertex* const vertices = static_cast<vertex*>(sceGuGetMemory(sizeof(vertex) * 2));
+
+	vertices[0].u = col * 8;
+	vertices[0].v = row * 8;
+	vertices[0].x = x;
+	vertices[0].y = y;
+	vertices[0].z = 0;
+
+	vertices[1].u = (col + 1) * 8;
+	vertices[1].v = (row + 1) * 8;
+	vertices[1].x = x + 8;
+	vertices[1].y = y + 8;
+	vertices[1].z = 0;
+
+	sceGuColor(GU_COLOR(r/255, g/255, b/255, a/255));
+	sceGuDrawArray(GU_SPRITES, GU_TEXTURE_16BIT | GU_VERTEX_16BIT | GU_TRANSFORM_2D, 2, 0, vertices);
+
+	if (scr_coloredtext.value)
+        sceGuTexFunc(GU_TFX_REPLACE , GU_TCC_RGBA);
+}
+
 /*
 ================
 Draw_String
@@ -1306,21 +1363,40 @@ int CrossHairMaxSpread (void)
 Draw_Crosshair
 ================
 */
+
+extern float crosshair_opacity;
 void Draw_Crosshair (void)
 {
 	if (cl.stats[STAT_HEALTH] < 20)
 		return;
+
+	if (!crosshair_opacity)
+		crosshair_opacity = 255;
+
+	float col;
+
+	if (sv_player->v.facingenemy == 1) {
+		col = 0;
+	} else {
+		col = 255;
+	}
+
+	// crosshair moving
 	if (crosshair_spread_time > sv.time && crosshair_spread_time)
     {
         cur_spread = cur_spread + 10;
+		crosshair_opacity = 128;
+
 		if (cur_spread >= CrossHairMaxSpread())
 			cur_spread = CrossHairMaxSpread();
     }
+	// crosshair not moving
     else if (crosshair_spread_time < sv.time && crosshair_spread_time)
     {
         cur_spread = cur_spread - 4;
-		if (cur_spread <= 0)
-		{
+		crosshair_opacity = 255;
+
+		if (cur_spread <= 0) {
 			cur_spread = 0;
 			crosshair_spread_time = 0;
 		}
@@ -1328,7 +1404,7 @@ void Draw_Crosshair (void)
 
 	if (cl.stats[STAT_ACTIVEWEAPON] == W_M2 || cl.stats[STAT_ACTIVEWEAPON] == W_TESLA || cl.stats[STAT_ACTIVEWEAPON] == W_DG3)
 	{
-		Draw_Character ((vid.width)/2-4, (vid.height)/2, 'O');
+		Draw_CharacterRGBA((vid.width)/2-4, (vid.height)/2, 'O', 255, col, col, crosshair_opacity);
 	}
 	else if (crosshair.value == 1 && cl.stats[STAT_ZOOM] != 1 && cl.stats[STAT_ZOOM] != 2 && cl.stats[STAT_ACTIVEWEAPON] != W_PANZER)
     {
@@ -1347,25 +1423,25 @@ void Draw_Crosshair (void)
 
 		x_value = (vid.width - 8)/2 - crosshair_offset_step;
 		y_value = (vid.height - 8)/2;
-		Draw_Character (x_value, y_value, 158);
+		Draw_CharacterRGBA(x_value, y_value, 158, 255, col, col, crosshair_opacity);
 
 		x_value = (vid.width - 8)/2 + crosshair_offset_step;
 		y_value = (vid.height - 8)/2;
-		Draw_Character (x_value, y_value, 158);
+		Draw_CharacterRGBA(x_value, y_value, 158, 255, col, col, crosshair_opacity);
 
 		x_value = (vid.width - 8)/2;
 		y_value = (vid.height - 8)/2 - crosshair_offset_step;
-		Draw_Character (x_value, y_value, 157);
+		Draw_CharacterRGBA(x_value, y_value, 157, 255, col, col, crosshair_opacity);
 
 		x_value = (vid.width - 8)/2;
 		y_value = (vid.height - 8)/2 + crosshair_offset_step;
-		Draw_Character (x_value, y_value, 157);
+		Draw_CharacterRGBA(x_value, y_value, 157, 255, col, col, crosshair_opacity);
     }
     else if (crosshair.value && cl.stats[STAT_ZOOM] != 1 && cl.stats[STAT_ZOOM] != 2)
-		Draw_Character ((vid.width - 8)/2/* + crosshair_x*/, (vid.height - 8)/2/* + crosshair_y*/, '.');
+		Draw_CharacterRGBA((vid.width - 8)/2, (vid.height - 8)/2, '.', 255, col, col, crosshair_opacity);
 	if (cl.stats[STAT_ZOOM] == 2)
 		Draw_Pic (0, 0, sniper_scope);
-   if (Hitmark_Time > sv.time)
+   	if (Hitmark_Time > sv.time)
         Draw_Pic ((vid.width - hitmark->width)/2,(vid.height - hitmark->height)/2, hitmark);
 }
 
@@ -1386,8 +1462,6 @@ static int HexToInt(char c)
 	else
 		return -1;
 }
-
-extern cvar_t scr_coloredtext;
 
 // Creds to UP Team for scale code - Moto
 void Draw_ColoredString(int x, int y, char *text, float r, float g, float b, float a, int scale)

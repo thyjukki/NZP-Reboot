@@ -403,13 +403,13 @@ void() PlayerPostThink =
 	// Check if we are currently looking at an enemy
 	// This should NOT be handled server-side, yet here we are
 	// FIXME - MotoLegacy
-	#ifdef PC
+	#ifndef NX
 	vector	source;
 
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 
-	traceline (source, source + v_forward*800*1.2, 0, self); // naievil -- ^^
+	traceline (source, source + v_forward*800*1.2, 0, self);
 
 	if (trace_ent.classname == "ai_zombie" || trace_ent.classname == "ai_zombie_head" 
 	|| trace_ent.classname == "ai_zombie_rarm" ||trace_ent.classname == "ai_zombie_larm" 

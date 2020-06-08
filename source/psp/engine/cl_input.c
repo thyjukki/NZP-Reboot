@@ -320,6 +320,7 @@ Send the intended movement message to the server
 */
 
 cvar_t waypoint_mode;
+float crosshair_opacity;
 void CL_BaseMove (usercmd_t *cmd)
 {
 	if (cls.signon != SIGNONS)//BLUBS CHANGED HERE
@@ -344,7 +345,13 @@ void CL_BaseMove (usercmd_t *cmd)
 		cmd->sidemove += cl_sidespeed * CL_KeyState (&in_right);
 		cmd->sidemove -= cl_sidespeed * CL_KeyState (&in_left);
 	}
+
+	// crosshair stuff
 	croshhairmoving = true;
+	crosshair_opacity -= 8;
+	if (crosshair_opacity <= 128)
+		crosshair_opacity = 128;
+
 	cmd->sidemove += cl_sidespeed * CL_KeyState (&in_moveright);
 	cmd->sidemove -= cl_sidespeed * CL_KeyState (&in_moveleft);
 
@@ -366,8 +373,16 @@ void CL_BaseMove (usercmd_t *cmd)
 		cmd->sidemove *= cl_movespeedkey.value;
 		cmd->upmove *= cl_movespeedkey.value;
 	}
-	if (!CL_KeyState (&in_moveright) && !CL_KeyState (&in_moveleft) && !CL_KeyState (&in_forward) && !CL_KeyState (&in_back))
+
+	// reset crosshair
+	if (!CL_KeyState (&in_moveright) && !CL_KeyState (&in_moveleft) && !CL_KeyState (&in_forward) && !CL_KeyState (&in_back)) {
 		croshhairmoving = false;
+
+		crosshair_opacity += 22;
+
+		if (crosshair_opacity >= 255)
+			crosshair_opacity = 255;
+	}	
 }
 
 int infront(edict_t *ent1, edict_t *ent2)
