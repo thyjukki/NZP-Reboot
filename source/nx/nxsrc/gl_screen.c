@@ -1605,7 +1605,6 @@ int GetWeaponZoomAmmount (void)
 {
     switch (cl.stats[STAT_ACTIVEWEAPON])
     {
-        case W_MP40:
         case W_357:
         case W_SAWNOFF:
         case W_TRENCH:
@@ -1620,13 +1619,13 @@ int GetWeaponZoomAmmount (void)
             break;
         case W_STG:
         case W_BROWNING:
+        case W_MP40:
             return 10;
             break;
         case W_KAR:
         case W_GEWEHR:
         case W_M1:
         case W_M1A1:
-        case W_BAR:
         case W_FG:
         case W_KAR_SCOPE:
         case W_PTRS:

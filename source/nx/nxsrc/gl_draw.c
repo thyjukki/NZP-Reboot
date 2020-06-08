@@ -332,6 +332,7 @@ qpic_t	*Draw_CachePic (const char *path)
 	// HACK HACK HACK --- we need to keep the bytes for
 	// the translatable player picture just for the menu
 	// configuration dialog
+
 	if (!strcmp (path, "gfx/menuplyr.lmp"))
 		memcpy (menuplyr_pixels, dat->data, dat->width*dat->height);
 
