@@ -807,6 +807,8 @@ static GLuint useFullbrightTexLoc;
 static GLuint useOverbrightLoc;
 static GLuint useAlphaTestLoc;
 static GLuint alphaLoc;
+static GLuint grayscale_enableLoc;
+
 
 #define vertAttrIndex 0
 #define texCoordsAttrIndex 1
@@ -852,6 +854,8 @@ void GLWorld_CreateShaders (void)
 		"uniform bool UseOverbright;\n"
 		"uniform bool UseAlphaTest;\n"
 		"uniform float Alpha;\n"
+		"uniform bool gs_mod;\n"
+
 		"\n"
 		"varying float FogFragCoord;\n"
 		"\n"
@@ -870,6 +874,12 @@ void GLWorld_CreateShaders (void)
 		"	fog = clamp(fog, 0.0, 1.0);\n"
 		"	result = mix(gl_Fog.color, result, fog);\n"
 		"	result.a = Alpha;\n" // FIXME: This will make almost transparent things cut holes though heavy fog
+		"   if (gs_mod) {\n"
+		"       float value = clamp((result.r * 0.33) + (result.g * 0.55) + (result.b * 0.11), 0.0, 1.0);\n"
+		"       result.r = value;\n"
+		"       result.g = value;\n"
+		"       result.b = value;\n"
+		"   }"
 		"	gl_FragColor = result;\n"
 		"}\n";
 	
@@ -888,6 +898,7 @@ void GLWorld_CreateShaders (void)
 		useOverbrightLoc = GL_GetUniformLocation (&r_world_program, "UseOverbright");
 		useAlphaTestLoc = GL_GetUniformLocation (&r_world_program, "UseAlphaTest");
 		alphaLoc = GL_GetUniformLocation (&r_world_program, "Alpha");
+		grayscale_enableLoc = GL_GetUniformLocation (&r_world_program, "gs_mod");
 	}
 }
 
@@ -942,6 +953,10 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 	GL_Uniform1iFunc (useOverbrightLoc, (int)gl_overbright.value);
 	GL_Uniform1iFunc (useAlphaTestLoc, 0);
 	GL_Uniform1fFunc (alphaLoc, entalpha);
+
+	// naievil -- experimental grayscale shader
+	GL_Uniform1fFunc (grayscale_enableLoc, sv_player->v.renderGrayscale);
+
 	
 	for (i=0 ; i<model->numtextures ; i++)
 	{

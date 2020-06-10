@@ -161,6 +161,7 @@ typedef struct
 	float   Flash_Size;
 	float   currentmag2;
 	float   maxspeed;
+	float   renderGrayscale;
 } entvars_t;
 
 #define PROGHEADER_CRC 5927

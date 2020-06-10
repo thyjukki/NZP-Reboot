@@ -79,6 +79,8 @@ static GLuint fullbrightTexLoc;
 static GLuint useFullbrightTexLoc;
 static GLuint useOverbrightLoc;
 static GLuint useAlphaTestLoc;
+static GLuint aliasgrayscale_enableLoc;
+
 
 #define pose1VertexAttrIndex 0
 #define pose1NormalAttrIndex 1
@@ -171,6 +173,7 @@ void GLAlias_CreateShaders (void)
 		"uniform bool UseFullbrightTex;\n"
 		"uniform bool UseOverbright;\n"
 		"uniform bool UseAlphaTest;\n"
+		"uniform bool gs_mod;\n"
 		"\n"
 		"varying float FogFragCoord;\n"
 		"\n"
@@ -189,6 +192,12 @@ void GLAlias_CreateShaders (void)
 		"	fog = clamp(fog, 0.0, 1.0);\n"
 		"	result = mix(gl_Fog.color, result, fog);\n"
 		"	result.a = gl_Color.a;\n" // FIXME: This will make almost transparent things cut holes though heavy fog
+		"   if (gs_mod) {\n"
+		"       float value = clamp((result.r * 0.33) + (result.g * 0.55) + (result.b * 0.11), 0.0, 1.0);\n"
+		"       result.r = value;\n"
+		"       result.g = value;\n"
+		"       result.b = value;\n"
+		"   }"
 		"	gl_FragColor = result;\n"
 		"}\n";
 
@@ -208,6 +217,7 @@ void GLAlias_CreateShaders (void)
 		useFullbrightTexLoc = GL_GetUniformLocation (&r_alias_program, "UseFullbrightTex");
 		useOverbrightLoc = GL_GetUniformLocation (&r_alias_program, "UseOverbright");
 		useAlphaTestLoc = GL_GetUniformLocation (&r_alias_program, "UseAlphaTest");
+		aliasgrayscale_enableLoc = GL_GetUniformLocation (&r_alias_program, "gs_mod");
 	}
 }
 
@@ -265,6 +275,10 @@ void GL_DrawAliasFrame_GLSL (aliashdr_t *paliashdr, lerpdata_t lerpdata, gltextu
 	GL_Uniform1iFunc (useFullbrightTexLoc, (fb != NULL) ? 1 : 0);
 	GL_Uniform1fFunc (useOverbrightLoc, overbright ? 1 : 0);
 	GL_Uniform1iFunc (useAlphaTestLoc, (currententity->model->flags & MF_HOLEY) ? 1 : 0);
+
+	// naievil -- experimental grayscale mod
+	GL_Uniform1fFunc (aliasgrayscale_enableLoc, sv_player->v.renderGrayscale);
+
 
 // set textures
 	GL_SelectTexture (GL_TEXTURE0);

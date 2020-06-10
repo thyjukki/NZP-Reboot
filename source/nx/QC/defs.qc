@@ -173,6 +173,7 @@ void            end_sys_globals;
 .float 			Flash_Size;
 .float          currentmag2;
 .float          maxspeed;
+.float          renderGrayscale;
 void            end_sys_fields; 
 
 /*
@@ -649,3 +650,10 @@ float pow(float base, float n) = {
 	return 0;
 };
 
+void enableGrayscale(void) = {
+	self.renderGrayscale = 1;
+}
+
+void disableGrayscale(void) = {
+	self.renderGrayscale = 0;
+}
