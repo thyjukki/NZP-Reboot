@@ -923,6 +923,7 @@ void Host_Init (quakeparms_t *parms)
 	host_initialized = true;
 	M_Start_Menu_f();
 	Sys_Printf ("========Quake Initialized=========\n");
+	Con_Printf ("==========NZP Initialized=========\n");
 }
 
 

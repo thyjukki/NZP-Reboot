@@ -109,12 +109,12 @@ OBJS = $(COMMON_OBJS) $(HARDWARE_VIDEO_ONLY_OBJS)
 GU_LIBS	= -lpspgum_vfpu -lpspvfpu -lpspgu -lpspvram
 AUDIO_LIBS	= -lpspaudiolib -lpspaudio -lpspmp3 m33libs/libpspaudiocodec.a m33libs/libpspkubridge.a
 
-MISC_LIBS	= -lpsprtc -lpspmath -lpsppower -lpsphprm -ljpeg m33libs/libpng.a m33libs/libz.a iridlibs/libPerf.a
+MISC_LIBS	= -lpsprtc -lpspmath -lpsppower -lpsphprm -ljpeg -lpng m33libs/libz.a iridlibs/libPerf.a
 NET_LIBS    = -lpspwlan -lpspnet_adhoc -lpspnet_adhocctl
 STD_LIBS	= -lstdc++ -lm -lc
 LIBS		= $(GU_LIBS) $(AUDIO_LIBS) $(MISC_LIBS) $(STD_LIBS) $(NET_LIBS)
 
-CFLAGS = -ffast-math -O3 -G0 -Wall -Did386="0" -DPSP $(MODE) $(HARDWARE_VIDEO_ONLY_FLAGS) -DSWIZZLE32 -DSLIM -DPSP_VFPU -DPSP_MP3_HWDECODE -DFULLBRIGHT -DHL_RENDER -Wno-strict-aliasing
+CFLAGS = -ffast-math -O3 -G0 -Wall -Did386="0" -DPSP $(MODE) $(HARDWARE_VIDEO_ONLY_FLAGS) -DSWIZZLE32 -DSLIM -DPSP_MP3_HWDECODE -DFULLBRIGHT -DHL_RENDER -Wno-strict-aliasing
 CXXFLAGS = -fno-rtti -Wcast-qual -Wno-write-strings -Wno-sign-compare -Wno-strict-aliasing
 ASFLAGS = $(CFLAGS) -c
 

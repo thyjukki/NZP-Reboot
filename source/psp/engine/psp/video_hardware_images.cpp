@@ -746,12 +746,14 @@ byte *LoadPNG (FILE *fin, int matchwidth, int matchheight)
 		return NULL;
 	}
 
+	/* naievil -- invalid use of incomplete type
 	if (setjmp(png_ptr->jmpbuf))
 	{
 		png_destroy_read_struct (&png_ptr, &pnginfo, NULL);
 		fclose (fin);
 		return NULL;
 	}
+	*/
 
 	png_set_read_fn (png_ptr, fin, PNG_IO_user_read_data);
 	png_set_sig_bytes (png_ptr, 8);
@@ -780,7 +782,7 @@ byte *LoadPNG (FILE *fin, int matchwidth, int matchheight)
 	}
 
 	if (colortype == PNG_COLOR_TYPE_GRAY && bitdepth < 8)
-		png_set_gray_1_2_4_to_8 (png_ptr);
+		png_set_expand_gray_1_2_4_to_8 (png_ptr);
 
 	if (png_get_valid(png_ptr, pnginfo, PNG_INFO_tRNS))
 		png_set_tRNS_to_alpha (png_ptr);
