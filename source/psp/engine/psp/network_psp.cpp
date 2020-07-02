@@ -49,6 +49,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define EWOULDBLOCK		111
 #define ECONNREFUSED	11
 
+// SDK Network fix START (creds to Joel16)
+static __inline__ unsigned int sceAllegrexWsbw(unsigned int x) {
+	return (((x & 0xFF)<<24) | ((x & 0xFF00)<<8) | ((x>>8) & 0xFF00) | ((x>>24) & 0xFF));
+}
+
+static __inline__ unsigned int sceAllegrexWsbh(unsigned int x) {
+	return (((x<<8) & 0xFF00FF00) | ((x>>8) & 0x00FF00FF));
+}
+
+static inline u32 SCE_HTONL(u32 hostlong) {
+	return sceAllegrexWsbw(hostlong);
+}
+
+static inline u16 SCE_HTONS(u16 hostshort) {
+	return sceAllegrexWsbh(hostshort);
+}
+
+static inline u32 SCE_NTOHL(u32 hostlong) {
+	return sceAllegrexWsbw(hostlong);
+}
+
+static inline u16 SCE_NTOHS(u16 hostshort) {
+	return sceAllegrexWsbh(hostshort);
+}
+// Brimstone: Dumb SDK fix END
+
 int totalAccessPoints = 0;
 cvar_t accesspoint = {"accesspoint", "1", qtrue};
 int accessPointNumber[100];
@@ -184,7 +210,7 @@ namespace quake
 
 				((struct sockaddr_in *)&broadcast_addr)->sin_family = AF_INET;
 				((struct sockaddr_in *)&broadcast_addr)->sin_addr.s_addr = INADDR_BROADCAST;
-				((struct sockaddr_in *)&broadcast_addr)->sin_port = htons(net_hostport);
+				((struct sockaddr_in *)&broadcast_addr)->sin_port = SCE_HTONS(net_hostport);
 
 				get_socket_addr (control_socket, &addr);
 				Q_strcpy(my_tcpip_address,  addr_to_string(&addr));
@@ -250,7 +276,7 @@ namespace quake
 
 				address.sin_family = AF_INET;
 				address.sin_addr.s_addr = INADDR_ANY;
-				address.sin_port = htons(port);
+				address.sin_port = SCE_HTONS(port);
 				if( bind (newsocket, (sockaddr *)&address, sizeof(address)) == -1)
 					goto ErrorReturn;
 
@@ -377,8 +403,8 @@ namespace quake
 				static char buffer[22];
 				int haddr;
 
-				haddr = ntohl(((struct sockaddr_in *)addr)->sin_addr.s_addr);
-				sprintf(buffer, "%d.%d.%d.%d:%d", (haddr >> 24) & 0xff, (haddr >> 16) & 0xff, (haddr >> 8) & 0xff, haddr & 0xff, ntohs(((struct sockaddr_in *)addr)->sin_port));
+				haddr = SCE_NTOHL(((struct sockaddr_in *)addr)->sin_addr.s_addr);
+				sprintf(buffer, "%d.%d.%d.%d:%d", (haddr >> 24) & 0xff, (haddr >> 16) & 0xff, (haddr >> 8) & 0xff, haddr & 0xff, SCE_NTOHS(((struct sockaddr_in *)addr)->sin_port));
 				return buffer;
 			}
 
@@ -393,8 +419,8 @@ namespace quake
 				ipaddr = (ha1 << 24) | (ha2 << 16) | (ha3 << 8) | ha4;
 
 				addr->sa_family = AF_INET;
-				((struct sockaddr_in *)addr)->sin_addr.s_addr = htonl(ipaddr);
-				((struct sockaddr_in *)addr)->sin_port = htons(hp);
+				((struct sockaddr_in *)addr)->sin_addr.s_addr = SCE_HTONL(ipaddr);
+				((struct sockaddr_in *)addr)->sin_port = SCE_HTONS(hp);
 				return 0;
 			}
 
@@ -445,7 +471,7 @@ namespace quake
 					return -1;
 
 				addr->sa_family = AF_INET;
-				((struct sockaddr_in *)addr)->sin_port = htons(net_hostport);
+				((struct sockaddr_in *)addr)->sin_port = SCE_HTONS(net_hostport);
 				((struct sockaddr_in *)addr)->sin_addr.s_addr = *(int *)hostentry->h_addr_list[0];
 
 				return 0;
@@ -471,13 +497,13 @@ namespace quake
 
 			int get_socket_port (struct qsockaddr *addr)
 			{
-				return ntohs(((struct sockaddr_in *)addr)->sin_port);
+				return SCE_NTOHS(((struct sockaddr_in *)addr)->sin_port);
 			}
 
 
 			int set_socket_port (struct qsockaddr *addr, int port)
 			{
-				((struct sockaddr_in *)addr)->sin_port = htons(port);
+				((struct sockaddr_in *)addr)->sin_port = SCE_HTONS(port);
 				return 0;
 			}
 
@@ -532,8 +558,8 @@ namespace quake
 					port = net_hostport;
 
 				hostaddr->sa_family = AF_INET;
-				((struct sockaddr_in *)hostaddr)->sin_port = htons((short)port);
-				((struct sockaddr_in *)hostaddr)->sin_addr.s_addr = (my_addr & htonl(mask)) | htonl(addr);
+				((struct sockaddr_in *)hostaddr)->sin_port = SCE_HTONS((short)port);
+				((struct sockaddr_in *)hostaddr)->sin_addr.s_addr = (my_addr & SCE_HTONL(mask)) | SCE_HTONL(addr);
 
 				return 0;
 			}
