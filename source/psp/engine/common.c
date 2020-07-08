@@ -874,10 +874,13 @@ void COM_FileBase (char *in, char *out)
 
 	s = in + strlen(in) - 1;
 
-	while (s != in && *s != '.')
+	while (s != in && *s != '.') {
 		s--;
+	}
 
-	for (s2 = s ; *s2 && *s2 != '/' ; s2--)
+	// naievil -- added (s2 != in) in order to prevent progs.dat from returning a 
+	// base name of string before the beginning of the original memory pointer!
+	for (s2 = s ; (s2 != in) && (*s2 != '/') ; s2--)
 	;
 
 	if (s-s2 < 2)
@@ -1718,15 +1721,18 @@ byte *COM_LoadFile (char *path, int usehunk)
 		else
 			buf = loadbuf;
 	}
-	else
+	else {
 		Sys_Error ("COM_LoadFile: bad usehunk");
+	}
 
-	if (!buf)
+	if (!buf) {
 		Sys_Error ("COM_LoadFile: not enough space for %s", path);
+	}
 
 	((byte *)buf)[len] = 0;
 
 	Sys_FileRead (h, buf, len);
+
 	COM_CloseFile (h);
 
 	return buf;

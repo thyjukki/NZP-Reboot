@@ -147,6 +147,8 @@ typedef struct glpoly_s
 	int			flags;		// for SURF_UNDERWATER
     struct glpoly_s	*detail_chain;		// next detail poly in chain
     struct glpoly_s	*caustics_chain;	// next caustic poly in chain
+    vec3_t midpoint;//MHQuake
+	float fxofs;	//MHQuake
 	// This is a variable sized array, and hence must be the last element in
 	// this structure.
 	//
@@ -154,9 +156,9 @@ typedef struct glpoly_s
 	// vertices, and the second half have copies of the first half's XYZs but
 	// keep the light map texture coordinates. This makes the vertices easier
 	// to render on the PSP.
-	glvert_t	verts[1];
-    vec3_t midpoint;//MHQuake
-	float fxofs;	//MHQuake
+	// naievil -- changed from verts[1] to verts[2] in order to not have possible out of bounds error during compilation
+	//            and create some sort of condition that causes the verts to not be assigned!
+	glvert_t	verts[2];
 } glpoly_t;
 
 typedef struct msurface_s
