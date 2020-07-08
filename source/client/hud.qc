@@ -1383,6 +1383,10 @@ void(float width, float height) HUD_Draw =
 void UpdatePerks(float newperks) {
 	float s;
 
+	// avoids out of bounds err - moto
+	if (newperks == 0)
+		current_perk_order = 0;
+
 	for(float i = 1; i < 129; i *= 2) {
 		if (newperks & i && !(perks & i)) {
 			perk_order[current_perk_order] = i;

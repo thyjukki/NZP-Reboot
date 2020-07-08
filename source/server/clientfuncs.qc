@@ -90,7 +90,7 @@ void SetPerk(entity client, float to)
 	#ifndef PSP
 	#ifndef NX
 	
-    msg_entity = client;
+    	msg_entity = client;
 	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
 	WriteByte(MSG_ONE, EVENT_PERK);
 	WriteLong(MSG_ONE, to);
