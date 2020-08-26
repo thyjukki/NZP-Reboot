@@ -248,6 +248,7 @@ float tracemove(vector start, vector min, vector max, vector end, float nomonste
 
 .float way_path[40];
 .float way_cur;
+.float last_path;
 
 .float sound_time;
 .float s_time;

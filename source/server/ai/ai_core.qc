@@ -504,13 +504,19 @@ void() PathfindToEnemy =
 	//just to stop any warns.
 	path_failure = 0;
 
-	#ifndef PC
-	path_result = Do_Pathfind_psp(self, self.enemy);
-	#else
-	path_result = Do_Pathfind(self, self.enemy);
-	#endif
+	// Limit to every 3 frames, for performance sake.
+	if (framecount % 3 == 0 || !self.last_path || path_result == 1) {
+		#ifndef PC
+		path_result = Do_Pathfind_psp(self, self.enemy);
+		#else
+		path_result = Do_Pathfind(self, self.enemy);
+		#endif
+		self.last_path = path_result;
+	} else {
+		path_result = self.last_path;
+	}
 
-	//FIXME - further test if this can equate to 0 in FTE..
+	// FIXME - further test if this can equate to 0 in FTE..
 	if (path_result >= 1) {
 
 		#ifndef PC
@@ -540,7 +546,15 @@ void() NextPathfindToEnemy {
 	// same as PathfindToEnemy on non-FTE platforms
 	#ifndef PC
 	float path_success;
-	path_success = Do_Pathfind_psp(self,self.enemy);
+
+	// Limit to every 3 frames, for performance sake.
+	if (framecount % 3 == 0 || !self.last_path) {
+		path_success = Do_Pathfind_psp(self,self.enemy);
+		self.last_path = path_success;
+	} else {
+		path_success = self.last_path;
+	}
+
 	if(path_success ==1) {
 		self.goaldummy.origin = Get_Next_Waypoint(self,self.origin,VEC_HULL_MIN,VEC_HULL_MAX);
 		setorigin(self.goaldummy,self.goaldummy.origin);
@@ -641,12 +655,11 @@ void(float dist) Inside_Walk = {
 
 .float droptime;
 void(float dist) Zombie_Walk =  {
-	//Resetting velocity from last frame (except for vertical)
+	// Resetting velocity from last frame (except for vertical)
 	self.velocity_x = 0;
 	self.velocity_y = 0;
 	//self.flags = self.flags | FL_PARTIALGROUND;
 
-	//check_onfire();
 	if (!(self.flags & FL_ONGROUND)) {
 
 		if (!self.droptime) {

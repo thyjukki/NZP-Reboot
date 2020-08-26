@@ -362,8 +362,18 @@ void(float which) SetZombieHitBox =
 	}
 };
 
-void() Zombie_Think = //called every frame for zombies
+//
+// Zombie_Think()
+// Called every (other) frame of animation for Zombies.
+// Handles logic for out-of-place things, like waffe'd or flamed zombies.
+//
+void() Zombie_Think =
 {
+	// Limit Zombie_Think to every other frame, consistently.
+	if (framecount % 2 == 1)
+		return;
+
+	// Burn if on Fire.
 	if (self.onfire) {
 		#ifdef PC
 		te_flamejet(self.origin, v_up*8, 10);
@@ -383,11 +393,13 @@ void() Zombie_Think = //called every frame for zombies
 		}
 	}
 
+	// Do the Waffe death animation.
 	if (self.classname == "wunder") {
 		self.th_diewunder();
 		return;
 	}
 
+	// Periodically do Damage if missing a Head.
 	if (self.bleedingtime < time && !self.head.deadflag)
 	{
 		self.bleedingtime = time + 2;
