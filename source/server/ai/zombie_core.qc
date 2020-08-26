@@ -3,17 +3,16 @@ void() crawler_rip_board1;
 void() crawler_da1;
 void() crawler_die1;
 
-
-float EMPTY_BBOX = 0;
-float BASE_BBOX = 1;
-float IDLE_BBOX = 2;
-//Rising from ground bbox
-float WALK1_BBOX = 4;
-float WALK2_BBOX = 5;
-float WALK3_BBOX = 6;
-float JOG_BBOX = 7;
-float RUN_BBOX = 8;
-float CRAWLER_BBOX = 9;
+// MotoLegacy - use #defines here to save on RAM
+#define EMPTY_BBOX 		0
+#define BASE_BBOX 		1
+#define IDLE_BBOX 		2
+#define WALK1_BBOX 		4
+#define WALK2_BBOX 		5
+#define WALK3_BBOX 		6
+#define JOG_BBOX 		7
+#define RUN_BBOX 		8
+#define CRAWLER_BBOX 	9
 
 void(float what) play_sound_z =
 {
@@ -183,15 +182,6 @@ void(float which) SetZombieHitBox =
 	{
 		case EMPTY_BBOX:
 		{
-			/*setorigin(self.head,'0 0 0');
-			setsize (self.head, '0 0 0', '0 0 0');
-			
-			setorigin(self.larm, '0 0 0');
-			setsize (self.larm, '0 0 0','0 0 0');
-			
-			setorigin(self.rarm, '0 0 0');
-			setsize (self.rarm, '0 0 0','0 0 0');*/
-			
 			self.head.view_ofs = '0 0 0';
 			self.rarm.view_ofs = '0 0 0';
 			self.larm.view_ofs = '0 0 0';
@@ -406,27 +396,6 @@ void() Zombie_Think =
 		DamageHandler (self, self.usedent, z_health * 0.05, S_HEADSHOT);
 	}
 }
-
-//////////////////////////////////////////////////////////////////////
-//37-51
-/*
-$frame walk1 walk2 walk3 walk4 walk5 walk6 walk7 walk8 walk9 walk10 walk11 walk12 walk13 walk14 walk15
-void()	zombie_walk1		=[	$walk1,		zombie_walk2	] 	{self.nextthink = time + 0.1;Zombie_Walk(3.95);*/		/*if(freeze_time < time)*/		/* self.frame = 37;};
-void()	zombie_walk2		=[	$walk2,		zombie_walk3	] 	{self.nextthink = time + 0.1;Zombie_Walk(1); self.frame = 38;};
-void()	zombie_walk3		=[	$walk3,		zombie_walk4	] 	{self.nextthink = time + 0.1;Zombie_Walk(9.472); self.frame = 39;};
-void()	zombie_walk4		=[	$walk4,		zombie_walk5	] 	{self.nextthink = time + 0.1;Zombie_Walk(5.046); self.frame = 40;};//FOOTSTEP
-void()	zombie_walk5		=[	$walk5,		zombie_walk6	] 	{self.nextthink = time + 0.1;Zombie_Walk(6.425); self.frame = 41;};//
-void()	zombie_walk6		=[	$walk6,		zombie_walk7	] 	{self.nextthink = time + 0.1;Zombie_Walk(6.299); self.frame = 42;};
-void()	zombie_walk7		=[	$walk7,		zombie_walk8	] 	{self.nextthink = time + 0.1;Zombie_Walk(6.788); self.frame = 43;};
-void()	zombie_walk8		=[	$walk8,		zombie_walk9	] 	{self.nextthink = time + 0.1;Zombie_Walk(5.516); self.frame = 44;};//FOOTSTEP
-void()	zombie_walk9		=[	$walk9,		zombie_walk10	] 	{self.nextthink = time + 0.1;Zombie_Walk(2.191); self.frame = 45;};
-void()	zombie_walk10		=[	$walk10,		zombie_walk11	] 	{self.nextthink = time + 0.1;Zombie_Walk(5.845); self.frame = 46;};
-void()	zombie_walk11		=[	$walk11,		zombie_walk12	] 	{self.nextthink = time + 0.1;Zombie_Walk(7.42); self.frame = 47;};//FOOTSTEP
-void()	zombie_walk12		=[	$walk12,		zombie_walk13	] 	{self.nextthink = time + 0.1;Zombie_Walk(2.683); self.frame = 48;};
-void()	zombie_walk13		=[	$walk13,		zombie_walk14	] 	{self.nextthink = time + 0.1;Zombie_Walk(6.001); self.frame = 49;};
-void()	zombie_walk14		=[	$walk14,		zombie_walk15	] 	{self.nextthink = time + 0.1;Zombie_Walk(5.845); self.frame = 50;};
-void()	zombie_walk15		=[	$walk15,		Zombie_Walk_Setup	] 	{self.nextthink = time + 0.1;Zombie_Walk(6.793); self.frame = 51;};//FOOTSTEP
-*/
 
 void() zombie_footstep
 {

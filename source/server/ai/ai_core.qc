@@ -502,19 +502,14 @@ void() PathfindToEnemy =
 	float path_failure;
 
 	//just to stop any warns.
+	path_result = 0;
 	path_failure = 0;
 
-	// Limit to every 3 frames, for performance sake.
-	if (framecount % 3 == 0 || !self.last_path || path_result == 1) {
-		#ifndef PC
-		path_result = Do_Pathfind_psp(self, self.enemy);
-		#else
-		path_result = Do_Pathfind(self, self.enemy);
-		#endif
-		self.last_path = path_result;
-	} else {
-		path_result = self.last_path;
-	}
+	#ifndef PC
+	path_result = Do_Pathfind_psp(self, self.enemy);
+	#else
+	path_result = Do_Pathfind(self, self.enemy);
+	#endif
 
 	// FIXME - further test if this can equate to 0 in FTE..
 	if (path_result >= 1) {
@@ -547,13 +542,7 @@ void() NextPathfindToEnemy {
 	#ifndef PC
 	float path_success;
 
-	// Limit to every 3 frames, for performance sake.
-	if (framecount % 3 == 0 || !self.last_path) {
-		path_success = Do_Pathfind_psp(self,self.enemy);
-		self.last_path = path_success;
-	} else {
-		path_success = self.last_path;
-	}
+	path_success = Do_Pathfind_psp(self,self.enemy);
 
 	if(path_success ==1) {
 		self.goaldummy.origin = Get_Next_Waypoint(self,self.origin,VEC_HULL_MIN,VEC_HULL_MAX);
@@ -718,6 +707,11 @@ void() Zombie_AI = {
 
 // This function ensures that only one zombie's ai is done at a time, brings down lag significantly
 void() Do_Zombie_AI = {
+
+	// Limit execution to every 2 frames
+	if (framecount % 2 == 1)
+		return;
+
 	local entity z;
 	
 	z = find(lastzombie,aistatus,"1");
