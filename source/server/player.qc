@@ -277,21 +277,6 @@ void() PlayerPreThink =
 	}
 
 	JumpCheck(0);
-
-	// refuel/cool m2
-	if (self.ltime < time) {
-		if (self.currentmag == 0 && !self.cooldown) {
-			self.cooldown = true;
-		}
-
-		if (self.cooldown && self.currentmag > 20)
-			self.cooldown = false;
-		
-		if (self.weapon == W_M2 || self.weapon == W_FIW && self.currentmag < getWeaponMag(self.weapon))
-			self.currentmag += 1;
-
-		self.ltime = time + 0.1;
-	}
 };
 
 void() PlayerPostThink =

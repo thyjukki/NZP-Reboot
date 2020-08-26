@@ -75,7 +75,7 @@ void() StartFrame =
 	
 	if (roundinit) {
 		Round_Core();
-		Do_Zombie_AI ();
+		Do_Zombie_AI();
 	} else {
 	
 		entity SpawnedIn;
@@ -99,15 +99,13 @@ void() precaches =
 {
 	precache_model ("models/player.mdl");
 	
-	#ifndef PSP
-	#ifndef NX
+	#ifdef PC
 	precache_model ("models/v_morphine.mdl");
 
 	if (world.song != "")
 		precache_sound (world.song);
 	#endif
-	#endif
-	
+
 	precache_model ("progs/Sprites/revive.spr");
 	precache_model ("progs/Sprites/revive_white.spr");
 	
@@ -297,7 +295,6 @@ void() worldspawn =
 	G_PERKS = 0;
 	G_PERKPOWER = 0;
 	load_nzd();
-	
 }
 
 void() SpectatorConnect =
@@ -308,17 +305,17 @@ void() SpectatorConnect =
 
 void() RelinkZombies =
 {
-	entity ent,ent2;
+	entity ent, ent2;
 	local float i;
 	local vector min, max;
 
 
-	//warn
+	// Initialize
 	ent = ent2 = world;
 
 	while ((ent = find (ent, classname, "ai_zombie")))
 	{
-		if(ent.currentHitBoxSetup == 0)//empty bbox, we don't care to update
+		if(ent.currentHitBoxSetup == 0)// empty bbox, we don't care to update
 			continue;
 		
 		makevectors (ent.angles);
@@ -333,29 +330,27 @@ void() RelinkZombies =
 				ent2 = ent.rarm;
 				
 			
-			if (ent2)
+			if (ent2 && ent2.deadflag)
 			{
-				//setorigin (ent.head, ent.origin + v_right * ent.head.view_ofs_x + v_forward * ent.head.view_ofs_y + v_up * ent.head.view_ofs_z);
-				setorigin (ent2, ent.origin);
-				//fixme, move angles set and frame set to below the continue, we only want to update origin (maybe angles too?)
+				if (ent2.origin != ent.origin) {
+					setorigin (ent2, ent.origin);
+				}
+
 				ent2.angles = ent.angles;
 				
-				if(ent2.deadflag)
-					ent2.frame = ent.frame; 
-				
-				//if(OnlyOrigin)
-				//	continue;
-					
-				min = ent2.bbmins + (v_right * ent2.view_ofs_x) + (v_forward * ent2.view_ofs_y) + (v_up * ent2.view_ofs_z);
-				max = ent2.bbmaxs + (v_right * ent2.view_ofs_x) + (v_forward * ent2.view_ofs_y) + (v_up * ent2.view_ofs_z);
-				
-				if(min_x > max_x) { min_x += max_x; max_x = min_x - max_x; min_x -= max_x; }
-				if(min_y > max_y) { min_y += max_y; max_y = min_y - max_y; min_y -= max_y; }
-				if(min_z > max_z) { min_z += max_z; max_z = min_z - max_z; min_z -= max_z; }
-				
-				setsize(ent2,min,max);
-			}
+				if (ent2.frame != ent.frame) {
+					ent2.frame = ent.frame;
 
+					min = ent2.bbmins + (v_right * ent2.view_ofs_x) + (v_forward * ent2.view_ofs_y) + (v_up * ent2.view_ofs_z);
+					max = ent2.bbmaxs + (v_right * ent2.view_ofs_x) + (v_forward * ent2.view_ofs_y) + (v_up * ent2.view_ofs_z);
+					
+					if(min_x > max_x) { min_x += max_x; max_x = min_x - max_x; min_x -= max_x; }
+					if(min_y > max_y) { min_y += max_y; max_y = min_y - max_y; min_y -= max_y; }
+					if(min_z > max_z) { min_z += max_z; max_z = min_z - max_z; min_z -= max_z; }
+					
+					setsize(ent2, min, max);
+				}
+			}
 		}
 	}
 }

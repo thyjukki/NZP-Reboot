@@ -2181,11 +2181,11 @@ void() CheckPlayer =
 
 	// FIXME - can't do frame independent stance changing.. ofs starts spazzing..
 	if (self.view_ofs_z > self.new_ofs_z) {
-			self.changestance = true;
-			self.view_ofs_z = self.view_ofs_z - 1.5;
+		self.changestance = true;
+		self.view_ofs_z = self.view_ofs_z - 1.5;
 	} else if (self.view_ofs_z < self.new_ofs_z) {
-			self.changestance = true;
-			self.view_ofs_z = self.view_ofs_z + 1.5;
+		self.changestance = true;
+		self.view_ofs_z = self.view_ofs_z + 1.5;
 	} else {
 		self.changestance = false;
 	}
@@ -2283,7 +2283,8 @@ void() CheckPlayer =
 
 void () Weapon_Logic =
 {
-	W_Frame_Update ();
+	W_Frame_Update();
+	W2_Frame_Update();
 	Impulse_Functions();
 
 	#ifndef PC
@@ -2430,6 +2431,23 @@ void () Weapon_Logic =
 	}
 	else if (!self.button6)
 		self.semiknife = false;
+
+	// M2 Flamethrower Logic
+	if (self.weapon == W_M2 || self.weapon == W_FIW) {
+		if (self.ltime < time) {
+			if (self.currentmag == 0 && !self.cooldown) {
+				self.cooldown = true;
+			}
+
+			if (self.cooldown && self.currentmag > 20)
+				self.cooldown = false;
+			
+			if (self.currentmag < getWeaponMag(self.weapon))
+				self.currentmag += 1;
+
+			self.ltime = time + 0.1;
+		}
+	}
 	
 	CheckImpulses();
 	CheckPlayer();	

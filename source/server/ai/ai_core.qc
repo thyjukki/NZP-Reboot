@@ -716,7 +716,7 @@ void() Zombie_AI = {
 	}
 }
 
-//This function ensures that only one zombie's ai is done at a time, brings down lag significantly
+// This function ensures that only one zombie's ai is done at a time, brings down lag significantly
 void() Do_Zombie_AI = {
 	local entity z;
 	

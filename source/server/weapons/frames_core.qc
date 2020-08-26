@@ -80,8 +80,6 @@ void () W_Frame_Update =
 	// note: call whenever weapon frames are called!
 	if (self.anim_weapon_time > time)
 		return; //don't call every frame, if it is the animations will play too fast
-
-	W2_Frame_Update();
 	
 	self.anim_weapon_time = time + self.weapon_animduration;
 
