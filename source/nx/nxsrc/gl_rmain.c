@@ -704,7 +704,7 @@ void R_DrawEntitiesOnList (qboolean alphapass) //johnfitz -- added parameter
 			break;
 
 		case mod_halflife:
-			Sys_Error ("R_DrawHLModel not yet implemented!!!");
+			Sys_Error ("R_DrawHLModel not yet implemented!!!\n");
 			// Naievil -- fixme
 			//R_DrawHLModel (currententity);
 			break;

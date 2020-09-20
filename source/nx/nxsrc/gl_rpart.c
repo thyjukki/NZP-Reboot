@@ -490,12 +490,22 @@ void QMB_InitParticles (void)
 	ADD_PARTICLE_TEXTURE(ptex_lava, glpic, 0, 1, 128, 0, 192, 64);
 	ADD_PARTICLE_TEXTURE(ptex_blueflare, glpic, 0, 1, 192, 0, 256, 64);
 	ADD_PARTICLE_TEXTURE(ptex_generic, glpic, 0, 1, 0, 96, 96, 192);
-	ADD_PARTICLE_TEXTURE(ptex_smoke, glpic, 0, 1, 96, 96, 192, 192);
+	//ADD_PARTICLE_TEXTURE(ptex_smoke, glpic, 0, 1, 96, 96, 192, 192);
 	ADD_PARTICLE_TEXTURE(ptex_blood3, glpic, 0, 1, 192, 96, 256, 160);
 	ADD_PARTICLE_TEXTURE(ptex_bubble, glpic, 0, 1, 192, 160, 224, 192);
 
 	for (i=0 ; i<8 ; i++)
 		ADD_PARTICLE_TEXTURE(ptex_dpsmoke, glpic, i, 8, i * 32, 64, (i + 1) * 32, 96);
+
+	if (!(glpic = loadtextureimage("textures/particles/smoke")))
+	{
+		Clear_LoadingFill ();
+		Sys_Error("Cannot load textures/particles/smoke\n");
+		return;
+	}
+
+	ADD_PARTICLE_TEXTURE(ptex_smoke, glpic, 0, 1, 96, 96, 192, 192);
+
 
 	loading_cur_step++;
 	SCR_UpdateScreen ();

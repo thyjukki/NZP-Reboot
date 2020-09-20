@@ -2767,7 +2767,7 @@ void * Mod_LoadSpriteFrame (void * pin, mspriteframe_t **ppframe, int framenum)
 	dspriteframe_t		*pinframe;
 	mspriteframe_t		*pspriteframe;
 	int					width, height, size, origin[2];
-	char				name[64];
+	char				name[64], possiblename[64], withext[64];
 	src_offset_t			offset; //johnfitz
 
 	pinframe = (dspriteframe_t *)pin;
@@ -2794,12 +2794,26 @@ void * Mod_LoadSpriteFrame (void * pin, mspriteframe_t **ppframe, int framenum)
 	pspriteframe->tmax = (float)height/(float)TexMgr_PadConditional(height);
 	//johnfitz
 
-	q_snprintf (name, sizeof(name), "%s:frame%i", loadmodel->name, framenum);
-	offset = (src_offset_t)(pinframe+1) - (src_offset_t)mod_base; //johnfitz
-	pspriteframe->gltexture =
-		TexMgr_LoadImage (loadmodel, name, width, height, SRC_INDEXED,
-				  (byte *)(pinframe + 1), loadmodel->name, offset,
-				  TEXPREF_PAD | TEXPREF_ALPHA | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
+	// rbaldwin2 -- new sprite loading
+	COM_StripExtension(loadmodel->name, possiblename, strlen(loadmodel->name));
+	q_snprintf (withext, sizeof(possiblename), "%s_%i.tga", possiblename, framenum);
+	q_snprintf (possiblename, sizeof(possiblename), "%s_%i", possiblename, framenum);
+
+	FILE	*f;
+	COM_FOpenFile (withext, &f, NULL);
+	if (f) {
+		// New sprite loading with _<framenum>.tga
+		pspriteframe->gltexture = loadtextureimage(possiblename);
+	} else {
+		// Old spr loading
+		q_snprintf (name, sizeof(name), "%s:frame%i", loadmodel->name, framenum);
+		offset = (src_offset_t)(pinframe+1) - (src_offset_t)mod_base; //johnfitz
+		pspriteframe->gltexture =
+			TexMgr_LoadImage (loadmodel, name, width, height, SRC_INDEXED,
+					  (byte *)(pinframe + 1), loadmodel->name, offset,
+					  TEXPREF_PAD | TEXPREF_ALPHA | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
+	}
+
 
 	return (void *)((byte *)pinframe + sizeof (dspriteframe_t) + size);
 }

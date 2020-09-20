@@ -1175,8 +1175,9 @@ static void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	if (glt->flags & TEXPREF_ALPHA && !(glt->flags & TEXPREF_CONCHARS))
 	{
 		for (i = 0; i < (int) (glt->width * glt->height); i++)
-			if (data[i] == 255) //transparent index
-				break;
+			if (data[i] == 255)
+				break; //transparent index
+
 		if (i == (int) (glt->width * glt->height))
 			glt->flags -= TEXPREF_ALPHA;
 	}
@@ -1184,18 +1185,22 @@ static void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	// choose palette and padbyte
 	if (glt->flags & TEXPREF_FULLBRIGHT)
 	{
-		if (glt->flags & TEXPREF_ALPHA)
+		if (glt->flags & TEXPREF_ALPHA) {
 			usepal = d_8to24table_fbright_fence;
-		else
+		}
+		else {
 			usepal = d_8to24table_fbright;
+		}
 		padbyte = 0;
 	}
 	else if (glt->flags & TEXPREF_NOBRIGHT && gl_fullbrights.value)
 	{
-		if (glt->flags & TEXPREF_ALPHA)
+		if (glt->flags & TEXPREF_ALPHA) {
 			usepal = d_8to24table_nobright_fence;
-		else
+		}
+		else {
 			usepal = d_8to24table_nobright;
+		}
 		padbyte = 0;
 	}
 	else if (glt->flags & TEXPREF_CONCHARS)
