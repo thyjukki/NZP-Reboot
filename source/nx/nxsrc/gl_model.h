@@ -35,10 +35,22 @@ m*_t structures are in-memory
 
 // entity effects
 
-#define	EF_BRIGHTFIELD			1
+#define	EF_DIMLIGHT 			8
+#define	EF_BLUELIGHT			1
 #define	EF_MUZZLEFLASH 			2
 #define	EF_BRIGHTLIGHT 			4
-#define	EF_DIMLIGHT 			8
+#define	EF_REDLIGHT 			8
+#define	EF_ORANGELIGHT			16
+#define	EF_GREENLIGHT			32
+#define	EF_LIGHT				64
+#define	EF_NODRAW				128
+#define EF_BRIGHTFIELD			256
+#define EF_FULLBRIGHT			512
+#define EF_DARKLIGHT			1024
+#define EF_DARKFIELD			2048
+#define EF_PURPLELIGHT    		4096
+#define EF_RAYRED	 			8196			// red trail for porter x2
+#define EF_RAYGREEN  			16384			// gree trail for ray gun
 
 
 /*

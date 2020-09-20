@@ -559,6 +559,111 @@ void CL_RelinkEntities (void)
 			dl->die = cl.time + 0.001;
 		}
 
+		if (ent->effects & EF_BLUELIGHT)
+		{
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin,  dl->origin);
+			dl->die = cl.time + 0.001;
+			dl->radius = 100;
+			dl->color[0] = 0.25;
+			dl->color[1] = 0.25;
+			dl->color[2] = 2;
+		}
+
+		if (ent->effects & EF_REDLIGHT)
+		{
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin,  dl->origin);
+			dl->die = cl.time + 0.001;
+			dl->radius = 100;
+			dl->color[0] = 2;
+			dl->color[1] = 0.25;
+			dl->color[2] = 0.25;
+		}
+
+		if (ent->effects & EF_ORANGELIGHT)
+		{
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin,  dl->origin);
+			dl->die = cl.time + 0.001;
+			dl->radius = 100;
+			dl->color[0] = 2;
+			dl->color[1] = 1;
+			dl->color[2] = 0;
+		}
+
+		if (ent->effects & EF_GREENLIGHT)
+		{
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin,  dl->origin);
+			dl->die = cl.time + 0.001;
+			dl->radius = 100;
+			dl->color[0] = 0.25;
+			dl->color[1] = 2;
+			dl->color[2] = 0.25;
+		}
+		if (ent->effects & EF_ORANGELIGHT)
+		{
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin,  dl->origin);
+			dl->die = cl.time + 0.001;
+			dl->radius = 100;
+			dl->color[0] = 2;
+			dl->color[1] = 1;
+			dl->color[2] = 0;
+		}
+
+		if (ent->effects & EF_GREENLIGHT)
+		{
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin,  dl->origin);
+			dl->die = cl.time + 0.001;
+			dl->radius = 100;
+			dl->color[0] = 0.25;
+			dl->color[1] = 2;
+			dl->color[2] = 0.25;
+		}
+		
+		if (ent->effects & EF_PURPLELIGHT)
+		{
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin,  dl->origin);
+			dl->die = cl.time + 0.001;
+			dl->radius = 100;
+			dl->color[0] = 2;
+			dl->color[1] = 0.25;
+			dl->color[2] = 2;
+		}
+
+// naievil -- fixme
+/*
+		if (ent->effects & EF_RAYGREEN)
+		{
+			R_RocketTrail (oldorg, ent->origin, 12);
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin, dl->origin);
+			dl->radius = 25;
+			dl->die = cl.time + 0.01;
+	        dl->color[0] = 0;
+			dl->color[1] = 255;
+			dl->color[2] = 0;
+	        dl->type = SetDlightColor (2, lt_rocket, true);
+		}
+
+		if (ent->effects & EF_RAYRED)
+		{
+			R_RocketTrail (oldorg, ent->origin, 13);
+			dl = CL_AllocDlight (i);
+			VectorCopy (ent->origin, dl->origin);
+			dl->radius = 25;
+			dl->die = cl.time + 0.01;
+	        dl->color[0] = 255;
+			dl->color[1] = 0;
+			dl->color[2] = 0;
+	        dl->type = SetDlightColor (2, lt_rocket, true);
+		}
+*/
+
 		if (ent->model->flags & EF_GIB)
 			R_RocketTrail (oldorg, ent->origin, 2);
 		else if (ent->model->flags & EF_ZOMGIB)

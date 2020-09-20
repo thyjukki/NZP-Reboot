@@ -39,7 +39,11 @@ void() W_AimIn =
 	if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
 	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
+		#ifdef NX
+		self.zoom = 1;
+		#else
 		self.zoom = 2;
+		#endif
 		self.scopetime = time + 0.3;
 	} else {
 		self.zoom = 1;
@@ -386,12 +390,6 @@ void(float side) W_Reload =
 	if (self.weapon == W_M2 || self.weapon == W_FIW)
 		return;
 	
-	//TEMPORARY
-	#ifdef PC
-	self.viewzoom = 1;
-	#endif
-	self.zoom = false;
-	
 	if (side == S_BOTH) {
 		W_Reload(S_RIGHT);
 		if (IsDualWeapon(self.weapon)) {
@@ -413,6 +411,13 @@ void(float side) W_Reload =
 		self.currentmag2 >= getWeaponMag(self.weapon))) {
 		return;
 	}
+
+	//TEMPORARY
+	#ifdef PC
+	self.viewzoom = 1;
+	#endif
+	self.zoom = false;
+
 	W_AimOut();
 	W_SprintStop();
 
@@ -963,18 +968,14 @@ void(float side) W_FireGrenade =
 
 	makevectors (self.v_angle);
 
-	nade.velocity = v_forward*5000;
-		
-	nade.avelocity = '400 -400 400';
+	nade.velocity = v_forward*1000;		
+	nade.avelocity = '50 -50 50';
 
-	nade.angles = vectoangles(v_forward);
-	nade.angles_z -= 15;
+	centerprint(self, vtos(nade.angles));
 
 	nade.touch = GrenadeExplode;
-	setmodel (nade, "progs/GModels/g_grenade.mdl");
 	setsize(nade, '0 0 0', '0 0 0');
 	nade.origin = self.origin + self.view_ofs;
-	nade.origin += v_forward * 50;
 
 	setorigin(nade, nade.origin);
 }

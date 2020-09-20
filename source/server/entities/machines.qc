@@ -386,6 +386,7 @@ void() perk_revive =
 	precache_model ("models/machines/v_perk.mdl");
 	precache_sound ("sounds/machines/perk_drink.wav");
   	precache_sound ("sounds/weapons/papfire.wav");
+  	precache_extra (W_BIATCH);
 	setorigin (self, self.origin);
 	setmodel (self, "models/machines/quick_revive.mdl");
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
@@ -496,6 +497,9 @@ void() perk_deadshot =
 	self.cost = 1500;
 	#endif
 };
+
+// naievil -- older maps compatability
+void() perk_dead = { perk_deadshot();}
 
 void() perk_mule =
 {

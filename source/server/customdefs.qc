@@ -67,6 +67,7 @@ entity activator;
 void() W_SprintStop;
 .float into_sprint;
 .float dive;
+.float dive_delay;
 .float damagetimer;
 .vector movement;
 

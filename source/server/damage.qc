@@ -191,6 +191,7 @@ void() GetDown =
 	self.velocity = '-80 0 -80';           			// Stop any old movement
 	self.zoom = 0;
 	self.downed = true;
+	self.dive_delay = 0;
 	self.movetype = MOVETYPE_NONE;
 	
 	float gotalive = PollPlayersAlive();	

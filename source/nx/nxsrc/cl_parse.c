@@ -544,7 +544,7 @@ void CL_ParseUpdate (int bits)
 			R_TranslateNewPlayerSkin (num - 1); //johnfitz -- was R_TranslatePlayerSkin
 	}
 	if (bits & U_EFFECTS)
-		ent->effects = MSG_ReadByte();
+		ent->effects = MSG_ReadShort();
 	else
 		ent->effects = ent->baseline.effects;
 

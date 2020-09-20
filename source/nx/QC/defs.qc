@@ -280,16 +280,22 @@ float   ATTN_IDLE               				= 2;
 float   ATTN_STATIC            					= 3;
 
 // entity effects
+#define	EF_BLUE					1
+#define	EF_MUZZLEFLASH 			2
+#define	EF_BRIGHTLIGHT 			4
+#define	EF_RED		 			8
+#define	EF_ORANGELIGHT			16
+#define	EF_GREEN				32
+#define	EF_LIGHT				64
+#define	EF_NODRAW				128
+#define EF_BRIGHTFIELD			256
+#define EF_FULLBRIGHT 			512
+#define EF_DARKLIGHT			1024
+#define EF_DARKFIELD			2048
+#define EF_PURPLELIGHT    		4096
+#define EF_RAYRED		 	8196
+#define EF_RAYGREEN		 	16384
 
-//float EF_BRIGHTFIELD  						= 1;
-float   EF_MUZZLEFLASH  						= 2;
-float   EF_BRIGHTLIGHT  						= 4;
-float   EF_DIMLIGHT     						= 8;
-float   EF_FLAG1                				= 16;
-float   EF_FLAG2                				= 32;
-// GLQuakeWorld Stuff
-float 	EF_BLUE									=	64;		// Blue Globe effect for Quad
-float	EF_RED									=	128;	// Red Globe effect for Pentagram
 // messages
 float   MSG_BROADCAST  							= 0;            // unreliable to all
 float   MSG_ONE                 				= 1;            // reliable to one (msg_entity)

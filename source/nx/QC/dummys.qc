@@ -6,12 +6,6 @@ float tracemove(vector start, vector min, vector max, vector end, float nomonste
 
 void(vector o, vector d, float color, float count) particle = {};
 
-#define EF_FULLBRIGHT 0
-#define EF_GREEN 0
-#define EF_ORANGE 0
-#define EF_ORANGELIGHT 0
-#define EF_PURPLELIGHT 0
-
 #define MOVE_HITMODEL 0
 
 void() LoadWaypointData = {};
