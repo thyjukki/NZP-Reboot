@@ -306,6 +306,14 @@ void IN_Move (usercmd_t *cmd)
 	//shpuld begin
 	if (!analog_strafe) {
 		speed = in_sensitivity.value;
+
+		// ==== Aim Assist + ====
+		// cut look speed in half when facing enemy, unless
+		// mag is empty
+		if ((in_aimassist.value) && (sv_player->v.facingenemy == 1) && cl.stats[STAT_CURRENTMAG] > 0) {
+			speed *= 0.5;
+		}
+		// additionally, slice look speed when ADS/scopes
 		if (cl.stats[STAT_ZOOM] == 1)
 			speed *= 0.5;
 		else if (cl.stats[STAT_ZOOM] == 2)

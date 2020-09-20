@@ -1688,7 +1688,7 @@ static void BuildSurfaceDisplayList (msurface_t *fa)
 //	vec3_t		local, transformed;
 	medge_t		*pedges, *r_pedge;
 //	mplane_t	*pplane;
-	int			vertpage;//, newverts, newpage, lastvert;
+//	int			vertpage;//, newverts, newpage, lastvert;
 //	qboolean	visible;
 	float		*vec;
 	float		s, t;
@@ -1697,7 +1697,7 @@ static void BuildSurfaceDisplayList (msurface_t *fa)
 // reconstruct the polygon
 	pedges = currentmodel->edges;
 	lnumverts = fa->numedges;
-	vertpage = 0;
+//	vertpage = 0;
 
 	//
 	// draw texture
@@ -1758,7 +1758,7 @@ static void BuildSurfaceDisplayList (msurface_t *fa)
 
 	// Colinear point removal-start
 
-	int lm_vert_offset = lnumverts;
+	lnumverts = poly->numverts;
 
 	if (!gl_keeptjunctions.value && !(fa->flags & SURF_UNDERWATER) )
 	{
@@ -1792,10 +1792,10 @@ static void BuildSurfaceDisplayList (msurface_t *fa)
 				(fabsf( v1[2] - v2[2] ) <= COLINEAR_EPSILON))
 			#endif
 			{
-				for (j = i + 1; j < lnumverts; ++j)
+				for (j = i + 1; j < lnumverts; j = j + 1)
 				{
 					poly->verts[j - 1] = poly->verts[j];
-					poly->verts[lm_vert_offset + j - 1] = poly->verts[lm_vert_offset+j];
+					poly->verts[poly->numverts + j - 1] = poly->verts[poly->numverts+j];
 				}
 
 				--lnumverts;
@@ -1807,11 +1807,10 @@ static void BuildSurfaceDisplayList (msurface_t *fa)
 		}
 
 		if (numRemoved > 0) {
-			for (j = lm_vert_offset; j < lm_vert_offset + lnumverts; j++) {
+			for (j = poly->numverts; j < poly->numverts + lnumverts; j++) {
 				poly->verts[j - numRemoved] = poly->verts[j];
 			}
 		}
-
 	}
 
 	// Colinear point removal-end

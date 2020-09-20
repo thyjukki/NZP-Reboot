@@ -2293,14 +2293,10 @@ enum //gameplay menu
     OPT_CROSSHAIR,
     OPT_AIMASSIST,
     OPT_IN_SPEED,
-    OPT_IN_ACCELERATION,
-    OPT_IN_TOLERANCE,
-    OPT_IN_X_ADJUST,
-    OPT_IN_Y_ADJUST,
+    OPT_IN_ACCELERATION,    
     OPT_INVMOUSE,
+	OPT_IN_TOLERANCE,
     OPT_MOUSELOOK,
-    OPT_NOMOUSE,
-    OPT_MOUSESTAFE,
     GAMEPLAY_ITEMS
 };
 
@@ -2433,35 +2429,11 @@ void M_AdjustSliders (int dir, int m_submenu, int options_cursor)
 					in_tolerance.value = 1;
 				Cvar_SetValue ("tolerance", in_tolerance.value);
 				break;
-
-			case OPT_IN_X_ADJUST:
-				in_x_axis_adjust.value += dir*5;
-				if (in_x_axis_adjust.value < -127)
-					in_x_axis_adjust.value = -127;
-				if (in_x_axis_adjust.value > 127)
-					in_x_axis_adjust.value = 127;
-				Cvar_SetValue ("in_x_axis_adjust", in_x_axis_adjust.value);
-				break;
-
-			case OPT_IN_Y_ADJUST:
-				in_y_axis_adjust.value += dir*5;
-				if (in_y_axis_adjust.value < -127)
-					in_y_axis_adjust.value = -127;
-				if (in_y_axis_adjust.value > 127)
-					in_y_axis_adjust.value = 127;
-				Cvar_SetValue ("in_y_axis_adjust", in_y_axis_adjust.value);
-				break;
-
 			case OPT_INVMOUSE:	// invert mouse
 				Cvar_SetValue ("m_pitch", -m_pitch.value);
 				break;
 			case OPT_MOUSELOOK:
 				Cvar_SetValue ("in_mlook", !in_mlook.value);
-				break;
-			case OPT_NOMOUSE:	// disable mouse
-				Cvar_SetValue ("in_disable_analog", !in_disable_analog.value);
-				break;
-			case OPT_MOUSESTAFE:
 				Cvar_SetValue ("in_analog_strafe", !in_analog_strafe.value);
 				break;
         }
@@ -2800,95 +2772,239 @@ void M_Menu_Gameplay_f (void)
 	gameplay_cursor = 0;
 }
 
+/*
+	float 	  r;
+
+	// Background
+	if (key_dest != key_menu_pause)
+		Draw_Pic (0, 0, menu_bk);
+
+	// Fill black to make everything easier to see
+	Draw_FillByColor(0, 0, 480, 272, GU_RGBA(0, 0, 0, 102));
+
+	// Version String
+	Draw_ColoredString(vid.width - 40, 5, "v1.0", 255, 255, 255, 255, 1);
+
+	// Header
+	Draw_ColoredString(10, 10, "GRAPHICS SETTINGS", 255, 255, 255, 255, 2);
+
+	// Show FPS
+	if (video_cursor == 0)
+		Draw_ColoredString(10, 45, "Show FPS", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 45, "Show FPS", 255, 255, 255, 255, 1);
+	M_DrawCheckbox(225, 45, show_fps.value);
+	
+	// Max FPS
+	if (video_cursor == 1)
+		Draw_ColoredString(10, 55, "Max FPS", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 55, "Max FPS", 255, 255, 255, 255, 1);
+	r = (cl_maxfps.value - 30.0)*(1.0/35.0);
+	M_DrawSlider (225, 55, r);
+
+	// FOV
+	if (video_cursor == 2)
+		Draw_ColoredString(10, 65, "Field of View", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 65, "Field of View", 255, 255, 255, 255, 1);
+	r = (scr_fov.value - 50.0)*(1.0/70.0);
+	M_DrawSlider (225, 65, r);
+
+	// Brightness
+	if (video_cursor == 3)
+		Draw_ColoredString(10, 75, "Brightness", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 75, "Brightness", 255, 255, 255, 255, 1);
+	r = (1.0 - v_gamma.value) / 0.5;
+	M_DrawSlider (225, 75, r);
+
+	// Decals
+	if (video_cursor == 4)
+		Draw_ColoredString(10, 85, "Decals", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 85, "Decals", 255, 255, 255, 255, 1);
+	M_DrawCheckbox(225, 85, nzp_decals.value);
+
+	// Particles
+	if (video_cursor == 5)
+		Draw_ColoredString(10, 95, "Particles", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 95, "Particles", 255, 255, 255, 255, 1);
+	M_DrawCheckbox(225, 95, nzp_particles.value);
+
+	// Fullbright
+	if (video_cursor == 6)
+		Draw_ColoredString(10, 105, "Fullbright", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 105, "Fullbright", 255, 255, 255, 255, 1);
+	M_DrawCheckbox(225, 105, r_fullbright.value);
+
+	// Dithering
+	if (video_cursor == 7)
+		Draw_ColoredString(10, 115, "Dithering", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 115, "Dithering", 255, 255, 255, 255, 1);
+	M_DrawCheckbox(225, 115, r_dithering.value);
+
+	// Retro
+	if (video_cursor == 8)
+		Draw_ColoredString(10, 125, "Retro", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 125, "Retro", 255, 255, 255, 255, 1);
+	M_DrawCheckbox(225, 125, r_retro.value);
+
+	// Back
+	if (video_cursor == 9)
+		Draw_ColoredString(10, 250, "Back", 255, 0, 0, 255, 1);
+	else
+		Draw_ColoredString(10, 250, "Back", 255, 255, 255, 255, 1);
+
+	// Descriptions
+	switch(video_cursor) {
+		case 0: // Show FPS
+			Draw_ColoredString(10, 230, "Toggle Framerate Overlay.", 255, 255, 255, 255, 1);
+			break;
+		case 1: // Max FPS
+			Draw_ColoredString(10, 230, "Increase of Decrease Max Frames per Second.", 255, 255, 255, 255, 1);
+			break;
+		case 2: // FOV
+			Draw_ColoredString(10, 230, "Adjust Game Field of View.", 255, 255, 255, 255, 1);
+			break;
+		case 3: // Brightness
+			Draw_ColoredString(10, 230, "Increase or Decrease Game Brightness.", 255, 255, 255, 255, 1);
+			break;
+		case 4: // Decals
+			Draw_ColoredString(10, 230, "Toggle Bullet and Explosive Decals.", 255, 255, 255, 255, 1);
+			break;
+		case 5: // Particles
+			Draw_ColoredString(10, 230, "Toggle Appearence of (most) Particles.", 255, 255, 255, 255, 1);
+			break;
+		case 6: // Fullbright
+			Draw_ColoredString(10, 230, "Toggle all non-realtime lights (Requires Map Restart).", 255, 255, 255, 255, 1);
+			break;
+		case 7: // Dithering
+			Draw_ColoredString(10, 230, "Toggle decrease in Color Banding.", 255, 255, 255, 255, 1);
+			break;
+		case 8: // Retro
+			Draw_ColoredString(10, 230, "Toggle texture filtering.", 255, 255, 255, 255, 1);
+			break;
+	}
+	*/
+
 
 void M_Gameplay_Draw (void)
 {
+	float r;
 
-	float	 r;
-
+	// Background
 	if (key_dest != key_menu_pause)
 		Draw_Pic (0, 0, menu_bk);
-	//else
-		//Draw_AlphaPic (0, 0, pause_bk, 0.4);
 
+	// Fill black to make everything easier to see
+	Draw_FillByColor(0, 0, 480, 272, GU_RGBA(0, 0, 0, 102));
 
-    Draw_String (328, 30, 	   "Controls Settings");
+	// Version String
+	Draw_ColoredString(vid.width - 40, 5, "v1.0", 255, 255, 255, 255, 1);
 
-	if (gameplay_cursor == OPT_CROSSHAIR)
-       M_Print (172, 50+(OPT_CROSSHAIR*8),	"        Show Crosshair");
-    else
-       Draw_String (172, 50+(OPT_CROSSHAIR*8),	"        Show Crosshair");
-	M_DrawCheckbox (448, 50+(OPT_CROSSHAIR*8), crosshair.value);
-    
-	if (gameplay_cursor == OPT_AIMASSIST)
-       M_Print (172, 50+(OPT_AIMASSIST*8),       "            Aim Assist");
-    else
-       Draw_String (172, 50+(OPT_AIMASSIST*8),       "            Aim Assist");
-	M_DrawCheckbox (448, 50+(OPT_AIMASSIST*8),         in_aimassist.value);
+	// Header
+	Draw_ColoredString(10, 10, "CONTROL SETTINGS", 255, 255, 255, 255, 2);
 
-	if (gameplay_cursor == OPT_IN_SPEED)
-       M_Print (172, 50+(OPT_IN_SPEED*8), 		 "           A-Nub Speed");
-    else
-       Draw_String (172, 50+(OPT_IN_SPEED*8), 		 "           A-Nub Speed");
+	// Draw Crosshair
+	if (gameplay_cursor == OPT_CROSSHAIR) {
+		Draw_ColoredString(10, 45, "Draw Crosshair", 255, 0, 0, 255, 1);
+	} else {
+		Draw_ColoredString(10, 45, "Draw Crosshair", 255, 255, 255, 255, 1);
+	}
+	M_DrawCheckbox(225, 45, crosshair.value);
+
+	// Aim Assist
+	if (gameplay_cursor == OPT_AIMASSIST) {
+		Draw_ColoredString(10, 55, "Aim Assist", 255, 0, 0, 255, 1);
+	} else {
+		Draw_ColoredString(10, 55, "Aim Assist", 255, 255, 255, 255, 1);
+	}
+	M_DrawCheckbox(225, 55, in_aimassist.value);
+
+	// Look Sensitivity
+	if (gameplay_cursor == OPT_IN_SPEED) {
+		Draw_ColoredString(10, 65, "Look Sensitivity", 255, 0, 0, 255, 1);
+	} else {
+		Draw_ColoredString(10, 65, "Look Sensitivity", 255, 255, 255, 255, 1);
+	}
 	r = (in_sensitivity.value - 1)/10;
-	M_DrawSlider (376, 50+(OPT_IN_SPEED*8), r);
+	M_DrawSlider (225, 65, r);
 
-	if (gameplay_cursor == OPT_IN_ACCELERATION)
-       M_Print (172, 50+(OPT_IN_ACCELERATION*8), "    A-Nub Acceleration");
-    else
-       Draw_String (172, 50+(OPT_IN_ACCELERATION*8), "    A-Nub Acceleration");
+	// Look Acceleration
+	if (gameplay_cursor == OPT_IN_ACCELERATION) {
+		Draw_ColoredString(10, 75, "Look Acceleration", 255, 0, 0, 255, 1);
+	} else {
+		Draw_ColoredString(10, 75, "Look Acceleration", 255, 255, 255, 255, 1);
+	}
 	r = 1.0f -((in_acceleration.value - 0.5f)/1.5f);
-	M_DrawSlider (376, 50+(OPT_IN_ACCELERATION*8), r);
+	M_DrawSlider (225, 75, r);
 
-	if (gameplay_cursor == OPT_IN_TOLERANCE)
-       M_Print (172, 50+(OPT_IN_TOLERANCE*8), 	 "      A-Nub Tollerance");
-    else
-       Draw_String (172, 50+(OPT_IN_TOLERANCE*8), 	 "      A-Nub Tollerance");
+	// Look Inversion
+	if (gameplay_cursor == OPT_INVMOUSE) {
+		Draw_ColoredString(10, 85, "Look Inversion", 255, 0, 0, 255, 1);
+	} else {
+		Draw_ColoredString(10, 85, "Look Inversion", 255, 255, 255, 255, 1);
+	}
+	M_DrawCheckbox(225, 85, m_pitch.value < 0);
+
+	// A-Nub Deadzone
+	if (gameplay_cursor == OPT_IN_TOLERANCE) {
+		Draw_ColoredString(10, 95, "A-Nub Tolerance", 255, 0, 0, 255, 1);
+	} else {
+		Draw_ColoredString(10, 95, "A-Nub Tolerance", 255, 255, 255, 255, 1);
+	}
 	r = (in_tolerance.value )/1.0f;
-	M_DrawSlider (376, 50+(OPT_IN_TOLERANCE*8), r);
+	M_DrawSlider (225, 95, r);
 
-	if (gameplay_cursor == OPT_IN_X_ADJUST)
-       M_Print (172, 50+(OPT_IN_X_ADJUST*8), 	 "         Adjust Axis X");
-    else
-       Draw_String (172, 50+(OPT_IN_X_ADJUST*8), 	 "         Adjust Axis X");
-	r = (128+in_x_axis_adjust.value)/255;
-	M_DrawSlider (376, 50+(OPT_IN_X_ADJUST*8), r);
+	// A-Nub Mode
+	if (gameplay_cursor == OPT_MOUSELOOK) {
+		Draw_ColoredString(10, 105, "A-Nub Mode", 255, 0, 0, 255, 1);
+	} else {
+		Draw_ColoredString(10, 105, "A-Nub Mode", 255, 255, 255, 255, 1);
+	}
+	if (in_mlook.value) {
+		Draw_ColoredString(225, 105, "Look", 255, 255, 255, 255, 1);
+	} else {
+		Draw_ColoredString(225, 105, "Move (Buggy!)", 255, 255, 255, 255, 1);
+	}
 
-	if (gameplay_cursor == OPT_IN_Y_ADJUST)
-       M_Print (172, 50+(OPT_IN_Y_ADJUST*8), 	 "         Adjust Axis Y");
-    else
-       Draw_String (172, 50+(OPT_IN_Y_ADJUST*8), 	 "         Adjust Axis Y");
-	r = (128+in_y_axis_adjust.value)/255;
-	M_DrawSlider (376, 50+(OPT_IN_Y_ADJUST*8), r);
+	// Back
+	if (gameplay_cursor == GAMEPLAY_ITEMS) {
+		Draw_ColoredString(10, 250, "Back", 255, 0, 0, 255, 1);
+	} else {
+		Draw_ColoredString(10, 250, "Back", 255, 255, 255, 255, 1);
+	}
 
-	if (gameplay_cursor == OPT_INVMOUSE)
-       M_Print (172, 50+(OPT_INVMOUSE*8),        "          Invert A-Nub");
-    else
-       Draw_String (172, 50+(OPT_INVMOUSE*8),        "          Invert A-Nub");
-	M_DrawCheckbox (448, 50+(OPT_INVMOUSE*8),       m_pitch.value < 0);
+	// Descriptions
+	switch(gameplay_cursor) {
+		case OPT_CROSSHAIR:
+			Draw_ColoredString(10, 230, "Toggle Crosshair in-game.", 255, 255, 255, 255, 1);
+			break;
+		case OPT_AIMASSIST:
+			Draw_ColoredString(10, 230, "Toggle Assisted Aim to improve Targeting.", 255, 255, 255, 255, 1);
+			break;	
+		case OPT_IN_SPEED:
+			Draw_ColoredString(10, 230, "Adjust Look Sensitivity.", 255, 255, 255, 255, 1);
+			break;
+		case OPT_IN_ACCELERATION:
+			Draw_ColoredString(10, 230, "Adjust Acceleration when A-Nub Mode is set to 'Look'.", 255, 255, 255, 255, 1);
+			break;
+		case OPT_INVMOUSE:
+			Draw_ColoredString(10, 230, "Invert A-Nub Look.", 255, 255, 255, 255, 1);
+			break;
+		case OPT_IN_TOLERANCE:
+			Draw_ColoredString(10, 230, "Adjust how Tolerant the A-Nub is to change.", 255, 255, 255, 255, 1);
+			break;
+		case OPT_MOUSELOOK:
+			Draw_ColoredString(10, 230, "Toggle whether to use the A-Nub for Look or Movement.", 255, 255, 255, 255, 1);
+			break;
+	}
 
-	if (gameplay_cursor == OPT_MOUSELOOK)
-       M_Print (172, 50+(OPT_MOUSELOOK*8),       "            A-Nub Look");
-    else
-       Draw_String (172, 50+(OPT_MOUSELOOK*8),       "            A-Nub Look");
-	M_DrawCheckbox (448, 50+(OPT_MOUSELOOK*8),         in_mlook.value);
-
-	if (gameplay_cursor == OPT_NOMOUSE)
-       M_Print (172, 50+(OPT_NOMOUSE*8),         "         Disable A-Nub");
-    else
-       Draw_String (172, 50+(OPT_NOMOUSE*8),         "         Disable A-Nub");
-	M_DrawCheckbox (448, 50+(OPT_NOMOUSE*8), in_disable_analog.value );
-
-	if (gameplay_cursor == OPT_MOUSESTAFE)
-       M_Print (172, 50+(OPT_MOUSESTAFE*8),		 "         A-Nub Stafing");
-    else
-       Draw_String (172, 50+(OPT_MOUSESTAFE*8),		 "         A-Nub Stafing");
-	M_DrawCheckbox (448, 50+(OPT_MOUSESTAFE*8), in_analog_strafe.value );
-
-	if (gameplay_cursor == GAMEPLAY_ITEMS)
-       M_Print (432, 58+(GAMEPLAY_ITEMS*8),      "Back");
-    else
-       Draw_String (432, 58+(GAMEPLAY_ITEMS*8),      "Back");
 }
 
 
@@ -2950,7 +3066,7 @@ void M_Gameplay_Key (int key)
 }
 
 int options_cursor;
-#define OPTIONS_ITEMS 4
+#define OPTIONS_ITEMS 5
 
 void M_Menu_Options_f (void)
 {
@@ -3015,7 +3131,10 @@ void M_Options_Draw (void)
 		case 1: // Controls
 			Draw_ColoredString(10, 230, "Customize your Control Scheme.", 255, 255, 255, 255, 1);
 			break;
-		case 2: // Console
+		case 2: // Control Settings
+			Draw_ColoredString(10, 230, "Adjust settings in relation to how NZ:P Controls.", 255, 255, 255, 255, 1);
+			break;
+		case 3: // Console
 			Draw_ColoredString(10, 230, "Open the Console to input Commands.", 255, 255, 255, 255, 1);
 			break;
 	}
