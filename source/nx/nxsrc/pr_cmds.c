@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-#define	STRINGTEMP_BUFFERS		16
+#define	STRINGTEMP_BUFFERS		64
 #define	STRINGTEMP_LENGTH		1024
 static	char	pr_string_temp[STRINGTEMP_BUFFERS][STRINGTEMP_LENGTH];
 static	byte	pr_string_tempindex = 0;
@@ -2325,6 +2325,39 @@ void Do_Pathfind (void)
 	}
 }
 
+/*
+=================
+Open_Waypoint
+
+void Open_Waypoint (string, string, string, string, string, string, string, string)
+=================
+*/
+void Open_Waypoint (void)
+{
+	int i, t;
+	char *p = G_STRING(OFS_PARM0);
+
+	//Con_DPrintf("Open_Waypoint\n");
+	for (i = 1; i < MAX_WAYPOINTS; i++)
+	{
+		if (waypoints[i].special[0])//no need to open without tag
+		{
+			if (!strcmp(p, waypoints[i].special))
+			{
+				waypoints[i].open = 1;
+				//Con_DPrintf("Open_Waypoint: %i, opened\n", i);
+				t = 1;
+			}
+			else
+				continue;
+		}
+	}
+	//if (t == 0)
+	//{
+		//Con_DPrintf("Open_Waypoint: no waypoints opened\n");
+	//}
+}
+
 
 /*
 =================
@@ -2788,7 +2821,9 @@ string strunzone (string)
 */
 void PF_strunzone (void)
 {
-	Z_Free(G_STRING(OFS_PARM0));
+	// naievil -- no more.
+	//Z_Free(G_STRING(OFS_PARM0));
+	pr_string_tempindex--;
 	G_INT(OFS_PARM0) = OFS_NULL; // empty the def
 };
 
@@ -3098,7 +3133,7 @@ static builtin_t pr_builtin[] =
 	NULL,						// #82
 	Get_Waypoint_Near,			// #83
 	Do_Pathfind,                // #84
-	NULL,						// #85
+	Open_Waypoint,				// #85
 	Get_Next_Waypoint,		    // #86
 	PF_useprint,				// #87
 	Get_First_Waypoint,			// #88

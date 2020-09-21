@@ -559,6 +559,7 @@ float(string s) stof                            						    = #81;          // con
 void(vector where, float set) multicast 								    = #82;
 vector(entity what) Get_Waypoint_Near                                       = #83;
 float(entity zombie, entity target) Do_Pathfind_psp                         = #84;
+void(string s) Open_Waypoint                                                = #85;
 vector(entity zombie,vector start,vector min, vector max) Get_Next_Waypoint = #86;
 void(entity client, float type, float cost, float weapon) useprint 		    = #87; 
 vector(entity zombie,vector start,vector min, vector max) Get_First_Waypoint = #88; 

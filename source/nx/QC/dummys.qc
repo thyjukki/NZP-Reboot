@@ -9,7 +9,6 @@ void(vector o, vector d, float color, float count) particle = {};
 #define MOVE_HITMODEL 0
 
 void() LoadWaypointData = {};
-void(string s) Open_Waypoint = {};//#85;
 
 void() Soft_Restart = {
 	/*

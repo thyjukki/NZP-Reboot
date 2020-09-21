@@ -150,6 +150,13 @@ void() NewRound =
 			if (tempe.primary_grenades > 4)
 				tempe.primary_grenades = 4;
 		}
+
+		if(tempe.grenades & 2)
+		{
+			tempe.secondary_grenades = tempe.secondary_grenades + 2;
+			if (tempe.secondary_grenades > 2)
+				tempe.secondary_grenades = 2;
+		}
 		tempe = find(tempe, classname, "player");
 	}
 

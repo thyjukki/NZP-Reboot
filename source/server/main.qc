@@ -172,7 +172,8 @@ void() precaches =
 	precache_model ("progs/VModels/v_nade.mdl");
 	precache_model ("progs/GModels/g_grenade.mdl");
 	precache_model ("progs/GModels/g_betty.mdl");	
-	
+	precache_model ("progs/VModels/v_betty.mdl");	
+
 	//sprites
 	precache_model ("models/way/current_way.spr");
 	precache_model ("models/way/current_way_door.spr");
