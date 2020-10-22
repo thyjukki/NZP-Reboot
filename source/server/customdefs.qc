@@ -439,3 +439,6 @@ float sndActivCnt;
 .vector	bbmins, bbmaxs;	
 .float currentHitBoxSetup;
 #endif
+
+// PC Fog force
+.float PC_fog;
