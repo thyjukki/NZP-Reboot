@@ -144,6 +144,11 @@ void() menu_achievements =
     in_menu = MENU_ACHIEVEMENTS;
 }
 
+void() menu_waypoint =
+{	
+	localcmd("waypoint_mode 1");
+};
+
 //
 //settings adjustments
 //
@@ -599,6 +604,7 @@ var struct
 	{[0.025, 0.550, 0], "Restart", -1, menu_restart, null, MENU_PAUSE},
 	{[0.025, 0.600, 0], "Settings", -1, menu_settings, null, MENU_PAUSE},
 	{[0.025, 0.650, 0], "Main Menu", -1, menu_main, null, MENU_PAUSE},
+	{[0.025, 0.850, 0], "Waypoint Menu", -1, menu_waypoint, null, MENU_PAUSE},
 
 	//Restart
 	{[0.025, 0.500, 0], "Yes", -1, menu_resy, null, MENU_RES},
@@ -647,7 +653,7 @@ var struct
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 43;
+const float BUTTONS_COUNT = 44;
 float lastActive;
 
 

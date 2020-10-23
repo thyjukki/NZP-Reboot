@@ -477,13 +477,10 @@ void() Load_Waypoints
 		switch (point) {
 			case 0:
 				if (h == "waypoint") {
-					if (!new_way) {
-						new_way = spawn();
-					}
+					new_way = spawn();
 					new_way.solid = SOLID_TRIGGER;
-
-					if (cvar("waypoint_mode"))
-						setmodel(new_way, "models/way/normal_way.spr");
+					new_way.model = "models/way/normal_way.spr";
+					setmodel(new_way, "models/way/normal_way.spr");
 					new_way.classname = "waypoint";
 
 					new_way.touch = creator_way_touch;
@@ -493,6 +490,8 @@ void() Load_Waypoints
 					bprint(PRINT_HIGH, "Identified .way as legacy..\n");
 					point = 99;
 					Load_Waypoints_Legacy();
+					loop = 0;
+					break;
 				} else {
 					bprint(PRINT_HIGH, strcat("Error: unknown point ", strcat(h, "\n")));
 				}
@@ -515,7 +514,8 @@ void() Load_Waypoints
 					case "origin":
 						
 						print(strcat(value, "\n"));
-						setorigin(new_way, stov(value));
+						new_way.origin = stov(value);
+						setorigin(new_way, new_way.origin);
 						break;
 					case "id":
 						new_way.waynum = value;
@@ -660,9 +660,13 @@ void VisualizePathfind() {
 	Pathfind(self, stof(active_way.waynum), stof(current_way.waynum));
 }
 
+.float waypoint_delay;
+
 //Waypoint logic functions
 void () Waypoint_Functions =
 {
+	// naievil -- archaic
+	/*
 	switch (self.impulse) {
 		case 100:	
 			Create_New_Waypoint();
@@ -704,6 +708,48 @@ void () Waypoint_Functions =
 	}
 	
 	self.impulse = 0;
+	*/
+
+	switch (self.impulse) {
+		case 23:
+			Save_Waypoints();
+			break;
+		case 22:
+			Load_Waypoints();
+			break;
+		case 110:
+			Move_Waypoint();
+			break;
+	}
+	
+	self.impulse = 0;
+
+	// Match what we display on the screen
+	if (self.button0 && self.waypoint_delay < time) { 
+		Create_New_Waypoint(); 
+		self.waypoint_delay = time + 1;
+	}
+
+	if (self.button7 && self.waypoint_delay < time) {
+		Select_Waypoint();
+		self.waypoint_delay = time + 0.25;	
+	}
+
+	if (self.button8 && self.waypoint_delay < time) {
+		Link_Waypoints ();
+		self.waypoint_delay = time + 0.5;	
+	}
+
+	if (self.button6 && self.waypoint_delay < time) {
+		Remove_Waypoint();
+		self.waypoint_delay = time + 0.5;	
+	}
+
+	if (self.button5 && self.waypoint_delay < time) {
+		Make_Special_Waypoint();
+		self.waypoint_delay = time + 1;
+	}
+
 };
 
 void () Waypoint_Logic =
