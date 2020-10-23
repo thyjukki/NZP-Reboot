@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Wrapper script stolen from ezquake :-)
+#
+
+LC_ALL=C
+
+DIRNAME=$(dirname "$0")
+
+cd "$DIRNAME"
+
+./fteqw-sdl2  -basedir ../../../
