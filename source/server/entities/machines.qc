@@ -217,36 +217,11 @@ void GivePerk(optional float p) {
 // Gives Perk Bottle and jumps to GivePerk(p)
 //
 void DrinkPerk(float perk) {
-	// TODO: It would be wise to make the skins in-line with
-	// our .sequence/client IDs to make this a lot prettier!
-	switch(perk) {
-		case P_REVIVE:
-			other.weaponskin = 3;	
-			break;
-		case P_FLOP:
-			other.weaponskin = 4;	
-			break;
-		case P_JUG:
-			other.weaponskin = 2;	
-			break;
-		case P_STAMIN:
-			other.weaponskin = 2;	
-			break;
-		case P_SPEED:
-			other.weaponskin = 1;	
-			break;
-		case P_DOUBLE:
-			other.weaponskin = 0;	
-			break;
-		case P_DEAD:
-			other.weaponskin = 5;
-			break;
-		case P_MULE:
-			other.weaponskin = 2;
-			break;
-		default:
-			break;
-	}
+	// Set the Perk Skin based on the Perk sequence.
+	// NOTE: If you add perks, you will either need to append
+	// the MDL with a tool like QuArK or add an edge-case
+	// after this instruction to have a valid skin.
+	other.weaponskin = self.sequence - 1;
 
 	other.isBuying = true;
 	entity tempe = self;
@@ -261,7 +236,6 @@ void DrinkPerk(float perk) {
 	Set_W_Frame (0, 22, 0, 0, PERK, GivePerk, "models/machines/v_perk.mdl", true, S_RIGHT);
 	self = tempe;
 	sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
-
 }
 
 //
@@ -269,8 +243,8 @@ void DrinkPerk(float perk) {
 // Executed on touch; prompt purchase and drink if requirements met.
 // -----
 // MotoLegacy (10-28-20) - Made modular using some existing entity fields we had,
-// as the memory is allocated to all entities on load anyway. This comment also
-// applies to all other relevant jumps as well.
+// as the memory is allocated to all entities on load anyway. This comment applies
+// to all other relevant jumps as well.
 //
 void() touch_perk =
 {  
@@ -294,11 +268,8 @@ void() touch_perk =
 		return;
 	}
 
-	// Back up weapon skin information
-	if (other.weaponskin == 0)
-      	backupWepSkin = 0;
-    else 
-      	backupWepSkin = 1;
+	// Back up weapon skin
+	backupWepSkin = other.weaponskin;
 
 	// Don't prompt if our hands or busy or we already have the perk
 	if (!(other.perks & self.style) && other.fire_delay < time) {

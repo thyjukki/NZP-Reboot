@@ -1,8 +1,7 @@
 //
 //	Player.qc - Various stuff done for the player, including per-frame functions like PlayerPreThink and PlayerPostThink, also client specific stuff like PutClientInServer etc.
 //
-void(vector where, float type) Spawn_Powerup;
-void() perk_random;
+void(entity e) Light_None;
 
 // player animations
 
@@ -507,7 +506,6 @@ void() PlayerSpawn =
 	{
 		if(who)
 		{
-			coop = 1;	
 			player_count++;
 			break;
 		}
@@ -633,10 +631,10 @@ void() PutClientInServer =
 	if (spawn_time > time || !rounds)
 		PlayerSpawn();
 	// TEMPORARY
-	#ifdef PC
+#ifdef PC
 	else 
 		SpectatorSpawn();
-	#endif
+#endif
 };
 
 //called when client disconnects from the server
