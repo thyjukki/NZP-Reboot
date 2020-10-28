@@ -506,6 +506,7 @@ void() PlayerSpawn =
 	{
 		if(who)
 		{
+			coop = 1;
 			player_count++;
 			break;
 		}

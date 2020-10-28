@@ -118,6 +118,15 @@ void(entity e) Light_Purple =
 void(entity e) Light_None =
 {
 	e.effects = 0;
+	#ifdef PC
+	{
+		e.pflags = 0;
+		e.light_lev = 0;
+		e.color_x = 0;
+		e.color_y = 0;
+		e.color_z = 0;
+	}
+	#endif
 }
 
 //
@@ -637,7 +646,7 @@ void() updateBoxGlow
 };
 
 
-void()	box_open1		=[	1,	box_open2	] { self.frame = 1;updateBoxGlow();};
+void()	box_open1		=[	1,	box_open2	] { self.frame = 1;updateBoxGlow(); Light_Orange(self);};
 void()	box_open2		=[	2,	box_open3	] { self.frame = 2;updateBoxGlow();};
 void()	box_open3		=[	3,	box_open4	] { self.frame = 3;updateBoxGlow();};
 void()	box_open4		=[	4,	box_open5	] { self.frame = 4;updateBoxGlow();};
@@ -653,7 +662,7 @@ void() resetbox =
 };
 
 
-void()	box_close1	=[	9,	box_close2	] { self.frame = 9;updateBoxGlow();sound (self, CHAN_ITEM, "sounds/machines/mbox_close.wav", 1, ATTN_NORM);};
+void()	box_close1	=[	9,	box_close2	] { self.frame = 9;updateBoxGlow();sound (self, CHAN_ITEM, "sounds/machines/mbox_close.wav", 1, ATTN_NORM); Light_None(self);};
 void()	box_close2	=[	10,	box_close3	] { self.frame = 10;updateBoxGlow();};
 void()	box_close3	=[	11,	box_close4	] { self.frame = 11;updateBoxGlow();};
 void()	box_close4	=[	12,	resetbox	] { self.frame = 12;updateBoxGlow();};
@@ -996,6 +1005,7 @@ void() findboxspot =
 	self.owner.classname = "mystery_box_tp_spot";
 	self.owner.touch = SUB_Null;
 	self.owner.angles_y -= 90;
+	Light_None(self.owner);
 	
 	newspot.angles_y += 90;
 
@@ -1111,6 +1121,7 @@ void() Create_Floating_Weapon =
 	setmodel (gun, temps);
 	setsize (gun, '0 0 0', '0 0 0');
 	gun.angles = self.angles;
+	gun.effects = EF_FULLBRIGHT;
 	
 	gun.movetype = MOVETYPE_NOCLIP;
 	gun.solid = SOLID_NOT;
