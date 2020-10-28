@@ -5,7 +5,170 @@ void() W_Switch;
 void() W_TakeOut;
 void() mystery_touch;
 
-void GivePerk(float perk) {
+//
+// --------------------
+// Lights
+// --------------------
+//
+
+//
+// Light_Red(e)
+// RGB: 255, 56, 56
+//
+void(entity e) Light_Red =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_RED;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 0.25;	
+	    e.color_z = 0.25;
+    }
+    #endif
+}
+
+//
+// Light_Green(e)
+// RGB: 56, 255, 56
+//
+void(entity e) Light_Green =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_GREEN;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 0.25;	
+	    e.color_y = 2;	
+	    e.color_z = 0.25;
+    }
+    #endif
+}
+
+//
+// Light_Blue(e)
+// RGB: 56, 56, 255
+//
+void(entity e) Light_Blue =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_BLUE;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 0.25;	
+	    e.color_y = 0.25;	
+	    e.color_z = 2;
+    }
+    #endif
+}
+
+//
+// Light_Orange(e)
+// RGB: 255, 128, 0
+//
+void(entity e) Light_Orange =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_ORANGELIGHT;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 1;	
+	    e.color_z = 0;
+    }
+    #endif
+}
+
+//
+// Light_Purple(e)
+// RGB: 255, 28, 255
+//
+void(entity e) Light_Purple =
+{
+    e.effects = e.effects | EF_FULLBRIGHT;
+    #ifndef PC
+    e.effects = e.effects | EF_PURPLELIGHT;
+    #else
+    {
+        e.pflags = PFLAGS_FULLDYNAMIC;
+       	e.light_lev = 100;
+	    e.color_x = 2;	
+	    e.color_y = 0.25;	
+	    e.color_z = 2;
+    }
+    #endif
+}
+
+//
+// Light_None(e)
+// Resets all Perk Light Effects.
+//
+void(entity e) Light_None =
+{
+	e.effects = 0;
+}
+
+//
+// Light_Custom(e, r, g, b)
+// For custom Perk Light Effects, generally not recommended
+// unless you're testing a cool selection of colors and do not
+// want to constantly recompile the client, or the client is
+// inaccessible. Only functional on PC/FTE atm (TODO?)
+//
+void(entity e, float r, float g, float b) Light_Custom =
+{
+	e.effects = e.effects | EF_FULLBRIGHT;
+	#ifdef PC
+	{
+		e.pflags = PFLAGS_FULLDYNAMIC;
+		e.light_lev = 100;
+		e.color_x = r/255;
+		e.color_y = g/255;
+		e.color_z = b/255;
+	}
+	#endif
+}
+
+//
+// --------------------
+// Core Perk System
+// --------------------
+//
+
+//
+// GivePerk(p)
+// Restores View Model and tells the Client to draw the Perk.
+//
+void GivePerk(optional float p) {
+	local float perk;
+
+	// First of, check if our Client is holding anything, this holds
+	// priority to prevent interruption.
+	if (self.style != 0) {
+		perk = self.style;
+		self.style = 0;
+	} 
+	// Next, check if a perk was explicitly set
+	else if (p) {
+		perk = p;
+	}
+	// Executed without context.. Nothing to do.
+	else {
+		return;
+	}
+
 	switch(perk) {
 		case P_REVIVE:
 			self.perks = self.perks | 8;
@@ -34,68 +197,57 @@ void GivePerk(float perk) {
 		default:
 			break;
 	}
+
   	sound_perk_delay = time + 4.5;
 	self.isBuying = false;
 	string modelname = GetWeaponModel(self.weapon, 0);
-	float startframe = GetFrame(self.weapon,TAKE_OUT_START);
-	float endframe = GetFrame(self.weapon,TAKE_OUT_END);
+
+	local float startframe = GetFrame(self.weapon,TAKE_OUT_START);
+	local float endframe = GetFrame(self.weapon,TAKE_OUT_END);
+
 	self.weaponskin = backupWepSkin;
 	self.perk_delay = self.fire_delay;
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
+
 	SetPerk(self, self.perks);
 }
 
-void() give_revive = { GivePerk(P_REVIVE); }
-void() give_juggernog = { GivePerk(P_JUG); }
-void() give_doubletap = { GivePerk(P_DOUBLE); }
-void() give_speedcola = { GivePerk(P_SPEED); }
-void() give_flopper = { GivePerk(P_FLOP); }
-void() give_staminup = { GivePerk(P_STAMIN); }
-void() give_deadshot = { GivePerk(P_DEAD); }
-void() give_mulekick = { GivePerk(P_MULE); }
-
-
+//
+// DrinkPerk(perk)
+// Gives Perk Bottle and jumps to GivePerk(p)
+//
 void DrinkPerk(float perk) {
-
-	void(optional float f) func;
-
+	// TODO: It would be wise to make the skins in-line with
+	// our .sequence/client IDs to make this a lot prettier!
 	switch(perk) {
 		case P_REVIVE:
 			other.weaponskin = 3;	
-			func = give_revive;
 			break;
 		case P_FLOP:
 			other.weaponskin = 4;	
-			func = give_flopper;
 			break;
 		case P_JUG:
 			other.weaponskin = 2;	
-			func = give_juggernog;
 			break;
 		case P_STAMIN:
 			other.weaponskin = 2;	
-			func = give_staminup;
 			break;
 		case P_SPEED:
 			other.weaponskin = 1;	
-			func = give_speedcola;
 			break;
 		case P_DOUBLE:
 			other.weaponskin = 0;	
-			func = give_doubletap;
 			break;
 		case P_DEAD:
 			other.weaponskin = 5;
-			func = give_deadshot;
 			break;
 		case P_MULE:
-			//other.weaponskin = 6;
-			other.weaponskin = 2; //FIXME - add muleskin
-			func = give_mulekick;
+			other.weaponskin = 2;
 			break;
 		default:
 			break;
 	}
+
 	other.isBuying = true;
 	entity tempe = self;
 	self = other;
@@ -106,253 +258,89 @@ void DrinkPerk(float perk) {
 	self.maxspeed *= GetWeaponWalkSpeed(self.perks, self.weapon);
 	
 	self.knife_delay = self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;		
-	Set_W_Frame (0, 22, 0, 0, PERK, func, "models/machines/v_perk.mdl", true, S_RIGHT);
+	Set_W_Frame (0, 22, 0, 0, PERK, GivePerk, "models/machines/v_perk.mdl", true, S_RIGHT);
 	self = tempe;
 	sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
 
 }
 
+//
+// touch_perk()
+// Executed on touch; prompt purchase and drink if requirements met.
+// -----
+// MotoLegacy (10-28-20) - Made modular using some existing entity fields we had,
+// as the memory is allocated to all entities on load anyway. This comment also
+// applies to all other relevant jumps as well.
+//
 void() touch_perk =
 {  
 	if (other.classname != "player" || other.downed || other.isBuying == true || !isFacing(other, self))
 		return;
 
+	// If we're proned and the map permits, collect some spare change
 	if (other.stance == 0 && self.collected == false && G_PRONEPOINTS != 0) {
 		self.collected = true;
 		addmoney(other, G_PRONEPOINTS, 0);
 		sound(self, 0,"sounds/misc/ching.wav", 1, 1);
 	}
 
+	// Do this after the perk change check
 	if (other.stance == 0)
 		return;
 	  
+	// Power's off! Nothing to do here.
 	if (self.requirespower == true && !isPowerOn) {
 		useprint (other, 8, 0, 0);
 		return;
 	}
 
+	// Back up weapon skin information
 	if (other.weaponskin == 0)
       	backupWepSkin = 0;
     else 
       	backupWepSkin = 1;
 
-	
-	if (self.classname == "perk_revive" && !(other.perks & P_REVIVE) && other.fire_delay < time)
-	{
-		if (!deathmatch && !coop)
-		{
-			useprint (other, 9, 500, 1);
-		}
-		else if ((coop || deathmatch))
-		{
-			useprint (other, 9, 1500, 1);
-		}
-		if (!deathmatch && !coop && other.points >= 500 && other.button7)
-		{
+	// Don't prompt if our hands or busy or we already have the perk
+	if (!(other.perks & self.style) && other.fire_delay < time) {
+		// sequence = perk ID in client
+		useprint(other, 9, self.cost, self.sequence);
 
-			addmoney (other, -500, 0);
-			DrinkPerk(P_REVIVE);
+		if (other.points >= self.cost && other.button7) {
+			addmoney(other, -self.cost, 0);
 
-			other.revivesoda++;
-			if (other.revivesoda == 3) {
-				setmodel(self, ""); //we don't want to remove revive in case of soft_restart..
+			// Pass along the Perk information to the Player to avoid complications later on, then Drink!
+			other.style = self.style;
+			DrinkPerk(self.style);
+
+			// Do Self-Revive checks
+			if (self.classname == "perk_revive" && !coop && !deathmatch) {
+				// Increment self-revive count
+				other.revivesoda++;
+
+				if (other.revivesoda >= 3) {
+					setmodel(self, ""); // We don't want to remove Revive in the event of a Soft_Restart..
+				}
 			}
-		}
-		else if ((coop || deathmatch) && other.points >= 1500 && other.button7)
-		{
-			addmoney (other, -1500, 0);
-			DrinkPerk(P_REVIVE);
-		}
-		else if (other.button7)
-		{
-			centerprint (other, "Not enough points\n");
-		}
-	}
-	if (self.classname == "perk_flopper" && !(other.perks & P_FLOP) && self.fire_delay < time)
-	{
-		useprint (other, 9, 2000, 6);
-		if (other.points >= 2000 && other.button7)
-		{
-			addmoney (other, -2000, 0);
-			DrinkPerk(P_FLOP);
-		}
-		else if (other.button7)
-		{
-			centerprint (other, "Not enough points\n");
-		}
-	}
-	if (self.classname == "perk_juggernog" && !(other.perks & P_JUG) && self.fire_delay < time)
-	{
-		useprint (other, 9, 2500, 2);
-		if (other.points >= 2500 && other.button7)
-		{
-			addmoney (other, -2500, 0);
-			DrinkPerk(P_JUG);
-		}
-		else if (other.button7)
-		{
-			centerprint (other, "Not enough points\n");
-		}
-	}
-	if (self.classname == "perk_staminup" && !(other.perks & P_STAMIN) && self.fire_delay < time)
-	{
-		useprint (other, 9, 2000, 5);
-		if (other.points >= 2000 && other.button7)
-		{
-			addmoney (other, -2000, 0);
-			DrinkPerk(P_STAMIN);
-		}
-		else if (other.button7)
-		{
-			centerprint (other, "Not enough points\n");
-		}
-	}
-	if (self.classname == "perk_speed" && !(other.perks & P_SPEED) && self.fire_delay < time)
-	{
-		useprint (other, 9, 3000, 3);
-		if (other.points >= 3000 && other.button7)
-		{
-			addmoney (other, -3000, 0);
-			DrinkPerk(P_SPEED);
-		}
-		else if (other.button7)
-		{
-			centerprint (other, "Not enough points\n");
-		}
-	}
-	if (self.classname == "perk_double" && !(other.perks & P_DOUBLE) && self.fire_delay < time)
-	{
-		useprint (other, 9, 2000, 4);
-		if (other.points >= 2000 && other.button7)
-		{
-			addmoney (other, -2000, 0);
-			DrinkPerk(P_DOUBLE);
-		}
-		else if (other.button7)
-		{
-			centerprint (other, "Not enough points\n");
-		}
-	}
-	if (self.classname == "perk_deadshot" && !(other.perks & P_DEAD) && self.fire_delay < time)
-	{
-		useprint (other, 9, self.cost, 7);
-		if (other.points >= self.cost && other.button7)
-		{
-			addmoney (other, -self.cost, 0);
-			DrinkPerk(P_DEAD);
-		}
-		else if (other.button7)
-		{
-			centerprint (other, "Not enough points\n");
-		}
-	}
-	if (self.classname == "perk_mule" && !(other.perks & P_MULE) && self.fire_delay < time)
-	{
-		useprint (other, 9, self.cost, 8);
-		if (other.points >= self.cost && other.button7)
-		{
-			addmoney (other, -self.cost, 0);
-			DrinkPerk(P_MULE);
-		}
-		else if (other.button7)
-		{
-			centerprint (other, "Not enough points\n");
+		} else if (other.button7) {
+			// We tried to use, but we don't have the cash..
+			centerprint(other, "Not enough points\n");
 		}
 	}
 }
 
-void(entity e) Light_Red =
-{
-    e.effects = e.effects | EF_FULLBRIGHT;
-    #ifndef PC
-    e.effects = e.effects | EF_RED;
-    #else
-    {
-        e.pflags = PFLAGS_FULLDYNAMIC;
-       	e.light_lev = 100;
-	    e.color_x = 2;	
-	    e.color_y = 0.25;	
-	    e.color_z = 0.25;
-    }
-    #endif
-}
-
-void(entity e) Light_Green =
-{
-    e.effects = e.effects | EF_FULLBRIGHT;
-    #ifndef PC
-    e.effects = e.effects | EF_GREEN;
-    #else
-    {
-        e.pflags = PFLAGS_FULLDYNAMIC;
-       	e.light_lev = 100;
-	    e.color_x = 0.25;	
-	    e.color_y = 2;	
-	    e.color_z = 0.25;
-    }
-    #endif
-}
-
-void(entity e) Light_Blue =
-{
-    e.effects = e.effects | EF_FULLBRIGHT;
-    #ifndef PC
-    e.effects = e.effects | EF_BLUE;
-    #else
-    {
-        e.pflags = PFLAGS_FULLDYNAMIC;
-       	e.light_lev = 100;
-	    e.color_x = 0.25;	
-	    e.color_y = 0.25;	
-	    e.color_z = 2;
-    }
-    #endif
-}
-
-void(entity e) Light_Orange =
-{
-    e.effects = e.effects | EF_FULLBRIGHT;
-    #ifndef PC
-    e.effects = e.effects | EF_ORANGELIGHT;
-    #else
-    {
-        e.pflags = PFLAGS_FULLDYNAMIC;
-       	e.light_lev = 100;
-	    e.color_x = 2;	
-	    e.color_y = 1;	
-	    e.color_z = 0;
-    }
-    #endif
-}
-
-void(entity e) Light_Purple =
-{
-    e.effects = e.effects | EF_FULLBRIGHT;
-    #ifndef PC
-    e.effects = e.effects | EF_PURPLELIGHT;
-    #else
-    {
-        e.pflags = PFLAGS_FULLDYNAMIC;
-       	e.light_lev = 100;
-	    e.color_x = 2;	
-	    e.color_y = 0.25;	
-	    e.color_z = 2;
-    }
-    #endif
-}
-
+//
+// setup_perk()
+// Sets up Perk Light Effects
+//
 void() setup_perk =
 {
-	if (find (world, classname, "power_switch"))
-	{
+	if (find(world, classname, "power_switch")) {
 		if (self.classname == "perk_revive" && !coop && !deathmatch) {
             Light_Blue(self);
-			//self.effects = self.effects | EF_BLUE;
-		} else
+		}
+		else
 			self.requirespower = true;
-	}
-	else
-	{
+	} else {
 		self.effects = self.effects | EF_FULLBRIGHT;
 		switch(self.classname)
 		{
@@ -374,11 +362,19 @@ void() setup_perk =
 			case "perk_deadshot":
 			    Light_Orange(self);
 				break;
-			default: break;
+			default: 
+				break;
 		
 		}
 	} 
 }
+
+//
+// --------------------
+// Perk Entity Spawn Functions
+// --------------------
+//
+
 void() perk_revive =
 {
 	self.solid = SOLID_TRIGGER;
@@ -395,6 +391,11 @@ void() perk_revive =
 
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
+
+	// Perk Information
+	self.cost = 500;
+	self.sequence = 1;
+	self.style = P_REVIVE;
 };
 void() perk_flopper =
 {
@@ -410,8 +411,12 @@ void() perk_flopper =
 
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
-};
 
+	// Perk Information
+	self.cost = 2000;
+	self.sequence = 6;
+	self.style = P_FLOP;
+};
 void() perk_juggernog =
 {
 	self.solid = SOLID_TRIGGER;
@@ -426,8 +431,12 @@ void() perk_juggernog =
 
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
-};
 
+	// Perk Information
+	self.cost = 2500;
+	self.sequence = 2;
+	self.style = P_JUG;
+};
 void() perk_staminup =
 {
 	self.solid = SOLID_TRIGGER;
@@ -442,8 +451,12 @@ void() perk_staminup =
 
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
-};
 
+	// Perk Information
+	self.cost = 2000;
+	self.sequence = 5;
+	self.style = P_STAMIN;
+};
 void() perk_speed =
 {
 	self.solid = SOLID_TRIGGER;
@@ -458,8 +471,12 @@ void() perk_speed =
 
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
-};
 
+	// Perk Information
+	self.cost = 3000;
+	self.sequence = 3;
+	self.style = P_SPEED;
+};
 void() perk_double =
 {
 	self.solid = SOLID_TRIGGER;
@@ -474,8 +491,12 @@ void() perk_double =
 
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
-};
 
+	// Perk Information
+	self.cost = 2000;
+	self.sequence = 4;
+	self.style = P_DOUBLE;
+};
 void() perk_deadshot =
 {
 	self.solid = SOLID_TRIGGER;
@@ -491,16 +512,17 @@ void() perk_deadshot =
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
+	// Perk Information
 	#ifdef PC
-	self.cost = 1000;
+	self.cost = 1000; // Reduce cost on PC, for lack of Aim Assist.
 	#else
 	self.cost = 1500;
 	#endif
+	self.sequence = 7;
+	self.style = P_DEAD;
 };
-
 // naievil -- older maps compatability
 void() perk_dead = { perk_deadshot();}
-
 void() perk_mule =
 {
 	self.solid = SOLID_TRIGGER;
@@ -516,17 +538,30 @@ void() perk_mule =
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
+	// Perk Information
 	self.cost = 4000;
+	self.sequence = 8;
+	self.style = P_MULE;
 }
+
+//
+// --------------------
+// Power Switch
+// --------------------
+//
 
 void()	turnpower1	=[	1,		turnpower2	] {self.frame = 1;};
 void()	turnpower2	=[	2,		turnpower3	] {self.frame = 2;};
 void()	turnpower3	=[	3,		turnpower4	] {self.frame = 3;};
 void()	turnpower4	=[	4,		SUB_Null	] {self.frame = 4;};
 
+//
+// Turn_Lights()
+// Activates Perk Light Effects
+//
 void() Turn_Lights =
 {
-	entity tempe = findfloat (world, requirespower, 1);// trigger all paired doors
+	local entity tempe = findfloat(world, requirespower, 1);
 	while (tempe)
 	{
 		switch(tempe.classname) {
@@ -551,59 +586,58 @@ void() Turn_Lights =
 			default: break;
 		}
       
-		tempe = findfloat (tempe, requirespower, 1);// trigger all paired doors
+		tempe = findfloat (tempe, requirespower, 1);
 	}
 } 
 
+//
+// touch_power_Switch()
+// Power Switch touch function; play Animation and do Power things..
+//
 void() touch_power_Switch =
 {
-	entity tempe;
-	entity old_self;
-
 	if (other.classname != "player" || other.downed)
 		return;
 
 	if (isPowerOn == true)
-    return;
+    	return;
+	
+	local entity tempe;
+	local entity old_self;
+
 	useprint (other, 10, 0, 0);
-	if (other.button7 && !isPowerOn)
-	{
+	if (other.button7 && !isPowerOn) {
 		turnpower1();
 		isPowerOn = true;
-		sound (self, CHAN_ITEM, "sounds/machines/power.wav", 1, ATTN_NONE);
+		sound(self, CHAN_ITEM, "sounds/machines/power.wav", 1, ATTN_NONE);
 
 		tempe = find (world, classname, "door_nzp");// trigger all paired doors
-		while (tempe)
-		{
+		while (tempe) {
 			local entity starte;
 
-      if (!tempe.targetname)
-      {
-        if (!tempe.cost)
-        {
-          old_self = self;
-          self = tempe;
-          starte = self;
-          door_go_up ();
-          tempe.classname = "door_open";
-          tempe = find (tempe, classname, "door_nzp");// trigger all paired doors
-          self = old_self;
-        }
-      }
-      if (tempe.targetname)
-      {
-        old_self = self;
-        self = tempe;
-        remove(self);
-        self = old_self;
-        tempe = find (tempe, classname, "door_nzp");// trigger all paired doors
-       }
+			if (!tempe.targetname) {
+				if (!tempe.cost) {
+					old_self = self;
+					self = tempe;
+					starte = self;
+					door_go_up ();
+					tempe.classname = "door_open";
+					tempe = find (tempe, classname, "door_nzp");// trigger all paired doors
+					self = old_self;
+				}
+			}
+			if (tempe.targetname) {
+				old_self = self;
+				self = tempe;
+				remove(self);
+				self = old_self;
+				tempe = find (tempe, classname, "door_nzp");// trigger all paired doors
+			}
 		}
-
-		Turn_Lights ();
-		
+		Turn_Lights();
 	}
 }
+
 void() power_switch =
 {
 	self.solid = SOLID_TRIGGER;
@@ -617,6 +651,11 @@ void() power_switch =
 	self.touch = touch_power_Switch;
 }
 
+//
+// --------------------
+// Mystery Box
+// --------------------
+//
 
 void() updateBoxGlow
 {
@@ -1578,7 +1617,12 @@ void() mystery_box =
 	boxCount++;
 }
 
-//PACK A PUNCH
+//
+// --------------------
+// Pack-a-Punch
+// --------------------
+//
+
 void removeinpap() {
 	//remove(self);
 };
