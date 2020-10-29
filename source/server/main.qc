@@ -128,6 +128,7 @@ void() precaches =
 	precache_model ("progs/Misc/instakill!.mdl");
 	precache_model ("progs/Misc/nuke!.mdl");
 	precache_model ("progs/Misc/carpenter!.mdl");
+	precache_model ("progs/Misc/perkbottle!.mdl");
 	
 	precache_sound("sounds/player/footstep1.wav");
 	precache_sound("sounds/player/footstep2.wav");

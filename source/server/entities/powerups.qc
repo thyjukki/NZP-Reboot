@@ -2,6 +2,34 @@
 .float flashtime;
 .float flash_step;
 
+// the powerup's model
+string(float type) getPowerupModel = 
+{
+	switch(type) {
+		case 1: return "progs/Misc/maxammo!.mdl"; break;
+		case 2: return "progs/Misc/x2!.mdl"; break;
+		case 3: return "progs/Misc/instakill!.mdl"; break;
+		case 4: return "progs/Misc/nuke!.mdl"; break;
+		case 5: return "progs/Misc/carpenter!.mdl"; break;
+		case 6: return "progs/Misc/perkbottle!.mdl"; break;
+		default: return ""; break;
+	}
+}
+
+// the powerup's pick up voice clip
+string(float type) getPowerupVO =
+{
+	switch(type) {
+		case 1: return "sounds/pu/maxammo.wav"; break;
+		case 2: return "sounds/pu/double_points.wav"; break;
+		case 3: return "sounds/pu/insta_kill.wav"; break;
+		case 4: return "sounds/pu/nuke.wav"; break;
+		case 5: return "sounds/pu/carpenter.wav"; break;
+		default: return ""; break;
+	}
+
+}
+
 void() maxammo =
 {
 	entity tempe, temp;
@@ -84,13 +112,6 @@ void() carpenter =
 	local entity oldself;
 	local entity who;
 	oldself = self;
-	local float exp;
-  
-	if (x2_finished > time)
-		exp = 2;
-	else
-		exp = 1;
-	
 	
 	who = find(world,classname,"window");
 	while(who != world)
@@ -109,35 +130,94 @@ void() carpenter =
 	who = find(world,classname,"player");
 	while(who)
 	{
-		addmoney(who,200*exp,1);
+		addmoney(who, 200, 1);
 		
 		who = find(who,classname,"player");
 	}
 	total_windows_down = 0;
 }
 
+void(entity who) give_perkdrop_logic =
+{
+	// Return here if we already have all of the Perks
+	if ((who.perks & P_REVIVE) && (who.perks & P_JUG) && (who.perks & P_SPEED) && (who.perks & P_DOUBLE) && 
+		(who.perks & P_FLOP) && (who.perks & P_STAMIN) && (who.perks & P_DEAD) && (who.perks & P_MULE)) {
+		return;
+	}
+
+	local float perk;
+	perk = 0;
+
+	while(perk == 0) {
+		local float num;
+		num = rint((random() * 7)) + 1;
+
+		switch(num) {
+			case 1:
+				if (!(who.perks & P_JUG)) {
+					perk = 1;
+				}
+				break;
+			case 2:
+				if (!(who.perks & P_DOUBLE)) {
+					perk = 2;
+				}
+				break;
+			case 3:
+				if (!(who.perks & P_SPEED)) {
+					perk = 4;
+				}
+				break;
+			case 4:
+				if (!(who.perks & P_REVIVE)) {
+					perk = 8;
+				}
+				break;
+			case 5:
+				if (!(who.perks & P_FLOP)) {
+					perk = 16;
+				}
+				break;
+			case 6:
+				if (!(who.perks & P_STAMIN)) {
+					perk = 32;
+				}
+				break;
+			case 7:
+				if (!(who.perks & P_DEAD)) {
+					perk = 64;
+				}
+				break;
+			case 8:
+				if (!(who.perks & P_MULE)) {
+					perk = 128;
+				}
+				break;
+			default: break;
+		}
+
+		who.perks = who.perks | perk;
+	}
+
+	SetPerk(who, who.perks);
+}
+
 void() give_perk =
 {
-  	local float t;
-  
-  	t = random();
-  	
-  	if (t < 0.166 && !(other.perks & P_REVIVE)) {
-  		other.perks = other.perks | 8;
-  	} else if (t < 0.333 && !(other.perks & P_JUG)) {
-  		other.perks = other.perks | 1;
-  	} else if (t < 0.5 && !(other.perks & P_DOUBLE)) {
-		other.perks = other.perks | 2;
-  	} else if (t < 0.6666 && !(other.perks & P_SPEED)) {
-  		other.perks = other.perks | 4;
-  	} else if (t < 0.8333 && !(other.perks & P_FLOP)) {
-  		other.perks = other.perks | 16;
-  	} else if (t < 1 && !(other.perks & P_STAMIN)) {
-  		other.perks = other.perks | 32;
-  	} else if (t <= 1 && (other.perks & P_STAMIN) && (other.perks & P_REVIVE) && (other.perks & P_JUG) && (other.perks & P_DOUBLE) && (other.perks & P_SPEED) && (other.perks & P_FLOP))
-		return;
-	else
-    	give_perk();
+	// Individual Power-Up
+	if (self.style == 1) {
+		give_perkdrop_logic(other);
+	}
+	// OUR Power-Up
+	else {
+		local entity who;
+		who = find(world, classname, "player");
+
+		while(who) {
+			give_perkdrop_logic(who);
+			who = find(who, classname, "player");
+		}
+	}
 }
 
 
@@ -187,29 +267,18 @@ void() powerup_flash =
 		}
 	}
 	
-	if(self.model == "")
-	{
-		if(self.zombie_drop_id == 1)
-			setmodel(self,"progs/Misc/maxammo!.mdl");
-		if(self.zombie_drop_id == 2)
-			setmodel(self,"progs/Misc/x2!.mdl");
-		if(self.zombie_drop_id == 3)
-			setmodel(self,"progs/Misc/instakill!.mdl");
-		if(self.zombie_drop_id == 4)
-			setmodel(self,"progs/Misc/nuke!.mdl");
-		if(self.zombie_drop_id == 5)
-			setmodel(self,"progs/Misc/carpenter!.mdl");
-	}
-	else
-	{
+	if(self.model == "") {
+		setmodel(self, getPowerupModel(self.zombie_drop_id));
+	} else {
 		setmodel(self,"");
 	}
 };
 
 void() powerup_play_sound =
 {
-	// play the VO clip
-	sound(self, CHAN_VOICE, self.powerup_vo, 1, ATTN_NONE);
+	// play the VO clip if its not the perk bottle
+	if (self.zombie_drop_id != 6)
+		sound(self, CHAN_VOICE, self.powerup_vo, 1, ATTN_NONE);
 
 	// finally, remove the (invisible/inactive) powerup.
 	remove(self);
@@ -226,7 +295,7 @@ void() powerup_touch =
 		// pickup sound
 		sound(self.owner,CHAN_VOICE,"sounds/pu/pickup.wav",1,ATTN_NONE);
 
-		// add a slight delay before sound play
+		// add a slight delay before VO play
 		self.think = powerup_play_sound;
 		self.nextthink = time + 1;
 
@@ -299,33 +368,6 @@ void() sparkle_think =
 	
 };
 
-// the powerup's model
-string(float type) getPowerupModel = 
-{
-	switch(type) {
-		case 1: return "progs/Misc/maxammo!.mdl"; break;
-		case 2: return "progs/Misc/x2!.mdl"; break;
-		case 3: return "progs/Misc/instakill!.mdl"; break;
-		case 4: return "progs/Misc/nuke!.mdl"; break;
-		case 5: return "progs/Misc/carpenter!.mdl"; break;
-		default: return ""; break;
-	}
-}
-
-// the powerup's pick up voice clip
-string(float type) getPowerupVO =
-{
-	switch(type) {
-		case 1: return "sounds/pu/maxammo.wav"; break;
-		case 2: return "sounds/pu/double_points.wav"; break;
-		case 3: return "sounds/pu/insta_kill.wav"; break;
-		case 4: return "sounds/pu/nuke.wav"; break;
-		case 5: return "sounds/pu/carpenter.wav"; break;
-		default: return ""; break;
-	}
-
-}
-
 float last_pu;
 void(vector where, float type) Spawn_Powerup =
 {
@@ -341,13 +383,7 @@ void(vector where, float type) Spawn_Powerup =
 	
 	setsize (new_powerup, VEC_HULL_MIN, VEC_HULL_MAX);
 	new_powerup.movetype = MOVETYPE_NONE;
-
-    new_powerup.effects = EF_FULLBRIGHT;
-    #ifndef PC
-    new_powerup.effects = EF_GREEN;
-    #else
     Light_Green(new_powerup);
-    #endif
 	
 	//=================== Sparkle Effects =====================
 	
@@ -392,7 +428,8 @@ void(vector where, float type) Spawn_Powerup =
 		if (total_windows_down >= 5) {
 			t = random();
 
-			if (t > (1/3)) {
+			// Should we override the current selection?
+			if (t < (1/3)) {
 				id = 5;
 			}
 		}
@@ -401,13 +438,26 @@ void(vector where, float type) Spawn_Powerup =
 		if (G_PERKPOWER && rounds >= 15) {
 			t = random();
 
+			// Should we override the current selection?
 			if (t > (1/10)) {
 				id = 6;
+
+				// Another check, is this Power-Up for all Clients or just one?
+				if (random() > (1/2)) {
+					// Set Style and make light Blue to symbolize it is an individual drop
+					// TODO: Make a sprite too??
+					new_powerup.style = 1;
+					Light_None(new_powerup);
+					Light_Blue(new_powerup);
+				} else {
+					// failsafe
+					new_powerup.style = 0;
+				}
 			}
 		}
 
 		// failsafe in case my logic is still horrible
-		if (id == 0 || id > 7) {
+		if (id == 0 || id >= 7) {
 			id = 3;
 		}
 
