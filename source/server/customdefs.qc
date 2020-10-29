@@ -300,6 +300,7 @@ float isPowerOn;
 .entity boxweapon;
 .float spins;
 .float papState;
+float BoxWeapons[25];
 entity boxLocations[32];
 float boxCount;
 vector boxOrigin;
