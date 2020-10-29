@@ -138,7 +138,6 @@ void () Select_Waypoint =
 		float i;
 		for	(i = 0; i < MAX_WAY_TARGETS; i++) {
 			tempe = find (world, waynum, active_way.targets[i]);
-
 			if (tempe) {
 				if (tempe.targetname != "")
 					setmodel(tempe, "models/way/last_way_door.spr");
@@ -377,6 +376,11 @@ void() Save_Waypoints
 
 				if (tempe != world) {
 					fputs(file, strcat("  ", strcat(dway.targets[i], "\n")));
+				} else {
+					tempe = find (world, waynum, dway.targets[i]);
+					if (tempe != world) {
+						fputs(file, strcat("  ", strcat(dway.targets[i], "\n")));
+					}
 				}
 			}
 		}
@@ -436,7 +440,7 @@ void (vector here, float which, string special, string trg, string trg2, string 
 	new_way.touch = creator_way_touch;
 }
 
-
+float waypoints_loaded;
 void() Load_Waypoints
 {
 	float file, point;
@@ -469,7 +473,7 @@ void() Load_Waypoints
 		}
 		h = strtrim(line);
 
-		//print(h, "\n");
+		//bprint(PRINT_HIGH, strcat(h, "\n"));
 		if (h == "") {
 			continue;
 		}
@@ -510,6 +514,8 @@ void() Load_Waypoints
 				variable = strtrim(argv(0));
 				value = strtrim(argv(2));
 
+				//bprint(PRINT_HIGH, strcat(variable, "\n"));
+
 				switch (variable) {
 					case "origin":
 						
@@ -549,6 +555,7 @@ void() Load_Waypoints
 				} else if (h == "]") {
 					point = 2;
 				} else  {
+					bprint(PRINT_HIGH, strcat(strcat("WAYPOINT TARGET: ", strcat(strcat(ftos(targetcount), " "), h)), "\n"));
 					new_way.targets[targetcount] = h;
 					targetcount++;
 				}
@@ -557,6 +564,7 @@ void() Load_Waypoints
 	}
 
 	fclose(file);
+	waypoints_loaded = 1;
 }
 
 void() Load_Waypoints_Legacy
@@ -715,7 +723,8 @@ void () Waypoint_Functions =
 			Save_Waypoints();
 			break;
 		case 22:
-			Load_Waypoints();
+			if (!waypoints_loaded)
+				Load_Waypoints();
 			break;
 		case 110:
 			Move_Waypoint();
