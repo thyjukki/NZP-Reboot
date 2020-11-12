@@ -173,50 +173,177 @@
 ]
 
 //
-//NZP Perk Machines
+// NZP Perk Machines
 //
 
-@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(107 29 20) studio("models/machines/juggernog.mdl") = 
-	perk_juggernog : "Juggernog" 
+// Jugger-Nog
+@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(107 29 20) studio("models/machines/juggernog.mdl") = perk_juggernog : "Jugger-Nog" 
 [
-
-]
-@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(131 63 148) studio("models/machines/flopper.mdl") = 
-	perk_flopper : "Phd-Flopper" 
-[
-
-]
-
-@PointClass size(-16 -16 -32, 16 16 40) base(Item, Appearflags) color(214 203 1) studio("models/machines/double_tap.mdl") = 
-	perk_double : "Double Tap Root Beer"  
-[
-
-]
-@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/speed_cola.mdl") = 
-	perk_speed : "Speed Cola" 
-[
-
-]
-@PointClass size(-16 -16 -32, 16 16 32) base(Item, Appearflags) color(129 172 254) studio("models/machines/quick_revive.mdl") = 
-	perk_revive : "quick revive" 
-[
-
-]
-@PointClass size(-24 -24 -32, 24 24 48) base(Item, Appearflags) color(254 198 65) studio("models/machines/staminup.mdl") = 
-	perk_staminup : "Stamin Up" 
-[
-
+	model(studio) : "Model" : "models/machines/juggernog.mdl"
+	aistatus(string) : "Perk Sting" : "sounds/machines/juggernog_sting.wav"
+	cost(integer) : "Perk Cost" : 2500
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 1
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 0
+		32: "Purple Light" : 0
+	]
 ]
 
-@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 35 10) studio("models/machines/deadshot.mdl") = 
-	perk_deadshot : "Deadshot Daiquiri" 
+// PhD Flopper
+@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(131 63 148) studio("models/machines/flopper.mdl") = perk_flopper : "PhD Flopper" 
 [
-
+	model(studio) : "Model" : "models/machines/flopper.mdl"
+	aistatus(string) : "Perk Sting" : "sounds/machines/flopper_sting.wav"
+	cost(integer) : "Perk Cost" : 2000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 1
+		32: "Purple Light" : 0
+	]
 ]
-@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/mulekick.mdl") = 
-	perk_mule : "Mule Kick" 
-[
 
+// Double Tap Root Beer
+@PointClass size(-16 -16 -32, 16 16 40) base(Item, Appearflags) color(214 203 1) studio("models/machines/double_tap.mdl") = perk_double : "Double Tap Root Beer"  
+[
+	model(studio) : "Model" : "models/machines/double_tap.mdl"
+	aistatus(string) : "Perk Sting" : "sounds/machines/double_tap_sting.wav"
+	cost(integer) : "Perk Cost" : 2000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 1
+		32: "Purple Light" : 0
+	]
+]
+
+// Speed Cola
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/speed_cola.mdl") = perk_speed : "Speed Cola" 
+[
+	model(studio) : "Model" : "models/machines/speed_cola.mdl"
+	aistatus(string) : "Perk Sting" : "sounds/machines/speed_cola_sting.wav"
+	cost(integer) : "Perk Cost" : 3000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 1
+		8: "Blue Light" : 0
+		16: "Orange Light" : 0
+		32: "Purple Light" : 0
+	]
+]
+
+// Quick Revive
+@PointClass size(-16 -16 -32, 16 16 32) base(Item, Appearflags) color(129 172 254) studio("models/machines/quick_revive.mdl") = perk_revive : "Quick Revive" 
+[
+	model(studio) : "Model" : "models/machines/quick_revive.mdl"
+	aistatus(string) : "Perk Sting" : "sounds/machines/quick_revive_sting.wav"
+	cost(integer) : "Perk Cost (Solo)" : 500
+	cost2(integer) : "Perk Cost (Co-Op)" : 1500
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 1
+		16: "Orange Light" : 0
+		32: "Purple Light" : 0
+	]
+]
+
+// Stamin-Up
+@PointClass size(-24 -24 -32, 24 24 48) base(Item, Appearflags) color(254 198 65) studio("models/machines/staminup.mdl") = perk_staminup : "Stamin-Up" 
+[
+	model(studio) : "Model" : "models/machines/staminup.mdl"
+	aistatus(string) : "Perk Sting" : "sounds/machines/staminup_sting.wav"
+	cost(integer) : "Perk Cost" : 2000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 1
+		32: "Purple Light" : 0
+	]
+]
+
+// Deadshot Daiquiri
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 35 10) studio("models/machines/deadshot.mdl") = perk_deadshot : "Deadshot Daiquiri" 
+[
+	model(studio) : "Model" : "models/machines/deadshot.mdl"
+	aistatus(string) : "Perk Sting" : "sounds/machines/deadshot_sting.wav"
+	cost(integer) : "Perk Cost (Console)" : 1500
+	cost2(integer) : "Perk Cost (PC)" : 1000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 1
+		32: "Purple Light" : 0
+	]
+]
+
+// Mule Kick
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/mulekick.mdl") = perk_mule : "Mule Kick" 
+[
+	model(studio) : "Model" : "models/machines/mulekick.mdl"
+	aistatus(string) : "Perk Sting" : "sounds/machines/mulekick_sting.wav"
+	cost(integer) : "Perk Cost" : 4000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 1
+		8: "Blue Light" : 0
+		16: "Orange Light" : 0
+		32: "Purple Light" : 0
+	]
 ]
 
 @PointClass size(-32 -32 -32, 32 32 56) base(Item, Appearflags) color(125 196 187) studio("models/machines/pap.mdl") = 
@@ -237,6 +364,7 @@
 		16: "Enable PhD Flopper" : 1
 		32: "Enable Stamin-Up" : 1
 		64: "Enable Deadshot Daiquiri" : 1
+		128: "Enable Mule Kick" : 1
 	]
 ]
 //

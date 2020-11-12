@@ -111,7 +111,7 @@ void() Soft_Restart = {
 	//reset quick revive
 	revive = find(world, classname, "perk_revive");
 	if (revive) {
-		setmodel(revive, "models/machines/quick_revive.mdl");
+		setmodel(revive, revive.model);
 		oldself.revivesoda = 0;
 	}
 

@@ -242,9 +242,9 @@ void DrinkPerk(float perk) {
 	self.maxspeed *= GetWeaponWalkSpeed(self.perks, self.weapon);
 	
 	self.knife_delay = self.reload_delay2 = self.fire_delay2 = self.fire_delay = self.reload_delay = 4.5 + time;		
-	Set_W_Frame (0, 22, 0, 0, PERK, GivePerk, "models/machines/v_perk.mdl", true, S_RIGHT);
+	Set_W_Frame (tempe.weapon_animduration, tempe.weapon2_animduration, 0, 0, PERK, GivePerk, tempe.weapon2model, true, S_RIGHT);
 	self = tempe;
-	sound (other, CHAN_ITEM, "sounds/machines/perk_drink.wav", 1, ATTN_NORM);
+	sound(other, CHAN_ITEM, self.oldmodel, 1, ATTN_NORM);
 }
 
 //
@@ -309,44 +309,52 @@ void() touch_perk =
 }
 
 //
+// Turn_PerkLight_On(who)
+// Turns on the Perk Lights
+//
+void(entity who) Turn_PerkLight_On =
+{
+	if (who.spawnflags & 1) {
+		Light_None(who);
+	}
+	if (who.spawnflags & 2) {
+		Light_Red(who);
+	}
+	if (who.spawnflags & 4) {
+		Light_Green(who);
+	}
+	if (who.spawnflags & 8) {
+		Light_Blue(who);
+	}
+	if (who.spawnflags & 16) {
+		Light_Orange(who);
+	}
+	if (who.spawnflags & 32) {
+		Light_Purple(who);
+	}
+}
+
+//
 // setup_perk()
-// Sets up Perk Light Effects
+// Readies up Perk Light Effects
 //
 void() setup_perk =
 {
-	if (find(world, classname, "power_switch")) {
-		if (self.classname == "perk_revive" && !coop && !deathmatch) {
-            Light_Blue(self);
-		}
-		else
-			self.requirespower = true;
+	local entity power = find(world, classname, "power_switch");
+
+	// Check for Revive before Power
+	if (self.classname == "perk_revive" && !coop && !deathmatch) {
+		Turn_PerkLight_On(self);
+		return;
+	}
+
+	// Check for Power
+	if (power != world) {
+		self.requirespower = true;
 	} else {
-		self.effects = self.effects | EF_FULLBRIGHT;
-		switch(self.classname)
-		{
-			case "perk_revive": 
-                Light_Blue(self);
-				break;
-			case "perk_juggernog":
-				Light_Red(self);
-				break;
-			case "perk_speed":
-			case "perk_mule":
-				Light_Green(self);
-				break;
-			case "perk_flopper":
-				Light_Purple(self);
-				break;
-			case "perk_staminup":
-			case "perk_double":
-			case "perk_deadshot":
-			    Light_Orange(self);
-				break;
-			default: 
-				break;
-		
-		}
-	} 
+		// There's no Power Switch, so turn the rest On.
+		Turn_PerkLight_On(self);
+	}
 }
 
 //
@@ -355,171 +363,493 @@ void() setup_perk =
 // --------------------
 //
 
+// Quick Revive
 void() perk_revive =
 {
+	//
+	// Set Default Stats for Compatibility
+	//
+	
+	// Model
+	if (!self.model) {
+		self.model = "models/machines/quick_revive.mdl";
+	}
+
+	// Perk Cost
+	if (!self.cost) {
+		self.cost = 500;
+		self.cost2 = 1500;
+	}
+
+	// Player Trigger Sound
+	if (!self.oldmodel) {
+		self.oldmodel = "sounds/machines/perk_drink.wav";
+	}
+
+	// View Model
+	if (!self.weapon2model) {
+		self.weapon2model = "models/machines/v_perk.mdl";
+	}
+
+	// View Model Start Frame
+	if (!self.weapon_animduration) {
+		self.weapon_animduration = 0;
+	}
+
+	// View Model End Frame
+	if (!self.weapon2_animduration) {
+		self.weapon2_animduration = 22;
+	}
+
+	// Light Effect
+	if (!self.spawnflags) {
+		self.spawnflags = self.spawnflags | 8;
+	}
+
+	// Set up the Perk Entity
 	self.solid = SOLID_TRIGGER;
-	precache_model ("models/machines/quick_revive.mdl");
-	precache_model ("models/machines/v_perk.mdl");
-	precache_sound ("sounds/machines/perk_drink.wav");
-  	precache_sound ("sounds/weapons/papfire.wav");
-  	precache_extra (W_BIATCH);
-	setorigin (self, self.origin);
-	setmodel (self, "models/machines/quick_revive.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	precache_model(self.model);
+	precache_model(self.weapon2model);
+	precache_sound(self.oldmodel);
+	precache_sound("sounds/weapons/papfire.wav");
+	precache_extra(W_BIATCH);
+	setorigin(self, self.origin);
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_revive";
 	self.touch = touch_perk;
-
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	// Perk Information
-	self.cost = 500;
+	// Drink Information
 	self.sequence = 1;
 	self.style = P_REVIVE;
 };
+
+// PhD Flopper
 void() perk_flopper =
 {
+	//
+	// Set Default Stats for Compatibility
+	//
+	
+	// Model
+	if (!self.model) {
+		self.model = "models/machines/flopper.mdl";
+	}
+
+	// Perk Cost
+	if (!self.cost) {
+		self.cost = 2000;
+	}
+
+	// Player Trigger Sound
+	if (!self.oldmodel) {
+		self.oldmodel = "sounds/machines/perk_drink.wav";
+	}
+
+	// View Model
+	if (!self.weapon2model) {
+		self.weapon2model = "models/machines/v_perk.mdl";
+	}
+
+	// View Model Start Frame
+	if (!self.weapon_animduration) {
+		self.weapon_animduration = 0;
+	}
+
+	// View Model End Frame
+	if (!self.weapon2_animduration) {
+		self.weapon2_animduration = 22;
+	}
+
+	// Light Effect
+	if (!self.spawnflags) {
+		self.spawnflags = self.spawnflags | 16;
+	}
+
+	// Set up the Perk Entity
 	self.solid = SOLID_TRIGGER;
-	precache_model ("models/machines/flopper.mdl");
-	precache_model ("models/machines/v_perk.mdl");
-	precache_sound ("sounds/machines/perk_drink.wav");
-	setorigin (self, self.origin);
-	setmodel (self, "models/machines/flopper.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	precache_model(self.model);
+	precache_model(self.weapon2model);
+	precache_sound(self.oldmodel);
+	setorigin(self, self.origin);
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_flopper";
 	self.touch = touch_perk;
-
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	// Perk Information
-	self.cost = 2000;
+	// Drink Information
 	self.sequence = 6;
 	self.style = P_FLOP;
 };
+
+// Jugger-Nog
 void() perk_juggernog =
 {
+	//
+	// Set Default Stats for Compatibility
+	//
+	
+	// Model
+	if (!self.model) {
+		self.model = "models/machines/juggernog.mdl";
+	}
+
+	// Perk Cost
+	if (!self.cost) {
+		self.cost = 2500;
+	}
+
+	// Player Trigger Sound
+	if (!self.oldmodel) {
+		self.oldmodel = "sounds/machines/perk_drink.wav";
+	}
+
+	// View Model
+	if (!self.weapon2model) {
+		self.weapon2model = "models/machines/v_perk.mdl";
+	}
+
+	// View Model Start Frame
+	if (!self.weapon_animduration) {
+		self.weapon_animduration = 0;
+	}
+
+	// View Model End Frame
+	if (!self.weapon2_animduration) {
+		self.weapon2_animduration = 22;
+	}
+
+	// Light Effect
+	if (!self.spawnflags) {
+		self.spawnflags = self.spawnflags | 2;
+	}
+
+	// Set up the Perk Entity
 	self.solid = SOLID_TRIGGER;
-	precache_model ("models/machines/juggernog.mdl");
-	precache_model ("models/machines/v_perk.mdl");
-	precache_sound ("sounds/machines/perk_drink.wav");
-	setorigin (self, self.origin);
-	setmodel (self, "models/machines/juggernog.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	precache_model(self.model);
+	precache_model(self.weapon2model);
+	precache_sound(self.oldmodel);
+	setorigin(self, self.origin);
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_juggernog";
 	self.touch = touch_perk;
-
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	// Perk Information
-	self.cost = 2500;
+	// Drink Information
 	self.sequence = 2;
 	self.style = P_JUG;
 };
+
+// Stamin-Up
 void() perk_staminup =
 {
+	//
+	// Set Default Stats for Compatibility
+	//
+	
+	// Model
+	if (!self.model) {
+		self.model = "models/machines/staminup.mdl";
+	}
+
+	// Perk Cost
+	if (!self.cost) {
+		self.cost = 2000;
+	}
+
+	// Player Trigger Sound
+	if (!self.oldmodel) {
+		self.oldmodel = "sounds/machines/perk_drink.wav";
+	}
+
+	// View Model
+	if (!self.weapon2model) {
+		self.weapon2model = "models/machines/v_perk.mdl";
+	}
+
+	// View Model Start Frame
+	if (!self.weapon_animduration) {
+		self.weapon_animduration = 0;
+	}
+
+	// View Model End Frame
+	if (!self.weapon2_animduration) {
+		self.weapon2_animduration = 22;
+	}
+
+	// Light Effect
+	if (!self.spawnflags) {
+		self.spawnflags = self.spawnflags | 16;
+	}
+
+	// Set up the Perk Entity
 	self.solid = SOLID_TRIGGER;
-	precache_model ("models/machines/staminup.mdl");
-	precache_model ("models/machines/v_perk.mdl");
-	precache_sound ("sounds/machines/perk_drink.wav");
-	setorigin (self, self.origin);
-	setmodel (self, "models/machines/staminup.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	precache_model(self.model);
+	precache_model(self.weapon2model);
+	precache_sound(self.oldmodel);
+	setorigin(self, self.origin);
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_staminup";
 	self.touch = touch_perk;
-
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	// Perk Information
-	self.cost = 2000;
+	// Drink Information
 	self.sequence = 5;
 	self.style = P_STAMIN;
 };
+
+// Speed Cola
 void() perk_speed =
 {
+	//
+	// Set Default Stats for Compatibility
+	//
+	
+	// Model
+	if (!self.model) {
+		self.model = "models/machines/speed_cola.mdl";
+	}
+
+	// Perk Cost
+	if (!self.cost) {
+		self.cost = 3000;
+	}
+
+	// Player Trigger Sound
+	if (!self.oldmodel) {
+		self.oldmodel = "sounds/machines/perk_drink.wav";
+	}
+
+	// View Model
+	if (!self.weapon2model) {
+		self.weapon2model = "models/machines/v_perk.mdl";
+	}
+
+	// View Model Start Frame
+	if (!self.weapon_animduration) {
+		self.weapon_animduration = 0;
+	}
+
+	// View Model End Frame
+	if (!self.weapon2_animduration) {
+		self.weapon2_animduration = 22;
+	}
+
+	// Light Effect
+	if (!self.spawnflags) {
+		self.spawnflags = self.spawnflags | 4;
+	}
+
+	// Set up the Perk Entity
 	self.solid = SOLID_TRIGGER;
-	precache_model ("models/machines/speed_cola.mdl");
-	precache_model ("models/machines/v_perk.mdl");
-	precache_sound ("sounds/machines/perk_drink.wav");
-	setorigin (self, self.origin);
-	setmodel (self, "models/machines/speed_cola.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	precache_model(self.model);
+	precache_model(self.weapon2model);
+	precache_sound(self.oldmodel);
+	setorigin(self, self.origin);
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_speed";
 	self.touch = touch_perk;
-
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	// Perk Information
-	self.cost = 3000;
+	// Drink Information
 	self.sequence = 3;
 	self.style = P_SPEED;
 };
+
+// Double Tap Door Beer
 void() perk_double =
 {
+	//
+	// Set Default Stats for Compatibility
+	//
+	
+	// Model
+	if (!self.model) {
+		self.model = "models/machines/double_tap.mdl";
+	}
+
+	// Perk Cost
+	if (!self.cost) {
+		self.cost = 2000;
+	}
+
+	// Player Trigger Sound
+	if (!self.oldmodel) {
+		self.oldmodel = "sounds/machines/perk_drink.wav";
+	}
+
+	// View Model
+	if (!self.weapon2model) {
+		self.weapon2model = "models/machines/v_perk.mdl";
+	}
+
+	// View Model Start Frame
+	if (!self.weapon_animduration) {
+		self.weapon_animduration = 0;
+	}
+
+	// View Model End Frame
+	if (!self.weapon2_animduration) {
+		self.weapon2_animduration = 22;
+	}
+
+	// Light Effect
+	if (!self.spawnflags) {
+		self.spawnflags = self.spawnflags | 16;
+	}
+
+	// Set up the Perk Entity
 	self.solid = SOLID_TRIGGER;
-	precache_model ("models/machines/double_tap.mdl");
-	precache_model ("models/machines/v_perk.mdl");
-	precache_sound ("sounds/machines/perk_drink.wav");
-	setorigin (self, self.origin);
-	setmodel (self, "models/machines/double_tap.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	precache_model(self.model);
+	precache_model(self.weapon2model);
+	precache_sound(self.oldmodel);
+	setorigin(self, self.origin);
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_double";
 	self.touch = touch_perk;
-
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	// Perk Information
-	self.cost = 2000;
+	// Drink Information
 	self.sequence = 4;
 	self.style = P_DOUBLE;
 };
+
+// Deadshot Daiquiri
 void() perk_deadshot =
 {
+	//
+	// Set Default Stats for Compatibility
+	//
+	
+	// Model
+	if (!self.model) {
+		self.model = "models/machines/deadshot.mdl";
+	}
+
+	// Perk Cost
+	if (!self.cost) {
+		self.cost = 1500;
+		self.cost2 = 1000;
+	}
+
+	// Player Trigger Sound
+	if (!self.oldmodel) {
+		self.oldmodel = "sounds/machines/perk_drink.wav";
+	}
+
+	// View Model
+	if (!self.weapon2model) {
+		self.weapon2model = "models/machines/v_perk.mdl";
+	}
+
+	// View Model Start Frame
+	if (!self.weapon_animduration) {
+		self.weapon_animduration = 0;
+	}
+
+	// View Model End Frame
+	if (!self.weapon2_animduration) {
+		self.weapon2_animduration = 22;
+	}
+
+	// Light Effect
+	if (!self.spawnflags) {
+		self.spawnflags = self.spawnflags | 16;
+	}
+
+	// Set up the Perk Entity
 	self.solid = SOLID_TRIGGER;
-	precache_model ("models/machines/deadshot.mdl");
-	precache_model ("models/machines/v_perk.mdl");
-	precache_sound ("sounds/machines/perk_drink.wav");
-	setorigin (self, self.origin);
-	setmodel (self, "models/machines/deadshot.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	precache_model(self.model);
+	precache_model(self.weapon2model);
+	precache_sound(self.oldmodel);
+	setorigin(self, self.origin);
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_deadshot";
 	self.touch = touch_perk;
-
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	// Perk Information
+	// Different price on PC, for lack of Aim Assist
 	#ifdef PC
-	self.cost = 1000; // Reduce cost on PC, for lack of Aim Assist.
-	#else
-	self.cost = 1500;
+	self.cost = self.cost2;
 	#endif
+
+	// Drink Information
 	self.sequence = 7;
 	self.style = P_DEAD;
 };
 // naievil -- older maps compatability
 void() perk_dead = { perk_deadshot();}
+
+// Mule Kick
 void() perk_mule =
 {
+	//
+	// Set Default Stats for Compatibility
+	//
+	
+	// Model
+	if (!self.model) {
+		self.model = "models/machines/mulekick.mdl";
+	}
+
+	// Perk Cost
+	if (!self.cost) {
+		self.cost = 4000;
+	}
+
+	// Player Trigger Sound
+	if (!self.oldmodel) {
+		self.oldmodel = "sounds/machines/perk_drink.wav";
+	}
+
+	// View Model
+	if (!self.weapon2model) {
+		self.weapon2model = "models/machines/v_perk.mdl";
+	}
+
+	// View Model Start Frame
+	if (!self.weapon_animduration) {
+		self.weapon_animduration = 0;
+	}
+
+	// View Model End Frame
+	if (!self.weapon2_animduration) {
+		self.weapon2_animduration = 22;
+	}
+
+	// Light Effect
+	if (!self.spawnflags) {
+		self.spawnflags = self.spawnflags | 4;
+	}
+
+	// Set up the Perk Entity
 	self.solid = SOLID_TRIGGER;
-	precache_model ("models/machines/mulekick.mdl");
-	precache_model ("models/machines/v_perk.mdl");
-	precache_sound ("sounds/machines/perk_drink.wav");
+	precache_model(self.model);
+	precache_model(self.weapon2model);
+	precache_sound(self.oldmodel);
 	setorigin(self, self.origin);
-	setmodel (self, "models/machines/mulekick.mdl");
-	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	setmodel(self, self.model);
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_mule";
 	self.touch = touch_perk;
-
 	self.think = setup_perk;
 	self.nextthink = time + 0.1;
 
-	// Perk Information
-	self.cost = 4000;
+	// Drink Information
 	self.sequence = 8;
 	self.style = P_MULE;
 }
@@ -544,28 +874,7 @@ void() Turn_Lights =
 	local entity tempe = findfloat(world, requirespower, 1);
 	while (tempe)
 	{
-		switch(tempe.classname) {
-			case "perk_revive": 
-                Light_Blue(tempe);
-				break;
-			case "perk_juggernog":
-				Light_Red(tempe);
-				break;
-			case "perk_speed":
-			case "perk_mule":
-				Light_Green(tempe);
-				break;
-			case "perk_flopper":
-				Light_Purple(tempe);
-				break;
-			case "perk_staminup":
-			case "perk_double":
-			case "perk_deadshot":
-			    Light_Orange(tempe);
-				break;
-			default: break;
-		}
-      
+		Turn_PerkLight_On(tempe);
 		tempe = findfloat (tempe, requirespower, 1);
 	}
 } 
