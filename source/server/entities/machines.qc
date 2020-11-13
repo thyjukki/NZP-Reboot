@@ -347,6 +347,10 @@ void(entity who) Turn_PerkLight_On =
 //
 void() Perk_Jingle =
 {
+	// If Revive is gone, don't bother to check anymore
+	if (self.revivesoda >= 3)
+		return;
+
 	local float jinglewaittime;
 	jinglewaittime = rint((random() * 30)) + 30;
 
