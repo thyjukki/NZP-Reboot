@@ -392,12 +392,10 @@ void() setup_perk =
 	}
 
 	// Perk Jingle Timer
-	#ifndef PSP
 	if (self.powerup_vo) {
 		self.think = Perk_Jingle;
 		self.nextthink = time + rint((random() * 30)) + 30;
 	}
-	#endif
 }
 
 //
