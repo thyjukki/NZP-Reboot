@@ -245,6 +245,13 @@ void DrinkPerk(float perk) {
 	Set_W_Frame (tempe.weapon_animduration, tempe.weapon2_animduration, 0, 0, PERK, GivePerk, tempe.weapon2model, true, S_RIGHT);
 	self = tempe;
 	sound(other, CHAN_ITEM, self.oldmodel, 1, ATTN_NORM);
+
+	// Play Perk Sting if we can and it exists
+	if (self.aistatus && self.ltime < time) {
+		sound(self, CHAN_AUTO, self.aistatus, 0.15, ATTN_IDLE);
+		self.ltime = time + self.anim_weapon_time;
+	}
+	
 }
 
 //
@@ -335,8 +342,33 @@ void(entity who) Turn_PerkLight_On =
 }
 
 //
+// Perk_Jingle()
+// The Think loop for Perk Jingles
+//
+void() Perk_Jingle =
+{
+	local float jinglewaittime;
+	jinglewaittime = rint((random() * 30)) + 30;
+
+	// Just try again later if the Power isn't Activated
+	if ((self.requirespower == true && !isPowerOn) || self.ltime > time) {
+		self.nextthink = time + jinglewaittime;
+	} else {
+		// 15% Chance to Play Jingle
+		local float chance = random();
+		if (chance <= 0.15) {
+			sound(self, CHAN_AUTO, self.powerup_vo, 0.15, ATTN_IDLE);
+			self.ltime = time + self.anim_weapon2_time;
+			jinglewaittime += self.anim_weapon2_time;
+		}
+
+		self.nextthink = time + jinglewaittime;
+	}
+}
+
+//
 // setup_perk()
-// Readies up Perk Light Effects
+// Readies up misc. Perk aesthetics
 //
 void() setup_perk =
 {
@@ -345,16 +377,23 @@ void() setup_perk =
 	// Check for Revive before Power
 	if (self.classname == "perk_revive" && !coop && !deathmatch) {
 		Turn_PerkLight_On(self);
-		return;
+	} else {
+		// Check for Power
+		if (power != world) {
+			self.requirespower = true;
+		} else {
+			// There's no Power Switch, so turn the rest On.
+			Turn_PerkLight_On(self);
+		}
 	}
 
-	// Check for Power
-	if (power != world) {
-		self.requirespower = true;
-	} else {
-		// There's no Power Switch, so turn the rest On.
-		Turn_PerkLight_On(self);
+	// Perk Jingle Timer
+	#ifndef PSP
+	if (self.powerup_vo) {
+		self.think = Perk_Jingle;
+		self.nextthink = time + rint((random() * 30)) + 30;
 	}
+	#endif
 }
 
 //
@@ -411,6 +450,8 @@ void() perk_revive =
 	precache_model(self.model);
 	precache_model(self.weapon2model);
 	precache_sound(self.oldmodel);
+	if (self.aistatus) { precache_sound(self.aistatus); }
+	if (self.powerup_vo) { precache_sound(self.powerup_vo); }
 	precache_sound("sounds/weapons/papfire.wav");
 	precache_extra(W_BIATCH);
 	setorigin(self, self.origin);
@@ -473,6 +514,8 @@ void() perk_flopper =
 	precache_model(self.model);
 	precache_model(self.weapon2model);
 	precache_sound(self.oldmodel);
+	if (self.aistatus) { precache_sound(self.aistatus); }
+	if (self.powerup_vo) { precache_sound(self.powerup_vo); }
 	setorigin(self, self.origin);
 	setmodel(self, self.model);
 	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
@@ -533,6 +576,8 @@ void() perk_juggernog =
 	precache_model(self.model);
 	precache_model(self.weapon2model);
 	precache_sound(self.oldmodel);
+	if (self.aistatus) { precache_sound(self.aistatus); }
+	if (self.powerup_vo) { precache_sound(self.powerup_vo); }
 	setorigin(self, self.origin);
 	setmodel(self, self.model);
 	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
@@ -593,6 +638,8 @@ void() perk_staminup =
 	precache_model(self.model);
 	precache_model(self.weapon2model);
 	precache_sound(self.oldmodel);
+	if (self.aistatus) { precache_sound(self.aistatus); }
+	if (self.powerup_vo) { precache_sound(self.powerup_vo); }
 	setorigin(self, self.origin);
 	setmodel(self, self.model);
 	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
@@ -653,6 +700,8 @@ void() perk_speed =
 	precache_model(self.model);
 	precache_model(self.weapon2model);
 	precache_sound(self.oldmodel);
+	if (self.aistatus) { precache_sound(self.aistatus); }
+	if (self.powerup_vo) { precache_sound(self.powerup_vo); }
 	setorigin(self, self.origin);
 	setmodel(self, self.model);
 	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
@@ -713,6 +762,8 @@ void() perk_double =
 	precache_model(self.model);
 	precache_model(self.weapon2model);
 	precache_sound(self.oldmodel);
+	if (self.aistatus) { precache_sound(self.aistatus); }
+	if (self.powerup_vo) { precache_sound(self.powerup_vo); }
 	setorigin(self, self.origin);
 	setmodel(self, self.model);
 	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
@@ -775,6 +826,8 @@ void() perk_deadshot =
 	precache_model(self.weapon2model);
 	precache_sound(self.oldmodel);
 	setorigin(self, self.origin);
+	if (self.aistatus) { precache_sound(self.aistatus); }
+	if (self.powerup_vo) { precache_sound(self.powerup_vo); }
 	setmodel(self, self.model);
 	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.classname = "perk_deadshot";
@@ -841,6 +894,8 @@ void() perk_mule =
 	precache_model(self.model);
 	precache_model(self.weapon2model);
 	precache_sound(self.oldmodel);
+	if (self.aistatus) { precache_sound(self.aistatus); }
+	if (self.powerup_vo) { precache_sound(self.powerup_vo); }
 	setorigin(self, self.origin);
 	setmodel(self, self.model);
 	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
