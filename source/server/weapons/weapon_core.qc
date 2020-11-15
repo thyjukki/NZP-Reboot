@@ -827,6 +827,16 @@ void(float damage, vector dir, vector org, vector plane, entity hit_ent, float s
 			
 			self = oldself;
 			return;
+		} else if (hit_ent.classname == "door" || hit_ent.classname == "door_nzp") {
+			local entity old;
+			old = self;
+			self = hit_ent;
+			self.health -= damage;
+
+			if (self.health < 0)
+				door_use();
+			self = old;
+			return;
 		}
 		
 		SpawnBlood (org, vel, damage*10);

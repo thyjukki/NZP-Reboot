@@ -107,6 +107,12 @@ void() precaches =
 		precache_sound (world.song);
 	#endif
 	#endif
+
+	if (!world.oldmodel) {
+		round_directory = "sounds/rounds/";
+	} else {
+		round_directory = world.oldmodel;
+	}
 	
 	precache_model ("progs/Sprites/revive.spr");
 	precache_model ("progs/Sprites/revive_white.spr");
@@ -154,9 +160,9 @@ void() precaches =
 	precache_sound("sounds/weapons/knife/knife.wav");
 	precache_sound("sounds/weapons/knife/knife_hit.wav");
 	
-	precache_sound("sounds/rounds/eround.wav");
-	precache_sound("sounds/rounds/nround.wav");
-	precache_sound("sounds/rounds/splash.wav");
+	precache_sound(strcat(round_directory, "eround.wav"));
+	precache_sound(strcat(round_directory, "nround.wav"));
+	precache_sound(strcat(round_directory, "splash.wav"));
 	precache_sound("sounds/music/end.wav");
 	precache_sound("sounds/null.wav");
 

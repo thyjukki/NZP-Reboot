@@ -76,7 +76,7 @@ void() SUB_UseTargets =
 	//
 		if (self.delay)
 		{
-		// create a temp object to fire at a later time
+			// create a temp object to fire at a later time
 			t = spawn();
 			t.classname = "DelayedUse";
 			t.nextthink = time + self.delay;
@@ -84,7 +84,14 @@ void() SUB_UseTargets =
 			t.enemy = activator;
 			t.message = self.message;
 			t.killtarget = self.killtarget;
-			t.target = tempstring;
+			t.target = self.target;
+			t.target2 = self.target2;
+			t.target3 = self.target3;
+			t.target4 = self.target4;
+			t.target5 = self.target5;
+			t.target6 = self.target6;
+			t.target7 = self.target7;
+			t.target8 = self.target8;
 			return;
 		}
 		
@@ -143,7 +150,7 @@ void() SUB_UseTargets =
 				if (self.use != SUB_Null)
 				{
 					if (self.use)
-						self.use ();
+						self.use();
 				}
 				self = stemp;
 				other = otemp;

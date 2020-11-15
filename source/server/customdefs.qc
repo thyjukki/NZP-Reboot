@@ -407,6 +407,7 @@ string world_fog;
 .string date;
 .string person;
 .string song;
+string round_directory;
 
 //altered game elements
 float G_STARTPOINTS;

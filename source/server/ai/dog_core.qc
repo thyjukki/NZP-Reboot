@@ -325,8 +325,8 @@ void() spawn_dog =
 	precache_model("models/misc/lightning.spr");
 	precache_model("models/misc/explosion.spr");
 
-	precache_sound("sounds/rounds/droundstart.wav");
-	precache_sound("sounds/rounds/droundend.wav");
+	precache_sound(strcat(round_directory, "droundstart.wav"));
+	precache_sound(strcat(round_directory, "droundstart.wav"));
 	
 	setsize(self, '0 0 0', '0 0 0');
 	if (self.spawnflags & INACTIVE)

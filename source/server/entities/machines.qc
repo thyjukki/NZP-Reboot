@@ -248,7 +248,7 @@ void DrinkPerk(float perk) {
 
 	// Play Perk Sting if we can and it exists
 	if (self.aistatus && self.ltime < time) {
-		sound(self, CHAN_AUTO, self.aistatus, 0.15, ATTN_IDLE);
+		sound(self, CHAN_AUTO, self.aistatus, 0.25, ATTN_IDLE);
 		self.ltime = time + self.anim_weapon_time;
 	}
 	
@@ -361,7 +361,7 @@ void() Perk_Jingle =
 		// 15% Chance to Play Jingle
 		local float chance = random();
 		if (chance <= 0.15) {
-			sound(self, CHAN_AUTO, self.powerup_vo, 0.15, ATTN_IDLE);
+			sound(self, CHAN_AUTO, self.powerup_vo, 0.25, ATTN_IDLE);
 			self.ltime = time + self.anim_weapon2_time;
 			jinglewaittime += self.anim_weapon2_time;
 		}

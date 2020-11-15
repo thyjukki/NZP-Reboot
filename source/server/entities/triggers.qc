@@ -1,3 +1,86 @@
+//
+// triggers.qc - Misc. Trigger functions
+//
+#define SPAWNFLAG_NOMESSAGE 	1
+#define SPAWNFLAG_NOTOUCH 		1
+
+// the wait time has passed, so set back up for another activation
+void() multi_wait =
+{
+	if (self.max_health)
+	{
+		self.health = self.max_health;
+		self.takedamage = DAMAGE_YES;
+		self.solid = SOLID_BBOX;
+	}
+};
+
+
+// the trigger was just touched/killed/used
+// self.enemy should be set to the activator so it can be held through a delay
+// so wait for the delay time before firing
+void() multi_trigger =
+{
+	if (self.nextthink > time)
+	{
+		return;		// already been triggered
+	}
+
+	if (self.noise)
+		sound (self, CHAN_VOICE, self.noise, 1, ATTN_NORM);
+
+// don't trigger again until reset
+	self.takedamage = DAMAGE_NO;
+
+	activator = self.enemy;
+
+	SUB_UseTargets();
+
+	if (self.wait > 0)	
+	{
+		self.think = multi_wait;
+		self.nextthink = time + self.wait;
+	}
+	else
+	{	
+		// we can't just remove(self) here, because this is a touch function
+		// called while C code is looping through area links...
+		self.touch = SUB_Null;
+		self.nextthink = time + 0.1;
+		self.think = SUB_Remove;
+	}
+};
+
+void() multi_killed =
+{
+	// motolegacy - FIXME
+	//self.enemy = damage_attacker;
+	multi_trigger();
+};
+
+void() multi_use =
+{
+	self.enemy = activator;
+	multi_trigger();
+};
+
+void() multi_touch =
+{
+	if (other.classname != "player")
+		return;
+
+	// if the trigger has an angles field, check player's facing direction
+	if (self.movedir != '0 0 0')
+	{
+		makevectors (other.angles);
+		if (v_forward * self.movedir < 0)
+			return;		// not facing the right way
+	}
+	
+	self.enemy = other;
+	multi_trigger();
+};
+
 void() SetMovedir =
 {
 	if (self.angles == '0 -1 0')
@@ -184,4 +267,55 @@ void() teddy_react =
 	}
 
 	remove(self); //this was present in the patch, i like it.
+}
+
+/*
+	Variable sized repeatable trigger.  Must be targeted at one or more entities.  If "health" is set, the trigger must be killed to activate each time.
+	If "delay" is set, the trigger waits some time after activating before firing.
+	"wait" : Seconds between triggerings. (.2 default)
+	If notouch is set, the trigger is only fired by other entities, not by touching.
+	NOTOUCH has been obsoleted by trigger_relay!
+	set "message" to text string
+*/
+void() trigger_multiple =
+{	
+	if (!self.wait)
+		self.wait = 0.2;
+
+	self.use = multi_use;
+
+	InitTrigger ();
+
+	if(self.health)
+	{
+		if (self.spawnflags & SPAWNFLAG_NOTOUCH)
+			objerror("health and notouch don't make sense\n");
+		self.max_health = self.health;
+		self.th_die = multi_killed;
+		self.takedamage = DAMAGE_YES;
+		self.solid = SOLID_BBOX;
+		setorigin(self, self.origin);	// make sure it links into the world
+	}
+	else
+	{
+		if (!(self.spawnflags & SPAWNFLAG_NOTOUCH))
+		{
+			self.touch = multi_touch;
+		}
+	}
+};
+
+/*
+	Variable sized trigger. Triggers once, then removes itself.  You must set the key "target" to the name of another object in the level that has a matching
+	"targetname".  If "health" is set, the trigger must be killed to activate.
+	If notouch is set, the trigger is only fired by other entities, not by touching.
+	if "killtarget" is set, any objects that have a matching "target" will be removed when the trigger is fired.
+	if "angle" is set, the trigger will only fire when someone is facing the direction of the angle.  Use "360" for an angle of 0.
+	set "message" to text string
+*/
+void() trigger_once =
+{
+	self.wait = -1;
+
+	trigger_multiple();
 }
