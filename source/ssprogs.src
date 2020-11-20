@@ -2,13 +2,13 @@
 
 server/ssdefs.qc
 shared/customdefs.qc
+shared/weapon_loader.qc
 shared/weapon_defines.qc
 server/customdefs.qc
 server/clientfuncs.qc
 
 server/dummys.qc
 server/rounds.qc
-server/nzdparser.qc
 server/main.qc
 server/player.qc
 server/damage.qc

@@ -119,6 +119,8 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	screen_height_219[0] = 1080;
 	screen_width_219[1] = 3440;
 	screen_height_219[1] = 1440;
+
+	do_test_weapon_stuff();
 };
 
 noref void() CSQC_WorldLoaded =
