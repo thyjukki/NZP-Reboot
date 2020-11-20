@@ -152,6 +152,7 @@ noref void() CSQC_WorldLoaded =
 	playerpoints[3] = -1;
 
 	Achievement_Init();
+	Load_Base_Weapons();
 	
 	// Dummy so that our other point particles work!
 	pointparticles(particleeffectnum("weapons.impact_decal"), '0 0 0', '0 0 0', 1);

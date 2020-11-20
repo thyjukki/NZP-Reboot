@@ -294,7 +294,7 @@ void() worldspawn =
 
 	LoadWaypointData();
 
-	do_test_weapon_stuff();
+	Load_Base_Weapons();
 		
 	//set game elements
 	G_STARTPOINTS = 500;
