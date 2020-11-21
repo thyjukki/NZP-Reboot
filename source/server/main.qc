@@ -293,7 +293,6 @@ void() worldspawn =
 	mappath = strzone(mappath);
 
 	LoadWaypointData();
-
 	Load_Base_Weapons();
 		
 	//set game elements

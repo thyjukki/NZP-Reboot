@@ -1540,7 +1540,7 @@ void() Load_Mbox_Data =
 
 void() mystery_box =
 {
-	Load_Mbox_Data();
+	//Load_Mbox_Data();
 
 	precache_model ("models/machines/mystery.mdl");
 	precache_model ("models/machines/mglow$.mdl");

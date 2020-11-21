@@ -109,8 +109,8 @@ void(string name, optional float base) Load_Weapon =
     // Base weapons use the root weapons/ directory, as opposed to weapons/mapname/.
     if (base)
         filename = strcat("weapons/", name);
-
-    file = fopen(strcat(filename, ".weapon"), FILE_READ);
+    
+    file = fopen(filename, FILE_READ);
 
     // If the file isn't found, 100% halt here to avoid further errors.
     if (file == -1) {
@@ -137,7 +137,7 @@ void(string name, optional float base) Load_Weapon =
             break;
         }
 
-        h = strtrim(line);
+        h = strzone(strtrim(line));
 
         // Ignore the line if its a Comment or white space.
         if (substring(h, 0, 2) == "//" || h == "") {
@@ -183,7 +183,7 @@ void(string name, optional float base) Load_Weapon =
             switch(argv(0)) {
                 // Details
                 case "name":
-                    weapons[i].name = argv(2);
+                    weapons[i].name = strzone(argv(2));
                     break;
                 case "is_packed":
                     weapons[i].is_packed = stof(argv(2));
@@ -198,19 +198,19 @@ void(string name, optional float base) Load_Weapon =
                     weapons[i].model_skin = stof(argv(2));
                     break;
                 case "view_model":
-                    weapons[i].view_model = argv(2);
+                    weapons[i].view_model = strzone(argv(2));
                     break;
                 case "view_model_accessory":
-                    weapons[i].view_model_accessory = argv(2);
+                    weapons[i].view_model_accessory = strzone(argv(2));
                     break;
                 case "left_view_model":
-                    weapons[i].left_view_model = argv(2);
+                    weapons[i].left_view_model = strzone(argv(2));
                     break;
                 case "world_model":
-                    weapons[i].world_model = argv(2);
+                    weapons[i].world_model = strzone(argv(2));
                     break;
                 case "fire_sound":
-                    weapons[i].fire_sound = argv(2);
+                    weapons[i].fire_sound = strzone(argv(2));
                     break;
                 // Stats
                 case "magazine_size":
@@ -232,7 +232,7 @@ void(string name, optional float base) Load_Weapon =
                     weapons[i].ads_position_pc[2] = vec[2];
                     break;
                 case "ads_position_console":
-                    local vector vec2 = stov(argv(2));
+                    local vector vec2 = stov(substring(h, 22, strlen(h)));
                     weapons[i].ads_position_console[0] = vec2[0];
                     weapons[i].ads_position_console[1] = vec2[1];
                     weapons[i].ads_position_console[2] = vec2[2];
@@ -250,19 +250,31 @@ void(string name, optional float base) Load_Weapon =
                     weapons[i].recoil = stof(argv(2));
                     break;
                 case "recoil_guaranteed":
+                    #ifdef PC
                     local vector vec3 = stov(argv(2));
+                    #else
+                    local vector vec3 = stov(substring(h, 19, strlen(h)));
+                    #endif
                     weapons[i].recoil_guaranteed[0] = vec3[0];
                     weapons[i].recoil_guaranteed[1] = vec3[1];
                     weapons[i].recoil_guaranteed[2] = vec3[2];
                     break;
                 case "recoil_kick_change":
+                    #ifdef PC
                     local vector vec4 = stov(argv(2));
+                    #else
+                    local vector vec4 = stov(substring(h, 20, strlen(h)));
+                    #endif
                     weapons[i].recoil_kick_change[0] = vec4[0];
                     weapons[i].recoil_kick_change[1] = vec4[1];
                     weapons[i].recoil_kick_change[2] = vec4[2];
                     break;
                 case "muzzle_flash_offset":
+                    #ifdef PC
                     local vector vec5 = stov(argv(2));
+                    #else
+                    local vector vec5 = stov(substring(h, 21, strlen(h)));
+                    #endif
                     weapons[i].muzzle_flash_offset[0] = vec5[0];
                     weapons[i].muzzle_flash_offset[1] = vec5[1];
                     weapons[i].muzzle_flash_offset[2] = vec5[2];
@@ -370,7 +382,7 @@ void(string name, optional float base) Load_Weapon =
                         temps2 = strcat(temps2, "' has too many models! (Max is 4)");
                         error(temps2);
                     }
-                    weapons[i].precache_models[pre_mdl_iter] = h;
+                    weapons[i].precache_models[pre_mdl_iter] = strzone(h);
                     pre_mdl_iter++;
                 } else if (extension == ".wav") {
                     // We hit our sound cap
@@ -381,7 +393,7 @@ void(string name, optional float base) Load_Weapon =
                         temps4 = strcat(temps4, "' has too many sounds! (Max is 8)");
                         error(temps4);
                     }
-                    weapons[i].precache_sounds[pre_wav_iter] = h;
+                    weapons[i].precache_sounds[pre_wav_iter] = strzone(h);
                     pre_wav_iter++;
                 } else {
                     local string temps3;
@@ -443,11 +455,13 @@ void(string name, optional float base) Load_Weapon =
 
                 tokenize(h);
                 weapons[i].frame_sound_number[pre_snd_iter] = stof(argv(0));
-                weapons[i].frame_sound_name[pre_snd_iter] = argv(2);
+                weapons[i].frame_sound_name[pre_snd_iter] = strzone(argv(2));
                 pre_snd_iter++;
             }
         }
+        strunzone(h);
     }
+    fclose(file);
 } 
 
 //
