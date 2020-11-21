@@ -229,6 +229,10 @@ void (float wep, float anim_style, float dualwep, float curweaponframe)	PlayWeap
 	}
 #endif
 
+	// Avoid playing weapon sounds when we're melee, drinking, etc.
+	if (self.weaponmodel != weapons[wep].view_model)
+		return;
+
 	local float iterate;
 	for (iterate = 0; iterate < 8; iterate++) {
 		if (curweaponframe == weapons[wep].frame_sound_number[iterate])

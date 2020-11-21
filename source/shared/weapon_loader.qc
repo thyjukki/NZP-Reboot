@@ -100,14 +100,14 @@ var struct {
     float multiplier_limbs;
 
     // frames
-    float frames[32];
+    float frames[24];
     float frame_sound_number[8];
     string frame_sound_name[8];
 
     // precaches
     string precache_models[4];
     string precache_sounds[8];
-} weapons[128] =
+} weapons[96] =
 {
 
 };
