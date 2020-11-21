@@ -53,7 +53,7 @@ stats
     bullet_spread: 7.5
     shotcount: 1
     fire_type: 1
-    weapon_weight: 0.7
+    weapon_weight: 1
 
     // Multipliers Based on Hit Location
     damage_multiplier

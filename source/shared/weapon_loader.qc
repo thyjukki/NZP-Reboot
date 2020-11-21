@@ -3,21 +3,28 @@
 //
 
 // #defines for frame names
-#define FRAME_FIRE_START        0
-#define FRAME_FIRE_END          1
-#define FRAME_RELOAD_START      2
-#define FRAME_RELOAD_END        3
-#define FRAME_RELOAD_CANCEL     4
-#define FRAME_SPRINT_IN_START   5
-#define FRAME_SPRINT_IN_END     6
-#define FRAME_SPRINT_START      7
-#define FRAME_SPRINT_END        8
-#define FRAME_SPRINT_OUT_START  9
-#define FRAME_SPRINT_OUT_END    10
-#define FRAME_TAKE_OUT_START    11
-#define FRAME_TAKE_OUT_END      12
-#define FRAME_PUT_OUT_START     13
-#define FRAME_PUT_OUT_END       14
+#define FRAME_FIRE_START            0
+#define FRAME_FIRE_END              1
+#define FRAME_RELOAD_START          2
+#define FRAME_RELOAD_END            3
+#define FRAME_RELOAD_CANCEL         4
+#define FRAME_SPRINT_IN_START       5
+#define FRAME_SPRINT_IN_END         6
+#define FRAME_SPRINT_START          7
+#define FRAME_SPRINT_END            8
+#define FRAME_SPRINT_OUT_START      9
+#define FRAME_SPRINT_OUT_END        10
+#define FRAME_TAKE_OUT_START        11
+#define FRAME_TAKE_OUT_END          12
+#define FRAME_PUT_OUT_START         13
+#define FRAME_PUT_OUT_END           14
+#define FRAME_CONTINUE_LOAD_START   15
+#define FRAME_CONTINUE_LOAD_END     16
+#define FRAME_LOWER_START           17
+#define FRAME_LOWER_END             18
+#define FRAME_COCK_START            19
+#define FRAME_COCK_CANCEL           20
+#define FRAME_COCK_END              21
 
 // Struct to hold all Weapon Information.
 var struct {
@@ -44,6 +51,7 @@ var struct {
     float reserve_size;
     float magazine_low;
     float reserve_low;
+    float rounds_per_load;
 
     // ads vectors
     vector ads_position_pc;
@@ -66,6 +74,9 @@ var struct {
     // delays
     float fire_delay;
     float reload_delay;
+    float continue_reload_delay;
+    float lower_delay;
+    float cock_delay;
 
     // penetration
     float penetration_amount;
@@ -77,6 +88,10 @@ var struct {
     float shotcount;
     float fire_type;
     float weapon_weight;
+    float continued_reload;
+
+    // cocking
+    float no_cock_after_reload;
 
     // multipliers based on hit location
     float multiplier_head;
@@ -85,7 +100,7 @@ var struct {
     float multiplier_limbs;
 
     // frames
-    float frames[16];
+    float frames[32];
     float frame_sound_number[8];
     string frame_sound_name[8];
 
@@ -212,6 +227,9 @@ void(string name, optional float base) Load_Weapon =
                 case "fire_sound":
                     weapons[i].fire_sound = strzone(argv(2));
                     break;
+                case "no_cock_after_reload":
+                    weapons[i].no_cock_after_reload = stof(argv(2));
+                    break;
                 // Stats
                 case "magazine_size":
                     weapons[i].magazine_size = stof(argv(2));
@@ -224,6 +242,9 @@ void(string name, optional float base) Load_Weapon =
                     break;
                 case "reserve_low":
                     weapons[i].reserve_low = stof(argv(2));
+                    break;
+                case "rounds_per_load":
+                    weapons[i].rounds_per_load = stof(argv(2));
                     break;
                 case "ads_position_pc":
                     local vector vec = stov(argv(2));
@@ -288,6 +309,15 @@ void(string name, optional float base) Load_Weapon =
                 case "reload_delay":
                     weapons[i].reload_delay = stof(argv(2));
                     break;
+                case "continue_reload_delay":
+                    weapons[i].continue_reload_delay = stof(argv(2));
+                    break;
+                case "lower_delay":
+                    weapons[i].lower_delay = stof(argv(2));
+                    break;
+                case "cock_delay":
+                    weapons[i].cock_delay = stof(argv(2));
+                    break;
                 case "penetration_amount":
                     weapons[i].penetration_amount = stof(argv(2));
                     break;
@@ -308,6 +338,9 @@ void(string name, optional float base) Load_Weapon =
                     break;
                 case "weapon_weight":
                     weapons[i].weapon_weight = stof(argv(2));
+                    break;
+                case "continued_reload":
+                    weapons[i].continued_reload = stof(argv(2));
                     break;
                 // Frames
                 case "fire_start":
@@ -354,6 +387,27 @@ void(string name, optional float base) Load_Weapon =
                     break;
                 case "put_out_end":
                     weapons[i].frames[FRAME_PUT_OUT_END] = stof(argv(2));
+                    break;
+                case "continue_reload_start":
+                    weapons[i].frames[FRAME_CONTINUE_LOAD_START] = stof(argv(2));
+                    break;
+                case "continue_reload_end":
+                    weapons[i].frames[FRAME_CONTINUE_LOAD_END] = stof(argv(2));
+                    break;
+                case "lower_start":
+                    weapons[i].frames[FRAME_LOWER_START] = stof(argv(2));
+                    break;
+                case "lower_end":
+                    weapons[i].frames[FRAME_LOWER_END] = stof(argv(2));
+                    break;
+                case "cock_start":
+                    weapons[i].frames[FRAME_COCK_START] = stof(argv(2));
+                    break;
+                case "cock_cancel":
+                    weapons[i].frames[FRAME_COCK_CANCEL] = stof(argv(2));
+                    break;
+                case "cock_end":
+                    weapons[i].frames[FRAME_COCK_END] = stof(argv(2));
                     break;
                 default:
                     break;
@@ -471,6 +525,8 @@ void(string name, optional float base) Load_Weapon =
 void() Load_Base_Weapons =
 {
     Load_Weapon("m1911", 1);
+    Load_Weapon("thompson", 1);
+    Load_Weapon("trenchgun", 1);
 }
 
 void() do_test_weapon_stuff =
