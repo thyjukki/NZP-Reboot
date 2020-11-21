@@ -1223,35 +1223,6 @@ HUD_Ammo
 ===============
 */
 
-int GetLowAmmo(int weapon, int type)
-{
-	switch (weapon)
-	{
-		case W_COLT: if (type) return 2; else return 16;
-		case W_KAR: if (type) return 1; else return 10;
-		case W_KAR_SCOPE: if (type) return 1; else return 10;
-		case W_M1A1: if (type) return 4; else return 24;
-		case W_SAWNOFF: if (type) return 1; else return 12;
-		case W_DB: if (type) return 1; else return 12;
-		case W_THOMPSON: if (type) return 6; else return 40;
-		case W_BAR: if (type) return 6; else return 28;
-		default: return 0;
-	}
-}
-
-int IsDualWeapon(int weapon)
-{
-	switch(weapon) {
-		case W_BIATCH:
-		case W_SNUFF:
-			return 1;
-		default:
-			return 0;
-	}
-
-	return 0;
-}
-
 void HUD_Ammo (void)
 {
 	char str[12];
@@ -1265,24 +1236,24 @@ void HUD_Ammo (void)
 	xplus = HUD_itoa(cl.stats[STAT_CURRENTMAG], str);
 
 	// Magazine
-	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
+	if (sv_player->v.magazine_low >= cl.stats[STAT_CURRENTMAG])
 		Draw_ColoredString(vid.width - 42 - (xplus*8), y_value, magstring, 255, 0, 0, 255, 1);
 	else
 		Draw_ColoredString(vid.width - 42 - (xplus*8), y_value, magstring, 255, 255, 255, 255, 1);
 
 	// Second mag for dual weps
-	if (IsDualWeapon(cl.stats[STAT_ACTIVEWEAPON])) {
+	if (sv_player->v.has_dual_weapon) {
 		magstring = va("%i", cl.stats[STAT_CURRENTMAG2]);
 		xplus = HUD_itoa(cl.stats[STAT_CURRENTMAG2], str);
 
-		if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG2])
+		if (sv_player->v.magazine_low >= cl.stats[STAT_CURRENTMAG2])
 			Draw_ColoredString(vid.width - 56 - (xplus*8), y_value, magstring, 255, 0, 0, 255, 1);
 		else
 			Draw_ColoredString(vid.width - 56 - (xplus*8), y_value, magstring, 255, 255, 255, 255, 1);
 	}
 
 	// Reserve ammo
-	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO])
+	if (sv_player->v.reserve_low >= cl.stats[STAT_AMMO])
 	{
 		Draw_ColoredString (vid.width - 42, y_value, "/", 255, 0, 0, 255, 1);
 		Draw_ColoredString (vid.width - 34, y_value, va ("%i",cl.stats[STAT_AMMO]), 255, 0, 0, 255, 1);
@@ -1302,7 +1273,7 @@ HUD_AmmoString
 
 void HUD_AmmoString (void)
 {
-	if (GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG])
+	if (sv_player->v.magazine_low >= cl.stats[STAT_CURRENTMAG])
 	{
 		if (0 < cl.stats[STAT_AMMO] && cl.stats[STAT_CURRENTMAG] >= 0) {
 			Draw_ColoredString ((vid.width)/2, (vid.height)/2 + 40, "Reload", 255, 255, 255, 255, 1);
@@ -1402,7 +1373,7 @@ void HUD_Draw (void)
 	HUD_Perks();
 	HUD_Powerups();
 	HUD_ProgressBar();
-	if ((HUD_Change_time > Sys_FloatTime() || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 1) >= cl.stats[STAT_CURRENTMAG] || GetLowAmmo(cl.stats[STAT_ACTIVEWEAPON], 0) >= cl.stats[STAT_AMMO]) && cl.stats[STAT_HEALTH] >= 20)
+	if ((HUD_Change_time > Sys_FloatTime() || sv_player->v.magazine_low >= cl.stats[STAT_CURRENTMAG] || sv_player->v.reserve_low >= cl.stats[STAT_AMMO]) && cl.stats[STAT_HEALTH] >= 20)
 	{ //these elements are only drawn when relevant for few seconds
 		HUD_Ammo();
 		HUD_Grenades();

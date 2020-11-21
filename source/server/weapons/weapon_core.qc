@@ -229,12 +229,7 @@ void() W_Switch =
 		
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0; 
 		
-		
-		#ifndef PC
-		self.Weapon_Name = GetWeaponName(self.weapon);
-		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
-		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
-		#endif
+		SetWeaponStats(self, self.weapon);
 	}
 }
 
