@@ -46,7 +46,7 @@ void() Window_repaired =
 
 void() Barricade_hit_window =
 {
-	sound(self, 0,"sounds/misc/barricade.wav", 1, 0);
+	sound(self, 0, self.oldmodel, 1, 0);
 }
 
 void(void() next) checkForSpeed = {
@@ -201,17 +201,17 @@ void()	window_repair6_6	=[	6,		window_repair6_7 ]	{self.frame = 46;};
 void()	window_repair6_7	=[	7,		window_repair6_8 ]	{self.frame = 47;Barricade_hit_window();};
 void()	window_repair6_8	=[	8,		SUB_Null		 ]	{self.frame = 48; Window_repaired();};
 
-void()	window_carpenter_1	=[	1,		window_carpenter_2 	]	{self.frame = 47;sound(self, 0,"sounds/misc/barricade.wav", 1, 1);};
+void()	window_carpenter_1	=[	1,		window_carpenter_2 	]	{self.frame = 47;sound(self, 0, self.oldmodel, 1, 1);};
 void()	window_carpenter_2	=[	2,		window_carpenter_3 	]	{self.frame = 48;};
-void()	window_carpenter_3	=[	3,		window_carpenter_4 	]	{self.frame = 55;sound(self, 1,"sounds/misc/barricade.wav", 1, 1);};
+void()	window_carpenter_3	=[	3,		window_carpenter_4 	]	{self.frame = 55;sound(self, 1, self.oldmodel, 1, 1);};
 void()	window_carpenter_4	=[	4,		window_carpenter_5 	]	{self.frame = 56;};
-void()	window_carpenter_5	=[	5,		window_carpenter_6 	]	{self.frame = 63;sound(self, 2,"sounds/misc/barricade.wav", 1, 1);};
+void()	window_carpenter_5	=[	5,		window_carpenter_6 	]	{self.frame = 63;sound(self, 2, self.oldmodel, 1, 1);};
 void()	window_carpenter_6	=[	6,		window_carpenter_7 	]	{self.frame = 64;};
-void()	window_carpenter_7	=[	7,		window_carpenter_8 	]	{self.frame = 71;sound(self, 0,"sounds/misc/barricade.wav", 1, 1);};
+void()	window_carpenter_7	=[	7,		window_carpenter_8 	]	{self.frame = 71;sound(self, 0, self.oldmodel, 1, 1);};
 void()	window_carpenter_8	=[	8,		window_carpenter_9 	]	{self.frame = 72;};
-void()	window_carpenter_9	=[	7,		window_carpenter_10 ]		{self.frame = 79;sound(self, 1,"sounds/misc/barricade.wav", 1, 1);};
+void()	window_carpenter_9	=[	7,		window_carpenter_10 ]		{self.frame = 79;sound(self, 1, self.oldmodel, 1, 1);};
 void()	window_carpenter_10	=[	8,		window_carpenter_11	]	{self.frame = 80;};
-void()	window_carpenter_11	=[	7,		window_carpenter_12 ]		{self.frame = 87;sound(self, 2,"sounds/misc/barricade.wav", 1, 1);};
+void()	window_carpenter_11	=[	7,		window_carpenter_12 ]		{self.frame = 87;sound(self, 2, self.oldmodel, 1, 1);};
 void()	window_carpenter_12	=[	8,		SUB_Null		 	]	{self.frame = 88;};
 
 
@@ -219,7 +219,8 @@ void() Window_Damage =
 {
 	if(self.health == 0)
 		return;
-	sound(self,CHAN_VOICE,"sounds/misc/barricade_destroy.wav",1,0);
+
+	sound(self, CHAN_VOICE, self.aistatus, 1, 0);
 	
 	self.health = self.health - 1;
 	
@@ -295,7 +296,6 @@ void() window_touch =
 		{
 			useprint (other, 5, 0, 0);
 			
-			//centerprint(other,"Press & hold use to Rebuild Barrier\n");
 			if(other.button7)
 			{
 				if(self.rebuild_time < time)
@@ -313,26 +313,32 @@ void() window_touch =
 
 void() item_barricade =
 {
-	if(self.spawnflags & 1)
-	{
-		self.health = -10;//Window is deactivated, to only hop over it
+	if (self.spawnflags & 1) {
+		self.health = -10; // Window is deactivated, to only hop over it
+	} else {
+		if (!self.model)
+			self.model = "models/Misc/window.mdl";
+		if (!self.oldmodel)
+			self.oldmodel = "sounds/misc/barricade.wav";
+		if (!self.aistatus)
+			self.aistatus = "sounds/misc/barricade_destroy.wav";
+
+		precache_model(self.model);
+		precache_sound(self.oldmodel);
+		precache_sound(self.aistatus);
 	}
-	else
-	{
-		precache_model("models/Misc/window.mdl");
-		precache_sound("sounds/misc/barricade.wav");
-		precache_sound("sounds/misc/barricade_destroy.wav");
-	}
+
 	self.classname = "window";
 	self.touch = window_touch;
 	self.solid = SOLID_TRIGGER;
-	if(self.health != -10)
-	{
+
+	if (self.health != -10) {
 		self.health = 6;
-		setmodel(self, "models/Misc/window.mdl");
+		setmodel(self, self.model);
 	}
-	setsize(self,'-20 -20 -64', '20 20 16');
-	setorigin(self,self.origin);
+
+	setsize(self, '-20 -20 -64', '20 20 16');
+	setorigin(self, self.origin);
 	spawn_boxes();
 
 	#ifndef PC
@@ -341,32 +347,4 @@ void() item_barricade =
 	#endif
 };
 
-void() item_cover =
-{
-	if(self.spawnflags & 1)
-	{
-		self.health = -10;//Window is deactivated, to only hop over it
-	}
-	else
-	{
-		precache_model("models/Misc/window.mdl");
-		precache_sound("sounds/misc/barricade.wav");
-		precache_sound("sounds/misc/barricade_destroy.wav");
-	}
-	self.classname = "window";
-	self.touch = window_touch;
-	self.solid = SOLID_TRIGGER;
-	if(self.health != -10)
-	{
-		self.health = 6;
-		setmodel(self, "models/Misc/window.mdl");
-	}
-	setsize(self,'-20 -20 -64', '20 20 16');
-	setorigin(self,self.origin + '0 0 32');
-	spawn_boxes();
-
-	#ifndef PC
-	windows[wincnt] = self;
-	wincnt++;
-	#endif
-};
+void() item_cover = {item_barricade();};
