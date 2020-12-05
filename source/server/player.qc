@@ -374,13 +374,13 @@ void() PlayerPostThink =
 		// Have to choose from PSP and PC here since frametime is a lot different...
 		#ifdef PC
 		if (self.perks & P_STAMIN) {
-			self.stamina = self.stamina - (0.05*fabs(sin(frametime*110)));
+			self.stamina = self.stamina - ((0.1*G_STAMINMULTIPLIER)*fabs(sin(frametime*110)));
 		} else {
 			self.stamina = self.stamina - (0.1*fabs(sin(frametime*110)));
 		}
 		#else
 		if (self.perks & P_STAMIN) {
-			self.stamina = self.stamina - 0.015;
+			self.stamina = self.stamina - (0.03*G_STAMINMULTIPLIER);
 		} else { 
 			self.stamina = self.stamina - 0.03;
 		} 
@@ -562,6 +562,7 @@ void() PlayerSpawn =
 	self.reviving = 0;
 	self.weaponnum = 0;
 	self.perks = G_PERKS;
+	self.perks_purchased = spawn_perk_count;
 	SetPerk(self, self.perks);
 	
 	self.zoom = 1;			// This is to fix an aimin bug for the kar scope

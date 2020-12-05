@@ -218,6 +218,7 @@ void GivePerk(optional float p) {
 	self.perk_delay = self.fire_delay;
 	Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);
 
+	self.perks_purchased++;
 	SetPerk(self, self.perks);
 }
 
@@ -268,14 +269,18 @@ void() touch_perk =
 		return;
 
 	// If we're proned and the map permits, collect some spare change
-	if (other.stance == 0 && self.collected == false && G_PRONEPOINTS != 0) {
+	if (other.stance == 0 && self.collected == false && G_PERKCHANGE != 0) {
 		self.collected = true;
-		addmoney(other, G_PRONEPOINTS, 0);
+		addmoney(other, G_PERKCHANGE, 0);
 		sound(self, 0,"sounds/misc/ching.wav", 1, 1);
 	}
 
-	// Do this after the perk change check
+	// Don't try to buy when prone
 	if (other.stance == 0)
+		return;
+
+	// Don't try to buy when we hit our perk limit
+	if (other.perks_purchased != 0 && other.perks_purchased >= G_PERKLIMIT)
 		return;
 	  
 	// Power's off! Nothing to do here.
@@ -304,7 +309,7 @@ void() touch_perk =
 				// Increment self-revive count
 				other.revivesoda++;
 
-				if (other.revivesoda >= 3) {
+				if (other.revivesoda >= G_MAXSOLOREVIVES) {
 					setmodel(self, ""); // We don't want to remove Revive in the event of a Soft_Restart..
 				}
 			}

@@ -156,6 +156,9 @@ noref void() CSQC_WorldLoaded =
 	pointparticles(particleeffectnum("muzzle.muzzle_part0"), '0 0 0', '0 0 0', 1);
 
 	huddir = "gfx/hud/";
+	
+	mappath = strcat("maps/", mapname);
+	mappath = strzone(mappath);
 };
 
 // This is from COW lol!

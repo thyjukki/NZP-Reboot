@@ -1,20 +1,35 @@
-mech 
+spawn
 {
-    proneperkpoints: 0
-    spawnpoints: 500
-    round: 1
-    worldtext: 1
-    perkpower: 0
-    
-    wep 
+    starting_points: 500
+    starting_round: 50
+
+    starting_weapon
     [
         1
         8
         32
     ]
 
-    perk
+    starting_perks
     [
-        0
+        juggernog
+        speedcola
+        doubletap
     ]
+}
+
+perks
+{
+    perk_change: 100
+    perk_purchase_limit: 4
+    perk_revive_solo_max_uses: 3
+    perk_revive_time_reduction_multiplier: 0.5
+    perk_juggernog_damage_reduction_multiplier: 0.5
+    perk_speedcola_reduce_barricade_rebuild_time: 1
+    perk_speedcola_reload_speed_reduction_multiplier: 0.1
+    perk_doubletap_rof_multiplier: 0.66
+    perk_doubletap_enable_double_fire: 1
+    perk_staminup_walkspeed_multiplier: 1.07
+    perk_staminup_stamina_usage_reduction_multiplier: 0.5
+    perk_deadshot_weapon_spread_multiplier: 0.65
 }

@@ -191,3 +191,29 @@ float G_HUDHOR;
 // custom weapon defs
 // now 90% slimmed down
 float currentWeaponTracker;
+
+string mappath;
+float spawn_perk_count;
+
+// Customizable Game Settings
+float G_STARTPOINTS;
+float G_STARTROUND;
+float G_STARTWEAPON[3];
+float G_PERKCHANGE;
+float G_PERKLIMIT;
+float G_MAXSOLOREVIVES;
+float G_REVIVEMULTIPLIER;
+float G_JUGMULTIPLIER;
+float G_SPEEDREBUILD;
+float G_SPEEDMULTIPLIER;
+float G_DTMULTIPLIER;
+float G_DOUBLETAP2;
+float G_STAMINSPEED;
+float G_STAMINMULTIPLIER;
+float G_DEADMULTIPLIER;
+
+
+float G_PRONEPOINTS;
+float G_WORLDTEXT;
+float G_PERKS;
+float G_PERKPOWER;

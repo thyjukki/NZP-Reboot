@@ -245,7 +245,7 @@ void() Rebuild_Anims =
 {
 	if(self.health == 5)
 	{
-		if (other.perks & P_SPEED)
+		if ((other.perks & P_SPEED) && G_SPEEDREBUILD)
 			window_srepair1_1();
 		else
 			window_repair1_1();
@@ -254,35 +254,35 @@ void() Rebuild_Anims =
 	}
 	else if(self.health == 4)
 	{
-		if (other.perks & P_SPEED)
+		if ((other.perks & P_SPEED) && G_SPEEDREBUILD)
 			window_srepair2_1();
 		else
 			window_repair2_1();
 	}
 	else if(self.health == 3)
 	{
-		if (other.perks & P_SPEED)
+		if ((other.perks & P_SPEED) && G_SPEEDREBUILD)
 			window_srepair3_1();
 		else
 			window_repair3_1();
 	}
 	else if(self.health == 2)
 	{
-		if (other.perks & P_SPEED)
+		if ((other.perks & P_SPEED) && G_SPEEDREBUILD)
 			window_srepair4_1();
 		else
 			window_repair4_1();
 	}
 	else if(self.health == 1)
 	{
-		if (other.perks & P_SPEED)
+		if ((other.perks & P_SPEED) && G_SPEEDREBUILD)
 			window_srepair5_1();
 		else
 			window_repair5_1();
 	}
 	else if(self.health == 0)
 	{
-		if (other.perks & P_SPEED)
+		if ((other.perks & P_SPEED) && G_SPEEDREBUILD)
 			window_srepair6_1();
 		else
 			window_repair6_1();

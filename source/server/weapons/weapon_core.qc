@@ -378,7 +378,7 @@ void() ContinueReload = //Special reloads
 
 	if (delay) {
 		if (self.perks & P_SPEED) {
-			delay *= 0.5;
+			delay *= G_SPEEDMULTIPLIER;
 		}
 		self.reload_delay = time + delay;
 		Set_W_Frame (startframe, endframe, delay, 0, RELOAD, endanimfunc, modelname, false, S_RIGHT);
@@ -489,7 +489,7 @@ void(float side) W_Reload =
 		}
 
 		if (self.perks & P_SPEED)
-			delay = delay*0.5;
+			delay *= G_SPEEDMULTIPLIER;
 		
 		if (side == S_RIGHT) {
 			self.reload_delay = delay + time;
@@ -1407,7 +1407,7 @@ void(float side) W_Fire =
 	delay = getWeaponDelay(self.weapon, FIRE);
 
 	// Double Tap 2.0
-	if (self.perks & P_DOUBLE)
+	if ((self.perks & P_DOUBLE) && G_DOUBLETAP2)
 		shotcount *= 2;
 
 	switch(self.stance) {
@@ -1488,7 +1488,7 @@ void(float side) W_Fire =
 	
 
 	if (self.perks & P_DOUBLE) {
-		delay *= 0.66;
+		delay *= G_DTMULTIPLIER;
 	}
 
 	if (self.weapon == W_GUT || self.weapon == W_KAR_SCOPE || self.weapon == W_TRENCH || self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_HEADCRACKER)
@@ -1504,10 +1504,10 @@ void(float side) W_Fire =
 
 	if (side == S_RIGHT) {
 		self.currentmag = self.currentmag - 1;
-		self.fire_delay = getWeaponDelay(self.weapon, FIRE) + time;
+		self.fire_delay = delay + time;
 	} else {
 		self.currentmag2 = self.currentmag2 - 1;
-		self.fire_delay2 = getWeaponDelay(self.weapon, FIRE) + time;
+		self.fire_delay2 = delay + time;
 	}
 
 	if (IsPapWeapon(self.weapon)) {
@@ -2224,10 +2224,10 @@ void() CheckPlayer =
 					self.movetype = MOVETYPE_NONE;
 					Set_W_Frame (0, 21, 0, 0, SPRINT, SUB_Null, "models/v_morphine.mdl", false, S_BOTH);
 					
-					if !(self.perks & P_REVIVE)
-						self.progress_bar_time = 4;
-					else
-						self.progress_bar_time = 2;
+					self.progress_bar_time = 4;
+
+					if (self.perks & P_REVIVE)
+						self.progress_bar_time *= G_REVIVEMULTIPLIER;
 					
 					self.progress_bar = self.progress_bar_time + time;     
 					self.progress_bar_percent = 1;

@@ -2,6 +2,7 @@
 
 server/ssdefs.qc
 shared/customdefs.qc
+shared/nzd_loader.qc
 shared/weapon_defines.qc
 server/customdefs.qc
 server/clientfuncs.qc

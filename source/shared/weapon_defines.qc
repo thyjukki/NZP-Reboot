@@ -1370,7 +1370,7 @@ float GetWeaponWalkSpeed(float perks, float weapontype)
 	}
 
 	if (perks & P_STAMIN)
-		spd *= 1.07;
+		spd *= G_STAMINSPEED;
 
 	return spd;
 }

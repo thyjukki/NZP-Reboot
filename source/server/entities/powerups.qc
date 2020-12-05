@@ -198,7 +198,7 @@ void(entity who) give_perkdrop_logic =
 
 		who.perks = who.perks | perk;
 	}
-
+	who.perks_purchased++;
 	SetPerk(who, who.perks);
 }
 

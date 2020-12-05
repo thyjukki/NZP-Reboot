@@ -17,7 +17,6 @@ float coop;
 .vector oldvelocity;
 .float lastsound_time;
 .float isspec;
-string mappath;
 .float playernum;
 float player_count;
 entity pl1;
@@ -296,6 +295,7 @@ float isPowerOn;
 .float perks;
 .float perk_delay;
 .float revivesoda;
+.float perks_purchased;
 .float collected;
 
 .float boxstatus;
@@ -410,15 +410,6 @@ string world_fog;
 .string person;
 .string song;
 string round_directory;
-
-//altered game elements
-float G_STARTPOINTS;
-float G_STARTROUND;
-float G_PRONEPOINTS;
-float G_STARTWEAPON[3];
-float G_WORLDTEXT;
-float G_PERKS;
-float G_PERKPOWER;
 
 //song easter egg
 float sndTriggerCnt;
