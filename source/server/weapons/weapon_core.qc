@@ -658,6 +658,9 @@ void Parse_Damage () = // DO NOT TOUCH
 				
 				body_ent.head.washit = 0;
 				body_ent.head.hitamount = 0;
+			} else {
+				if (G_HEADONLY && ent.classname != "ai_dog")
+					return;
 			}
 			if (body_ent.larm.washit) {
 				total_dmg = total_dmg + body_ent.larm.hitamount;

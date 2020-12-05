@@ -302,12 +302,6 @@ void() load_nzd = {
 					case "includeweapon":
 						nzd_defineweapon(value);
 						break;
-					case "hud":
-						G_HUD = value;
-						break;
-					case "hudhor":
-						G_HUDHOR = stof(value);
-						break;
                     case "wep":
                         point = 3;
                         break;

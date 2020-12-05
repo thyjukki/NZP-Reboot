@@ -13,6 +13,7 @@ Available options:
 -O          - write to a different qc file
 */
 #pragma noref 1
+#define CLIENT
 //#pragma flag enable logicops
 #pragma warning error Q101 /*too many parms*/
 #pragma warning error Q105 /*too few parms*/

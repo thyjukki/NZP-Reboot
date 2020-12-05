@@ -64,6 +64,45 @@ void() NZD_LoadDefaultSettings =
     G_SOUNDS.ZM_WALK_COUNT = 10;
     G_SOUNDS.ZM_WALK = "sounds/zombie/w";
     G_SOUNDS.MISC_CHING = "sounds/misc/ching.wav";
+    G_HEADONLY = 0;
+    G_WALK = 1;
+    G_JOG = 1;
+    G_SPRINT = 1;
+    G_SUPERSPRINT = 0;
+    #ifdef CLIENT
+    G_HORPERKS = 0;
+    G_USETALLIES = 1;
+    G_HUD.PERK_REVIVE = "gfx/hud/revive";
+    G_HUD.PERK_JUGG = "gfx/hud/jug";
+    G_HUD.PERK_SPEED = "gfx/hud/speed";
+    G_HUD.PERK_DOUBLE = "gfx/hud/double";
+    G_HUD.PERK_STAMIN = "gfx/hud/stamin";
+    G_HUD.PERK_FLOPPER = "gfx/hud/flopper";
+    G_HUD.PERK_DEADSHOT = "gfx/hud/dead";
+    G_HUD.PERK_MULEKICK = "gfx/hud/mule";
+    G_HUD.PU_INSTAKILL = "gfx/hud/in_kill";
+    G_HUD.PU_2X = "gfx/hud/2x";
+    G_HUD.MISC_BLOOD = "gfx/hud/blood";
+    G_HUD.MISC_BETTY = "gfx/hud/betty";
+    G_HUD.MISC_GRENADE = "gfx/hud/frag";
+    G_HUD.MISC_HITMARKER = "gfx/hud/hit_marker";
+    G_HUD.MISC_MONEYBACK = "gfx/hud/moneyback";
+    G_HUD.ROUND_TALLY[0] = "gfx/hud/r1";
+    G_HUD.ROUND_TALLY[1] = "gfx/hud/r2";
+    G_HUD.ROUND_TALLY[2] = "gfx/hud/r3";
+    G_HUD.ROUND_TALLY[3] = "gfx/hud/r4";
+    G_HUD.ROUND_TALLY[4] = "gfx/hud/r5";
+    G_HUD.ROUND_NUMBER[0] = "gfx/hud/r_num0";
+    G_HUD.ROUND_NUMBER[1] = "gfx/hud/r_num1";
+    G_HUD.ROUND_NUMBER[2] = "gfx/hud/r_num2";
+    G_HUD.ROUND_NUMBER[3] = "gfx/hud/r_num3";
+    G_HUD.ROUND_NUMBER[4] = "gfx/hud/r_num4";
+    G_HUD.ROUND_NUMBER[5] = "gfx/hud/r_num5";
+    G_HUD.ROUND_NUMBER[6] = "gfx/hud/r_num6";
+    G_HUD.ROUND_NUMBER[7] = "gfx/hud/r_num7";
+    G_HUD.ROUND_NUMBER[8] = "gfx/hud/r_num8";
+    G_HUD.ROUND_NUMBER[9] = "gfx/hud/r_num9";
+    #endif
 }
 
 //
@@ -114,6 +153,10 @@ void() NZD_Load =
         // Jump to Sounds
         if (h == "sounds")
             point = 3;
+
+        // Jump to HUD
+        if (h == "hud")
+            point = 4;
 
         // Main Parser
         if (point == 0) {
@@ -214,6 +257,21 @@ void() NZD_Load =
                     break;
                 case "earn_points_while_down":
                     G_POINTDOWN = stof(argv(2));
+                    break;
+                case "headshots_only":
+                    G_HEADONLY = stof(argv(2));
+                    break;
+                case "allow_walk":
+                    G_WALK = stof(argv(2));
+                    break;
+                case "allow_jog":
+                    G_JOG = stof(argv(2));
+                    break;
+                case "allow_sprint":
+                    G_SPRINT = stof(argv(2));
+                    break;
+                case "allow_supersprint":
+                    G_SUPERSPRINT = stof(argv(2));
                     break;
                 default: 
                     break;
@@ -368,6 +426,181 @@ void() NZD_Load =
                     break;
                 case "ching":
                     G_SOUNDS.MISC_CHING = strzone(argv(2));
+                    break;
+                default:
+                    break;
+            }
+        }
+        // HUD
+        else if (point == 4) {
+            // End on the End Bracket
+            if (h == "}") {
+                point = 0;
+                continue;
+            }
+
+            tokenize(h);
+
+            switch(argv(0)) {
+                case "horizontal_perk_positioning":
+                    #ifdef CLIENT
+                    G_HORPERKS = stof(argv(2));
+                    #endif
+                    break;
+                case "rounds_use_tallies":
+                    #ifdef CLIENT
+                    G_USETALLIES = stof(argv(2));
+                    #endif
+                    break;
+                case "revive":
+                    #ifdef CLIENT
+                    G_HUD.PERK_REVIVE = strzone(argv(2));
+                    #endif
+                    break;
+                case "juggernog":
+                    #ifdef CLIENT
+                    G_HUD.PERK_JUGG = strzone(argv(2));
+                    #endif
+                    break;
+                case "speedcola":
+                    #ifdef CLIENT
+                    G_HUD.PERK_SPEED = strzone(argv(2));
+                    #endif
+                    break;
+                case "doubletap":
+                    #ifdef CLIENT
+                    G_HUD.PERK_DOUBLE = strzone(argv(2));
+                    #endif
+                    break;
+                case "staminup":
+                    #ifdef CLIENT
+                    G_HUD.PERK_STAMIN = strzone(argv(2));
+                    #endif
+                    break;
+                case "flopper":
+                    #ifdef CLIENT
+                    G_HUD.PERK_FLOPPER = strzone(argv(2));
+                    #endif
+                    break;
+                case "deadshot":
+                    #ifdef CLIENT
+                    G_HUD.PERK_DEADSHOT = strzone(argv(2));
+                    #endif
+                    break;
+                case "mulekick":
+                    #ifdef CLIENT
+                    G_HUD.PERK_MULEKICK = strzone(argv(2));
+                    #endif
+                    break;
+                case "instakill":
+                    #ifdef CLIENT
+                    G_HUD.PU_INSTAKILL = strzone(argv(2));
+                    #endif
+                    break;
+                case "doublepoints":
+                    #ifdef CLIENT
+                    G_HUD.PU_2X = strzone(argv(2));
+                    #endif
+                    break;
+                case "blood":
+                    #ifdef CLIENT
+                    G_HUD.MISC_BLOOD = strzone(argv(2));
+                    #endif
+                    break;
+                case "betty":
+                    #ifdef CLIENT
+                    G_HUD.MISC_BETTY = strzone(argv(2));
+                    #endif
+                    break;
+                case "grenade":
+                    #ifdef CLIENT
+                    G_HUD.MISC_GRENADE = strzone(argv(2));
+                    #endif
+                    break;
+                case "hitmarker":
+                    #ifdef CLIENT
+                    G_HUD.MISC_HITMARKER = strzone(argv(2));
+                    #endif
+                    break;
+                case "point_background":
+                    #ifdef CLIENT
+                    G_HUD.MISC_MONEYBACK = strzone(argv(2));
+                    #endif
+                    break;
+                case "tally_1":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_TALLY[0] = strzone(argv(2));
+                    #endif
+                    break;
+                case "tally_2":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_TALLY[1] = strzone(argv(2));
+                    #endif
+                    break;
+                case "tally_3":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_TALLY[2] = strzone(argv(2));
+                    #endif
+                    break;
+                case "tally_4":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_TALLY[3] = strzone(argv(2));
+                    #endif
+                    break;
+                case "tally_5":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_TALLY[4] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_1":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[0] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_2":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[1] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_3":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[2] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_4":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[3] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_5":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[4] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_6":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[5] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_7":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[6] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_8":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[7] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_9":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[8] = strzone(argv(2));
+                    #endif
+                    break;
+                case "number_10":
+                    #ifdef CLIENT
+                    G_HUD.ROUND_NUMBER[9] = strzone(argv(2));
+                    #endif
                     break;
                 default:
                     break;

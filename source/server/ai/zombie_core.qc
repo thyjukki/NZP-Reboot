@@ -474,22 +474,23 @@ void()	zombie_jog8		=[	$jog8,		Zombie_Walk_Setup	] 	{self.nextthink = time + 0.0
 //78-85
 $frame run1 run2 run3 run4 run5 run6 run7 run8 run9 run10 
 //12 unless 14
-void()	zombie_run1		=[	$run1,		zombie_run2	] 	{Zombie_Walk(15);/*if(freeze_time < time)*/ self.frame = 92;SetZombieHitBox(RUN_BBOX);Zombie_Think();zombie_footstep();};//footstep
-void()	zombie_run2		=[	$run2,		zombie_run3	] 	{Zombie_Walk(15);self.frame = 93;Zombie_Think();};
-void()	zombie_run3		=[	$run3,		zombie_run4	] 	{Zombie_Walk(15); self.frame = 94;Zombie_Think();zombie_footstep();};//footstep
-void()	zombie_run4		=[	$run4,		zombie_run5	] 	{Zombie_Walk(15); self.frame = 95;Zombie_Think();};
-void()	zombie_run5		=[	$run5,		zombie_run6	] 	{Zombie_Walk(15); self.frame = 96;Zombie_Think();};
-void()	zombie_run6		=[	$run6,		zombie_run7	] 	{Zombie_Walk(15); self.frame = 97;Zombie_Think();zombie_footstep();};//footstep
-void()	zombie_run7		=[	$run7,		zombie_run8	] 	{Zombie_Walk(15); self.frame = 98;Zombie_Think();};
-void()	zombie_run8		=[	$run8,		zombie_run9	] 	{Zombie_Walk(15); self.frame = 99;Zombie_Think();zombie_footstep();};//footstep
-void()	zombie_run9		=[	$run9,		zombie_run10	] 	{Zombie_Walk(15); self.frame = 100;Zombie_Think();};
-void()	zombie_run10		=[	$run10,	Zombie_Walk_Setup	] 	{Zombie_Walk(15); self.frame = 101;Zombie_Think();};
+void()	zombie_run1		=[	$run1,		zombie_run2	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);}self.frame = 92;SetZombieHitBox(RUN_BBOX);Zombie_Think();zombie_footstep();};//footstep
+void()	zombie_run2		=[	$run2,		zombie_run3	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);}self.frame = 93;Zombie_Think();};
+void()	zombie_run3		=[	$run3,		zombie_run4	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);} self.frame = 94;Zombie_Think();zombie_footstep();};//footstep
+void()	zombie_run4		=[	$run4,		zombie_run5	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);} self.frame = 95;Zombie_Think();};
+void()	zombie_run5		=[	$run5,		zombie_run6	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);} self.frame = 96;Zombie_Think();};
+void()	zombie_run6		=[	$run6,		zombie_run7	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);} self.frame = 97;Zombie_Think();zombie_footstep();};//footstep
+void()	zombie_run7		=[	$run7,		zombie_run8	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);} self.frame = 98;Zombie_Think();};
+void()	zombie_run8		=[	$run8,		zombie_run9	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);} self.frame = 99;Zombie_Think();zombie_footstep();};//footstep
+void()	zombie_run9		=[	$run9,		zombie_run10	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);} self.frame = 100;Zombie_Think();};
+void()	zombie_run10		=[	$run10,	Zombie_Walk_Setup	] 	{if(self.walktype == 5){Zombie_Walk(15);}else{Zombie_Walk(20);} self.frame = 101;Zombie_Think();};
 
 void() Zombie_Walk_Setup = 
 {
 	if(Remaining_Zombies == 1 && rounds >= 4)
 	{
-		self.walktype = 5;
+		if (G_SPRINT)
+			self.walktype = 5;
 	}
 	
 	if(self.walktype == 1)
@@ -511,7 +512,7 @@ void() Zombie_Walk_Setup =
 	{
 		zombie_jog1();
 	}
-	else if(self.walktype == 5)
+	else if(self.walktype == 5 || self.walktype == 6)
 	{
 		zombie_run1();
 	}
@@ -1402,23 +1403,45 @@ void(entity szombie) SetZombieWalk =
 	local float whichwalk;
 	whichwalk = random();
 
-	if(whichwalk <= walk1Percent)
-	{
-		szombie.walktype = 1;
-	}
-	else if(whichwalk <= walk2Percent)
-	{
-		szombie.walktype = 2;
-	}
-	else if(whichwalk <= walk3Percent)
-	{
-		szombie.walktype =3;
-	}
-	else if(whichwalk <= jogPercent)
-	{
+	//
+	// Walktypes
+	// Work backwards to avoid else if{} interfering
+	// with game settings
+	//
+
+	// Sprint
+	if (G_SPRINT)
+		szombie.walktype = 5;
+
+	// Jog
+	if (whichwalk <= jogPercent && G_JOG) {
 		szombie.walktype = 4;
 	}
-	else szombie.walktype = 5;
+
+	// Walk 3
+	if (whichwalk <= walk3Percent && G_WALK) {
+		szombie.walktype = 3;
+	}
+
+	// Walk 2
+	if (whichwalk <= walk2Percent && G_WALK) {
+		szombie.walktype = 2;
+	}
+
+	// Walk 1
+	if (whichwalk <= walk1Percent && G_WALK) {
+		szombie.walktype = 1;
+	}
+
+	// If we're sprinting and supersprint is permitted, see if we should
+	// supersprint (33%).
+	if (szombie.walktype == 5 && G_SUPERSPRINT && random() < (1/3)) {
+		szombie.walktype = 6;
+	}
+
+	// Failsafe - just make zombs walk if all types are prohibited
+	if (szombie.walktype == 0)
+		szombie.walktype = 1;
 };
 
 float() getMaxZombies =

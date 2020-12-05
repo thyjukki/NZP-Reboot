@@ -182,12 +182,6 @@ float invertfloat(float input) {
 	return (1 - input);	
 }
 
-//elements
-#ifndef NX
-string G_HUD;
-float G_HUDHOR;
-#endif
-
 // custom weapon defs
 // now 90% slimmed down
 float currentWeaponTracker;
@@ -225,6 +219,16 @@ float G_REGENDELAY;
 float G_BLEEDTIME;
 float G_PERKDOWN;
 float G_POINTDOWN;
+float G_HEADONLY;
+float G_WALK;
+float G_JOG;
+float G_SPRINT;
+float G_SUPERSPRINT;
+
+#ifdef CLIENT
+float G_HORPERKS;
+float G_USETALLIES;
+#endif
 
 var struct {
 	string ROUND_SPLASH;
@@ -253,6 +257,28 @@ var struct {
 	string ZM_WALK;
 	string MISC_CHING;
 } G_SOUNDS;
+
+#ifdef CLIENT
+var struct {
+	string PERK_REVIVE;
+	string PERK_JUGG;
+	string PERK_SPEED;
+	string PERK_DOUBLE;
+	string PERK_STAMIN;
+	string PERK_FLOPPER;
+	string PERK_DEADSHOT;
+	string PERK_MULEKICK;
+	string PU_INSTAKILL;
+	string PU_2X;
+	string ROUND_TALLY[5];
+	string ROUND_NUMBER[10];
+	string MISC_BLOOD;
+	string MISC_BETTY;
+	string MISC_GRENADE;
+	string MISC_HITMARKER;
+	string MISC_MONEYBACK;
+} G_HUD;
+#endif
 
 
 float G_PRONEPOINTS;
