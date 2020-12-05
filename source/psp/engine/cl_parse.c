@@ -77,7 +77,9 @@ char *svc_strings[] =
     "svc_bspdecal", //42     // [string] name [byte] decal_size [coords] pos
     "svc_achievement", //43
 	"svc_songegg", //44 			[string] track name
-	"svc_maxammo" //45
+	"svc_maxammo", //45
+	"svc_hudbyte", // 46 			 [byte] byte [byte] data
+	"svc_hudstring" // 47 			[byte] byte [string] data
 };
 
 //=============================================================================
@@ -1200,6 +1202,12 @@ void CL_ParseServerMessage (void)
 			break;
 		case svc_maxammo:
 			domaxammo = true;
+			break;
+		case svc_hudbyte:
+			HUD_UpdateByte(MSG_ReadByte(), MSG_ReadByte());
+			break;
+		case svc_hudstring:
+			HUD_UpdateString(MSG_ReadByte(), MSG_ReadString());
 			break;
 		case svc_stufftext:
 			Cbuf_AddText (MSG_ReadString ());

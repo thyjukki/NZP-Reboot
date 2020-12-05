@@ -51,3 +51,5 @@ extern achievement_list_t achievement_list[MAX_ACHIEVEMENTS];
 extern qpic_t *achievement_locked;
 
 void HUD_Parse_Achievement (int ach);
+void HUD_UpdateByte(int byte, int data);
+void HUD_UpdateString(int byte, char* data);

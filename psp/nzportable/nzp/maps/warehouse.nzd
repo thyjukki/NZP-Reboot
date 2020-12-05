@@ -11,15 +11,64 @@ spawn
 
     starting_perks
     [
+        revive
+        juggernog
         speedcola
         doubletap
+        staminup
+        flopper
+        deadshot
+        mulekick
+    ]
+}
+
+sounds
+{
+    rounds
+    [
+        splash: sounds/rounds/splash.wav
+        new: sounds/rounds/nround.wav
+        end: sounds/rounds/eround.wav
+        new_dog: sounds/rounds/droundstart.wav
+        end_dog: sounds/rounds/droundend.wav
+    ]
+
+    powerups
+    [
+        drop: sounds/pu/drop.wav
+        loop: sounds/pu/powerup.wav
+        pickup: sounds/pu/pickup.wav
+        pu_instakill: sounds/pu/insta_kill.wav
+        pu_doublepoints: sounds/pu/double_points.wav
+        pu_carpenter: sounds/pu/carpenter.wav
+        pu_nuke: sounds/pu/nuke.wav
+        pu_maxammo: sounds/pu/maxammo.wav
+    ]
+
+    zombies
+    [
+        attack_sound_count: 8
+        attack: sounds/zombie/a
+        death_sound_count: 8
+        death: sounds/zombie/d
+        run_sound_count: 10
+        run: sounds/zombie/r
+        taunt_sound_count: 5
+        taunt: sounds/zombie/t
+        walk_sound_count: 10
+        walk: sounds/zombie/w
+    ]
+
+    misc
+    [
+        ching: sounds/misc/ching.wav
     ]
 }
 
 perks
 {
-    perk_change: 100
-    perk_purchase_limit: 4
+    perk_change: 0
+    perk_purchase_limit: 0
     perk_revive_solo_max_uses: 3
     perk_revive_time_reduction_multiplier: 0.5
     perk_juggernog_damage_reduction_multiplier: 0.5
@@ -44,13 +93,79 @@ powerups
     allow_perkdrop: 0
 }
 
+zombies
+{
+    headshots_only: 0
+    allow_walk: 1
+    allow_jog: 1
+    allow_sprint: 1
+    allow_supersprint: 0
+}
+
 world
 {
-    gravity: 100
+    gravity: 800
     start_round: 1
 }
 
 player
 {
-    max_health: 50
+    max_health: 100
+    walkspeed_multiplier: 1
+    health_regeneration_delay: 2
+    downed_bleedout_time: 45
+    lose_perks_on_down: 1
+    earn_points_while_down: 0
+}
+
+hud
+{
+    horizontal_perk_positioning: 1
+    rounds_use_tallies: 1
+
+    perks
+    [
+        revive: gfx/hud/revive
+        juggernog: gfx/hud/jug
+        speedcola: gfx/hud/speed
+        doubletap: gfx/hud/double
+        staminup: gfx/hud/stamin
+        flopper: gfx/hud/flopper
+        deadshot: gfx/hud/dead
+        mulekick: gfx/hud/mule
+    ]
+
+    powerups
+    [
+        instakill: gfx/hud/in_kill
+        doublepoints: gfx/hud/2x
+    ]
+
+    rounds
+    [
+        tally_1: gfx/hud/r1
+        tally_2: gfx/hud/r2
+        tally_3: gfx/hud/r3
+        tally_4: gfx/hud/r4
+        tally_5: gfx/hud/r5
+        number_1: gfx/hud/r_num0
+        number_2: gfx/hud/r_num1
+        number_3: gfx/hud/r_num2
+        number_4: gfx/hud/r_num3
+        number_5: gfx/hud/r_num4
+        number_6: gfx/hud/r_num5
+        number_7: gfx/hud/r_num6
+        number_8: gfx/hud/r_num7
+        number_9: gfx/hud/r_num8
+        number_10: gfx/hud/r_num9
+    ]
+
+    misc
+    [
+        blood: gfx/hud/blood
+        betty: gfx/hud/betty
+        grenade: gfx/hud/frag
+        hitmarker: gfx/hud/hit_marker
+        point_background: gfx/hud/moneyback
+    ]
 }

@@ -3118,6 +3118,50 @@ void PF_MaxAmmo(void)
 
 
 /*
+==================
+PF_UpdateHUDByte
+
+sends integers designated for hud changes
+
+UpdateHUDByte(byte, data)
+==================
+*/
+void PF_UpdateHUDByte(void)
+{
+	int byte;
+	int data;
+
+	byte = G_FLOAT(OFS_PARM0);
+	data = G_FLOAT(OFS_PARM1);
+
+	MSG_WriteByte(&sv.reliable_datagram, svc_hudbyte);
+	MSG_WriteByte(&sv.reliable_datagram, byte);
+	MSG_WriteByte(&sv.reliable_datagram, data);
+}
+
+/*
+==================
+PF_UpdateHUDString
+
+sends strings designated for hud changes
+
+UpdateHUDString(byte, data)
+==================
+*/
+void PF_UpdateHUDString(void)
+{
+	int byte;
+	char* data;
+
+	byte = G_FLOAT(OFS_PARM0);
+	data = G_STRING(OFS_PARM1);
+
+	MSG_WriteByte(&sv.reliable_datagram, svc_hudstring);
+	MSG_WriteByte(&sv.reliable_datagram, byte);
+	MSG_WriteString(&sv.reliable_datagram, data);
+}
+
+/*
 =================
 PF_achievement
 
@@ -3451,7 +3495,9 @@ ebfs_builtin_t pr_ebfs_builtins[] =
   { 442, "argv", PF_ArgV },
 
   { 500, "songegg", PF_SongEgg },
-  {	501, "nzp_maxammo", PF_MaxAmmo }
+  {	501, "nzp_maxammo", PF_MaxAmmo },
+  { 502, "UpdateHUDByte", PF_UpdateHUDByte},
+  { 503, "UpdateHUDString", PF_UpdateHUDString}
 
 // 2001-11-15 DarkPlaces general builtin functions by Lord Havoc  end
 

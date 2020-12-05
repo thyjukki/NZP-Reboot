@@ -103,6 +103,40 @@ void() NZD_LoadDefaultSettings =
     G_HUD.ROUND_NUMBER[8] = "gfx/hud/r_num8";
     G_HUD.ROUND_NUMBER[9] = "gfx/hud/r_num9";
     #endif
+    #ifdef PSP
+    UpdateHUDByte(0, 0);
+    UpdateHUDByte(1, 1);
+    UpdateHUDString(0, "gfx/hud/revive");
+    UpdateHUDString(1, "gfx/hud/jug");
+    UpdateHUDString(2, "gfx/hud/speed");
+    UpdateHUDString(3, "gfx/hud/double");
+    UpdateHUDString(4, "gfx/hud/stamin");
+    UpdateHUDString(5, "gfx/hud/flopper");
+    UpdateHUDString(6, "gfx/hud/dead");
+    UpdateHUDString(7, "gfx/hud/mule");
+    UpdateHUDString(8, "gfx/hud/in_kill");
+    UpdateHUDString(9, "gfx/hud/2x");
+    UpdateHUDString(10, "gfx/hud/blood");
+    UpdateHUDString(11, "gfx/hud/betty");
+    UpdateHUDString(12, "gfx/hud/frag");
+    UpdateHUDString(13, "gfx/hud/hit_marker");
+    UpdateHUDString(14, "gfx/hud/moneyback");
+    UpdateHUDString(15, "gfx/hud/r1");
+    UpdateHUDString(16, "gfx/hud/r2");
+    UpdateHUDString(17, "gfx/hud/r3");
+    UpdateHUDString(18, "gfx/hud/r4");
+    UpdateHUDString(19, "gfx/hud/r5");
+    UpdateHUDString(20, "gfx/hud/r_num0");
+    UpdateHUDString(21, "gfx/hud/r_num1");
+    UpdateHUDString(22, "gfx/hud/r_num2");
+    UpdateHUDString(23, "gfx/hud/r_num3");
+    UpdateHUDString(24, "gfx/hud/r_num4");
+    UpdateHUDString(25, "gfx/hud/r_num5");
+    UpdateHUDString(26, "gfx/hud/r_num6");
+    UpdateHUDString(27, "gfx/hud/r_num7");
+    UpdateHUDString(28, "gfx/hud/r_num8");
+    UpdateHUDString(29, "gfx/hud/r_num9");
+    #endif
 }
 
 //
@@ -446,160 +480,256 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HORPERKS = stof(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDByte(0, stof(argv(2)));
+                    #endif
                     break;
                 case "rounds_use_tallies":
                     #ifdef CLIENT
                     G_USETALLIES = stof(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDByte(1, stof(argv(2)));
                     #endif
                     break;
                 case "revive":
                     #ifdef CLIENT
                     G_HUD.PERK_REVIVE = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(0, strzone(argv(2)));
+                    #endif
                     break;
                 case "juggernog":
                     #ifdef CLIENT
                     G_HUD.PERK_JUGG = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(1, strzone(argv(2)));
                     #endif
                     break;
                 case "speedcola":
                     #ifdef CLIENT
                     G_HUD.PERK_SPEED = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(2, strzone(argv(2)));
+                    #endif
                     break;
                 case "doubletap":
                     #ifdef CLIENT
                     G_HUD.PERK_DOUBLE = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(3, strzone(argv(2)));
                     #endif
                     break;
                 case "staminup":
                     #ifdef CLIENT
                     G_HUD.PERK_STAMIN = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(4, strzone(argv(2)));
+                    #endif
                     break;
                 case "flopper":
                     #ifdef CLIENT
                     G_HUD.PERK_FLOPPER = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(5, strzone(argv(2)));
                     #endif
                     break;
                 case "deadshot":
                     #ifdef CLIENT
                     G_HUD.PERK_DEADSHOT = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(6, strzone(argv(2)));
+                    #endif
                     break;
                 case "mulekick":
                     #ifdef CLIENT
                     G_HUD.PERK_MULEKICK = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(7, strzone(argv(2)));
                     #endif
                     break;
                 case "instakill":
                     #ifdef CLIENT
                     G_HUD.PU_INSTAKILL = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(8, strzone(argv(2)));
+                    #endif
                     break;
                 case "doublepoints":
                     #ifdef CLIENT
                     G_HUD.PU_2X = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(9, strzone(argv(2)));
                     #endif
                     break;
                 case "blood":
                     #ifdef CLIENT
                     G_HUD.MISC_BLOOD = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(10, strzone(argv(2)));
+                    #endif
                     break;
                 case "betty":
                     #ifdef CLIENT
                     G_HUD.MISC_BETTY = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(11, strzone(argv(2)));
                     #endif
                     break;
                 case "grenade":
                     #ifdef CLIENT
                     G_HUD.MISC_GRENADE = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(12, strzone(argv(2)));
+                    #endif
                     break;
                 case "hitmarker":
                     #ifdef CLIENT
                     G_HUD.MISC_HITMARKER = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(13, strzone(argv(2)));
                     #endif
                     break;
                 case "point_background":
                     #ifdef CLIENT
                     G_HUD.MISC_MONEYBACK = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(14, strzone(argv(2)));
+                    #endif
                     break;
                 case "tally_1":
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[0] = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(15, strzone(argv(2)));
                     #endif
                     break;
                 case "tally_2":
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[1] = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(16, strzone(argv(2)));
+                    #endif
                     break;
                 case "tally_3":
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[2] = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(17, strzone(argv(2)));
                     #endif
                     break;
                 case "tally_4":
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[3] = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(18, strzone(argv(2)));
+                    #endif
                     break;
                 case "tally_5":
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[4] = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(19, strzone(argv(2)));
                     #endif
                     break;
                 case "number_1":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[0] = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(20, strzone(argv(2)));
+                    #endif
                     break;
                 case "number_2":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[1] = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(21, strzone(argv(2)));
                     #endif
                     break;
                 case "number_3":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[2] = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(22, strzone(argv(2)));
+                    #endif
                     break;
                 case "number_4":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[3] = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(23, strzone(argv(2)));
                     #endif
                     break;
                 case "number_5":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[4] = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(24, strzone(argv(2)));
+                    #endif
                     break;
                 case "number_6":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[5] = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(25, strzone(argv(2)));
                     #endif
                     break;
                 case "number_7":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[6] = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(26, strzone(argv(2)));
+                    #endif
                     break;
                 case "number_8":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[7] = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(27, strzone(argv(2)));
                     #endif
                     break;
                 case "number_9":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[8] = strzone(argv(2));
                     #endif
+                    #ifdef PSP
+                    UpdateHUDString(28, strzone(argv(2)));
+                    #endif
                     break;
                 case "number_10":
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[9] = strzone(argv(2));
+                    #endif
+                    #ifdef PSP
+                    UpdateHUDString(29, strzone(argv(2)));
                     #endif
                     break;
                 default:
