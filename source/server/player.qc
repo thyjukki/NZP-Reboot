@@ -493,7 +493,7 @@ void() PlayerSpawn =
 	self.solid = SOLID_BBOX;
 	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
-	self.max_health = self.health = 100;
+	self.max_health = self.health = G_MAXHEALTH;
 
 	//custom weapon stuff (we want to put this here so we can send the info to the client with an entity)
 	// DISGUSTING.
@@ -574,7 +574,7 @@ void() PlayerSpawn =
 	}
 
 	if (rounds < 1) {
-		sound(self, CHAN_AUTO, strcat(round_directory, "splash.wav"), 1, ATTN_NONE);
+		sound(self, CHAN_AUTO, G_SOUNDS.ROUND_SPLASH, 1, ATTN_NONE);
 	}
 
 	PromptLevelChange(self.nextthink + 3, 1, self);	

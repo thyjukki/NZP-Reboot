@@ -1,7 +1,6 @@
 spawn
 {
     starting_points: 500
-    starting_round: 50
 
     starting_weapon
     [
@@ -12,7 +11,6 @@ spawn
 
     starting_perks
     [
-        juggernog
         speedcola
         doubletap
     ]
@@ -26,10 +24,33 @@ perks
     perk_revive_time_reduction_multiplier: 0.5
     perk_juggernog_damage_reduction_multiplier: 0.5
     perk_speedcola_reduce_barricade_rebuild_time: 1
-    perk_speedcola_reload_speed_reduction_multiplier: 0.1
+    perk_speedcola_reload_speed_reduction_multiplier: 0.5
     perk_doubletap_rof_multiplier: 0.66
     perk_doubletap_enable_double_fire: 1
     perk_staminup_walkspeed_multiplier: 1.07
     perk_staminup_stamina_usage_reduction_multiplier: 0.5
     perk_deadshot_weapon_spread_multiplier: 0.65
+}
+
+powerups
+{
+    max_per_round: 4
+    drop_rate_percent: 0.02
+    allow_maxammo: 1
+    allow_2xpoints: 1
+    allow_carpenter: 1
+    allow_nuke: 1
+    allow_instakill: 1
+    allow_perkdrop: 0
+}
+
+world
+{
+    gravity: 100
+    start_round: 1
+}
+
+player
+{
+    max_health: 50
 }

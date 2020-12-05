@@ -97,6 +97,7 @@ string(string s) precache_model         = #20;
 
 void() precaches = 
 {
+
 	precache_model ("models/player.mdl");
 	
 	#ifndef PSP
@@ -160,9 +161,9 @@ void() precaches =
 	precache_sound("sounds/weapons/knife/knife.wav");
 	precache_sound("sounds/weapons/knife/knife_hit.wav");
 	
-	precache_sound(strcat(round_directory, "eround.wav"));
-	precache_sound(strcat(round_directory, "nround.wav"));
-	precache_sound(strcat(round_directory, "splash.wav"));
+	precache_sound(G_SOUNDS.ROUND_SPLASH);
+	precache_sound(G_SOUNDS.ROUND_NEW);
+	precache_sound(G_SOUNDS.ROUND_END);
 	precache_sound("sounds/music/end.wav");
 	precache_sound("sounds/null.wav");
 
@@ -170,6 +171,7 @@ void() precaches =
 	precache_sound("sounds/misc/wood_door.wav");
 	precache_sound("sounds/misc/debris.wav");
 	precache_sound("sounds/misc/denybuy.wav");
+	precache_sound(G_SOUNDS.MISC_CHING);
 	
 	precache_sound("sounds/misc/what.wav");
 
@@ -194,68 +196,67 @@ void() precaches =
 
 
 	
-	//Walk
-	
-	precache_sound ("sounds/zombie/w0.wav");
-	precache_sound ("sounds/zombie/w1.wav");
-	precache_sound ("sounds/zombie/w2.wav");
-	precache_sound ("sounds/zombie/w3.wav");
-	precache_sound ("sounds/zombie/w4.wav");
-	precache_sound ("sounds/zombie/w5.wav");
-	precache_sound ("sounds/zombie/w6.wav");
-	precache_sound ("sounds/zombie/w7.wav");
-	precache_sound ("sounds/zombie/w8.wav");
-	precache_sound ("sounds/zombie/w9.wav");
-	//Run
-	precache_sound ("sounds/zombie/r0.wav");
-	precache_sound ("sounds/zombie/r1.wav");
-	precache_sound ("sounds/zombie/r2.wav");
-	precache_sound ("sounds/zombie/r3.wav");
-	precache_sound ("sounds/zombie/r4.wav");
-	precache_sound ("sounds/zombie/r5.wav");
-	precache_sound ("sounds/zombie/r6.wav");
-	precache_sound ("sounds/zombie/r7.wav");
-	precache_sound ("sounds/zombie/r8.wav");
-	precache_sound ("sounds/zombie/r9.wav");
-	//Attack
-	precache_sound ("sounds/zombie/a0.wav");
-	precache_sound ("sounds/zombie/a1.wav");
-	precache_sound ("sounds/zombie/a2.wav");
-	precache_sound ("sounds/zombie/a3.wav");
-	precache_sound ("sounds/zombie/a4.wav");
-	precache_sound ("sounds/zombie/a5.wav");
-	precache_sound ("sounds/zombie/a6.wav");
-	precache_sound ("sounds/zombie/a7.wav");
-	//Death
-	precache_sound ("sounds/zombie/d0.wav");
-	precache_sound ("sounds/zombie/d1.wav");
-	precache_sound ("sounds/zombie/d2.wav");
-	precache_sound ("sounds/zombie/d3.wav");
-	precache_sound ("sounds/zombie/d4.wav");
-	precache_sound ("sounds/zombie/d5.wav");
-	precache_sound ("sounds/zombie/d6.wav");
-	precache_sound ("sounds/zombie/d7.wav");
-	//Taunt
-	precache_sound ("sounds/zombie/t0.wav");
-	precache_sound ("sounds/zombie/t1.wav");
-	precache_sound ("sounds/zombie/t2.wav");
-	precache_sound ("sounds/zombie/t3.wav");
-	precache_sound ("sounds/zombie/t4.wav");
+	// Attack
+	for(float i = 0; i < G_SOUNDS.ZM_ATTACK_COUNT; i++) {
+		string temps;
+		temps = G_SOUNDS.ZM_ATTACK;
+		temps = strzone(strcat(temps, ftos(i)));
+		temps = strzone(strcat(temps, ".wav"));
+		precache_sound(temps);
+	}
+
+	// Death
+	for(float i = 0; i < G_SOUNDS.ZM_DEATH_COUNT; i++) {
+		string temps2;
+		temps2 = G_SOUNDS.ZM_DEATH;
+		temps2 = strzone(strcat(temps2, ftos(i)));
+		temps2 = strzone(strcat(temps2, ".wav"));
+		precache_sound(temps2);
+	}
+
+	// Run
+	for(float i = 0; i < G_SOUNDS.ZM_RUN_COUNT; i++) {
+		string temps3;
+		temps3 = G_SOUNDS.ZM_RUN;
+		temps3 = strzone(strcat(temps3, ftos(i)));
+		temps3 = strzone(strcat(temps3, ".wav"));
+		precache_sound(temps3);
+	}
+
+	// Taunt
+	for(float i = 0; i < G_SOUNDS.ZM_TAUNT_COUNT; i++) {
+		string temps4;
+		temps4 = G_SOUNDS.ZM_TAUNT;
+		temps4 = strzone(strcat(temps4, ftos(i)));
+		temps4 = strzone(strcat(temps4, ".wav"));
+		precache_sound(temps4);
+	}
+
+	// Walk
+	for(float i = 0; i < G_SOUNDS.ZM_WALK_COUNT; i++) {
+		string temps5;
+		temps5 = G_SOUNDS.ZM_WALK;
+		temps5 = strzone(strcat(temps5, ftos(i)));
+		temps5 = strzone(strcat(temps5, ".wav"));
+		precache_sound(temps5);
+	}
+
 	//Footsteps
 	precache_sound ("sounds/zombie/s0.wav");
 	precache_sound ("sounds/zombie/s1.wav");
 	precache_sound ("sounds/zombie/sc0.wav");
 	precache_sound ("sounds/zombie/sc1.wav");
+	
 	//Announce
-	precache_sound ("sounds/pu/pickup.wav");
-	precache_sound ("sounds/pu/carpenter.wav");
-	precache_sound ("sounds/pu/maxammo.wav");
-	precache_sound ("sounds/pu/double_points.wav");
-	precache_sound ("sounds/pu/insta_kill.wav");
-	precache_sound ("sounds/pu/nuke.wav");
+	precache_sound (G_SOUNDS.PU_PICKUP);
+	precache_sound (G_SOUNDS.PU_CARPENTER);
+	precache_sound (G_SOUNDS.PU_MAXAMMO);
+	precache_sound (G_SOUNDS.PU_2X);
+	precache_sound (G_SOUNDS.PU_INSTAKILL);
+	precache_sound (G_SOUNDS.PU_NUKE);
 	precache_sound ("sounds/pu/byebye.wav");
-	precache_sound ("sounds/pu/powerup.wav");
-	precache_sound ("sounds/pu/drop.wav");
+	precache_sound (G_SOUNDS.PU_LOOP);
+	precache_sound (G_SOUNDS.PU_DROP);
 
 	#ifdef PC
 	// Moto -- FIXME: compile FTE to remove this engine sound request
@@ -266,6 +267,13 @@ void() precaches =
 //called when map loaded
 void() worldspawn =
 {
+	mappath = strcat("maps/", mapname);
+	mappath = strzone(mappath);
+
+	#ifndef NX
+	NZD_Load();
+	#endif
+
 	precaches();
 	LightStyles_setup();
 
@@ -288,14 +296,8 @@ void() worldspawn =
 	clientstat(STAT_PLAYERSTANCE, EV_FLOAT, stance);
 	clientstat(STAT_FACINGENEMY, EV_FLOAT, facingenemy);
 	#endif
-	
-	mappath = strcat("maps/", mapname);
-	mappath = strzone(mappath);
 
 	LoadWaypointData();
-	#ifndef NX
-	NZD_Load();
-	#endif
 }
 
 void() SpectatorConnect =

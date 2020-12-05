@@ -211,6 +211,48 @@ float G_DOUBLETAP2;
 float G_STAMINSPEED;
 float G_STAMINMULTIPLIER;
 float G_DEADMULTIPLIER;
+float G_MAXPUS;
+float G_PUCHANCE;
+float G_ALLOWMAXAMMO;
+float G_ALLOWINSTA;
+float G_ALLOW2X;
+float G_ALLOWNUKE;
+float G_ALLOWCARPENTER;
+float G_ALLOWPERK;
+float G_MAXHEALTH;
+float G_WALKSPEED;
+float G_REGENDELAY;
+float G_BLEEDTIME;
+float G_PERKDOWN;
+float G_POINTDOWN;
+
+var struct {
+	string ROUND_SPLASH;
+	string ROUND_NEW;
+	string ROUND_END;
+	string ROUND_NEW_DOG;
+	string ROUND_END_DOG;
+	string PU_DROP;
+	string PU_LOOP;
+	string PU_PICKUP;
+	string PU_INSTAKILL;
+	string PU_2X;
+	string PU_CARPENTER;
+	string PU_NUKE;
+	string PU_MAXAMMO;
+	string PU_PERKDROP;
+	float ZM_ATTACK_COUNT;
+	string ZM_ATTACK;
+	float ZM_DEATH_COUNT;
+	string ZM_DEATH;
+	float ZM_RUN_COUNT;
+	string ZM_RUN;
+	float ZM_TAUNT_COUNT;
+	string ZM_TAUNT;
+	float ZM_WALK_COUNT;
+	string ZM_WALK;
+	string MISC_CHING;
+} G_SOUNDS;
 
 
 float G_PRONEPOINTS;

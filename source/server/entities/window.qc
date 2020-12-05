@@ -36,7 +36,7 @@ void() Window_repaired =
 {
 	if (maxreward > totalreward)
 	{
-		sound(self, 0,"sounds/misc/ching.wav", 1, 0);
+		sound(self, 0,G_SOUNDS.MISC_CHING, 1, 0);
 		addmoney(self.enemy, 10, 1);
 		totalreward = totalreward + 10;
 	}

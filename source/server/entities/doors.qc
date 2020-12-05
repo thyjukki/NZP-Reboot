@@ -237,7 +237,7 @@ if (self.state == STATE_TOP || self.state == STATE_UP)
 		if (other.points >= self.cost)
 		{
 			door_fire();
-			sound(self, 0,"sounds/misc/ching.wav", 1, 1);
+			sound(self, 0,G_SOUNDS.MISC_CHING, 1, 1);
 			sound(self, CHAN_ITEM,"sounds/misc/buy.wav", 1, 1);
 			switch(self.sounds)
 			{

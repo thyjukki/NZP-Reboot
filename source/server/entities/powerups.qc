@@ -20,11 +20,12 @@ string(float type) getPowerupModel =
 string(float type) getPowerupVO =
 {
 	switch(type) {
-		case 1: return "sounds/pu/maxammo.wav"; break;
-		case 2: return "sounds/pu/double_points.wav"; break;
-		case 3: return "sounds/pu/insta_kill.wav"; break;
-		case 4: return "sounds/pu/nuke.wav"; break;
-		case 5: return "sounds/pu/carpenter.wav"; break;
+		case 1: return G_SOUNDS.PU_MAXAMMO; break;
+		case 2: return G_SOUNDS.PU_2X; break;
+		case 3: return G_SOUNDS.PU_INSTAKILL; break;
+		case 4: return G_SOUNDS.PU_NUKE; break;
+		case 5: return G_SOUNDS.PU_CARPENTER; break;
+		case 6: return G_SOUNDS.PU_PERKDROP; break;
 		default: return ""; break;
 	}
 
@@ -293,7 +294,7 @@ void() powerup_touch =
 	if(other.classname == "player")
 	{
 		// pickup sound
-		sound(self.owner,CHAN_VOICE,"sounds/pu/pickup.wav",1,ATTN_NONE);
+		sound(self.owner,CHAN_VOICE,G_SOUNDS.PU_PICKUP,1,ATTN_NONE);
 
 		// add a slight delay before VO play
 		self.think = powerup_play_sound;
@@ -362,17 +363,95 @@ void() sparkle_think =
 	
 	if(self.calc_time <= time)
 	{
-		sound(self,CHAN_VOICE,"sounds/pu/powerup.wav",0.6,ATTN_NORM);
+		sound(self,CHAN_VOICE,G_SOUNDS.PU_LOOP,0.6,ATTN_NORM);
 		self.calc_time = time + 2.998;
 	}
 	
 };
 
+//
+// GetPowerupID()
+// Returns a powerup id, checks if the game allows for
+// one and if requirements for said powerup are met.
+//
+float() GetPowerupID =
+{
+	float found;
+	float carpenter_able;
+	float perk_able;
+	float id;
+
+	id = carpenter_able = perk_able = 0;
+
+	// Check if we can get a carpenter or a free perk drop
+	if (total_windows_down >= 5)
+		carpenter_able = true;
+	if (rounds >= 15)
+		perk_able = true;
+
+	float total_powerups = 5; // nuke, insta, 2x, maxammo, carpenter, free perk
+
+	// Start ID loop
+	found = false;
+	while(found == false) {
+		float t = random();
+
+		// loop through all IDs
+		for (float i = 0; i < total_powerups + 1; i++) {
+			// check if the ID we got was viable
+			if (t > (i/total_powerups)) {
+				switch(i) {
+					case 1:
+						if (G_ALLOWMAXAMMO) {
+							found = true;
+							id = i;
+						}
+						break;
+					case 2:
+						if (G_ALLOW2X) {
+							found = true;
+							id = i;
+						}
+						break;
+					case 3:
+						if (G_ALLOWINSTA) {
+							found = true;
+							id = i;
+						}
+						break;
+					case 4:
+						if (G_ALLOWNUKE) {
+							found = true;
+							id = i;
+						}
+						break;
+					case 5:
+						if (G_ALLOWCARPENTER && carpenter_able) {
+							found = true;
+							id = i;
+						}
+						break;
+					case 6:
+						if (G_ALLOWPERK && perk_able) {
+							found = true;
+							id = i;
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+	}
+
+	return id;
+}
+
 float last_pu;
 void(vector where, float type) Spawn_Powerup =
 {
 	entity new_powerup;
-	float t, total_powerups, id;
+	float id;
 
 	new_powerup = spawn();
 	new_powerup.origin = where;
@@ -397,12 +476,11 @@ void(vector where, float type) Spawn_Powerup =
 	#endif
 	twlt_Sparkle.think = sparkle_think;
 	twlt_Sparkle.nextthink = time + 0.1;
-	sound(twlt_Sparkle,CHAN_VOICE,"sounds/pu/powerup.wav",0.6,ATTN_NORM);
+	sound(twlt_Sparkle,CHAN_VOICE,G_SOUNDS.PU_LOOP,0.6,ATTN_NORM);
 	
-	sound(new_powerup,CHAN_AUTO,"sounds/pu/drop.wav",1,ATTN_NONE);
+	sound(new_powerup,CHAN_AUTO,G_SOUNDS.PU_DROP,1,ATTN_NONE);
 	
 	//========================================================
-	t = random();
 
 	// Specific Power-Ups (for dogs)
 	if (type) {
@@ -410,55 +488,24 @@ void(vector where, float type) Spawn_Powerup =
 		new_powerup.zombie_drop_id = type;
 		new_powerup.powerup_vo = getPowerupVO(type);
 	} else {
-		//
-		// Instead of making weird checks to change our divisible number, let's just
-		// check all of that stuff afterwards, to avoid any bad math/logic..
-		//
+		// Grab a powerup ID
+		id = GetPowerupID();
 
-		total_powerups = 5; // nuke, insta, 2x, maxammo
-
-		// determine id
-		for (float i = 1; i < total_powerups + 1; i++) {
-			if (t > (i/total_powerups)) {
-				id = i;
+		// Should perk drops be individual?
+		if (id == 6) {
+			// Yes!
+			if (random() > (1/2)) {
+				// Set Style and make light Blue to symbolize it is an individual drop
+				// TODO: Make a sprite too??
+				new_powerup.style = 1;
+				Light_None(new_powerup);
+				Light_Blue(new_powerup);
 			}
-		}
-
-		// check if we are elligible for a carpenter, and if so see if we want it. (override)
-		if (total_windows_down >= 5) {
-			t = random();
-
-			// Should we override the current selection?
-			if (t < (1/3)) {
-				id = 5;
+			// No!
+			else {
+				// failsafe
+				new_powerup.style = 0;
 			}
-		}
-
-		// another elligibility check for the perk drop
-		if (G_PERKPOWER && rounds >= 15) {
-			t = random();
-
-			// Should we override the current selection?
-			if (t > (1/10)) {
-				id = 6;
-
-				// Another check, is this Power-Up for all Clients or just one?
-				if (random() > (1/2)) {
-					// Set Style and make light Blue to symbolize it is an individual drop
-					// TODO: Make a sprite too??
-					new_powerup.style = 1;
-					Light_None(new_powerup);
-					Light_Blue(new_powerup);
-				} else {
-					// failsafe
-					new_powerup.style = 0;
-				}
-			}
-		}
-
-		// failsafe in case my logic is still horrible
-		if (id == 0 || id >= 7) {
-			id = 3;
 		}
 
 		// finally, assign the id and model to our id.
@@ -472,5 +519,5 @@ void(vector where, float type) Spawn_Powerup =
 	
 	new_powerup.think = powerup_flash;
 	new_powerup.nextthink = time + 21;
-	totalpowerups = 1;
+	totalpowerups++;
 }

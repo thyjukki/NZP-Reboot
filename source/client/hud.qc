@@ -22,7 +22,7 @@ void(float width, float height) HUD_Health =
 
 	if (health < 100)
 	{
-		alpha = (100.0 - ((1.25 * health) - 25))/100*255;
+		alpha = (100.0 - ((1.25 * health) - 25))/G_MAXHEALTH*255;
 		if (alpha <= 0.0)
 			return;
 		float modifier = (sin(time * 10) * 20) - 20;//always negative

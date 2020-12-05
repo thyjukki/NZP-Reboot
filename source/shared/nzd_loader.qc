@@ -25,6 +25,45 @@ void() NZD_LoadDefaultSettings =
     G_STAMINSPEED = 1.07;
     G_STAMINMULTIPLIER = 0.5;
     G_DEADMULTIPLIER = 0.65;
+    G_MAXPUS = 4;
+    G_PUCHANCE = 0.02;
+    G_ALLOWMAXAMMO = 1;
+    G_ALLOWINSTA = 1;
+    G_ALLOWNUKE = 1;
+    G_ALLOW2X = 1;
+    G_ALLOWCARPENTER = 1;
+    G_ALLOWPERK = 0;
+    G_MAXHEALTH = 100;
+    G_WALKSPEED = 1;
+    G_REGENDELAY = 2;
+    G_BLEEDTIME = 45;
+    G_POINTDOWN = 0;
+    G_PERKDOWN = 1;
+    G_SOUNDS.ROUND_SPLASH = "sounds/rounds/splash.wav";
+    G_SOUNDS.ROUND_NEW = "sounds/rounds/nround.wav";
+    G_SOUNDS.ROUND_END = "sounds/rounds/eround.wav";
+    G_SOUNDS.ROUND_NEW_DOG = "sounds/rounds/droundstart.wav";
+    G_SOUNDS.ROUND_END_DOG = "sounds/rounds/droundend.wav";
+    G_SOUNDS.PU_DROP = "sounds/pu/drop.wav";
+    G_SOUNDS.PU_LOOP = "sounds/pu/powerup.wav";
+    G_SOUNDS.PU_PICKUP = "sounds/pu/pickup.wav";
+    G_SOUNDS.PU_INSTAKILL = "sounds/pu/insta_kill.wav";
+    G_SOUNDS.PU_2X = "sounds/pu/double_points.wav";
+    G_SOUNDS.PU_CARPENTER = "sounds/pu/carpenter.wav";
+    G_SOUNDS.PU_NUKE = "sounds/pu/nuke.wav";
+    G_SOUNDS.PU_MAXAMMO = "sounds/pu/maxammo.wav";
+    G_SOUNDS.PU_PERKDROP = "";
+    G_SOUNDS.ZM_ATTACK_COUNT = 8;
+    G_SOUNDS.ZM_ATTACK = "sounds/zombie/a";
+    G_SOUNDS.ZM_ATTACK_COUNT = 8;
+    G_SOUNDS.ZM_DEATH = "sounds/zombie/d";
+    G_SOUNDS.ZM_RUN_COUNT = 10;
+    G_SOUNDS.ZM_RUN = "sounds/zombie/r";
+    G_SOUNDS.ZM_TAUNT_COUNT = 5;
+    G_SOUNDS.ZM_TAUNT = "sounds/zombie/t";
+    G_SOUNDS.ZM_WALK_COUNT = 10;
+    G_SOUNDS.ZM_WALK = "sounds/zombie/w";
+    G_SOUNDS.MISC_CHING = "sounds/misc/ching.wav";
 }
 
 //
@@ -72,6 +111,10 @@ void() NZD_Load =
             continue;
         }
 
+        // Jump to Sounds
+        if (h == "sounds")
+            point = 3;
+
         // Main Parser
         if (point == 0) {
             tokenize(h);
@@ -80,7 +123,7 @@ void() NZD_Load =
                 case "starting_points":
                     G_STARTPOINTS = stof(argv(2));
                     break;
-                case "starting_round":
+                case "start_round":
                     G_STARTROUND = stof(argv(2));
                     break;
                 case "starting_weapon":
@@ -124,6 +167,53 @@ void() NZD_Load =
                     break;
                 case "perk_deadshot_weapon_spread_multiplier":
                     G_DEADMULTIPLIER = stof(argv(2));
+                    break;
+                case "max_per_round":
+                    G_MAXPUS = stof(argv(2));
+                    break;
+                case "drop_rate_percent":
+                    G_PUCHANCE = stof(argv(2));
+                    break;
+                case "allow_maxammo":
+                    G_ALLOWMAXAMMO = stof(argv(2));
+                    break;
+                case "allow_2xpoints":
+                    G_ALLOW2X = stof(argv(2));
+                    break;
+                case "allow_carpenter":
+                    G_ALLOWCARPENTER = stof(argv(2));
+                    break;
+                case "allow_nuke":
+                    G_ALLOWNUKE = stof(argv(2));
+                    break;
+                case "allow_instakill":
+                    G_ALLOWINSTA = stof(argv(2));
+                    break;
+                case "allow_perkdrop":
+                    G_ALLOWPERK = stof(argv(2));
+                    break;
+                case "gravity":
+                    #ifndef CLIENT
+                    localcmd(strcat("sv_gravity ", argv(2)));
+                    #endif
+                    break;
+                case "max_health":
+                    G_MAXHEALTH = stof(argv(2));
+                    break;
+                case "walkspeed_multiplier":
+                    G_WALKSPEED = stof(argv(2));
+                    break;
+                case "health_regeneration_delay":
+                    G_REGENDELAY = stof(argv(2));
+                    break;
+                case "downed_bleedout_time":
+                    G_BLEEDTIME = stof(argv(2));
+                    break;
+                case "lose_perks_on_down":
+                    G_PERKDOWN = stof(argv(2));
+                    break;
+                case "earn_points_while_down":
+                    G_POINTDOWN = stof(argv(2));
                     break;
                 default: 
                     break;
@@ -190,6 +280,96 @@ void() NZD_Load =
                     string temps = "Unknown Perk: ";
                     temps = strcat(temps, h);
                     error(temps);
+                    break;
+            }
+        }
+        // Sounds
+        else if (point == 3) {
+            // End on the End Bracket
+            if (h == "}") {
+                point = 0;
+                continue;
+            }
+
+            tokenize(h);
+
+            switch(argv(0)) {
+                case "splash":
+                    G_SOUNDS.ROUND_SPLASH = strzone(argv(2));
+                    break;
+                case "new":
+                    G_SOUNDS.ROUND_NEW = strzone(argv(2));
+                    break;
+                case "end":
+                    G_SOUNDS.ROUND_END = strzone(argv(2));
+                    break;
+                case "new_dog":
+                    G_SOUNDS.ROUND_NEW_DOG = strzone(argv(2));
+                    break;
+                case "end_dog":
+                    G_SOUNDS.ROUND_END_DOG = strzone(argv(2));
+                    break;
+                case "drop":
+                    G_SOUNDS.PU_DROP = strzone(argv(2));
+                    break;
+                case "loop":
+                    G_SOUNDS.PU_LOOP = strzone(argv(2));
+                    break;
+                case "pickup":
+                    G_SOUNDS.PU_PICKUP = strzone(argv(2));
+                    break;
+                case "pu_instakill":
+                    G_SOUNDS.PU_INSTAKILL = strzone(argv(2));
+                    break;
+                case "pu_doublepoints":
+                    G_SOUNDS.PU_2X = strzone(argv(2));
+                    break;
+                case "pu_carpenter":
+                    G_SOUNDS.PU_CARPENTER = strzone(argv(2));
+                    break;
+                case "pu_nuke":
+                    G_SOUNDS.PU_NUKE = strzone(argv(2));
+                    break;
+                case "pu_maxammo":
+                    G_SOUNDS.PU_MAXAMMO = strzone(argv(2));
+                    break;
+                case "pu_perkdrop":
+                    G_SOUNDS.PU_PERKDROP = strzone(argv(2));
+                    break;
+                case "attack_sound_count":
+                    G_SOUNDS.ZM_ATTACK_COUNT = stof(argv(2));
+                    break;
+                case "attack":
+                    G_SOUNDS.ZM_ATTACK = strzone(argv(2));
+                    break;
+                case "death_sound_count":
+                    G_SOUNDS.ZM_DEATH_COUNT = stof(argv(2));
+                    break;
+                case "death":
+                    G_SOUNDS.ZM_DEATH = strzone(argv(2));
+                    break;
+                case "run_sound_count":
+                    G_SOUNDS.ZM_RUN_COUNT = stof(argv(2));
+                    break;
+                case "run":
+                    G_SOUNDS.ZM_RUN = strzone(argv(2));
+                    break;
+                case "taunt_sound_count":
+                    G_SOUNDS.ZM_TAUNT_COUNT = stof(argv(2));
+                    break;
+                case "taunt":
+                    G_SOUNDS.ZM_TAUNT = strzone(argv(2));
+                    break;
+                case "walk_sound_count":
+                    G_SOUNDS.ZM_WALK_COUNT = stof(argv(2));
+                    break;
+                case "walk":
+                    G_SOUNDS.ZM_WALK = strzone(argv(2));
+                    break;
+                case "ching":
+                    G_SOUNDS.MISC_CHING = strzone(argv(2));
+                    break;
+                default:
                     break;
             }
         }

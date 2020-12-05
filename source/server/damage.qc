@@ -149,7 +149,7 @@ void() EndGameSetup =
 void() rec_downed = 
 {
 	self.downedloop++;
-	if (self.downedloop == 450) {
+	if (self.downedloop == (G_BLEEDTIME * 10)) {
 		startspectate();
 		return;
 	}
@@ -214,7 +214,8 @@ void() GetDown =
 	addmoney(self, 0, true);						// used to call a broadcast
 	BroadcastMessage(time + 3, 2);
 	
-	self.perks = 0;
+	if (!G_PERKDOWN)
+		self.perks = 0;
 	self.weaponbk = self.weapon;
 	self.currentammobk = self.currentammo;
 	self.currentmagbk = self.currentmag;
@@ -380,7 +381,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 			damage = ceil(damage*G_JUGMULTIPLIER);
 		
 		victim.health = victim.health - damage;
-		victim.health_delay = time + 2;
+		victim.health_delay = time + G_REGENDELAY;
 
 		// shake the camera on impact
 		local vector distance;

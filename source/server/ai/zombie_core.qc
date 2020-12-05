@@ -24,22 +24,15 @@ void(float what) play_sound_z =
 		
 		if(what == 1)//attack
 		{
-			if (e < 0.125)
-				sound(self,CHAN_VOICE,"sounds/zombie/a0.wav",1,ATTN_NORM);
-			else if (e < 0.25)
-				sound(self,CHAN_VOICE,"sounds/zombie/a1.wav",1,ATTN_NORM);
-			else if (e < 0.375)
-				sound(self,CHAN_VOICE,"sounds/zombie/a2.wav",1,ATTN_NORM);   
-			else if( e < 0.5)
-				sound(self,CHAN_VOICE,"sounds/zombie/a3.wav",1,ATTN_NORM);   
-			else if( e < 0.625)
-				sound(self,CHAN_VOICE,"sounds/zombie/a4.wav",1,ATTN_NORM);   
-			else if( e < 0.75)
-				sound(self,CHAN_VOICE,"sounds/zombie/a5.wav",1,ATTN_NORM);   
-			else if( e < 0.875)
-				sound(self,CHAN_VOICE,"sounds/zombie/a6.wav",1,ATTN_NORM);  
-			else
-				sound(self,CHAN_VOICE,"sounds/zombie/a7.wav",1,ATTN_NORM);   
+			for(float i = 0; i < G_SOUNDS.ZM_ATTACK_COUNT; i++) {
+				if (e > (i/G_SOUNDS.ZM_ATTACK_COUNT)) {
+					string temps;
+					temps = G_SOUNDS.ZM_ATTACK;
+					temps = strzone(strcat(temps, ftos(i)));
+					temps = strzone(strcat(temps, ".wav"));
+					sound(self, CHAN_VOICE, temps, 1, ATTN_NORM);
+				}
+			}
 			return;
 		}
 		if(what == 2)//walking!
@@ -65,66 +58,43 @@ void(float what) play_sound_z =
 				if(self.crawling == TRUE)
 				{
 					self.sound_time = time + 3 + random()*2;
-					if(e < 0.2)
-						sound(self,CHAN_VOICE,"sounds/zombie/t0.wav",1,ATTN_NORM);   
-					else if (e < 0.4)
-						sound(self,CHAN_VOICE,"sounds/zombie/t1.wav",1,ATTN_NORM);  
-					else if (e < 0.6)
-						sound(self,CHAN_VOICE,"sounds/zombie/t2.wav",1,ATTN_NORM);  
-					else if (e < 0.8)
-						sound(self,CHAN_VOICE,"sounds/zombie/t3.wav",1,ATTN_NORM);  
-					else
-						sound(self,CHAN_VOICE,"sounds/zombie/t4.wav",1,ATTN_NORM);  
+					for(float i = 0; i < G_SOUNDS.ZM_TAUNT_COUNT; i++) {
+						if (e > (i/G_SOUNDS.ZM_TAUNT_COUNT)) {
+							string temps2;
+							temps2 = G_SOUNDS.ZM_TAUNT;
+							temps2 = strzone(strcat(temps2, ftos(i)));
+							temps2 = strzone(strcat(temps2, ".wav"));
+							sound(self, CHAN_VOICE, temps2, 1, ATTN_NORM);
+						}
+					}
 					return;
 				}					
 				if(self.walktype == 1 || self.walktype == 2 || self.walktype == 3)
 				{
 					self.sound_time = time + 3 + random();
-					if (e < 0.1)
-						sound(self,CHAN_VOICE,"sounds/zombie/w0.wav",1,ATTN_NORM);   
-					else if (e < 0.2)
-						sound(self,CHAN_VOICE,"sounds/zombie/w1.wav",1,ATTN_NORM);   
-					else if (e < 0.3)
-						sound(self,CHAN_VOICE,"sounds/zombie/w2.wav",1,ATTN_NORM);   
-					else if( e < 0.4)
-						sound(self,CHAN_VOICE,"sounds/zombie/w3.wav",1,ATTN_NORM);   
-					else if( e < 0.5)
-						sound(self,CHAN_VOICE,"sounds/zombie/w4.wav",1,ATTN_NORM);   
-					else if( e < 0.6)
-						sound(self,CHAN_VOICE,"sounds/zombie/w5.wav",1,ATTN_NORM);
-					else if( e < 0.7)
-						sound(self,CHAN_VOICE,"sounds/zombie/w6.wav",1,ATTN_NORM);
-					else if( e < 0.8)
-						sound(self,CHAN_VOICE,"sounds/zombie/w7.wav",1,ATTN_NORM);
-					else if( e < 0.9)
-						sound(self,CHAN_VOICE,"sounds/zombie/w8.wav",1,ATTN_NORM);
-					else
-						sound(self,CHAN_VOICE,"sounds/zombie/w9.wav",1,ATTN_NORM);
+					for(float i = 0; i < G_SOUNDS.ZM_WALK_COUNT; i++) {
+						if (e > (i/G_SOUNDS.ZM_WALK_COUNT)) {
+							string temps3;
+							temps3 = G_SOUNDS.ZM_WALK;
+							temps3 = strzone(strcat(temps3, ftos(i)));
+							temps3 = strzone(strcat(temps3, ".wav"));
+							sound(self, CHAN_VOICE, temps3, 1, ATTN_NORM);
+						}
+					}
 					return;
 				}
 				else if(self.walktype == 4 || self.walktype == 5)
 				{
 					self.sound_time = time + 4 + random()*2;
-					if (e < 0.1)
-						sound(self,CHAN_VOICE,"sounds/zombie/r0.wav",1,ATTN_NORM);   
-					else if (e < 0.2)
-						sound(self,CHAN_VOICE,"sounds/zombie/r1.wav",1,ATTN_NORM);   
-					else if (e < 0.3)
-						sound(self,CHAN_VOICE,"sounds/zombie/r2.wav",1,ATTN_NORM);   
-					else if( e < 0.4)
-						sound(self,CHAN_VOICE,"sounds/zombie/r3.wav",1,ATTN_NORM);   
-					else if( e < 0.5)
-						sound(self,CHAN_VOICE,"sounds/zombie/r4.wav",1,ATTN_NORM);   
-					else if( e < 0.6)
-						sound(self,CHAN_VOICE,"sounds/zombie/r5.wav",1,ATTN_NORM);
-					else if( e < 0.7)
-						sound(self,CHAN_VOICE,"sounds/zombie/r6.wav",1,ATTN_NORM);
-					else if( e < 0.8)
-						sound(self,CHAN_VOICE,"sounds/zombie/r7.wav",1,ATTN_NORM);
-					else if( e < 0.9)
-						sound(self,CHAN_VOICE,"sounds/zombie/r8.wav",1,ATTN_NORM);
-					else
-						sound(self,CHAN_VOICE,"sounds/zombie/r9.wav",1,ATTN_NORM);
+					for(float i = 0; i < G_SOUNDS.ZM_RUN_COUNT; i++) {
+						if (e > (i/G_SOUNDS.ZM_RUN_COUNT)) {
+							string temps4;
+							temps4 = G_SOUNDS.ZM_RUN;
+							temps4 = strzone(strcat(temps4, ftos(i)));
+							temps4 = strzone(strcat(temps4, ".wav"));
+							sound(self, CHAN_VOICE, temps4, 1, ATTN_NORM);
+						}
+					}
 					return;
 				}
 				
@@ -132,22 +102,15 @@ void(float what) play_sound_z =
 		}
 		if(what == 3)//death!
 		{
-			if (e < 0.125)
-				sound(self,CHAN_VOICE,"sounds/zombie/d0.wav",1,ATTN_NORM);
-			else if (e < 0.25)
-				sound(self,CHAN_VOICE,"sounds/zombie/d1.wav",1,ATTN_NORM);
-			else if (e < 0.375)
-				sound(self,CHAN_VOICE,"sounds/zombie/d2.wav",1,ATTN_NORM);   
-			else if( e < 0.5)
-				sound(self,CHAN_VOICE,"sounds/zombie/d3.wav",1,ATTN_NORM);   
-			else if( e < 0.625)
-				sound(self,CHAN_VOICE,"sounds/zombie/d4.wav",1,ATTN_NORM);   
-			else if( e < 0.75)
-				sound(self,CHAN_VOICE,"sounds/zombie/d5.wav",1,ATTN_NORM);   
-			else if( e < 0.875)
-				sound(self,CHAN_VOICE,"sounds/zombie/d6.wav",1,ATTN_NORM);  
-			else
-				sound(self,CHAN_VOICE,"sounds/zombie/d7.wav",1,ATTN_NORM);   
+			for(float i = 0; i < G_SOUNDS.ZM_DEATH_COUNT; i++) {
+				if (e > (i/G_SOUNDS.ZM_DEATH_COUNT)) {
+					string temps5;
+					temps5 = G_SOUNDS.ZM_DEATH;
+					temps5 = strzone(strcat(temps5, ftos(i)));
+					temps5 = strzone(strcat(temps5, ".wav"));
+					sound(self, CHAN_VOICE, temps5, 1, ATTN_NORM);
+				}
+			}  
 			return;
 			
 		}
@@ -156,16 +119,15 @@ void(float what) play_sound_z =
 			if(random() < 0.83)
 				return;
 			
-			if(e < 0.2)
-				sound(self,CHAN_VOICE,"sounds/zombie/t0.wav",1,ATTN_NORM);   
-			else if (e < 0.4)
-				sound(self,CHAN_VOICE,"sounds/zombie/t1.wav",1,ATTN_NORM);  
-			else if (e < 0.6)
-				sound(self,CHAN_VOICE,"sounds/zombie/t2.wav",1,ATTN_NORM);  
-			else if (e < 0.8)
-				sound(self,CHAN_VOICE,"sounds/zombie/t3.wav",1,ATTN_NORM);  
-			else
-				sound(self,CHAN_VOICE,"sounds/zombie/t4.wav",1,ATTN_NORM);  
+			for(float i = 0; i < G_SOUNDS.ZM_TAUNT_COUNT; i++) {
+				if (e > (i/G_SOUNDS.ZM_TAUNT_COUNT)) {
+					string temps6;
+					temps6 = G_SOUNDS.ZM_TAUNT;
+					temps6 = strzone(strcat(temps6, ftos(i)));
+					temps6 = strzone(strcat(temps6, ".wav"));
+					sound(self, CHAN_VOICE, temps6, 1, ATTN_NORM);
+				}
+			}
 			return;
 		}
 	}
@@ -1082,14 +1044,14 @@ void() Zombie_Death =
 	//Spawn_Powerup(self.origin, 0);
 	if(self.outside == FALSE)
 	{
-		if (totalpowerups < 4)
+		if (totalpowerups < G_MAXPUS)
 		{
 			if (total_powerup_points >= powerup_activate)
 			{
 				Spawn_Powerup(self.origin, 0);
 				total_powerup_points = total_powerup_points - powerup_activate;
 			}
-			else if (random () <= 0.02)
+			else if (random () <= G_PUCHANCE)
 				Spawn_Powerup(self.origin, 0);
 		}
 	}
