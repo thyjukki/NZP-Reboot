@@ -580,6 +580,14 @@ string(string s) strtrim 												    = #120;
 float(string s) tokenize 												    = #130;	// Was #441
 string(float num) argv 													    = #131;	// Was #442
 
+//
+// NZP builtins
+//
+void(float byte, float data) UpdateHUDByte 									= #132;
+void(float byte, string data) UpdateHUDString 								= #133;
+//void(string trackname) songegg                        = #500; // motolegacy - todo
+//void() nzp_maxammo                                    = #501; // motolegacy - todo
+
 float(entity targ, entity inflictor) CanDamage;
 
 

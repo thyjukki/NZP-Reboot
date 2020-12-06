@@ -206,6 +206,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define svc_limbupdate  		51
 #define	svc_updatekills		    53	    // [string] to put in center of the screen
+#define svc_hudbyte 			54 		// [byte] byte [byte] data
+#define svc_hudstring 			55 		// [byte] byte [string] data
 
 //
 // client to server

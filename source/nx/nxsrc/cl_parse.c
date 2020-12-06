@@ -85,10 +85,12 @@ const char *svc_strings[] =
 	"", // 47
 	"", // 48
 	"", // 49
-	"svc_bspdecal",   // 50     // [string] name [byte] decal_size [coords] pos
+	"svc_bspdecal",   // 50     		// [string] name [byte] decal_size [coords] pos
 	"svc_limbupdate", // 51
     "svc_achievement", // 52
-    "svc_updatekills"  // 53
+    "svc_updatekills",  // 53
+	"svc_hudbyte", // 54 				// [byte] byte [byte] data
+	"svc_hudstring" // 55 				// [byte] byte [string] data
 
 
 //johnfitz
@@ -1290,7 +1292,12 @@ void CL_ParseServerMessage (void)
 		case svc_useprint:
 			SCR_UsePrint (MSG_ReadByte (),MSG_ReadShort (),MSG_ReadByte ());
 			break;
-
+		case svc_hudbyte:
+			HUD_UpdateByte(MSG_ReadByte(), MSG_ReadByte());
+			break;
+		case svc_hudstring:
+			HUD_UpdateString(MSG_ReadByte(), MSG_ReadString());
+			break;
 		case svc_stufftext:
 			Cbuf_AddText (MSG_ReadString ());
 			break;

@@ -26,3 +26,7 @@ void HUD_Draw (void);
 void HUD_Init (void);
 
 void HUD_NewMap (void);
+
+void HUD_UpdateByte(int byte, int data);
+
+void HUD_UpdateString(int byte, char* data);

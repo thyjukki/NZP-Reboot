@@ -1188,6 +1188,50 @@ static void PF_Remove (void)
 	ED_Free (ed);
 }
 
+/*
+==================
+PF_UpdateHUDByte
+sends integers designated for hud changes
+UpdateHUDByte(byte, data)
+==================
+*/
+void PF_UpdateHUDByte(void)
+{
+	int byte;
+	int data;
+
+	byte = G_FLOAT(OFS_PARM0);
+	data = G_FLOAT(OFS_PARM1);
+
+	MSG_WriteByte(&sv.reliable_datagram, svc_hudbyte);
+	MSG_WriteByte(&sv.reliable_datagram, byte);
+	MSG_WriteByte(&sv.reliable_datagram, data);
+}
+
+/*
+==================
+PF_UpdateHUDString
+sends strings designated for hud changes
+UpdateHUDString(byte, data)
+==================
+*/
+void PF_UpdateHUDString(void)
+{
+	int byte;
+	char* data;
+
+	byte = G_FLOAT(OFS_PARM0);
+	data = G_STRING(OFS_PARM1);
+
+	// NX-Specific: concatenate file extension
+	char* concatenated = malloc(sizeof(char)*64);
+	strcpy(concatenated, data);
+	strcat(concatenated, ".tga");
+
+	MSG_WriteByte(&sv.reliable_datagram, svc_hudstring);
+	MSG_WriteByte(&sv.reliable_datagram, byte);
+	MSG_WriteString(&sv.reliable_datagram, concatenated);
+}
 
 /*
 =================
@@ -3179,7 +3223,9 @@ static builtin_t pr_builtin[] =
 	NULL, 						// #128
 	NULL, 						// #129
 	PF_tokenize,				// #130
-	PF_ArgV						// #131
+	PF_ArgV,					// #131
+	PF_UpdateHUDByte, 			// #132
+	PF_UpdateHUDString 			// #133
 };
 
 builtin_t *pr_builtins = pr_builtin;

@@ -54,7 +54,14 @@ SOURCES		:=	\
 	src/common/unzip \
 	src/common/shared
 
+#
+# 12/6/2020 - had to rename strl[cat/cpy] to bsd_* because
+# my fresh dkp & libnx refused to make object files with their
+# old names -- motolegacy
+#
 SOURCEFILES	:=\
+	nxsrc/bsd_strlcat.c \
+	nxsrc/bsd_strlcpy.c \
 	nxsrc/bgmusic.c \
 	nxsrc/snd_codec.c \
 	nxsrc/snd_flac.c \
@@ -97,8 +104,6 @@ SOURCEFILES	:=\
 	nxsrc/pl_nx.c \
 	nxsrc/sys_sdl_nx.c \
 	nxsrc/main_sdl_nx.c \
-	nxsrc/strlcat.c \
-	nxsrc/strlcpy.c \
 	nxsrc/net_dgrm.c \
 	nxsrc/net_loop.c \
 	nxsrc/net_main.c \
