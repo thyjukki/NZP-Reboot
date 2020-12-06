@@ -19,6 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+//
+// 12/5/2020 - Use ADQuake's system.cpp and its move from std to sceIO for file I/O
+// because std::fclose() is bunked -- motolegacy
+// creds to st1x51
+//
+
 #define ENABLE_PRINTF 0
 
 #include "system.hpp"
@@ -37,16 +43,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <pspkernel.h>
 #include <psppower.h>
 #include <psprtc.h>
-#include <psputility.h>
-#include <pspdisplay.h>
-#include <pspgu.h>
-#include <pspgum.h>
+
+#ifdef PROFILE
+#include <pspprof.h>
+#endif
 
 extern "C"
 {
 #include "../sys.h"
 #include "../quakedef.h"
-void Host_WriteConfiguration (void);
 }
 #include "fnmatch.h"
 
@@ -68,12 +73,14 @@ namespace quake
 			// Set on open.
 			char	name[MAX_OSPATH + 1];
 			bool	write;
-
+#if 0
 			// Set on open, suspend, restore.
 			FILE*	handle;
-
+#else
+            SceUID handle;
+#endif
 			// Set on suspend.
-			long	offset;
+			SceOff	offset;
 		};
 
 		static bool					debugScreenInitialized	= false;
@@ -92,10 +99,17 @@ namespace quake
 				if (file.name[0])
 				{
 					// Save the offset;
+#if 0
 					file.offset = ftell(file.handle);
-
+#else
+					file.offset = sceIoLseek(file.handle, 0, SEEK_CUR);
+#endif
 					// Close the file.
+#if 0
 					fclose(file.handle);
+#else
+                    sceIoClose(file.handle);
+#endif
 					file.handle = 0;
 				}
 			}
@@ -114,7 +128,12 @@ namespace quake
 				if (file.name[0])
 				{
 					// Reopen the file. This can repeatedly fail, so we keep trying.
+#if 0
 					const char* mode = file.write ? "ab" : "rb";
+#else
+					int mode = file.write ? PSP_O_APPEND : PSP_O_RDONLY;
+#endif
+#if 0
 					do
 					{
 						file.handle = fopen(file.name, mode);
@@ -126,6 +145,20 @@ namespace quake
 					{
 						throw std::runtime_error("Couldn't seek in file");
 					}
+#else
+					file.handle = sceIoOpen(file.name, mode, 0777);
+				    if(file.handle < 0)
+					{
+					   throw std::runtime_error("Couldn't open file");
+					}
+
+					// Restore the offset;
+					if (sceIoLseek(file.handle, file.offset, SEEK_SET) != 0)
+					{
+						throw std::runtime_error("Couldn't seek in file");
+					}
+					
+#endif
 				}
 			}
 			
@@ -138,7 +171,6 @@ namespace quake
 
 using namespace quake;
 using namespace quake::system;
-
 
 int Sys_FileOpenRead (char *path, int *hndl)
 {
@@ -153,14 +185,20 @@ int Sys_FileOpenRead (char *path, int *hndl)
 		}
 
 		// Open the file.
+#if 0
 		file.handle = fopen(path, "rb");
 		if (!file.handle)
+#else
+		file.handle = sceIoOpen(path, PSP_O_RDONLY, 0777);
+		if (file.handle < 0)
+#endif
 		{
 			*hndl = -1;
 			return -1;
 		}
 
 		// Get the length.
+#if 0
 		if (fseek(file.handle, 0, SEEK_END) != 0)
 		{
 			Sys_Error("fseek failed");
@@ -170,7 +208,11 @@ int Sys_FileOpenRead (char *path, int *hndl)
 		{
 			Sys_Error("fseek failed");
 		}
-
+#else
+        SceOff pos = sceIoLseek(file.handle, 0, SEEK_CUR);
+        const long length = sceIoLseek(file.handle, 0, SEEK_END);
+        sceIoLseek(file.handle, pos, SEEK_SET);
+#endif
 		// The file is now in use!
 		Q_strncpy(file.name, path, MAX_OSPATH);
 		file.write = false;
@@ -197,8 +239,13 @@ int Sys_FileOpenWrite (char *path)
 		}
 
 		// Open the file.
+#if 0
 		file.handle = fopen(path, "wb");
 		if (!file.handle)
+#else
+		file.handle = sceIoOpen(path, PSP_O_WRONLY, 0777);
+		if (file.handle < 0)
+#endif
 		{
 			return -1;
 		}
@@ -219,7 +266,11 @@ void Sys_FileClose (int handle)
 {
 	// Close the file.
 	file& file = files[handle];
+#if 0
 	fclose(file.handle);
+#else
+    sceIoClose(file.handle);
+#endif
 	file.handle = 0;
 	file.name[0] = 0;
 }
@@ -227,22 +278,34 @@ void Sys_FileClose (int handle)
 void Sys_FileSeek (int handle, int position)
 {
 	file& file = files[handle];
-	if (fseek(file.handle, position, SEEK_SET) != 0)
-	{
+#if 0
+    if (fseek(file.handle, position, SEEK_SET) != 0)
+    {
 		Sys_Error("fseek failed");
 	}
+#else
+    sceIoLseek(file.handle, position, SEEK_SET);
+#endif
 }
 
 int Sys_FileRead (int handle, void *dest, int count)
 {
 	file& file = files[handle];
+#if 0
 	return fread(dest, 1, count, file.handle);
+#else
+    return sceIoRead(file.handle, dest, count);
+#endif
 }
 
 int Sys_FileWrite (int handle, void *data, int count)
 {
 	file& file = files[handle];
+#if 0
 	return fwrite(data, 1, count, file.handle);
+#else
+	return sceIoWrite(file.handle, data, count);
+#endif
 }
 
 int	Sys_FileTime (char *path)
@@ -266,41 +329,17 @@ int	Sys_FileTime (char *path)
 	*/
 }
 
-
 void Sys_mkdir (char *path)
 {
 	Sys_Printf("Mkdir: %s\n", path);
 	sceIoMkdir(path, 0x777);
 }
-#if 0 //bad
-//Crow_bar.
-void Sys_Error (char *error, ...)
-{
-	char msg[MAX_OSPATH];
-	// Clear the sound buffer.
-	S_ClearBuffer();
-
-	// Put the error message in a buffer.
-	va_list args;
-	va_start(args, error);
-	char buffer[1024];
-	memset(buffer, 0, sizeof(buffer));
-	vsnprintf(buffer, sizeof(buffer) - 1, error, args);
-	va_end(args);
-
-	sprintf(msg,"        SYSTEM ERROR       \n\n%s ",buffer);
-
-	ShowMessageDialog(msg, 0);
-
-	Sys_Quit();
-}
-#endif
 
 void Sys_Error (char *error, ...)
 {
 	// Clear the sound buffer.
 	S_ClearBuffer();
-	
+
 	// Put the error message in a buffer.
 	va_list args;
 	va_start(args, error);
@@ -316,38 +355,30 @@ void Sys_Error (char *error, ...)
 		pspDebugScreenInit();
 		debugScreenInitialized = true;
 	}
-
-	pspDebugScreenSetTextColor(0x0000af);
-	pspDebugScreenPrintf("PSP NZP v:%4.2f \n",(float)VERSION);
-	pspDebugScreenSetTextColor(0x10ffae);
+	pspDebugScreenSetTextColor(0xffffff);
 	pspDebugScreenPrintf("The following error occurred:\n");
-	pspDebugScreenSetTextColor(0x00ffff);
+	pspDebugScreenSetTextColor(0x0000ff);
 	pspDebugScreenPrintData(buffer, strlen(buffer));
-	pspDebugScreenSetTextColor(0x40ff00);
+	pspDebugScreenSetTextColor(0xffffff);
 	pspDebugScreenPrintf("\n\nPress CROSS to quit.\n");
 
 	// Wait for a button press.
 	sceCtrlSetSamplingCycle(0);
 	sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
 	SceCtrlData pad;
-	do
-	{
+	do {
 		sceCtrlReadBufferPositive(&pad, 1);
 	} while (pad.Buttons & PSP_CTRL_CROSS);
-	do
-	{
+	do {
 		sceCtrlReadBufferPositive(&pad, 1);
 	} while ((pad.Buttons & PSP_CTRL_CROSS) == 0);
-	do
-	{
+	do {
 		sceCtrlReadBufferPositive(&pad, 1);
 	} while (pad.Buttons & PSP_CTRL_CROSS);
 
 	// Quit.
 	pspDebugScreenPrintf("Shutting down...\n");
-
 	Sys_Quit();
-
 }
 
 void Sys_Printf (char *fmt, ...)
@@ -370,8 +401,6 @@ void Sys_Printf (char *fmt, ...)
 #endif
 }
 
-void ShutdownExtModules (void);
-
 void Sys_Quit (void)
 {
 	// Shut down the host system.
@@ -379,16 +408,15 @@ void Sys_Quit (void)
 	{
 		Host_Shutdown();
 	}
-#if 0
-	// Remove modules from ram
-    ShutdownExtModules ();
-#endif
+
 	// Restore the old clock frequency.
 	scePowerSetClockFrequency(main::cpuClockSpeed, main::ramClockSpeed, main::busClockSpeed);
 
 	// Insert a false delay so files and stuff can be saved before the kernel kills us.
 	sceKernelDelayThread(50 * 1000);
-
+#ifdef PROFILE
+    gprof_cleanup();
+#endif
 	// Exit.
 	sceKernelExitGame();
 }
