@@ -97,7 +97,6 @@ string(string s) precache_model         = #20;
 
 void() precaches = 
 {
-
 	precache_model ("models/player.mdl");
 	
 	#ifndef PSP
@@ -108,12 +107,6 @@ void() precaches =
 		precache_sound (world.song);
 	#endif
 	#endif
-
-	if (!world.oldmodel) {
-		round_directory = "sounds/rounds/";
-	} else {
-		round_directory = world.oldmodel;
-	}
 	
 	precache_model ("progs/Sprites/revive.spr");
 	precache_model ("progs/Sprites/revive_white.spr");
@@ -270,9 +263,7 @@ void() worldspawn =
 	mappath = strcat("maps/", mapname);
 	mappath = strzone(mappath);
 
-	#ifndef NX
 	NZD_Load();
-	#endif
 
 	precaches();
 	LightStyles_setup();

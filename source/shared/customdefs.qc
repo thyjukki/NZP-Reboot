@@ -182,17 +182,16 @@ float invertfloat(float input) {
 	return (1 - input);	
 }
 
-// custom weapon defs
-// now 90% slimmed down
-float currentWeaponTracker;
-
 string mappath;
 float spawn_perk_count;
 
+//
 // Customizable Game Settings
+//
 float G_STARTPOINTS;
 float G_STARTROUND;
 float G_STARTWEAPON[3];
+float G_PERKS;
 float G_PERKCHANGE;
 float G_PERKLIMIT;
 float G_MAXSOLOREVIVES;
@@ -279,9 +278,3 @@ var struct {
 	string MISC_MONEYBACK;
 } G_HUD;
 #endif
-
-
-float G_PRONEPOINTS;
-float G_WORLDTEXT;
-float G_PERKS;
-float G_PERKPOWER;

@@ -3,6 +3,7 @@
 
 nx/QC/defs.qc
 shared/customdefs.qc
+shared/nzd_loader.qc
 shared/weapon_defines.qc
 server/customdefs.qc
 server/clientfuncs.qc
@@ -11,7 +12,6 @@ nx/QC/dummys.qc
 
 server/dummys.qc  
 server/rounds.qc
-server/nzdparser.qc
 server/main.qc    
 server/player.qc
 server/damage.qc

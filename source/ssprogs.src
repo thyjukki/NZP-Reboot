@@ -9,7 +9,6 @@ server/clientfuncs.qc
 
 server/dummys.qc
 server/rounds.qc
-server/nzdparser.qc
 server/main.qc
 server/player.qc
 server/damage.qc
