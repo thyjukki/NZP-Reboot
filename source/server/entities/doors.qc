@@ -167,22 +167,6 @@ void() door_fire =
 	self.message = string_null;		// no more message
 	oself = self;
 
-	if (self.door_model_target)
-	{
-		entity tempe = find(world, classname, "func_door_model");
-		if (tempe != world) {
-			///door_model_name, self.door_model_target
-			if (tempe.door_model_name == self.door_model_target) {
-				setmodel(tempe, "");
-				remove(tempe);
-			} else {
-				bprint(PRINT_HIGH, "Could not find door_model_name: ");
-				bprint(PRINT_HIGH, self.door_model_target);
-				bprint(PRINT_HIGH, "\n");
-			}
-		}
-	}
-
 	if (self.spawnflags & DOOR_TOGGLE)
 	{
 		if (self.state == STATE_UP || self.state == STATE_TOP)
@@ -501,12 +485,6 @@ SPECIAL DOORS
 thease doors can be opened by money or when power is on
 =====================
 */
-
-void() func_door_model = 
-{
-	place_model();
-}
-
 void() func_door =
 
 {
