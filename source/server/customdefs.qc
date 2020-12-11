@@ -287,6 +287,8 @@ float crandom();
 .vector pos1, pos2/*, mangle*/;
 .float sequence;
 .entity active_door;
+.string door_model_target;
+.string door_model_name;
 
 //Perk and Power system
 float isPowerOn;
