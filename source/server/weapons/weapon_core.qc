@@ -7,8 +7,8 @@ void() ReturnWeaponModel =
 
 	if (IsDualWeapon(self.weapon)) {
 		self.weapon2model = GetLeftWeaponModel(self.weapon);
-	} else if (weapons[self.weapon].view_model_accessory != "") {
-		self.weapon2model = weapons[self.weapon].view_model_accessory;
+	} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER) {
+		self.weapon2model = "models/weapons/kar/v_karscope.mdl";
 		UpdateV2model(self.weapon2model, 0);
 	}
 		
@@ -36,7 +36,6 @@ void() W_AimIn =
 	self.ADS_Offset = GetWeaponADSOfs_PSP(self.weapon);
 	#endif
 	
-	// MotoLegacy -- TODO - custom sniper scopes
 	if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
 	    self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
 		SetUpdate(self, UT_ZOOM2, 0, 0, 0);
@@ -211,9 +210,10 @@ void() W_Switch =
 
 		if (IsDualWeapon(self.weapon)) {
 			self.weapon2model = GetLeftWeaponModel(self.weapon);
-		} else {
-			self.weapon2model = weapons[self.weapon].view_model_accessory;
-		}
+		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
+			self.weapon2model = "models/weapons/kar/v_karscope.mdl";
+		else 
+			self.weapon2model = "";
 
 		UpdateV2model(self.weapon2model, 0);
 
@@ -229,7 +229,12 @@ void() W_Switch =
 		
 		self.reload_delay2 = self.fire_delay2 = self.reload_delay = self.fire_delay = 0; 
 		
-		SetWeaponStats(self, self.weapon);
+		
+		#ifndef PC
+		self.Weapon_Name = GetWeaponName(self.weapon);
+		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
+		#endif
 	}
 }
 
@@ -321,50 +326,54 @@ void() ContinueReload = //Special reloads
 	if (self.new_anim_stop)
 		return;
 	
-	if (self.currentmag >= getWeaponMag(self.weapon) && weapons[self.weapon].no_cock_after_reload) {
-    	return;
-	}
+	if (self.weapon == W_GUT && self.currentmag == 10)
+    return;
 
 	float delay = 0;
 	string modelname = GetWeaponModel(self.weapon, 0);
 	float startframe = 0;
 	float endframe = 0;
-	float reloadcancelframe = 0;
 	void(optional float t) endanimfunc = SUB_Null;
-
-	// Continuing from empty/partial reloads
-	if (weapons[self.weapon].frames[FRAME_RELOAD_EMPTY_START] != 0) {
-		delay = getWeaponDelay(self.weapon, RELOAD);
-		startframe = GetFrame(self.weapon, RELOAD_START);
-		endframe = GetFrame(self.weapon, RELOAD_END);
-		reloadcancelframe = GetFrame(self.weapon, RELOAD_CANCEL);
-		endanimfunc = W_Give_Ammo;
-	}
-	// Weapon Lowering
-	else if (self.currentmag >= getWeaponMag(self.weapon) || !self.currentammo || self.reloadinterupted) {
-		delay = weapons[self.weapon].lower_delay;
-		startframe = weapons[self.weapon].frames[FRAME_LOWER_START];
-		endframe = weapons[self.weapon].frames[FRAME_LOWER_END];
-		self.NeedLoad = TRUE;
-
-		endanimfunc = W_LoadAmmo;
-		self.reloadinterupted = FALSE;
-	}
-	// Individual loaded rounds
-	else if (self.currentmag < getWeaponMag(self.weapon)) {
-		delay = weapons[self.weapon].continue_reload_delay;
-		startframe = weapons[self.weapon].frames[FRAME_CONTINUE_LOAD_START];
-		endframe = weapons[self.weapon].frames[FRAME_CONTINUE_LOAD_END];
-
-		if (self.currentmag + weapons[self.weapon].rounds_per_load <= self.currentammo) {
-			self.currentmag += weapons[self.weapon].rounds_per_load;
-			self.currentammo -= weapons[self.weapon].rounds_per_load;
-		} else {
-			self.currentammo -= (getWeaponMag(self.weapon) - self.currentmag);
-			self.currentmag = getWeaponMag(self.weapon);
+	
+	if (self.currentmag >= getWeaponMag(self.weapon) || !self.currentammo || self.reloadinterupted) {
+		if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
+		{
+			delay = 1; 
+			startframe = 24;
+			endframe = 28;
+		} else if (self.weapon == W_TRENCH || self.weapon == W_GUT) {
+			delay = 0.5; 
+			startframe = 24;
+			endframe = 26;
+			endanimfunc = W_LoadAmmo;
 		}
-
-		endanimfunc = ContinueReload;
+		self.reloadinterupted = FALSE;
+	} else if (self.currentmag < getWeaponMag(self.weapon)) {
+		if (self.weapon == W_BROWNING || self.weapon == W_ACCELERATOR) {
+			delay = 4; 
+			startframe = 45;
+			endframe = 77;
+			endanimfunc = W_Give_Ammo;
+		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER) {
+			self.currentmag++;
+        	self.currentammo = self.currentammo - 1;
+			delay = 0.8; 
+			startframe = 19;
+			endframe = 24;
+			endanimfunc = ContinueReload;
+		} else if (self.weapon == W_TRENCH || self.weapon == W_GUT) {
+			if (self.weapon == W_GUT && self.currentammo >= 2 && self.currentmag < 9) {
+				self.currentmag = self.currentmag + 2;
+				self.currentammo = self.currentammo - 2;
+			} else {
+				self.currentmag++;
+				self.currentammo = self.currentammo - 1;
+			}
+			delay = 0.5; 
+			startframe = 18;
+			endframe = 23;
+			endanimfunc = ContinueReload;
+		}
 	}
 
 	if (delay) {
@@ -372,7 +381,7 @@ void() ContinueReload = //Special reloads
 			delay *= 0.5;
 		}
 		self.reload_delay = time + delay;
-		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, RELOAD, endanimfunc, modelname, false, S_RIGHT);
+		Set_W_Frame (startframe, endframe, delay, 0, RELOAD, endanimfunc, modelname, false, S_RIGHT);
 	}
 }
 
@@ -432,21 +441,27 @@ void(float side) W_Reload =
 		delay = getWeaponDelay(self.weapon,RELOAD);
 		void(optional float t) endanimfunc = SUB_Null;
 
-		// This weapon has empty and partial reloading animations
-		if (weapons[self.weapon].frames[FRAME_RELOAD_EMPTY_START] != 0) {
-			if (self.currentmag > 0) {
-				startframe = weapons[self.weapon].frames[FRAME_RELOAD_PARTIAL_START];
-				endframe = weapons[self.weapon].frames[FRAME_RELOAD_PARTIAL_END];
-				delay = weapons[self.weapon].reload_partial_delay;
-			} else {
-				startframe = weapons[self.weapon].frames[FRAME_RELOAD_EMPTY_START];
-				endframe = weapons[self.weapon].frames[FRAME_RELOAD_EMPTY_END];
-				delay = weapons[self.weapon].reload_empty_delay;
+		if (self.weapon == W_BROWNING || self.weapon ==  W_ACCELERATOR) {
+			if (!self.currentmag) {
+				startframe = 26;
+				endframe = 77;
+				reloadcancelframe = 45;
+				delay = 6;
+				endanimfunc = W_Give_Ammo;
+			} else if (self.currentmag > 0) {
+				startframe = 4;
+				endframe = 25;
+				reloadcancelframe = 0;
+				delay = 3.5;
+				endanimfunc = ContinueReload;
 			}
+		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER ){
+			startframe = 14;
+			endframe = 18;
+			reloadcancelframe = 0;
+			delay = 0.8;
 			endanimfunc = ContinueReload;
-		}
-
-		else if (self.weapon == W_M1 || self.weapon == W_M1000) {
+		} else if (self.weapon == W_M1 || self.weapon == W_M1000) {
 			if (self.currentmag > 0) {
 				startframe = 4;
 				endframe = 44;
@@ -496,17 +511,13 @@ void () W_LoadAmmoDone =
 }
 void () W_LoadAmmo =
 {
-	if (!self.NeedLoad) {
+	if (!self.NeedLoad)
 		return;
-	}
-
 	if (!self.currentmag)
 	{
 		W_Reload(S_BOTH);
 		return;
 	}
-
-	W_AimOut();
 
 	string modelname;
 	float endframe, startframe, reloadcancelframe, delay;
@@ -518,16 +529,25 @@ void () W_LoadAmmo =
 	delay = getWeaponDelay(self.weapon,RELOAD);
 	void(optional float t) endanimfunc = SUB_Null;
 
-	// Special Reload cocking and bolt action rifles
-	if (weapons[self.weapon].continued_reload || weapons[self.weapon].bolt_action) {
-		startframe = weapons[self.weapon].frames[FRAME_COCK_START];
-		endframe = weapons[self.weapon].frames[FRAME_COCK_END];
-		reloadcancelframe = weapons[self.weapon].frames[FRAME_COCK_CANCEL];
-		delay = weapons[self.weapon].cock_delay;
+	if (self.weapon == W_TRENCH || self.weapon == W_GUT)
+	{
+		startframe = 4;
+		endframe = 14;
+		reloadcancelframe = 12;
+		delay = 1;
 		endanimfunc = W_LoadAmmoDone;
 	}
+	else if (self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER)
+	{
+		startframe = 4;
+		endframe = 13;
+		reloadcancelframe = 9;
+		delay = 0.9;
+		endanimfunc = W_LoadAmmoDone;
+	}	
 
-	if (delay) {	
+	if (delay) {
+		
 		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, FIRE, W_LoadAmmoDone, modelname, false, S_RIGHT);
 		self.fire_delay = delay + time;
 	}
@@ -1365,8 +1385,8 @@ void(float side) W_Fire =
 		return;
 	}
 
-	// Don't fire if the gun has to cycle
-	if (self.NeedLoad && (weapons[self.weapon].continued_reload || weapons[self.weapon].bolt_action))
+	//Dont fire if the gun has to cycle
+	if (self.NeedLoad && (self.weapon == W_TRENCH || self.weapon == W_GUT || self.weapon == W_KAR_SCOPE || self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_HEADCRACKER))
 	{
 		W_LoadAmmo();
 		return;
@@ -1471,7 +1491,7 @@ void(float side) W_Fire =
 		delay *= 0.66;
 	}
 
-	if (weapons[self.weapon].continued_reload || weapons[self.weapon].bolt_action)
+	if (self.weapon == W_GUT || self.weapon == W_KAR_SCOPE || self.weapon == W_TRENCH || self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_HEADCRACKER)
 	{
 		Set_W_Frame (startframe, endframe, delay, 0, FIRE, W_LoadAmmo, modelname, FALSE, side);
 		self.NeedLoad = true;

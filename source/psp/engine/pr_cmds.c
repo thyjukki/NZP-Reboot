@@ -1309,43 +1309,36 @@ PF_substring
 string substring (string, float, float)
 =================
 */
-void PF_substring(void)
+void PF_substring (void)
 {
-    int		offset, length;
-    int		maxoffset;		// 2001-10-25 Enhanced temp string handling by Maddes
-    char	*p;
+	int		offset, length;
+	int		maxoffset;		// 2001-10-25 Enhanced temp string handling by Maddes
+	char	*p;
 
-    p = G_STRING(OFS_PARM0);
-    offset = (int)G_FLOAT(OFS_PARM1); // for some reason, Quake doesn't like G_INT
-    length = (int)G_FLOAT(OFS_PARM2);
+	p = G_STRING(OFS_PARM0);
+	offset = (int)G_FLOAT(OFS_PARM1); // for some reason, Quake doesn't like G_INT
+	length = (int)G_FLOAT(OFS_PARM2);
 
-	pr_string_temp[0] = 0;
-
-	if (!p)
-		p = "";
-
-    // cap values
-    maxoffset = strlen(p);
-    if (offset > maxoffset) {
-        offset = maxoffset;
-    }
-    if (offset < 0) {
-        offset = 0;
-    }
+	// cap values
+	maxoffset = strlen(p);
+	if (offset > maxoffset)
+	{
+		offset = maxoffset;
+	}
+	if (offset < 0)
+		offset = 0;
 // 2001-10-25 Enhanced temp string handling by Maddes  start
-    if (length >= PR_MAX_TEMPSTRING) {
-        length = PR_MAX_TEMPSTRING-1;
-    }
+	if (length >= PR_MAX_TEMPSTRING)
+		length = PR_MAX_TEMPSTRING-1;
 // 2001-10-25 Enhanced temp string handling by Maddes  end
-    if (length < 0) {
-        length = 0;
-    }
+	if (length < 0)
+		length = 0;
 
-    p += offset;
-    strncpy(pr_string_temp, p, length);
-    pr_string_temp[length]=0;
+	p += offset;
+	strncpy(pr_string_temp, p, length);
+	pr_string_temp[length]=0;
 
-    G_INT(OFS_RETURN) = pr_string_temp - pr_strings;
+	G_INT(OFS_RETURN) = pr_string_temp - pr_strings;
 }
 
 /*

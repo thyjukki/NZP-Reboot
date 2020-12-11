@@ -3,7 +3,6 @@
 
 psp/QC/Defs.qc                                             // These HAVE to stay
 shared/customdefs.qc
-shared/weapon_loader.qc
 shared/weapon_defines.qc
 server/customdefs.qc
 server/clientfuncs.qc
@@ -12,6 +11,7 @@ psp/QC/psp_specifics.qc
 
 server/dummys.qc                                           // Null spawn functions
 server/rounds.qc
+server/nzdparser.qc
 server/main.qc                                             // Main subroutines
 server/player.qc                                           // Client subroutines
 server/damage.qc

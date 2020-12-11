@@ -1139,6 +1139,225 @@ double Hitmark_Time, crosshair_spread_time;
 float cur_spread;
 float crosshair_offset_step;
 
+int CrossHairWeapon (void)
+{
+    int i;
+	switch(cl.stats[STAT_ACTIVEWEAPON])
+	{
+		case W_COLT:
+		case W_BIATCH:
+			i = 15;
+			break;
+		case W_KAR:
+		case W_ARMAGEDDON:
+			i = 50;
+			break;
+		case W_THOMPSON:
+		case W_GIBS:
+			i = 10;
+			break;
+		case W_357:
+		case W_KILLU:
+			i = 10;
+			break;
+		case W_BAR:
+		case W_WIDOW:
+			i = 10;
+			break;
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			i = 20;
+			break;
+		case W_DB:
+		case W_BORE:
+			i = 25;
+			break;
+		case W_FG:
+		case W_IMPELLER:
+			i = 10;
+			break;
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			i = 10;
+			break;
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+			i = 50;
+			break;
+		case W_M1:
+		case W_M1000:
+			i = 10;
+			break;
+		case W_M1A1:
+		case W_WIDDER:
+			i = 10;
+			break;
+		case W_MP40:
+		case W_AFTERBURNER:
+			i = 10;
+			break;
+		case W_MG:
+		case W_BARRACUDA:
+			i = 20;
+			break;
+		case W_PANZER:
+		case W_LONGINUS:
+			i = 0;
+			break;
+		case W_PPSH:
+		case W_REAPER:
+			i = 10;
+			break;
+		case W_PTRS:
+		case W_PENETRATOR:
+			i = 50;
+			break;
+		case W_RAY:
+		case W_PORTER:
+			i = 10;
+			break;
+		case W_SAWNOFF:
+		case W_SNUFF:
+			i = 30;
+			break;
+		case W_STG:
+		case W_SPATZ:
+			i = 10;
+			break;
+		case W_TRENCH:
+		case W_GUT:
+			i = 25;
+			break;
+		case W_TYPE:
+		case W_SAMURAI:
+			i = 10;
+			break;
+		case W_MP5:
+			i = 10;
+			break;
+		case W_TESLA:
+			i = 0;
+			break;
+		default:
+			i = 0;
+			break;
+	}
+
+    if (cl.perks & 64)
+        i *= 0.65;
+
+    return i;
+}
+int CrossHairMaxSpread (void)
+{
+	int i;
+	switch(cl.stats[STAT_ACTIVEWEAPON])
+	{
+		case W_COLT:
+		case W_BIATCH:
+			i = 30;
+			break;
+		case W_KAR:
+		case W_ARMAGEDDON:
+			i = 75;
+			break;
+		case W_THOMPSON:
+		case W_GIBS:
+			i = 25;
+			break;
+		case W_357:
+		case W_KILLU:
+			i = 20;
+			break;
+		case W_BAR:
+		case W_WIDOW:
+			i = 35;
+			break;
+		case W_BROWNING:
+		case W_ACCELERATOR:
+			i = 50;
+			break;
+		case W_DB:
+		case W_BORE:
+			i = 25;
+			break;
+		case W_FG:
+		case W_IMPELLER:
+			i = 40;
+			break;
+		case W_GEWEHR:
+		case W_COMPRESSOR:
+			i = 35;
+			break;
+		case W_KAR_SCOPE:
+		case W_HEADCRACKER:
+			i = 75;
+			break;
+		case W_M1:
+		case W_M1000:
+			i = 35;
+			break;
+		case W_M1A1:
+		case W_WIDDER:
+			i = 35;
+			break;
+		case W_MP40:
+		case W_AFTERBURNER:
+			i = 25;
+			break;
+		case W_MG:
+		case W_BARRACUDA:
+			i = 50;
+			break;
+		case W_PANZER:
+		case W_LONGINUS:
+			i = 0;
+			break;
+		case W_PPSH:
+		case W_REAPER:
+			i = 25;
+			break;
+		case W_PTRS:
+		case W_PENETRATOR:
+			i = 75;
+			break;
+		case W_RAY:
+		case W_PORTER:
+			i = 20;
+			break;
+		case W_SAWNOFF:
+		case W_SNUFF:
+			i = 30;
+			break;
+		case W_STG:
+		case W_SPATZ:
+			i = 35;
+			break;
+		case W_TRENCH:
+		case W_GUT:
+			i = 25;
+			break;
+		case W_TYPE:
+		case W_SAMURAI:
+			i = 25;
+			break;
+		case W_MP5:
+			i = 25;
+			break;
+		case W_TESLA:
+			i = 0;
+			break;
+		default:
+			i = 0;
+			break;
+	}
+
+    if (cl.perks & 64)
+        i *= 0.65;
+
+    return i;
+}
+
 /*
 ================
 Draw_Crosshair
@@ -1168,8 +1387,8 @@ void Draw_Crosshair (void)
         cur_spread = cur_spread + 10;
 		crosshair_opacity = 128;
 
-		if (cur_spread >= sv_player->v.crosshair_maximum)
-			cur_spread = sv_player->v.crosshair_maximum;
+		if (cur_spread >= CrossHairMaxSpread())
+			cur_spread = CrossHairMaxSpread();
     }
 	// crosshair not moving
     else if (crosshair_spread_time < sv.time && crosshair_spread_time)
@@ -1190,9 +1409,9 @@ void Draw_Crosshair (void)
 	else if (crosshair.value == 1 && cl.stats[STAT_ZOOM] != 1 && cl.stats[STAT_ZOOM] != 2 && cl.stats[STAT_ACTIVEWEAPON] != W_PANZER)
     {
         int x_value, y_value;
-		int crosshair_offset = sv_player->v.crosshair_minimum + cur_spread;
-		if (sv_player->v.crosshair_maximum< crosshair_offset || croshhairmoving)
-			crosshair_offset = sv_player->v.crosshair_maximum;
+        int crosshair_offset = CrossHairWeapon() + cur_spread;
+		if (CrossHairMaxSpread() < crosshair_offset || croshhairmoving)
+			crosshair_offset = CrossHairMaxSpread();
 
 		if (sv_player->v.view_ofs[2] == 8) {
 			crosshair_offset *= 0.80;

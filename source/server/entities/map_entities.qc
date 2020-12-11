@@ -431,7 +431,12 @@ void () buy_weapon_touch =
 
 		SwitchWeapon(self.weapon);
 		Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, false, S_BOTH);//FIXME
-		SetWeaponStats(self, self.weapon);
+		
+		#ifndef PC
+		self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
+		self.Flash_Size = GetWeaponFlash_Size(self.weapon);
+		self.Weapon_Name = GetWeaponName(self.weapon);
+		#endif
 		
 		self = tempe;
 	}

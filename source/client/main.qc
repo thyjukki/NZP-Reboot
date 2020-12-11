@@ -119,8 +119,6 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	screen_height_219[0] = 1080;
 	screen_width_219[1] = 3440;
 	screen_height_219[1] = 1440;
-
-	do_test_weapon_stuff();
 };
 
 noref void() CSQC_WorldLoaded =
@@ -152,7 +150,6 @@ noref void() CSQC_WorldLoaded =
 	playerpoints[3] = -1;
 
 	Achievement_Init();
-	Load_Base_Weapons();
 	
 	// Dummy so that our other point particles work!
 	pointparticles(particleeffectnum("weapons.impact_decal"), '0 0 0', '0 0 0', 1);

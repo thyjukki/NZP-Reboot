@@ -164,11 +164,6 @@ typedef struct
 	float 		currentmag2;
 	float 		maxspeed;
 	float 		facingenemy;
-	float 		magazine_low;
-	float 		reserve_low;
-	float 		has_dual_weapon;
-	float 		crosshair_minimum;
-	float 		crosshair_maximum;
 } entvars_t;
 
 #define PROGHEADER_CRC 14116
