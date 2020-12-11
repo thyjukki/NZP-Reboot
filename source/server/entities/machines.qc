@@ -1443,11 +1443,7 @@ void() mystery_touch =
 						other.weapon2model = "";
 					}
 					
-					#ifndef PC
-					other.Flash_Offset = GetWeaponFlash_Offset(self.boxweapon.weapon);
-					other.Flash_Size = GetWeaponFlash_Size(self.boxweapon.weapon);
-					other.Weapon_Name = GetWeaponName(self.boxweapon.weapon);
-					#endif
+					SetWeaponStats(other, self.boxweapon.weapon);
 				}
 				else if (other.weapon == self.boxweapon.weapon)
 				{
@@ -1471,11 +1467,7 @@ void() mystery_touch =
 					other.currentammo = getWeaponAmmo(self.boxweapon.weapon);
 					other.currentmag = getWeaponMag(self.boxweapon.weapon);
 					other.weaponskin = GetWepSkin(self.boxweapon.weapon);
-					#ifndef PC
-					other.Flash_Offset = GetWeaponFlash_Offset(self.boxweapon.weapon);
-					other.Flash_Size = GetWeaponFlash_Size(self.boxweapon.weapon);
-					other.Weapon_Name = GetWeaponName(self.boxweapon.weapon);
-					#endif
+					SetWeaponStats(other, self.boxweapon.weapon);
 				}
 				else if (!other.thirdweapon && (other.perks & P_MULE))
 				{
@@ -1540,7 +1532,7 @@ void() Load_Mbox_Data =
 
 void() mystery_box =
 {
-	Load_Mbox_Data();
+	//Load_Mbox_Data();
 
 	precache_model ("models/machines/mystery.mdl");
 	precache_model ("models/machines/mglow$.mdl");
@@ -1759,13 +1751,7 @@ void touch_pap() {
 			SwitchWeapon(self.weapon);
 			UpdateV2model(other.weapon2model, 0);
 			Set_W_Frame (startframe, endframe, 0, 0, 0, SUB_Null, modelname, true, S_BOTH);//FIXME
-
-			#ifndef PC
-			self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
-			self.Flash_Size = GetWeaponFlash_Size(self.weapon);
-			self.Weapon_Name = GetWeaponName(self.weapon);
-			self.weaponskin = GetWepSkin(self.weapon);
-			#endif
+			SetWeaponStats(self, self.weapon);
 
 			self = tempe;
 

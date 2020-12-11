@@ -293,6 +293,7 @@ void() worldspawn =
 	mappath = strzone(mappath);
 
 	LoadWaypointData();
+	Load_Base_Weapons();
 		
 	//set game elements
 	G_STARTPOINTS = 500;
@@ -304,8 +305,6 @@ void() worldspawn =
 	G_WORLDTEXT = 1;
 	G_PERKS = 0;
 	G_PERKPOWER = 0;
-	load_nzd();
-	
 }
 
 void() SpectatorConnect =

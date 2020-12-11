@@ -438,3 +438,17 @@ void(entity person, float expamt, float doublepoint) addmoney =
 		
 	UpdatePlayerPoints(person.playernum, person.points, expamt, person.kills, person.netname, person);
 };
+
+void(entity who, float wep) SetWeaponStats =
+{
+	#ifndef PC
+	who.Weapon_Name = GetWeaponName(wep);
+	who.Flash_Offset = GetWeaponFlash_Offset(wep);
+	who.Flash_Size = GetWeaponFlash_Size(wep);
+	who.magazine_low = GetLowAmmo(wep, 1);
+	who.reserve_low = GetLowAmmo(wep, 0);
+	who.has_dual_weapon = IsDualWeapon(wep);
+	who.crosshair_minimum = CrossHairWeapon(wep, who.stance);
+	who.crosshair_maximum = CrossHairMaxSpread(wep, who.stance);
+	#endif
+}

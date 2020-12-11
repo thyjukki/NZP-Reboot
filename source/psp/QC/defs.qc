@@ -155,6 +155,11 @@ void		end_sys_globals;		// flag for structure dumping
 .float      currentmag2;
 .float      maxspeed;
 .float      facingenemy;
+.float      magazine_low;
+.float      reserve_low;
+.float      has_dual_weapon;
+.float      crosshair_minimum;
+.float      crosshair_maximum;
 void		end_sys_fields;			// flag for structure dumping
 // End. Lines below this MAY be altered, to some extent
 

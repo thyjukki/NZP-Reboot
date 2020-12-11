@@ -590,9 +590,7 @@ void() PlayerSpawn =
 	if (G_WORLDTEXT)
 		WorldText(world.chaptertitle, world.location, world.date, world.person, self);
 	#else 
-	self.Weapon_Name = GetWeaponName(self.weapon);
-	self.Flash_Offset = GetWeaponFlash_Offset(self.weapon);
-	self.Flash_Size = GetWeaponFlash_Size(self.weapon);
+	SetWeaponStats(self, self.weapon);
 	#endif
 
 	if (G_STARTROUND != 1) {

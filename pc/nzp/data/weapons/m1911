@@ -1,0 +1,115 @@
+// Weapon ID should be the very first value so the parser
+// Understands what to dump to.
+weapon_id: 1
+
+details
+{
+    name: "Colt M1911"
+    is_packed: 0
+    is_dual_weapon: 0
+    packed_id: 32
+    model_skin: 0
+    view_model: "models/weapons/m1911/v_colt.mdl"
+    world_model: "models/weapons/m1911/g_colt.mdl"
+    fire_sound: "sounds/weapons/colt/shoot.wav"
+}
+
+stats
+{
+    // Ammo
+    magazine_size: 8
+    reserve_size: 80
+    magazine_low: 2
+    reserve_low: 16
+
+    // ADS Vectors
+    ads_position_pc: '-2.99 2.77 0.92'
+    ads_position_console: '-5479.2 1650 0'
+
+    // Crosshair
+    crosshair_special: 0
+    crosshair_minimum_range: 15
+    crosshair_maximum_range: 30
+
+    // Recoil
+    recoil: 750
+    recoil_guaranteed: '0 35 0'
+    recoil_kick_change: '25 15 25'
+
+    // Muzzle Flash
+    muzzle_flash_offset: '5488 -2742 35300'
+    muzzle_flash_size: 5
+
+    // Delays
+    fire_delay: 0.100
+    reload_delay: 1.9
+
+    // Penetration
+    penetration_amount: 0.75
+    penetration_body_count: 2
+
+    // Misc.
+    damage: 20
+    bullet_spread: 7.5
+    shotcount: 1
+    fire_type: 1
+    weapon_weight: 1
+
+    // Multipliers Based on Hit Location
+    damage_multiplier
+    [
+        head: 3
+        upper_torso: 1
+        lower_torso: 1
+        limbs: 1
+    ]
+}
+
+frames
+{
+    // Firing
+    fire_start: 0
+    fire_end: 2
+
+    // Reloading
+    reload_start: 3
+    reload_end: 26
+    reload_cancel: 13
+    
+    // Sprinting
+    sprint_in_start: 33
+    sprint_in_end: 34
+    sprint_start: 35
+    sprint_end: 40
+    sprint_out_start: 41
+    sprint_out_end: 42
+    
+    // Take Out
+    take_out_start: 29
+    take_out_end: 32
+
+    // Put Out/Away
+    put_out_start: 26
+    put_out_end: 29
+
+    // Weapon Frames to play Sounds on, make sure they are Precached!
+    frame_sounds
+    [
+        5 : "sounds/weapons/colt/magout.wav"
+        12 : "sounds/weapons/colt/magin.wav"
+        18 : "sounds/weapons/colt/slide.wav"
+    ]
+}
+
+precaches
+{
+    // Models
+    models/weapons/m1911/g_colt.mdl
+    models/weapons/m1911/v_colt.mdl
+
+    // Sounds
+    sounds/weapons/colt/shoot.wav
+    sounds/weapons/colt/magout.wav
+    sounds/weapons/colt/magin.wav
+    sounds/weapons/colt/slide.wav
+}
