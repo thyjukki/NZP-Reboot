@@ -25,6 +25,10 @@
 #define FRAME_COCK_START            19
 #define FRAME_COCK_CANCEL           20
 #define FRAME_COCK_END              21
+#define FRAME_RELOAD_EMPTY_START    22
+#define FRAME_RELOAD_EMPTY_END      23
+#define FRAME_RELOAD_PARTIAL_START  24
+#define FRAME_RELOAD_PARTIAL_END    25
 
 // Struct to hold all Weapon Information.
 var struct {
@@ -73,6 +77,8 @@ var struct {
 
     // delays
     float fire_delay;
+    float reload_empty_delay;
+    float reload_partial_delay;
     float reload_delay;
     float continue_reload_delay;
     float lower_delay;
@@ -91,6 +97,7 @@ var struct {
     float continued_reload;
 
     // cocking
+    float bolt_action;
     float no_cock_after_reload;
 
     // multipliers based on hit location
@@ -100,14 +107,14 @@ var struct {
     float multiplier_limbs;
 
     // frames
-    float frames[24];
-    float frame_sound_number[8];
-    string frame_sound_name[8];
+    float frames[28];
+    float frame_sound_number[10];
+    string frame_sound_name[10];
 
     // precaches
     string precache_models[4];
-    string precache_sounds[8];
-} weapons[96] =
+    string precache_sounds[10];
+} weapons[80] =
 {
 
 };
@@ -155,7 +162,7 @@ void(string name, optional float base) Load_Weapon =
         h = strzone(strtrim(line));
 
         // Ignore the line if its a Comment or white space.
-        if (substring(h, 0, 2) == "//" || h == "") {
+        if (substring(h, 0, 2) == "//" || h == "" || h == "}") {
             continue;
         }
 
@@ -209,6 +216,9 @@ void(string name, optional float base) Load_Weapon =
                 case "packed_id":
                     weapons[i].packed_id = stof(argv(2));
                     break;
+                case "non_packed_id":
+                    weapons[i].non_packed_id = stof(argv(2));
+                    break;
                 case "model_skin":
                     weapons[i].model_skin = stof(argv(2));
                     break;
@@ -229,6 +239,9 @@ void(string name, optional float base) Load_Weapon =
                     break;
                 case "no_cock_after_reload":
                     weapons[i].no_cock_after_reload = stof(argv(2));
+                    break;
+                case "bolt_action":
+                    weapons[i].bolt_action = stof(argv(2));
                     break;
                 // Stats
                 case "magazine_size":
@@ -306,6 +319,12 @@ void(string name, optional float base) Load_Weapon =
                 case "fire_delay":
                     weapons[i].fire_delay = stof(argv(2));
                     break;
+                case "reload_empty_delay":
+                    weapons[i].reload_empty_delay = stof(argv(2));
+                    break;
+                case "reload_partial_delay":
+                    weapons[i].reload_partial_delay = stof(argv(2));
+                    break;
                 case "reload_delay":
                     weapons[i].reload_delay = stof(argv(2));
                     break;
@@ -348,6 +367,18 @@ void(string name, optional float base) Load_Weapon =
                     break;
                 case "fire_end":
                     weapons[i].frames[FRAME_FIRE_END] = stof(argv(2));
+                    break;
+                case "reload_empty_start":
+                    weapons[i].frames[FRAME_RELOAD_EMPTY_START] = stof(argv(2));
+                    break;
+                case "reload_empty_end":
+                    weapons[i].frames[FRAME_RELOAD_EMPTY_END] = stof(argv(2));
+                    break;
+                case "reload_partial_start":
+                    weapons[i].frames[FRAME_RELOAD_PARTIAL_START] = stof(argv(2));
+                    break;
+                case "reload_partial_end":
+                    weapons[i].frames[FRAME_RELOAD_PARTIAL_END] = stof(argv(2));
                     break;
                 case "reload_start":
                     weapons[i].frames[FRAME_RELOAD_START] = stof(argv(2));
@@ -412,6 +443,7 @@ void(string name, optional float base) Load_Weapon =
                 default:
                     break;
             }
+            strunzone(argv(2));
         }
         // Precaches
         else if (point == 2) {
@@ -440,11 +472,11 @@ void(string name, optional float base) Load_Weapon =
                     pre_mdl_iter++;
                 } else if (extension == ".wav") {
                     // We hit our sound cap
-                    if (pre_wav_iter >= 8) {
+                    if (pre_wav_iter >= 10) {
                         local string temps4;
                         temps4 = "Load_Weapon: Weapon file '";
                         temps4 = strcat(temps4, filename);
-                        temps4 = strcat(temps4, "' has too many sounds! (Max is 8)");
+                        temps4 = strcat(temps4, "' has too many sounds! (Max is 10)");
                         error(temps4);
                     }
                     weapons[i].precache_sounds[pre_wav_iter] = strzone(h);
@@ -499,11 +531,11 @@ void(string name, optional float base) Load_Weapon =
                 if (h == "[")
                     continue;
                 
-                if (pre_snd_iter >= 8) {
+                if (pre_snd_iter >= 10) {
                     local string temps5;
                     temps5 = "Load_Weapon: Weapon file '";
                     temps5 = strcat(temps5, filename);
-                    temps5 = strcat(temps5, "' features more than 8 frame_sounds!");
+                    temps5 = strcat(temps5, "' features more than 10 frame_sounds!");
                     error(temps5);
                 }
 
@@ -511,6 +543,7 @@ void(string name, optional float base) Load_Weapon =
                 weapons[i].frame_sound_number[pre_snd_iter] = stof(argv(0));
                 weapons[i].frame_sound_name[pre_snd_iter] = strzone(argv(2));
                 pre_snd_iter++;
+                strunzone(argv(2));
             }
         }
         strunzone(h);
@@ -525,10 +558,17 @@ void(string name, optional float base) Load_Weapon =
 void() Load_Base_Weapons =
 {
     Load_Weapon("m1911", 1);
+    Load_Weapon("kar98k", 1);
     Load_Weapon("thompson", 1);
+    Load_Weapon("357", 1);
+    Load_Weapon("bar", 1);
+    Load_Weapon("browning", 1);
+    Load_Weapon("doublebarrel", 1);
     Load_Weapon("trenchgun", 1);
+    Load_Weapon("killu", 1);
 }
 
-void() do_test_weapon_stuff =
+void() do_test_weapon_stuff = 
 {
-}
+
+};

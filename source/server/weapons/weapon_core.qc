@@ -329,10 +329,19 @@ void() ContinueReload = //Special reloads
 	string modelname = GetWeaponModel(self.weapon, 0);
 	float startframe = 0;
 	float endframe = 0;
+	float reloadcancelframe = 0;
 	void(optional float t) endanimfunc = SUB_Null;
 
+	// Continuing from empty/partial reloads
+	if (weapons[self.weapon].frames[FRAME_RELOAD_EMPTY_START] != 0) {
+		delay = getWeaponDelay(self.weapon, RELOAD);
+		startframe = GetFrame(self.weapon, RELOAD_START);
+		endframe = GetFrame(self.weapon, RELOAD_END);
+		reloadcancelframe = GetFrame(self.weapon, RELOAD_CANCEL);
+		endanimfunc = W_Give_Ammo;
+	}
 	// Weapon Lowering
-	if (self.currentmag >= getWeaponMag(self.weapon) || !self.currentammo || self.reloadinterupted) {
+	else if (self.currentmag >= getWeaponMag(self.weapon) || !self.currentammo || self.reloadinterupted) {
 		delay = weapons[self.weapon].lower_delay;
 		startframe = weapons[self.weapon].frames[FRAME_LOWER_START];
 		endframe = weapons[self.weapon].frames[FRAME_LOWER_END];
@@ -363,7 +372,7 @@ void() ContinueReload = //Special reloads
 			delay *= 0.5;
 		}
 		self.reload_delay = time + delay;
-		Set_W_Frame (startframe, endframe, delay, 0, RELOAD, endanimfunc, modelname, false, S_RIGHT);
+		Set_W_Frame (startframe, endframe, delay, reloadcancelframe, RELOAD, endanimfunc, modelname, false, S_RIGHT);
 	}
 }
 
@@ -423,27 +432,21 @@ void(float side) W_Reload =
 		delay = getWeaponDelay(self.weapon,RELOAD);
 		void(optional float t) endanimfunc = SUB_Null;
 
-		if (self.weapon == W_BROWNING || self.weapon ==  W_ACCELERATOR) {
-			if (!self.currentmag) {
-				startframe = 26;
-				endframe = 77;
-				reloadcancelframe = 45;
-				delay = 6;
-				endanimfunc = W_Give_Ammo;
-			} else if (self.currentmag > 0) {
-				startframe = 4;
-				endframe = 25;
-				reloadcancelframe = 0;
-				delay = 3.5;
-				endanimfunc = ContinueReload;
+		// This weapon has empty and partial reloading animations
+		if (weapons[self.weapon].frames[FRAME_RELOAD_EMPTY_START] != 0) {
+			if (self.currentmag > 0) {
+				startframe = weapons[self.weapon].frames[FRAME_RELOAD_PARTIAL_START];
+				endframe = weapons[self.weapon].frames[FRAME_RELOAD_PARTIAL_END];
+				delay = weapons[self.weapon].reload_partial_delay;
+			} else {
+				startframe = weapons[self.weapon].frames[FRAME_RELOAD_EMPTY_START];
+				endframe = weapons[self.weapon].frames[FRAME_RELOAD_EMPTY_END];
+				delay = weapons[self.weapon].reload_empty_delay;
 			}
-		} else if (self.weapon == W_KAR_SCOPE || self.weapon == W_HEADCRACKER ){
-			startframe = 14;
-			endframe = 18;
-			reloadcancelframe = 0;
-			delay = 0.8;
 			endanimfunc = ContinueReload;
-		} else if (self.weapon == W_M1 || self.weapon == W_M1000) {
+		}
+
+		else if (self.weapon == W_M1 || self.weapon == W_M1000) {
 			if (self.currentmag > 0) {
 				startframe = 4;
 				endframe = 44;
@@ -515,8 +518,8 @@ void () W_LoadAmmo =
 	delay = getWeaponDelay(self.weapon,RELOAD);
 	void(optional float t) endanimfunc = SUB_Null;
 
-	// Special Reload cocking
-	if (weapons[self.weapon].continued_reload == 1) {
+	// Special Reload cocking and bolt action rifles
+	if (weapons[self.weapon].continued_reload || weapons[self.weapon].bolt_action) {
 		startframe = weapons[self.weapon].frames[FRAME_COCK_START];
 		endframe = weapons[self.weapon].frames[FRAME_COCK_END];
 		reloadcancelframe = weapons[self.weapon].frames[FRAME_COCK_CANCEL];
@@ -1362,8 +1365,8 @@ void(float side) W_Fire =
 		return;
 	}
 
-	//Dont fire if the gun has to cycle
-	if (self.NeedLoad && (self.weapon == W_TRENCH || self.weapon == W_GUT || self.weapon == W_KAR_SCOPE || self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_HEADCRACKER))
+	// Don't fire if the gun has to cycle
+	if (self.NeedLoad && (weapons[self.weapon].continued_reload || weapons[self.weapon].bolt_action))
 	{
 		W_LoadAmmo();
 		return;
@@ -1468,7 +1471,7 @@ void(float side) W_Fire =
 		delay *= 0.66;
 	}
 
-	if (self.weapon == W_GUT || self.weapon == W_KAR_SCOPE || self.weapon == W_TRENCH || self.weapon == W_KAR || self.weapon == W_ARMAGEDDON || self.weapon == W_HEADCRACKER)
+	if (weapons[self.weapon].continued_reload || weapons[self.weapon].bolt_action)
 	{
 		Set_W_Frame (startframe, endframe, delay, 0, FIRE, W_LoadAmmo, modelname, FALSE, side);
 		self.NeedLoad = true;
