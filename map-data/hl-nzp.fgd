@@ -741,6 +741,7 @@
  	noise1(string) : "Stop sound"
 	wait(string) : "Delay before close" : "4" 
 	lip(integer) : "Lip" : 8
+	distance(integer) : "Distance (deg)" : 90
 	dmg(integer) : "Damage inflicted when blocked" : 0
 	message(string) : "Message if triggered"
 	health(integer) : "Health (shoot open)" : 0
@@ -753,6 +754,7 @@
 		32: "Toggle" : 0
 		64 : "Requires Power" : 0
 		128: "Dont Remove" : 0
+		256: "Rotating (ignore lip)" : 0
 	]
 ]
 

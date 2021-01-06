@@ -285,6 +285,8 @@ float crandom();
 .void() think1;
 .vector finaldest;
 .vector pos1, pos2/*, mangle*/;
+.vector finalangle;
+.float distance;
 .float sequence;
 .entity active_door;
 .string door_model_target;

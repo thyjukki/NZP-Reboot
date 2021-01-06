@@ -37,6 +37,7 @@ void(entity door) reclose_door = {
 
 	self = door;
 	setmodel(self, self.oldmodel);
+	self.solid = SOLID_BSP;
 	setorigin(self, self.oldorigin);
 	self.isopen = 0;
 	func_door_nzp();

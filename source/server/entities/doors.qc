@@ -79,10 +79,12 @@ void() door_blocked =
 void() door_hit_top =
 {
 	self.state = STATE_TOP;
-	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!(self.spawnflags & 128)))
+	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open"))
 	{
 		//remove (self.owner.trigger_field); //moto - what does this do lol
-		setmodel(self, "");
+		if (!(self.spawnflags & 128))
+			setmodel(self, "");
+
 		self.isopen = 1;
 		return;//so we dont have to reopen doors
 	}
@@ -99,9 +101,10 @@ void() door_hit_bottom =
 
 void() door_go_down =
 {
-	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open") && (!(self.spawnflags & 128)))
+	if ((self.classname == "door_nzp_cost" || self.classname == "door_nzp" || self.classname == "door_open"))
 	{
-		setmodel(self, "");
+		if (!(self.spawnflags & 128))
+			setmodel(self, "");
 		self.isopen = 1;
 		return;//so we dont have to reopen doors
 	}
@@ -112,7 +115,11 @@ void() door_go_down =
 	}
 	
 	self.state = STATE_DOWN;
-	SUB_CalcMove (self.pos1, self.speed, door_hit_bottom);
+
+	if (self.spawnflags & 256)
+		SUB_CalcAngleMove(self.pos1, self.speed, door_hit_bottom);
+	else
+		SUB_CalcMove (self.pos1, self.speed, door_hit_bottom);
 };
 
 void() door_go_up =
@@ -127,7 +134,11 @@ void() door_go_up =
 	}
 	
 	self.state = STATE_UP;
-	SUB_CalcMove (self.pos2, self.speed, door_hit_top);
+
+	if (self.spawnflags & 256)
+		SUB_CalcAngleMove(self.pos2, self.speed, door_hit_top);
+	else
+		SUB_CalcMove (self.pos2, self.speed, door_hit_top);
 	
 	#ifndef PC
 	Open_Waypoint(self.wayTarget);
@@ -251,6 +262,7 @@ if (self.state == STATE_TOP || self.state == STATE_UP)
 					break;
 			}
 			addmoney(other, self.cost*-1, 0);
+			self.solid = SOLID_NOT;
 			//centerprint (other, "");
 			//useprint (other, 0, 0, 0);
 			//other.total_bought = other.total_bought + 1;
@@ -389,10 +401,11 @@ entity(vector fmins, vector fmaxs) spawn_field =
 	trigger.solid = SOLID_TRIGGER;
 	trigger.owner = self;
 	trigger.touch = door_trigger_touch;
+	setorigin(trigger, self.origin);
 
 	t1 = fmins;
 	t2 = fmaxs;
-	setsize (trigger, t1 - '15 15 8', t2 + '15 15 8');
+	setsize (trigger, t1/* - '15 15 8'*/, t2/* + '15 15 8'*/);
 	return (trigger);
 };
 
@@ -582,7 +595,7 @@ void() func_door_nzp =
 	#endif
 	 
 	// naievil (FIXME) ^^^^ hl rendermodes, mapversion
-	
+	makevectors(self.angles);
 	SetMovedir ();
 	
 	self.target2 = self.target;
@@ -622,8 +635,15 @@ void() func_door_nzp =
 	if (!self.dmg)
 		self.dmg = 2;
 
-	self.pos1 = self.origin;
-	self.pos2 = self.pos1 + self.movedir*(fabs(self.movedir*self.size) - self.lip);
+	// only rotate on the Y axis.. potentially change?
+	if (self.spawnflags & 256) {
+		self.pos1 = self.angles;
+		self.pos2 = self.pos1;
+		self.pos2_y = self.pos1_y + self.distance;
+	} else {
+		self.pos1 = self.origin;
+		self.pos2 = self.pos1 + self.movedir*(fabs(self.movedir*self.size) - self.lip);
+	}
 
 // DOOR_START_OPEN is to allow an entity to be lighted in the closed position
 // but spawn in the open position

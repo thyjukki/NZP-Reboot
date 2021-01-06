@@ -162,6 +162,57 @@ void() SUB_UseTargets =
 	
 
 };
+
+/*
+=============
+SUB_CalcAngleMove
+
+calculate self.avelocity and self.nextthink to reach destangle from
+self.angles rotating 
+
+The calling function should make sure self.think is valid
+===============
+*/
+void SUB_CalcAngleMove (vector destangle, float tspeed, void() func);
+void(entity ent, vector destangle, float tspeed, void() func) SUB_CalcAngleMoveEnt =
+{
+local entity		stemp;
+	stemp = self;
+	self = ent;
+	SUB_CalcAngleMove (destangle, tspeed, func);
+	self = stemp;
+};
+
+void SUB_CalcAngleMoveDone (void)
+{
+	// After rotating, set angle to exact final angle
+	self.angles = self.finalangle;
+	self.avelocity = '0 0 0';
+	self.nextthink = -1;
+	if (self.think1)
+		self.think1 ();
+}
+
+void SUB_CalcAngleMove (vector destangle, float tspeed, void() func)
+{
+	vector	delta;
+	float	traveltime;
+
+	if (!tspeed)
+		objerror ("No speed is defined!");
+
+	delta = destangle - self.angles;
+	traveltime = vlen (delta) / tspeed;
+
+	self.avelocity = delta * (1 / traveltime);
+
+	self.think1 = func;
+	self.finalangle = destangle;
+
+	self.think = SUB_CalcAngleMoveDone;
+	self.nextthink = self.ltime + traveltime;
+}
+
 /*
 =============
 SUB_CalcMove
