@@ -31,6 +31,7 @@ sounds
         end: sounds/rounds/eround.wav
         new_dog: sounds/rounds/droundstart.wav
         end_dog: sounds/rounds/droundend.wav
+        game_over: sounds/music/end.wav
     ]
 
     powerups
@@ -116,6 +117,15 @@ player
     downed_bleedout_time: 45
     lose_perks_on_down: 1
     earn_points_while_down: 0
+
+    end_game_animation
+    [
+        model: models/machines/v_perk.mdl
+        sound: sounds/machines/perk_drink.wav
+        start_frame: 0
+        end_frame: 22
+        skin: 2
+    ]
 }
 
 hud

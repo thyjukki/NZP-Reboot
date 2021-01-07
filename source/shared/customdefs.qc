@@ -235,6 +235,7 @@ var struct {
 	string ROUND_END;
 	string ROUND_NEW_DOG;
 	string ROUND_END_DOG;
+	string GAME_OVER;
 	string PU_DROP;
 	string PU_LOOP;
 	string PU_PICKUP;
@@ -256,6 +257,14 @@ var struct {
 	string ZM_WALK;
 	string MISC_CHING;
 } G_SOUNDS;
+
+var struct {
+	string view_model;
+	string sound;
+	float start_frame;
+	float end_frame;
+	float weapon_skin;
+} G_ENDANIM;
 
 #ifdef CLIENT
 var struct {

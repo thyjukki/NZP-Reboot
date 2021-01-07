@@ -44,6 +44,7 @@ void() NZD_LoadDefaultSettings =
     G_SOUNDS.ROUND_END = "sounds/rounds/eround.wav";
     G_SOUNDS.ROUND_NEW_DOG = "sounds/rounds/droundstart.wav";
     G_SOUNDS.ROUND_END_DOG = "sounds/rounds/droundend.wav";
+    G_SOUNDS.GAME_OVER = "sounds/music/end.wav";
     G_SOUNDS.PU_DROP = "sounds/pu/drop.wav";
     G_SOUNDS.PU_LOOP = "sounds/pu/powerup.wav";
     G_SOUNDS.PU_PICKUP = "sounds/pu/pickup.wav";
@@ -103,7 +104,7 @@ void() NZD_LoadDefaultSettings =
     G_HUD.ROUND_NUMBER[8] = "gfx/hud/r_num8";
     G_HUD.ROUND_NUMBER[9] = "gfx/hud/r_num9";
     #endif
-    #ifdef PSP
+    #ifndef PC
     UpdateHUDByte(0, 0);
     UpdateHUDByte(1, 1);
     UpdateHUDString(0, "gfx/hud/revive");
@@ -291,6 +292,9 @@ void() NZD_Load =
                     break;
                 case "earn_points_while_down":
                     G_POINTDOWN = stof(argv(2));
+                    break;
+                case "end_game_animation":
+                    point = 5;
                     break;
                 case "headshots_only":
                     G_HEADONLY = stof(argv(2));
@@ -480,7 +484,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HORPERKS = stof(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDByte(0, stof(argv(2)));
                     #endif
                     break;
@@ -488,7 +492,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_USETALLIES = stof(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDByte(1, stof(argv(2)));
                     #endif
                     break;
@@ -496,7 +500,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PERK_REVIVE = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(0, strzone(argv(2)));
                     #endif
                     break;
@@ -504,7 +508,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PERK_JUGG = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(1, strzone(argv(2)));
                     #endif
                     break;
@@ -512,7 +516,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PERK_SPEED = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(2, strzone(argv(2)));
                     #endif
                     break;
@@ -520,7 +524,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PERK_DOUBLE = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(3, strzone(argv(2)));
                     #endif
                     break;
@@ -528,7 +532,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PERK_STAMIN = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(4, strzone(argv(2)));
                     #endif
                     break;
@@ -536,7 +540,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PERK_FLOPPER = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(5, strzone(argv(2)));
                     #endif
                     break;
@@ -544,7 +548,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PERK_DEADSHOT = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(6, strzone(argv(2)));
                     #endif
                     break;
@@ -552,7 +556,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PERK_MULEKICK = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(7, strzone(argv(2)));
                     #endif
                     break;
@@ -560,7 +564,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PU_INSTAKILL = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(8, strzone(argv(2)));
                     #endif
                     break;
@@ -568,7 +572,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.PU_2X = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(9, strzone(argv(2)));
                     #endif
                     break;
@@ -576,7 +580,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.MISC_BLOOD = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(10, strzone(argv(2)));
                     #endif
                     break;
@@ -584,7 +588,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.MISC_BETTY = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(11, strzone(argv(2)));
                     #endif
                     break;
@@ -592,7 +596,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.MISC_GRENADE = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(12, strzone(argv(2)));
                     #endif
                     break;
@@ -600,7 +604,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.MISC_HITMARKER = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(13, strzone(argv(2)));
                     #endif
                     break;
@@ -608,7 +612,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.MISC_MONEYBACK = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(14, strzone(argv(2)));
                     #endif
                     break;
@@ -616,7 +620,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[0] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(15, strzone(argv(2)));
                     #endif
                     break;
@@ -624,7 +628,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[1] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(16, strzone(argv(2)));
                     #endif
                     break;
@@ -632,7 +636,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[2] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(17, strzone(argv(2)));
                     #endif
                     break;
@@ -640,7 +644,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[3] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(18, strzone(argv(2)));
                     #endif
                     break;
@@ -648,7 +652,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_TALLY[4] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(19, strzone(argv(2)));
                     #endif
                     break;
@@ -656,7 +660,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[0] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(20, strzone(argv(2)));
                     #endif
                     break;
@@ -664,7 +668,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[1] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(21, strzone(argv(2)));
                     #endif
                     break;
@@ -672,7 +676,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[2] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(22, strzone(argv(2)));
                     #endif
                     break;
@@ -680,7 +684,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[3] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(23, strzone(argv(2)));
                     #endif
                     break;
@@ -688,7 +692,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[4] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(24, strzone(argv(2)));
                     #endif
                     break;
@@ -696,7 +700,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[5] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(25, strzone(argv(2)));
                     #endif
                     break;
@@ -704,7 +708,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[6] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(26, strzone(argv(2)));
                     #endif
                     break;
@@ -712,7 +716,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[7] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(27, strzone(argv(2)));
                     #endif
                     break;
@@ -720,7 +724,7 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[8] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(28, strzone(argv(2)));
                     #endif
                     break;
@@ -728,9 +732,42 @@ void() NZD_Load =
                     #ifdef CLIENT
                     G_HUD.ROUND_NUMBER[9] = strzone(argv(2));
                     #endif
-                    #ifdef PSP
+                    #ifndef PC
                     UpdateHUDString(29, strzone(argv(2)));
                     #endif
+                    break;
+                default:
+                    break;
+            }
+        }
+        // End Game Animation
+        else if (point == 5) {
+            // Ignore the Starting Bracked
+            if (h == "[")
+                continue;
+            // End on End Bracket
+            if (h == "]") {
+                point = 0;
+                continue;
+            }
+
+            tokenize(h);
+
+            switch(argv(0)) {
+                case "model":
+                    G_ENDANIM.view_model = strzone(argv(2));
+                    break;
+                case "sound":
+                    G_ENDANIM.sound = strzone(argv(2));
+                    break;
+                case "start_frame":
+                    G_ENDANIM.start_frame = stof(argv(2));
+                    break;
+                case "end_frame":
+                    G_ENDANIM.end_frame = stof(argv(2));
+                    break;
+                case "skin":
+                    G_ENDANIM.weapon_skin = stof(argv(2));
                     break;
                 default:
                     break;

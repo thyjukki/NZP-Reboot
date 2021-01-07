@@ -29,10 +29,12 @@ void() EndGame =
 	local entity who;
 
 	self.health = 0;
+	self.weapon = 0;
+	SwitchWeapon(0);
 	self.origin = '0 0 0';
 	setorigin (self, self.origin);
 	self.velocity = '0 0 0';
-	sound (self, CHAN_AUTO, "sounds/music/end.wav", 1, ATTN_NORM);
+	sound (self, CHAN_AUTO, G_SOUNDS.GAME_OVER, 1, ATTN_NORM);
 
 	oldself = self;
 	
@@ -128,8 +130,7 @@ void() EndGameSetup =
 	game_over = true;
 	self.health = 10;
 	self.think = EndGame;
-	self.nextthink = time + 5;
-	self.weapon = 0;
+	self.fire_delay = self.fire_delay2 = self.reload_delay = self.reload_delay2 = self.nextthink = time + 5;
 	self.currentammo = 0;
 	self.currentmag = 0;
 	self.weaponmodel = "";
@@ -137,10 +138,19 @@ void() EndGameSetup =
 	self.animend = SUB_Null;
 	self.perks = 0;
 	self.isspec = true;
-	SetPerk(self, self.perks);
-	SwitchWeapon(0);	
+	SetPerk(self, self.perks);	
 	addmoney(self, -self.points, 0);
 	addmoney(self, self.score, 0);	
+
+	// Play end game animation
+	if (G_ENDANIM.view_model) {
+		if (G_ENDANIM.sound)
+			sound(other, CHAN_ITEM, G_ENDANIM.sound, 1, ATTN_NORM);
+		self.weaponskin = G_ENDANIM.weapon_skin;
+		self.weaponmodel = G_ENDANIM.view_model;
+		Set_W_Frame(G_ENDANIM.start_frame, G_ENDANIM.end_frame, 0, 0, 0, SUB_Null, G_ENDANIM.view_model, false, S_BOTH);
+	}
+
     return;
 }
 

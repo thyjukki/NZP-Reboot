@@ -157,7 +157,7 @@ void() precaches =
 	precache_sound(G_SOUNDS.ROUND_SPLASH);
 	precache_sound(G_SOUNDS.ROUND_NEW);
 	precache_sound(G_SOUNDS.ROUND_END);
-	precache_sound("sounds/music/end.wav");
+	precache_sound(G_SOUNDS.GAME_OVER);
 	precache_sound("sounds/null.wav");
 
 	precache_sound("sounds/misc/buy.wav");
@@ -250,6 +250,10 @@ void() precaches =
 	precache_sound ("sounds/pu/byebye.wav");
 	precache_sound (G_SOUNDS.PU_LOOP);
 	precache_sound (G_SOUNDS.PU_DROP);
+
+	// End Game Animation
+	precache_model (G_ENDANIM.view_model);
+	precache_sound (G_ENDANIM.sound);
 
 	#ifdef PC
 	// Moto -- FIXME: compile FTE to remove this engine sound request

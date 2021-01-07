@@ -13,6 +13,7 @@ Available options:
 -O          - write to a different qc file
 */
 #pragma noref 1
+#define FTE // shared FTE def between client/server
 #define CLIENT
 //#pragma flag enable logicops
 #pragma warning error Q101 /*too many parms*/
