@@ -129,6 +129,8 @@ void HUD_Init (void) {
 	b_xbutton = Draw_CachePic ("gfx/butticons/xbutton.tga");
 
 	fx_blood_lu = Draw_CachePic ("gfx/hud/blood.tga");
+
+	rounds_use_tallies = true;
 }
 
 void HUD_UpdateByte(int byte, int data)
