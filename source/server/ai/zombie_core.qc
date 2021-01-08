@@ -1585,11 +1585,8 @@ void(entity where) spawn_a_zombieB =
 	szombie.yaw_speed = 20;
 	szombie.iszomb = 1;
 	
-	szombie.health = z_health;
-
-	szombie.head.health = szombie.health/10;
-	szombie.larm.health = szombie.health/10;
-	szombie.rarm.health = szombie.health/10;
+	// We used to set different limb health, too, but we now handle any limb damage differences in weapon stats.
+	szombie.health = szombie.head.health = szombie.larm.health = szombie.rarm.health = z_health;
 
 	szombie.th_die = Zombie_Death;
 	szombie.th_walk = Zombie_Walk_Setup;

@@ -18,33 +18,39 @@ void() Spawn_Enemy =
 	}
 }
 
+float(float a, float b) qc_max =
+{
+	if (a < b)
+		return b;
+	return a;
+}
+
 float() getZombieTotal = {
 	if (roundtype == 1) {
-		local float count;
+		float count, multiplier, plrcnt;
+		count = 24;
+		plrcnt = player_count + 1;
 
-		count = 0;
+		multiplier = qc_max(rounds/5, 1);
 
-		if(player_count == 0) {
-			count += 24;
-		} else {
-			count += rint((player_count) * 24);
-		}
+		if (rounds >= 10)
+			multiplier *= rounds * 0.15;
 
-		//bprint(PRINT_HIGH, strcat("STARTING WITH: ", ftos(count), "\n"));
+		if (plrcnt == 1)
+			count += rint((0.5 * 6) * multiplier); 
+		else
+			count += rint((plrcnt * 6) * multiplier);
 
-		if (rounds == 1) {
-			count = rint(count * 0.25);
-		} else if (rounds < 3) {
-			count = rint(count * 0.3);
-		} else if (rounds < 4) {
-			count = rint(count * 0.5);
-		} else if (rounds < 5){
-			count = rint(count * 0.7);
-		} else if (rounds < 6) {
-			count = rint(count * 0.9);
-		}
-
-		//bprint(PRINT_HIGH, strcat("GOT TOTAL AS: ", ftos(count), "\n"));
+		if (rounds < 2)
+			count = floor(count * 0.25);
+		else if (rounds < 3)
+			count = floor(count * 0.30);
+		else if (rounds < 4)
+			count = floor(count * 0.50);
+		else if (rounds < 5)
+			count = floor(count * 0.70);
+		else if (rounds < 6)
+			count = floor(count * 0.90);
 
 		return count;
 	} else { //dogs

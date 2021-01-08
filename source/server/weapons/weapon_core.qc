@@ -609,7 +609,7 @@ void Parse_Damage () = // DO NOT TOUCH
 	float total_dmg;
 
 	entity body_ent;
-	float head_hit, headoff;
+	float head_hit;
 
 	//warn
 	head_hit = 0;
@@ -630,30 +630,40 @@ void Parse_Damage () = // DO NOT TOUCH
 			total_dmg = body_ent.hitamount;
 
 			if (body_ent.head.washit) {
-				total_dmg = total_dmg + body_ent.head.hitamount;
+				total_dmg += body_ent.head.hitamount;
+				body_ent.head.health -= body_ent.head.hitamount;
 				head_hit = 1;
-				body_ent.head.health = body_ent.head.health - body_ent.head.hitamount;
-				
-				if (body_ent.head.health <= 0 && self.weapon != W_COLT) {
+
+				// Head = Gone!
+				if (body_ent.head.health <= 0) {
+					// Head has already been blown off, bro
 					if (!body_ent.head.deadflag)
 						return;
 
-					local vector where;
+					vector where;
+
+					// If our weapon is capable, blow the head off
+					if (getWeaponDamage(self.weapon) >= 100) {
+						makevectors(body_ent.head.owner.angles);
+						where = body_ent.head.owner.origin + (body_ent.head.view_ofs_x * v_right) + (body_ent.head.view_ofs_y * v_forward) + (body_ent.head.view_ofs_z * v_up);
+						spawn_gibs(where);
+
+						// Should the Zombie try and walk on?
+						if (random() <= 0.01) {
+							body_ent.bleedingtime = time + 2;
+						} else {
+							// Nah, he dead.
+							total_dmg *= 5000;
+						}
 					
-					makevectors(body_ent.head.owner.angles);
-					where = body_ent.head.owner.origin + (body_ent.head.view_ofs_x * v_right) + (body_ent.head.view_ofs_y * v_forward) + (body_ent.head.view_ofs_z * v_up);
-					spawn_gibs(where);
+						body_ent.head.deadflag = false;
+						body_ent.head.solid = SOLID_NOT;
+						setmodel(body_ent.head,"");
+						body_ent.head.frame = 0;
 					
-					body_ent.head.deadflag = false;
-					body_ent.head.solid = SOLID_NOT;
-					setmodel(body_ent.head,"");
-					body_ent.head.frame = 0;
-					
-					body_ent.usedent = self;
-					
-					body_ent.bleedingtime = time + 2;
-					headoff = 1;
-					//updateLimb (body_ent.head.owner, 0, world);
+						body_ent.usedent = self;
+						body_ent.bleedingtime = time + 2;
+					}
 				}
 				
 				body_ent.head.washit = 0;
