@@ -93,6 +93,8 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	screen_height_1610[2] = 1050;
 	screen_width_1610[3] = 1920;
 	screen_height_1610[3] = 1200;
+	screen_width_1610[4] = 2560;
+	screen_height_1610[4] = 1600;
 	//16:9
 	screen_width_169[0] = 640;
 	screen_height_169[0] = 360;
@@ -119,6 +121,9 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	screen_height_219[0] = 1080;
 	screen_width_219[1] = 3440;
 	screen_height_219[1] = 1440;
+
+	cvar_set("nzp_particles", "1");
+	cvar_set("nzp_decals", "1");
 };
 
 noref void() CSQC_WorldLoaded =
@@ -505,7 +510,7 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	
 	//does what you think it does
 	renderscene();
-	
+
 	if(in_menu)
 	{
 		//in menu.qc
@@ -776,7 +781,6 @@ noref void() CSQC_Parse_Event =
 				if(getstatf(STAT_WEAPONZOOM) == 1)
 				{  
 					muzzle_offset += GetWeaponADSPos(weapon);
-
 					muzzle_offset[0] -= 2;
 				}
                 

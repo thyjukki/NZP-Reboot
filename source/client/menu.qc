@@ -289,6 +289,13 @@ void() settings_fb = {
 	cvar_set("r_fullbright", ftos(fb));
 }
 
+void() settings_ro = {
+	if (cvar_string("gl_texturemode") == "gl_nearest")
+		cvar_set("gl_texturemode", "gl_linear_mipmap_linear");
+	else
+		cvar_set("gl_texturemode", "gl_nearest");
+}
+
 void() UpdateResolutions = {
 	switch(aspectratio) {
 		case 0:
@@ -626,7 +633,8 @@ var struct
 	{[0.025, 0.575, 0], "Decals", -1, settings_dc, settings_dc, MENU_GSETTINGS},
 	{[0.025, 0.625, 0], "Particles", -1, settings_pt, settings_pt, MENU_GSETTINGS},
 	{[0.025, 0.675, 0], "Fullbright", -1, settings_fb, settings_fb, MENU_GSETTINGS},
-	{[0.025, 0.750, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS},
+	{[0.025, 0.725, 0], "Retro", -1, settings_ro, settings_ro, MENU_GSETTINGS},
+	{[0.025, 0.800, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS},
 
 	//Controls
 	{[0.025, 0.175, 0], "Walk Forward", -1, bind_walkf, null, MENU_CSETTINGS},
@@ -653,7 +661,7 @@ var struct
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 44;
+const float BUTTONS_COUNT = 45;
 float lastActive;
 
 
@@ -906,6 +914,7 @@ void() Draw_Extra_GSettings =
 	local string decalval;
 	local string partval;
 	local string fullval;
+	local string retroval;
 	local string sval;
 	local string arval = "";
 	local string resval;
@@ -1000,42 +1009,51 @@ void() Draw_Extra_GSettings =
 
 	drawstring([0.475*g_width, 0.675*g_height, 0], fullval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
 
+	// Retro
+	if (cvar_string("gl_texturemode") == "gl_nearest")
+		retroval = S_ENABLED;
+	else
+		retroval = S_DISABLED;
+
+	drawstring([0.475*g_width, 0.725*g_height, 0], retroval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
 	// Descriptions
 	switch(lastActive) {
-		case 16:
+		case 17:
 			gset_desc = "Adjust Window Resolution.";
 			break;
-		case 17:
+		case 18:
 			gset_desc = "Change Window Aspect Ratio.";
 			break;
-		case 18:
+		case 19:
 			gset_desc = "Toggle Fullscreen (May fail depending on GPU).";
 			break;
-		case 19:
+		case 20:
 			gset_desc = "Toggle Framerate Overlay.";
 			break;
-		case 20:
+		case 21:
 			gset_desc = "Increase of Decrease Max Frames per Second.";
 			break;
-		case 21:
-			gset_desc = "Toggle Vertical Sync.";
-			
-			break;
 		case 22:
-			gset_desc = "Adjust Game Field of View.";
+			gset_desc = "Toggle Vertical Sync.";
 			break;
 		case 23:
-			gset_desc = "Increase or Decrease Game Brightness.";
-			
+			gset_desc = "Adjust Game Field of View.";
 			break;
 		case 24:
-			gset_desc = "Toggle Bullet and Explosive Decals.";
+			gset_desc = "Increase or Decrease Game Brightness.";
 			break;
 		case 25:
-			gset_desc = "Toggle Appearence of (most) Particles.";
+			gset_desc = "Toggle Bullet and Explosive Decals.";
 			break;
 		case 26:
+			gset_desc = "Toggle Appearence of (most) Particles.";
+			break;
+		case 27:
 			gset_desc = "Toggle all non-realtime lights (Requires Map Restart).";
+			break;
+		case 28:
+			gset_desc = "Toggle texture filtering.";
 			break;
 		default:
 			gset_desc = "";
@@ -1043,7 +1061,7 @@ void() Draw_Extra_GSettings =
 	}
 
 	// Division lines
-	drawfill ([0.025*g_width, 0.725*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+	drawfill ([0.025*g_width, 0.775*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
 
 	// Draw desc
 	drawstring([0.025*g_width, 0.865*g_height, 0], gset_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
@@ -1106,7 +1124,7 @@ void() Draw_Extra_Customs =
 
 		// hacky thing here to emulate the normal buttons on the menu..
 		// since they're fixed/static the current system won't work well with
-		// something dynamic like the custom maps menu, were results vary.
+		// something dynamic like the custom maps menu, where results vary.
 		// --
 		// god this if statement is horrid - moto
 		if (cursor_pos_x > 0.025*g_width && cursor_pos_x < (0.025*g_width + g_height * 0.6) && cursor_pos_y > (0.175 + (0.05 * i))*g_height && cursor_pos_y < (0.175 + (0.05 * i))*g_height + (0.030*g_height)) {
@@ -1167,7 +1185,7 @@ void() Draw_Menu =
 	// version string
 	if (in_menu == MENU_MAIN || in_menu == MENU_ABOUT || in_menu == MENU_SINGLE || in_menu == MENU_ACHIEVEMENTS 
 		|| in_menu == MENU_CUSTOMS || in_menu == MENU_SETTINGS)
-		drawstring([0.925*g_width, 0.025*g_height, 0], VERSION_STRING, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+		drawstring([(0.925*g_width - strlen(VERSION_STRING)*5*g_width/480), 0.025*g_height, 0], VERSION_STRING, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 
 	//menu title
 	local string title = "";

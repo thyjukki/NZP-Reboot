@@ -4055,7 +4055,7 @@ vector(float wep) GetWeaponRecoil =
 vector (float wep) GetWeaponFlash_Offset = 
 {
 		switch(wep) {
-			#ifdef PSP
+			#ifndef NX
 				case W_COLT:
 					return [5488, -2742, 35300];
 				case W_BIATCH:

@@ -143,7 +143,7 @@ string tempBind[MAX_BINDS];
 // resolution
 #define MAX_43      3
 #define MAX_54      1
-#define MAX_1610    4
+#define MAX_1610    5
 #define MAX_169     10
 #define MAX_219     2
 float aspectratio;
