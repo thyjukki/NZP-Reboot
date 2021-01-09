@@ -371,12 +371,15 @@ void() PlayerPostThink =
 		}
 		#endif
 		
-		// Have to choose from PSP and PC here since frametime is a lot different...
+		// Act differently depending on PC vs others
+		// FTE Frametime never gives a consistent result, especially
+		// in higher framerates w/o vysnc, but fabs(cos(frametime))
+		// is the closest we will get to always returning '1'.
 		#ifdef PC
 		if (self.perks & P_STAMIN) {
-			self.stamina = self.stamina - (0.05*fabs(sin(frametime*110)));
+			self.stamina -= 0.015 * fabs(cos(frametime));
 		} else {
-			self.stamina = self.stamina - (0.1*fabs(sin(frametime*110)));
+			self.stamina -= 0.03 * fabs(cos(frametime));
 		}
 		#else
 		if (self.perks & P_STAMIN) {
@@ -393,8 +396,10 @@ void() PlayerPostThink =
 		#ifndef PC
 		self.stamina = self.stamina + 10*frametime;
 		#else 
-		self.stamina = self.stamina + (0.1*fabs(sin(frametime*75)));
+		self.stamina += 10 * fabs(cos(frametime));
 		#endif
+	} else {
+		self.stamina = 3;
 	}
 
 	self.oldvelocity = self.velocity;
