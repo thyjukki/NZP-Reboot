@@ -61,6 +61,10 @@ void () ambient_generic =
 			precache_sound(self.message);
 	}
 	else {
+		// append sounds/ if absent
+		if (substring(self.message, 0, 7) != "sounds/")
+			self.message = strcat("sounds/", self.message);
+			
         // always assume .wav extension..
 		precache_sound(self.message);
 	}
@@ -87,3 +91,17 @@ void () ambient_generic =
 		
 	self.use = ambient_use;
 };
+
+
+//
+// ambient_bgm() conversion
+//
+void() ambient_bgm =
+{
+	// play everywhere
+	self.spawnflags = 1;
+	// sound to loop
+	self.message = self.noise2;
+	// call ambient_generic()
+	ambient_generic();
+}
