@@ -92,10 +92,10 @@ void() EndRound =
 	rounds_change = 4;
 	SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);
 	if (gotdog && rounds == dogRound) {
-		playSoundAtPlayers(strcat(round_directory, "droundend.wav"));
+		playSoundAtPlayers("sounds/rounds/droundend.wav");
 		dogWave = false;
 	} else {
-		playSoundAtPlayers(strcat(round_directory, "eround.wav"));
+		playSoundAtPlayers("sounds/rounds/eround.wav");
 	}
 	round_changetime = time + 5;
 }
@@ -129,10 +129,10 @@ void() NewRound =
 	if (rounds != 0)
 	{
 		if (gotdog && rounds == (dogRound - 1)) {
-			playSoundAtPlayers(strcat(round_directory, "droundstart.wav"));
+			playSoundAtPlayers("sounds/rounds/droundstart.wav");
 			dogWave = true;
 		} else {
-			playSoundAtPlayers(strcat(round_directory, "nround.wav"));
+			playSoundAtPlayers("sounds/rounds/nround.wav");
 		}
 		rounds_change = 6;
 		SetUpdate(self, UT_ROUNDS_CHANGE, rounds_change, 0, 0);

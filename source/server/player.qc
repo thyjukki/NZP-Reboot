@@ -578,7 +578,7 @@ void() PlayerSpawn =
 	}
 
 	if (rounds < 1) {
-		sound(self, CHAN_AUTO, strcat(round_directory, "splash.wav"), 1, ATTN_NONE);
+		sound(self, CHAN_AUTO, "sounds/rounds/splash.wav", 1, ATTN_NONE);
 	}
 
 	PromptLevelChange(self.nextthink + 3, 1, self);	
