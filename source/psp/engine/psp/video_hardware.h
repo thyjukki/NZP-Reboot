@@ -25,11 +25,6 @@ void GL_BeginRendering (int *x, int *y, int *width, int *height);
 void GL_EndRendering (void);
 u32 GL_GetDrawBuffer(void);
 
-//for render to texture
-void GL_BeginTarget (int format, int width, int height, int stride);
-byte* GL_EndTarget (void);
-
-
 void GL_Upload8(int texture_index, const byte *data, int width, int height);
 void GL_Upload16(int texture_index, const byte *data, int width, int height);
 int  GL_LoadTexture(const char *identifier, int width, int height, const byte *data, qboolean stretch_to_power_of_two, int filter, int mipmap_level);

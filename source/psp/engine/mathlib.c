@@ -243,9 +243,6 @@ void BOPS_Error (void)
 	Sys_Error ("BoxOnPlaneSide:  Bad signbits");
 }
 
-
-#if	!id386
-
 /*
 ==================
 BoxOnPlaneSide
@@ -253,103 +250,237 @@ BoxOnPlaneSide
 Returns 1, 2, or 1 + 2
 ==================
 */
-int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, mplane_t *p)
+// crow_bar's enhanced boxonplaneside 
+int BoxOnPlaneSide(vec3_t emins, vec3_t emaxs, mplane_t *p)
 {
+#ifdef PSP_VFPU
+	int	sides;
+	__asm__ (
+		".set		push\n"					// save assembler option
+		".set		noreorder\n"			// suppress reordering
+		"lv.s		S000,  0 + %[normal]\n"	// S000 = p->normal[0]
+		"lv.s		S001,  4 + %[normal]\n"	// S001 = p->normal[1]
+		"lv.s		S002,  8 + %[normal]\n"	// S002 = p->normal[2]
+		"vzero.p	C030\n"					// C030 = [0.0f, 0.0f]
+		"lv.s		S032, %[dist]\n"		// S032 = p->dist
+		"move		$8,   $0\n"				// $8 = 0
+		"beq		%[signbits], $8, 0f\n"	// jump to 0
+		"addiu		$8,   $8,   1\n"		// $8 = $8 + 1							( delay slot )
+		"beq		%[signbits], $8, 1f\n"	// jump to 1
+		"addiu		$8,   $8,   1\n"		// $8 = $8 + 1							( delay slot )
+		"beq		%[signbits], $8, 2f\n"	// jump to 2
+		"addiu		$8,   $8,   1\n"		// $8 = $8 + 1							( delay slot )
+		"beq		%[signbits], $8, 3f\n"	// jump to 3
+		"addiu		$8,   $8,   1\n"		// $8 = $8 + 1							( delay slot )
+		"beq		%[signbits], $8, 4f\n"	// jump to 4
+		"addiu		$8,   $8,   1\n"		// $8 = $8 + 1							( delay slot )
+		"beq		%[signbits], $8, 5f\n"	// jump to 5
+		"addiu		$8,   $8,   1\n"		// $8 = $8 + 1							( delay slot )
+		"beq		%[signbits], $8, 6f\n"	// jump to 6
+		"addiu		$8,   $8,   1\n"		// $8 = $8 + 1							( delay slot )
+		"beq		%[signbits], $8, 7f\n"	// jump to 7
+		"nop\n"								// 										( delay slot )
+		"j			8f\n"					// jump to SetSides
+		"nop\n"								// 										( delay slot )
+	"0:\n"
+/*
+		dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
+		dist2 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
+*/
+		"lv.s		S010,  0 + %[emaxs]\n"	// S010 = emaxs[0]
+		"lv.s		S011,  4 + %[emaxs]\n"	// S011 = emaxs[1]
+		"lv.s		S012,  8 + %[emaxs]\n"	// S012 = emaxs[2]
+		"lv.s		S020,  0 + %[emins]\n"	// S020 = emins[0]
+		"lv.s		S021,  4 + %[emins]\n"	// S021 = emins[1]
+		"lv.s		S022,  8 + %[emins]\n"	// S022 = emins[2]
+		"vdot.t		S030, C000, C010\n"		// S030 = C000 * C010
+		"vdot.t		S031, C000, C020\n"		// S030 = C000 * C020
+		"j			8f\n"					// jump to SetSides
+		"nop\n"								// 										( delay slot )
+	"1:\n"
+/*
+		dist1 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
+		dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
+*/
+		"lv.s		S010,  0 + %[emins]\n"	// S010 = emins[0]
+		"lv.s		S011,  4 + %[emaxs]\n"	// S011 = emaxs[1]
+		"lv.s		S012,  8 + %[emaxs]\n"	// S012 = emaxs[2]
+		"lv.s		S020,  0 + %[emaxs]\n"	// S020 = emaxs[0]
+		"lv.s		S021,  4 + %[emins]\n"	// S021 = emins[1]
+		"lv.s		S022,  8 + %[emins]\n"	// S022 = emins[2]
+		"vdot.t		S030, C000, C010\n"		// S030 = C000 * C010
+		"vdot.t		S031, C000, C020\n"		// S030 = C000 * C020
+		"j			8f\n"					// jump to SetSides
+		"nop\n"								// 										( delay slot )
+	"2:\n"
+/*
+		dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
+		dist2 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
+*/
+		"lv.s		S010,  0 + %[emaxs]\n"	// S010 = emaxs[0]
+		"lv.s		S011,  4 + %[emins]\n"	// S011 = emins[1]
+		"lv.s		S012,  8 + %[emaxs]\n"	// S012 = emaxs[2]
+		"lv.s		S020,  0 + %[emins]\n"	// S020 = emins[0]
+		"lv.s		S021,  4 + %[emaxs]\n"	// S021 = emaxs[1]
+		"lv.s		S022,  8 + %[emins]\n"	// S022 = emins[2]
+		"vdot.t		S030, C000, C010\n"		// S030 = C000 * C010
+		"vdot.t		S031, C000, C020\n"		// S030 = C000 * C020
+		"j			8f\n"					// jump to SetSides
+		"nop\n"								// 										( delay slot )
+	"3:\n"
+/*
+		dist1 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
+		dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
+*/
+		"lv.s		S010,  0 + %[emins]\n"	// S010 = emins[0]
+		"lv.s		S011,  4 + %[emins]\n"	// S011 = emins[1]
+		"lv.s		S012,  8 + %[emaxs]\n"	// S012 = emaxs[2]
+		"lv.s		S020,  0 + %[emaxs]\n"	// S020 = emaxs[0]
+		"lv.s		S021,  4 + %[emaxs]\n"	// S021 = emaxs[1]
+		"lv.s		S022,  8 + %[emins]\n"	// S022 = emins[2]
+		"vdot.t		S030, C000, C010\n"		// S030 = C000 * C010
+		"vdot.t		S031, C000, C020\n"		// S030 = C000 * C020
+		"j			8f\n"					// jump to SetSides
+		"nop\n"								// 										( delay slot )
+	"4:\n"
+/*
+		dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
+		dist2 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
+*/
+		"lv.s		S010,  0 + %[emaxs]\n"	// S010 = emaxs[0]
+		"lv.s		S011,  4 + %[emaxs]\n"	// S011 = emaxs[1]
+		"lv.s		S012,  8 + %[emins]\n"	// S012 = emins[2]
+		"lv.s		S020,  0 + %[emins]\n"	// S020 = emins[0]
+		"lv.s		S021,  4 + %[emins]\n"	// S021 = emins[1]
+		"lv.s		S022,  8 + %[emaxs]\n"	// S022 = emaxs[2]
+		"vdot.t		S030, C000, C010\n"		// S030 = C000 * C010
+		"vdot.t		S031, C000, C020\n"		// S030 = C000 * C020
+		"j			8f\n"					// jump to SetSides
+		"nop\n"								// 										( delay slot )
+	"5:\n"
+/*
+		dist1 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
+		dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
+*/
+		"lv.s		S010,  0 + %[emins]\n"	// S010 = emins[0]
+		"lv.s		S011,  4 + %[emaxs]\n"	// S011 = emaxs[1]
+		"lv.s		S012,  8 + %[emins]\n"	// S012 = emins[2]
+		"lv.s		S020,  0 + %[emaxs]\n"	// S020 = emaxs[0]
+		"lv.s		S021,  4 + %[emins]\n"	// S021 = emins[1]
+		"lv.s		S022,  8 + %[emaxs]\n"	// S022 = emaxs[2]
+		"vdot.t		S030, C000, C010\n"		// S030 = C000 * C010
+		"vdot.t		S031, C000, C020\n"		// S030 = C000 * C020
+		"j			8f\n"					// jump to SetSides
+		"nop\n"								// 										( delay slot )
+	"6:\n"
+/*
+		dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
+		dist2 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
+*/
+		"lv.s		S010,  0 + %[emaxs]\n"	// S010 = emaxs[0]
+		"lv.s		S011,  4 + %[emins]\n"	// S011 = emins[1]
+		"lv.s		S012,  8 + %[emins]\n"	// S012 = emins[2]
+		"lv.s		S020,  0 + %[emins]\n"	// S020 = emins[0]
+		"lv.s		S021,  4 + %[emaxs]\n"	// S021 = emaxs[1]
+		"lv.s		S022,  8 + %[emaxs]\n"	// S022 = emaxs[2]
+		"vdot.t		S030, C000, C010\n"		// S030 = C000 * C010
+		"vdot.t		S031, C000, C020\n"		// S030 = C000 * C020
+		"j			8f\n"					// jump to SetSides
+		"nop\n"								// 										( delay slot )
+	"7:\n"
+/*
+		dist1 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
+		dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
+*/
+		"lv.s		S010,  0 + %[emins]\n"	// S010 = emins[0]
+		"lv.s		S011,  4 + %[emins]\n"	// S011 = emins[1]
+		"lv.s		S012,  8 + %[emins]\n"	// S012 = emins[2]
+		"lv.s		S020,  0 + %[emaxs]\n"	// S020 = emaxs[0]
+		"lv.s		S021,  4 + %[emaxs]\n"	// S021 = emaxs[1]
+		"lv.s		S022,  8 + %[emaxs]\n"	// S022 = emaxs[2]
+		"vdot.t		S030, C000, C010\n"		// S030 = C000 * C010
+		"vdot.t		S031, C000, C020\n"		// S030 = C000 * C020
+	"8:\n"									// SetSides
+/*
+		if( dist1 >= p->dist )
+			sides = 1;
+		if( dist2 < p->dist )
+			sides |= 2;
+*/
+		"addiu		%[sides], $0, 0\n"		// sides = 0
+		"vcmp.s		LT,   S030, S032\n"		// S030 < S032
+		"bvt		0,    9f\n"				// if ( CC[0] == 1 ) jump to 9
+		"nop\n"								// 										( delay slot )
+		"addiu		%[sides], %[sides], 1\n"// sides = 1
+	"9:\n"	
+		"vcmp.s		GE,   S031, S032\n"		// S031 >= S032
+		"bvt		0,    10f\n"			// if ( CC[0] == 1 ) jump to 10
+		"nop\n"								// 										( delay slot )
+		"addiu		%[sides], %[sides], 2\n"// sides = sides + 2
+	"10:\n"
+		".set		pop\n"					// restore assembler option
+		:	[sides]    "=r" ( sides )
+		:	[normal]   "m"  (*(p->normal)),
+			[emaxs]    "m"  ( *emaxs ), 
+			[emins]    "m"  ( *emins ),
+			[signbits] "r"  ( p->signbits ), 
+			[dist]     "m"  ( p->dist )
+		:	"$8"
+	);
+	return sides;
+#else
+	int	sides = 0;
 	float	dist1, dist2;
-	int		sides;
 
-#if 0	// this is done by the BOX_ON_PLANE_SIDE macro before calling this
-		// function
-// fast axial cases
-	if (p->type < 3)
+	// general case
+	switch( p->signbits )
 	{
-		if (p->dist <= emins[p->type])
-			return 1;
-		if (p->dist >= emaxs[p->type])
-			return 2;
-		return 3;
-	}
-#endif
-
-// general case
-	switch (p->signbits)
-	{
-		case 0:
-			dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
-			dist2 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
-			break;
-		case 1:
-			dist1 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
-			dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
-			break;
-		case 2:
-			dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
-			dist2 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
-			break;
-		case 3:
-			dist1 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
-			dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
-			break;
-		case 4:
-			dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
-			dist2 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
-			break;
-		case 5:
-			dist1 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
-			dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
-			break;
-		case 6:
-			dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
-			dist2 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
-			break;
-		case 7:
-			dist1 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
-			dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
-			break;
-		default:
-			dist1 = dist2 = 0;		// shut up compiler
-			BOPS_Error ();
-			break;
+	case 0:
+		dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
+		dist2 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
+		break;
+	case 1:
+		dist1 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
+		dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
+		break;
+	case 2:
+		dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
+		dist2 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
+		break;
+	case 3:
+		dist1 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
+		dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
+		break;
+	case 4:
+		dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
+		dist2 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
+		break;
+	case 5:
+		dist1 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emins[2];
+		dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emaxs[2];
+		break;
+	case 6:
+		dist1 = p->normal[0]*emaxs[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
+		dist2 = p->normal[0]*emins[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
+		break;
+	case 7:
+		dist1 = p->normal[0]*emins[0] + p->normal[1]*emins[1] + p->normal[2]*emins[2];
+		dist2 = p->normal[0]*emaxs[0] + p->normal[1]*emaxs[1] + p->normal[2]*emaxs[2];
+		break;
+	default:
+		// shut up compiler
+		dist1 = dist2 = 0;
+		break;
 	}
 
-#if 0
-	int		i;
-	vec3_t	corners[2];
-
-	for (i=0 ; i<3 ; i++)
-	{
-		if (plane->normal[i] < 0)
-		{
-			corners[0][i] = emins[i];
-			corners[1][i] = emaxs[i];
-		}
-		else
-		{
-			corners[1][i] = emins[i];
-			corners[0][i] = emaxs[i];
-		}
-	}
-	dist = DotProduct (plane->normal, corners[0]) - plane->dist;
-	dist2 = DotProduct (plane->normal, corners[1]) - plane->dist;
-	sides = 0;
-	if (dist1 >= 0)
+	if( dist1 >= p->dist )
 		sides = 1;
-	if (dist2 < 0)
+	if( dist2 < p->dist )
 		sides |= 2;
-
-#endif
-
-	sides = 0;
-	if (dist1 >= p->dist)
-		sides = 1;
-	if (dist2 < p->dist)
-		sides |= 2;
-
 
 	return sides;
-}
-
 #endif
+}
 
 
 void vectoangles (vec3_t vec, vec3_t ang)

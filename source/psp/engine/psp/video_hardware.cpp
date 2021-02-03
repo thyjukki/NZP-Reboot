@@ -66,7 +66,6 @@ namespace quake
 		static const std::size_t	palette_size	= 256;
 		static pixel* 				display_buffer	= 0;
 		static pixel*				draw_buffer		= 0;
-		static pixel*				target_buffer	= 0;
 		static depth_value*			depth_buffer	= 0;
 
 		//! The GU display list.
@@ -179,12 +178,6 @@ void VID_Init(unsigned char* palette)
 	if (!draw_buffer)
 	{
 		Sys_Error("Couldn't allocate draw buffer");
-	}
-
-	target_buffer	= static_cast<pixel*>(valloc(screen_height * 512 * sizeof(pixel)));
-	if (!target_buffer)
-	{
-		Sys_Error("Couldn't allocate target buffer");
 	}
 
 	depth_buffer	= static_cast<depth_value*>(valloc(screen_height * 512 * sizeof(depth_value)));
@@ -403,35 +396,6 @@ void GL_GetPixelsRGBA(byte *buffer, int width, int height, int i)
 u32 GL_GetDrawBuffer(void)
 {
 	return (u32)vrelptr(draw_buffer);
-}
-
-void GL_BeginTarget (int format, int width, int height, int stride)
-{
-	sceGuDrawBufferList(format, vrelptr(target_buffer), stride);
-
-	// setup viewport
-	sceGuOffset(2048 - (width / 2), 2048 - (height / 2));
-	sceGuViewport(2048, 2048, width, height);
-
-	// clear screen
-	sceGuClearColor(0xffffffff);
-	sceGuClearDepth(65535);
-	sceGuClear(GU_COLOR_BUFFER_BIT|GU_DEPTH_BUFFER_BIT);
-}
-
-byte* GL_EndTarget (void)
-{
-	sceGuDrawBufferList(GU_PSM_8888, vrelptr(draw_buffer), 512);
-
-	// Set the rendering offset and viewport.
-	sceGuOffset(2048 - (screen_width / 2), 2048 - (screen_height / 2));
-	sceGuViewport(2048, 2048, screen_width, screen_height);
-
-	// Set up clearing.
-	sceGuClearDepth(65535);
-	sceGuClearColor(GU_RGBA(0x10,0x20,0x40,0xff));
-	
-	return reinterpret_cast<std::size_t>(sceGeEdramGetAddr()) + reinterpret_cast<byte*>(vrelptr(target_buffer));
 }
 
 void D_StartParticles (void)
