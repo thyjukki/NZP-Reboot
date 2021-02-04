@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 #include "psp/module.h"
+#include <pspge.h>
+#include <pspsysevent.h>
 
 /*
 
@@ -883,7 +885,8 @@ void Host_Init (quakeparms_t *parms)
 	Con_Printf ("PSP NZP v%4.1f (PBP: "__TIME__" "__DATE__")\n", (float)(VERSION));
 	Con_Printf ("%4.1f megabyte heap \n",parms->memsize/ (1024*1024.0));
 	Con_Printf ("%4.1f megabyte PSP application heap \n",1.0f*PSP_HEAP_SIZE_MB);
-	Con_Printf ("PSP Model: %s", Sys_GetPSPModel());
+	Con_Printf ("PSP Model: %s\n", Sys_GetPSPModel());
+	Con_Printf ("VRAM Size: %i bytes\n", sceGeEdramGetSize());
 
 	R_InitTextures ();		// needed even for dedicated servers
 	if (cls.state != ca_dedicated)
