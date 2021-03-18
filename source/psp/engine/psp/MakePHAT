@@ -18,6 +18,7 @@ BUILD_PRX = 1
 
 COMMON_OBJS = \
 	battery.o \
+	../thread.o \
 	VramExt.o \
 	input.o \
 	main.o \

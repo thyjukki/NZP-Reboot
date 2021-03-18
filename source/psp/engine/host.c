@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // host.c -- coordinates spawning and killing of local servers
 
 #include "quakedef.h"
+#include "thread.h"
 #include "psp/module.h"
 #include <pspge.h>
 #include <pspsysevent.h>
@@ -693,11 +694,13 @@ void _Host_Frame (float time)
 // update audio
 	if (cls.signon == SIGNONS)
 	{
-		S_Update (r_origin, vpn, vright, vup);
+		Thread_UpdateSound(r_origin, vpn, vright, vup);
+		//S_Update (r_origin, vpn, vright, vup);
 		CL_DecayLights ();
 	}
 	else
-		S_Update (vec3_origin, vec3_origin, vec3_origin, vec3_origin);
+		Thread_UpdateSound(vec3_origin, vec3_origin, vec3_origin, vec3_origin);
+		//S_Update (vec3_origin, vec3_origin, vec3_origin, vec3_origin);
 
 	//if (bmg_type_changed == true) {
 		CDAudio_Update();

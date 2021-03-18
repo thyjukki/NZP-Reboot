@@ -350,3 +350,14 @@ typedef struct
 } waypoint_ai;
 
 extern waypoint_ai waypoints[MAX_WAYPOINTS];
+
+
+// thread structs
+typedef struct
+{
+	vec3_t origin;
+	vec3_t forward;
+	vec3_t right;
+	vec3_t up;
+	qboolean ready;
+} soundstruct_t;

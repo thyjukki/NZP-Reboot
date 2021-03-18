@@ -39,6 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern "C"
 {
 #include "../quakedef.h"
+#include "../thread.h"
 #include "m33libs/kubridge.h"
 #include "iridlibs/perflib.h"
 void VramSetSize(int kb);
@@ -647,6 +648,9 @@ int user_main(SceSize argc, void* argp)
 		// Record the time that the main loop started.
 		u64 lastTicks;
 		sceRtcGetCurrentTick(&lastTicks);
+
+		// Set up threads
+		Sys_InitThreads();
 
 		// Enter the main loop.
 		while (!quit)
