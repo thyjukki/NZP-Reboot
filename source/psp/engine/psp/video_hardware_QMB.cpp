@@ -2909,8 +2909,8 @@ void QMB_BlobExplosion (vec3_t org)
 		vel[0] *= 1.15;
 		vel[1] *= 1.15;
 		#ifdef PSP_VFPU
-		neworg[0] = org[0] + vfpu_cos(theta) * 13;
-		neworg[1] = org[1] + vfpu_sin(theta) * 13;
+		neworg[0] = org[0] + vfpu_cosf(theta) * 13;
+		neworg[1] = org[1] + vfpu_sinf(theta) * 13;
 		#else
 		neworg[0] = org[0] + cos(theta) * 13;
 		neworg[1] = org[1] + sin(theta) * 13;

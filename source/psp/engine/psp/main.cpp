@@ -33,12 +33,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <pspctrl.h>
 #include <psphprm.h>
 #include <pspsdk.h>
+#include <pspge.h>
+#include <pspsysevent.h>
 
 extern "C"
 {
 #include "../quakedef.h"
+#include "../thread.h"
 #include "m33libs/kubridge.h"
 #include "iridlibs/perflib.h"
+void VramSetSize(int kb);
 }
 
 #include "battery.hpp"
@@ -466,32 +470,32 @@ void StartUpParams(char **args, int argc, char *cmdlinePath, char *currentDirect
 	}
 }
 
-#if 0
 int ctrl_kernel = 0;
 SceUID mod[2];
 char mod_names[2][64];
 
 void InitExtModules (void)
 {
-    sprintf(mod_names[0],"hooks/ctrlhook.prx");
-	mod[0] = pspSdkLoadStartModule(mod_names[0], PSP_MEMORY_PARTITION_KERNEL);
-	if (mod[0] < 0)
-	{
-        Con_Printf("CWBHOOK failed to load %s (%08x)\n", mod_names[0], mod[0]);
-	}
+	char 	currentDirectory[1024];
+	char 	gameDirectory[1024];
+	char   	path_f[256];
 
-	if(mod[0] < 0)
-       ctrl_kernel = 0;
-	else
-       ctrl_kernel = 1;
-   /*
-    sprintf(mod_names[1],"hooks/dvemgr.prx");
+	memset(gameDirectory, 0, sizeof(gameDirectory));
+	memset(currentDirectory, 0, sizeof(currentDirectory));
+	getcwd(currentDirectory, sizeof(currentDirectory) - 1);
+
+	strcpy(path_f,currentDirectory);
+	strcat(path_f,"/hooks/vramext.prx");
+	sprintf(mod_names[1], path_f);
+
 	mod[1] = pspSdkLoadStartModule(mod_names[1], PSP_MEMORY_PARTITION_KERNEL);
-	if (mod[1] < 0)
+	if (mod[1] >= 0)
 	{
-        Con_Printf("CWBHOOK failed to load %s (%08x)\n", mod_names[1], mod[1]);
+		if (kuKernelGetModel() != 0)
+			VramSetSize(4096);
+		else
+			VramSetSize(2048);
 	}
-   */
 }
 
 void ShutdownExtModules (void)
@@ -502,7 +506,6 @@ void ShutdownExtModules (void)
 	sceKernelStopModule(mod[0], 0, 0, 0, 0);
 	sceKernelUnloadModule(mod[0]);
 }
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -540,9 +543,8 @@ int user_main(SceSize argc, void* argp)
 	PFL_Init(true);
 
 	// Initialise the Common module.
-#if 0
     InitExtModules ();
-#endif
+
 	// Get the current working dir.
 	char currentDirectory[1024];
 	char gameDirectory[1024];
@@ -646,6 +648,9 @@ int user_main(SceSize argc, void* argp)
 		// Record the time that the main loop started.
 		u64 lastTicks;
 		sceRtcGetCurrentTick(&lastTicks);
+
+		// Set up threads
+		Sys_InitThreads();
 
 		// Enter the main loop.
 		while (!quit)
@@ -774,11 +779,10 @@ char* Sys_GetPSPModel(void)
 		case 4:
 			modelstring = "PSP GO (4000)";
 			break;
-		default: // a little unoptimized but hopefully in the future we get the street num implemented
-			char mnum[32];
-			sprintf(mnum, "%d)", kuKernelGetModel());
-			modelstring = "Unkown Model (kuKernelGetModel returns ";
-			strcat(modelstring, mnum);
+		case 10:
+			modelstring = "PSP Street (E1000)";
+			break;
+		default:
 			break;
 	}
 
