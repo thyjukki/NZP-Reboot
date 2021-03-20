@@ -1336,6 +1336,9 @@ void() Create_Floating_Weapon =
 	gun.solid = SOLID_NOT;
 	makevectors(self.angles);
 	gun.velocity = v_up*15;
+
+	if (Map_Type == MAP_TYPE_BETA)
+		gun.scale = 0.85;
 	
 	gun.owner = self;
 	self.boxweapon = gun;
@@ -1899,34 +1902,4 @@ void() perk_random =
 			}
 		}
 	}
-}
-
-void() item_revive =
-{
-	perk_revive();
-	self.origin_z += 8;
-}
-
-void() item_juggernog =
-{
-	perk_juggernog();
-	self.origin_z += 8;
-}
-
-void() item_speed =
-{
-	perk_speed();
-	self.origin_z += 8;
-}
-
-void() item_douple =
-{
-	perk_double();
-	self.origin_z += 8;
-}
-
-void() item_flopper =
-{
-	perk_flopper();
-	self.origin_z += 8;
 }

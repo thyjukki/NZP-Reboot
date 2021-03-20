@@ -1530,8 +1530,12 @@ void(entity where) spawn_a_zombieB =
 	szombie.hop_step = 0;
 	szombie.gravity = 1.0;
 	
+	if (Map_Type == MAP_TYPE_BETA) {
+		szombie.scale = szombie.head.scale = szombie.larm.scale = szombie.rarm.scale = 0.80;
+	}
+
 	szombie.mins = '-8 -8 -32';//-16 16 -32
-	szombie.maxs = '8 8 30';//16 16 40
+	szombie.maxs = '8 8 30';//16 16 40	
 	setsize (szombie, szombie.mins, szombie.maxs);//-16,-16,-32,16,16,40
 	//Setting Uniform skin=================
 	/*if(random() > 0.5)

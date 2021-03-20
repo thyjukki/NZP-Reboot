@@ -933,6 +933,21 @@
 	]
 ]
 
+@PointClass base(Targetname) = ambient_generic : "Universal Ambient"
+[
+	message(sound) : "WAV Name"
+	health(integer) : "Volume (10 = loudest)" : 10
+	spawnflags(flags) =
+	[
+		1 : "Play Everywhere" : 0
+		2 : "Small Radius" : 0
+		4 : "Medium Radius" : 1
+		8 : "Large Radius" : 0
+		16 : "Start Silent":0
+		32 : "Not Toggled":0
+	]
+]
+
 @PointClass = ambient_general : "Universal Ambient Sound"
 [
 	volume(integer) : "Volume" : 1

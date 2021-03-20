@@ -465,6 +465,7 @@ void() buy_weapon =
 	
 	
 	precache_extra (self.weapon);
+	self.classname = "buy_weapon";
 	self.touch = buy_weapon_touch;
 	
 	self.think = buy_weapon_link_wall;

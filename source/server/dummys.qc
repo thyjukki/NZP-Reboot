@@ -38,14 +38,7 @@ void() info_end = {remove(self);};
 
 //// beta removal 
 void() monster_dog = {remove(self);};
-void() item_pap = {remove(self);};
-//void() item_juggernog = {remove(self);};
-//void() item_flopper = {remove(self);};
-//void() item_douple = {remove(self);};
-//void() item_speed = {remove(self);};
-//void() item_revive = {remove(self);};
 void() palm_tree_closed = {remove(self);};
-void() func_model = {remove(self);};
 void() wooden_crate = {remove(self);};
 
 void() change_frame;

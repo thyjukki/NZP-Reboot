@@ -465,6 +465,17 @@ void() ClientConnect =
 	if(cvar("developer") || player_count > 1) {
 		bprint(PRINT_HIGH, self.netname); //print player name
 		bprint(PRINT_HIGH, " connected.\n");
+	} else {
+		// Initialize map compatibility
+		// This is required here because entities are not yet loaded in worldspawn
+		Map_Type = Maps_DetermineMapType();
+
+		if (Map_Type == MAP_TYPE_BETA) {
+			Maps_ConvertEntitiesFromBeta();
+			Maps_LoadBetaWaypointData();
+		} else if (Map_Type == MAP_TYPE_REQUIEM) {
+			Maps_ConvertEntitiesFromRequiem();
+		}
 	}	
 };
 
@@ -490,7 +501,6 @@ void() PlayerSpawn =
 {	
 	local entity spawnpoint;
 	local_client = self;
-	
 	spawnpoint = find(world, classname, "info_player_start");
 	
 	self.isspec = FALSE;
@@ -499,12 +509,6 @@ void() PlayerSpawn =
 	setmodel(self, "models/player.mdl");
 	self.movetype = MOVETYPE_WALK;
 	self.max_health = self.health = 100;
-
-	//custom weapon stuff (we want to put this here so we can send the info to the client with an entity)
-	// DISGUSTING.
-	//nzd_defineweapon(self);
-
-	//centerprint(self, CustomWeapons[0].vmodel);
 	
 	entity who = find(world,classname,"player");
 	while(who != self && !self.playernum)
@@ -517,31 +521,61 @@ void() PlayerSpawn =
 		}
 	}
 
-	switch(player_count) {
-		default: spawnpoint = find(world, classname, "info_player_start"); if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
-		case 1: spawnpoint = find(world, classname, "info_player_nikolai");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
-		case 2: spawnpoint = find(world, classname, "info_player_takeo");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
-		case 3: spawnpoint = find(world, classname, "info_player_doctor");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");}  break;
-	}
-	
-	if (self.playernum) {
-		switch(self.playernum) {
-			default: spawnpoint = find(world, classname, "info_player_start"); if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+	if (coop) {
+		switch(player_count) {
+			default: spawnpoint = find(world, classname, "info_player_tank"); if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_tank");} break;
 			case 1: spawnpoint = find(world, classname, "info_player_nikolai");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
 			case 2: spawnpoint = find(world, classname, "info_player_takeo");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
 			case 3: spawnpoint = find(world, classname, "info_player_doctor");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");}  break;
-	    }
+		}
+		
+		if (self.playernum) {
+			switch(self.playernum) {
+				default: spawnpoint = find(world, classname, "info_player_tank"); if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+				case 1: spawnpoint = find(world, classname, "info_player_nikolai");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+				case 2: spawnpoint = find(world, classname, "info_player_takeo");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");} break;
+				case 3: spawnpoint = find(world, classname, "info_player_doctor");  if (!spawnpoint) {spawnpoint = find(world, classname, "info_player_start");}  break;
+			}
+		}
+	} else {
+		spawnpoint = find(world, classname, "info_player_start");
+		
+		if (spawnpoint == world) {
+			float value = random();
+
+			if (random() > 0.75 && (find(world, classname, "info_player_tank") != world))
+				spawnpoint = find(world, classname, "info_player_tank");
+			else if (random() > 0.50 && (find(world, classname, "info_player_nikolai") != world))
+				spawnpoint = find(world, classname, "info_player_nikolai");
+			else if (random() > 0.25 && (find(world, classname, "info_player_takeo") != world))
+				spawnpoint = find(world, classname, "info_player_takeo");
+			else
+				spawnpoint = find(world, classname, "info_player_doctor");
+		}
 	}
 	
 	self.origin = spawnpoint.origin + [0,0,1];
 	self.angles = spawnpoint.angles;
 	self.fixangle = TRUE;
-	setsize(self, [-16, -16, -32], [16, 16, 40]);
-	self.view_ofs = VEC_VIEW_OFS; // naievil -- set view_ofs to 32 to maintain half life (64) sizes
 	self.stance = 2;
+
+	//
+	// Set player size
+	//
+	// Beta uses Quake scale
+	if (Map_Type == MAP_TYPE_BETA) {
+		setsize(self, VEC_HULL_MIN, VEC_HULL_MAX);
+		self.view_ofs = '0 0 22';
+	} 
+	// Everything else uses half-life sizes
+	else {
+		setsize(self, [-16, -16, -32], [16, 16, 40]);
+		self.view_ofs = VEC_VIEW_OFS; // naievil -- set view_ofs to 32 to maintain half life (64) sizes
+	}
+
 	self.new_ofs_z = self.view_ofs_z;
 	self.oldz = self.origin_z;
-
+		
 	self.currentammo = G_STARTWEAPON[2];
 	self.currentmag = G_STARTWEAPON[1];
 	self.weapon = G_STARTWEAPON[0];

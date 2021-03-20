@@ -346,5 +346,3 @@ void() item_barricade =
 	wincnt++;
 	#endif
 };
-
-void() item_cover = {item_barricade();};

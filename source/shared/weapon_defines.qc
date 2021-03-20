@@ -40,8 +40,8 @@ var struct {
 // so we know whether to use normal values or pull from our struct!
 float(float wep) isCustomWeapon =
 {
-	if (wep >= 70)
-		return TRUE;
+	//if (wep >= 70)
+		//return TRUE;
 
 	return FALSE;
 }

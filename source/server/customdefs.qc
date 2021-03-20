@@ -447,3 +447,8 @@ float sndActivCnt;
 
 // PC Fog force
 .float PC_fog;
+
+// Map compatibility
+.float fgdtype;
+.float roundtime, runround, puchance, hudtype, roundsnd, chartype, limit; 	// residual NZ:P Requiem worldspawn values, in a last-ditch effort to
+																			// determine the map type.
