@@ -361,6 +361,8 @@ void() PlayerPostThink =
 	}
 
 	if (self.sprinting) {
+		self.sprint_timer = self.sprint_duration + (time - self.sprint_start_time);
+		
 		#ifndef PC
 		if (!self.velocity || self.stance != 2) {
 			W_SprintStop();
@@ -371,35 +373,20 @@ void() PlayerPostThink =
 		}
 		#endif
 		
-		// Act differently depending on PC vs others
-		// FTE Frametime never gives a consistent result, especially
-		// in higher framerates w/o vysnc, but fabs(cos(frametime))
-		// is the closest we will get to always returning '1'.
-		#ifdef PC
 		if (self.perks & P_STAMIN) {
-			self.stamina -= 0.015 * fabs(cos(frametime));
-		} else {
-			self.stamina -= 0.03 * fabs(cos(frametime));
+			if (self.sprint_timer > sprint_max_time * 2) {
+				W_SprintStop();
+			}
 		}
-		#else
-		if (self.perks & P_STAMIN) {
-			self.stamina = self.stamina - 0.015;
-		} else { 
-			self.stamina = self.stamina - 0.03;
-		} 
-		#endif
+		else
+		{
+			if (self.sprint_timer > sprint_max_time) {
+				W_SprintStop();
+			}
+		}
 
-		if (self.stamina <= 0) {
-			W_SprintStop();
-		}
-	} else if (self.stamina < 3) 	{
-		#ifndef PC
-		self.stamina = self.stamina + 10*frametime;
-		#else 
-		self.stamina += 10 * fabs(cos(frametime));
-		#endif
-	} else {
-		self.stamina = 3;
+	} else if (self.sprint_duration > 0.0) 	{
+		self.sprint_rest_time = (time - self.sprint_stop_time);
 	}
 
 	self.oldvelocity = self.velocity;

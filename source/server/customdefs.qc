@@ -59,11 +59,18 @@ entity activator;
 .float zoom;
 #endif
 
+float sprint_max_time = 4.0;
 .float sprinting;
 .float weaponskin;
 .float secondaryweaponskin;
 .float thirdweaponskin;
 .float stamina;
+.float sprint_timer;
+.float sprint_duration;
+.float sprint_timer_stopped;
+.float sprint_start_time;
+.float sprint_stop_time;
+.float sprint_rest_time;
 void() W_SprintStop;
 .float into_sprint;
 .float dive;
