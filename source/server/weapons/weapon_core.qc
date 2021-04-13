@@ -77,6 +77,9 @@ void() W_AimOut =
 
 void() W_SprintStop =
 {
+	self.sprint_stop_time = time;
+	self.sprint_duration = self.sprint_timer;
+	
 	float startframe = GetFrame(self.weapon,SPRINT_OUT_START);
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
 	string modelname = GetWeaponModel(self.weapon, 0);
@@ -101,6 +104,12 @@ void() W_SprintStop =
 
 
 void W_SprintStart () {	
+	self.sprint_start_time = time;
+	
+	if (self.sprint_rest_time > sprint_max_time)
+		self.sprint_duration = 0.0;
+	else
+		self.sprint_duration -= self.sprint_rest_time;
 
 #ifdef NX
 	if (!self.sprintflag) {
