@@ -1510,6 +1510,7 @@ void() Load_Mbox_Data =
 {
 	local float file;
 	local string h;
+	local int weapons_all_disabled = 1;
 
 	// Attempt to Open the File
 	h = strcat(mapname, ".mbox");
@@ -1527,6 +1528,9 @@ void() Load_Mbox_Data =
 		for (float i = 0; i < 25; i++) {
 			h = strtrim((fgets(file)));
 			BoxWeapons[i] = stof(h);
+			
+			if (stof(h) == 1)
+				weapons_all_disabled = 0;
 
 			// Precache Weapon Data if enabled
 			if (BoxWeapons[i]) {
@@ -1534,6 +1538,12 @@ void() Load_Mbox_Data =
 				precache_model(GetWeaponModel(Getweaponid(i), 1));
 				precache_extra(Getweaponid(i));
 			}	
+		}
+	}
+	
+	if (weapons_all_disabled) {
+		for (float i = 0; i < 25; i++) {
+			BoxWeapons[i] = 1;
 		}
 	}
 }
