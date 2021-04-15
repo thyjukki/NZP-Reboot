@@ -109,6 +109,9 @@ void(float to) SwitchWeapon =
 	WriteByte(MSG_MULTICAST, to);
 	msg_entity = self;
 	multicast('0 0 0', MULTICAST_ONE);
+
+	// hotfix for weapon2models not reseting
+	self.weapon2model = GetWeapon2Model(to);
 	
 	#endif
 	#endif
@@ -376,10 +379,10 @@ void(float ach, entity who, optional float single) GiveAchievement= {
 
 float(entity who, entity target) isFacing =
 {
-	local float who_angle = who.angles_y;
-	local float target_angle = target.angles_y;
+	float who_angle = who.angles_y;
+	float target_angle = target.angles_y;
 
-	local float difference_angle = target_angle - who_angle;
+	float difference_angle = target_angle - who_angle;
 
 	#ifdef PSP
 	if (difference_angle < -45) {

@@ -391,17 +391,22 @@ void() PlayerPostThink =
 
 	self.oldvelocity = self.velocity;
 
-	// Check if we are currently looking at an enemy
-	// This should NOT be handled server-side, yet here we are
-	// FIXME - MotoLegacy
+	// Perform a traceline to keep track of entities directly
+	// in front of the player.
 	#ifndef NX
-	vector	source;
+	vector source;
 
 	makevectors (self.v_angle);
 	source = self.origin + self.view_ofs;
 
 	traceline (source, source + v_forward*800*1.2, 0, self);
 
+	// use .head here to avoid expanding ent struct
+	self.head = trace_ent;
+	centerprint(self, strcat("looking at: ", self.head.classname));
+
+	// check whether we're looking at an entity separately to communicate
+	// with the client more reasonably
 	if (trace_ent.classname == "ai_zombie" || trace_ent.classname == "ai_zombie_head" 
 	|| trace_ent.classname == "ai_zombie_rarm" ||trace_ent.classname == "ai_zombie_larm" 
 	|| trace_ent.classname == "ai_dog")
