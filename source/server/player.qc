@@ -403,7 +403,6 @@ void() PlayerPostThink =
 
 	// use .head here to avoid expanding ent struct
 	self.head = trace_ent;
-	centerprint(self, strcat("looking at: ", self.head.classname));
 
 	// check whether we're looking at an entity separately to communicate
 	// with the client more reasonably
