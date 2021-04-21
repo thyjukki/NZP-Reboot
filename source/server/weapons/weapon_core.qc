@@ -77,8 +77,11 @@ void() W_AimOut =
 
 void() W_SprintStop =
 {
-	self.sprint_stop_time = time;
-	self.sprint_duration = self.sprint_timer;
+	if (self.sprinting)
+	{
+		self.sprint_stop_time = time;
+		self.sprint_duration = self.sprint_timer;
+	}
 	
 	float startframe = GetFrame(self.weapon,SPRINT_OUT_START);
 	float endframe = GetFrame(self.weapon,SPRINT_OUT_END);
