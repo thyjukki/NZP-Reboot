@@ -3,7 +3,10 @@
 // 	Typos FTW!
 //
 
-searchhandle maps;
+float current_custom_map_page;
+float custom_map_pages;
+float last_active_custom_select;
+float active_custom_select;
 
 void() menu_single =
 {
@@ -63,7 +66,6 @@ void() menu_back =
 	} else if (in_menu == MENU_IGS) {
 		in_menu = MENU_PAUSE;
 	} else if (in_menu == MENU_CUSTOMS) {
-		search_end(maps);
 		in_menu = MENU_SINGLE;
 	} else
 		in_menu = MENU_MAIN;
@@ -565,6 +567,33 @@ void() bind_switchnade = {
 		editBind[13] = FALSE;
 }
 
+float next_gray_out;
+float back_gray_out;
+
+void() menu_custom_next =
+{
+	if (current_custom_map_page < custom_map_pages) {
+		current_custom_map_page++;
+		back_gray_out = 0;
+
+		if (current_custom_map_page == custom_map_pages)
+			next_gray_out = 1;
+	}
+		
+}
+
+void() menu_custom_back =
+{
+	if (current_custom_map_page > 1) {
+		current_custom_map_page--;
+		next_gray_out = 0;
+
+		if (current_custom_map_page == 1)
+			back_gray_out = 1;
+	}
+		
+}
+
 //rmb null
 void() null = {
 	return;
@@ -591,77 +620,82 @@ var struct
 	void() action; //function that is called when the button is pressed with lmb
 	void() action2; //rmb function
 	float group; //a bit field, button will be usable/visible when these bits are active
+	float gray_out; // if not to be accessed
 } buttons[] =
 {
 	//Main
-	{[0.025, 0.175, 0], "Solo", -1, menu_single, null, MENU_MAIN},
+	{[0.025, 0.175, 0], "Solo", -1, menu_single, null, MENU_MAIN, 0},
 	//{[0.025, 0.225, 0], "Cooperative", -1, menu_multi, null, MENU_MAIN},
-	{[0.025, 0.300, 0], "Settings", -1, menu_settings, null, MENU_MAIN},
-	{[0.025, 0.350, 0], "Achievements", -1, menu_achievements, null, MENU_MAIN},
-	{[0.025, 0.425, 0], "Credits", -1, menu_about, null, MENU_MAIN},
-	{[0.025, 0.500, 0], "Exit", -1, menu_quit, null, MENU_MAIN},
+	{[0.025, 0.300, 0], "Settings", -1, menu_settings, null, MENU_MAIN, 0},
+	{[0.025, 0.350, 0], "Achievements", -1, menu_achievements, null, MENU_MAIN, 0},
+	{[0.025, 0.425, 0], "Credits", -1, menu_about, null, MENU_MAIN, 0},
+	{[0.025, 0.500, 0], "Exit", -1, menu_quit, null, MENU_MAIN, 0},
 
 	//Solo
-	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, null, MENU_SINGLE},
-	{[0.025, 0.225, 0], "Warehouse", -1, menu_loadwh, null, MENU_SINGLE},
-	{[0.025, 0.300, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE},
+	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, null, MENU_SINGLE, 0},
+	{[0.025, 0.225, 0], "Warehouse", -1, menu_loadwh, null, MENU_SINGLE, 0},
+	{[0.025, 0.300, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE, 0},
 
 	//Pause
-	{[0.025, 0.500, 0], "Resume", -1, menu_resume, null, MENU_PAUSE},
-	{[0.025, 0.550, 0], "Restart", -1, menu_restart, null, MENU_PAUSE},
-	{[0.025, 0.600, 0], "Settings", -1, menu_settings, null, MENU_PAUSE},
-	{[0.025, 0.650, 0], "Main Menu", -1, menu_main, null, MENU_PAUSE},
-	{[0.025, 0.850, 0], "Waypoint Menu", -1, menu_waypoint, null, MENU_PAUSE},
+	{[0.025, 0.500, 0], "Resume", -1, menu_resume, null, MENU_PAUSE, 0},
+	{[0.025, 0.550, 0], "Restart", -1, menu_restart, null, MENU_PAUSE, 0},
+	{[0.025, 0.600, 0], "Settings", -1, menu_settings, null, MENU_PAUSE, 0},
+	{[0.025, 0.650, 0], "Main Menu", -1, menu_main, null, MENU_PAUSE, 0},
+	{[0.025, 0.850, 0], "Waypoint Menu", -1, menu_waypoint, null, MENU_PAUSE, 0},
 
 	//Restart
-	{[0.025, 0.500, 0], "Yes", -1, menu_resy, null, MENU_RES},
-	{[0.025, 0.550, 0], "No", -1, menu_resn, null, MENU_RES},
+	{[0.025, 0.500, 0], "Yes", -1, menu_resy, null, MENU_RES, 0},
+	{[0.025, 0.550, 0], "No", -1, menu_resn, null, MENU_RES, 0},
 
 	//Settings
-	{[0.025, 0.175, 0], "Graphics Settings", -1, menu_graphics, null, MENU_SETTINGS + MENU_IGS},
-	{[0.025, 0.225, 0], "Controls", -1, menu_controls, null, MENU_SETTINGS + MENU_IGS},
+	{[0.025, 0.175, 0], "Graphics Settings", -1, menu_graphics, null, MENU_SETTINGS + MENU_IGS, 0},
+	{[0.025, 0.225, 0], "Controls", -1, menu_controls, null, MENU_SETTINGS + MENU_IGS, 0},
 
 	//Graphics
-	{[0.025, 0.175, 0], "Resolution", -1, settings_re, settings_re, MENU_GSETTINGS},
-	{[0.025, 0.225, 0], "Aspect Ratio", -1, settings_ar, settings_ar2, MENU_GSETTINGS},
-	{[0.025, 0.275, 0], "Fullscreen", -1, settings_fs, settings_fs, MENU_GSETTINGS},
-	{[0.025, 0.325, 0], "Show FPS", -1, settings_fps, settings_fps, MENU_GSETTINGS},
-	{[0.025, 0.375, 0], "Max FPS", -1, settings_mfps, settings_mfps2, MENU_GSETTINGS},
-	{[0.025, 0.425, 0], "VSync", -1, settings_vs, settings_vs, MENU_GSETTINGS},
-	{[0.025, 0.475, 0], "Field of View", -1, settings_fov, settings_fov2, MENU_GSETTINGS},
-	{[0.025, 0.525, 0], "Brightness", -1, settings_brite, settings_brite2, MENU_GSETTINGS},	
-	{[0.025, 0.575, 0], "Decals", -1, settings_dc, settings_dc, MENU_GSETTINGS},
-	{[0.025, 0.625, 0], "Particles", -1, settings_pt, settings_pt, MENU_GSETTINGS},
-	{[0.025, 0.675, 0], "Fullbright", -1, settings_fb, settings_fb, MENU_GSETTINGS},
-	{[0.025, 0.725, 0], "Retro", -1, settings_ro, settings_ro, MENU_GSETTINGS},
-	{[0.025, 0.800, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS},
+	{[0.025, 0.175, 0], "Resolution", -1, settings_re, settings_re, MENU_GSETTINGS, 0},
+	{[0.025, 0.225, 0], "Aspect Ratio", -1, settings_ar, settings_ar2, MENU_GSETTINGS, 0},
+	{[0.025, 0.275, 0], "Fullscreen", -1, settings_fs, settings_fs, MENU_GSETTINGS, 0},
+	{[0.025, 0.325, 0], "Show FPS", -1, settings_fps, settings_fps, MENU_GSETTINGS, 0},
+	{[0.025, 0.375, 0], "Max FPS", -1, settings_mfps, settings_mfps2, MENU_GSETTINGS, 0},
+	{[0.025, 0.425, 0], "VSync", -1, settings_vs, settings_vs, MENU_GSETTINGS, 0},
+	{[0.025, 0.475, 0], "Field of View", -1, settings_fov, settings_fov2, MENU_GSETTINGS, 0},
+	{[0.025, 0.525, 0], "Brightness", -1, settings_brite, settings_brite2, MENU_GSETTINGS, 0},	
+	{[0.025, 0.575, 0], "Decals", -1, settings_dc, settings_dc, MENU_GSETTINGS, 0},
+	{[0.025, 0.625, 0], "Particles", -1, settings_pt, settings_pt, MENU_GSETTINGS, 0},
+	{[0.025, 0.675, 0], "Fullbright", -1, settings_fb, settings_fb, MENU_GSETTINGS, 0},
+	{[0.025, 0.725, 0], "Retro", -1, settings_ro, settings_ro, MENU_GSETTINGS, 0},
+	{[0.025, 0.800, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS, 0},
 
 	//Controls
-	{[0.025, 0.175, 0], "Walk Forward", -1, bind_walkf, null, MENU_CSETTINGS},
-	{[0.025, 0.225, 0], "Walk Backward", -1, bind_walkb, null, MENU_CSETTINGS},
-	{[0.025, 0.275, 0], "Walk Left", -1, bind_walkl, null, MENU_CSETTINGS},
-	{[0.025, 0.325, 0], "Walk Right", -1, bind_walkr, null, MENU_CSETTINGS},
-	{[0.025, 0.375, 0], "Jump", -1, bind_jump, null, MENU_CSETTINGS},
-	{[0.025, 0.425, 0], "Sprint", -1, bind_sprint, null, MENU_CSETTINGS},
-	{[0.025, 0.475, 0], "Change Stance", -1, bind_stance, null, MENU_CSETTINGS},
+	{[0.025, 0.175, 0], "Walk Forward", -1, bind_walkf, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.225, 0], "Walk Backward", -1, bind_walkb, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.275, 0], "Walk Left", -1, bind_walkl, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.325, 0], "Walk Right", -1, bind_walkr, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.375, 0], "Jump", -1, bind_jump, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.425, 0], "Sprint", -1, bind_sprint, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.475, 0], "Change Stance", -1, bind_stance, null, MENU_CSETTINGS, 0},
 
-	{[0.025, 0.525, 0], "Weapon Next", -1, bind_wpnn, null, MENU_CSETTINGS},
-	{[0.025, 0.575, 0], "Weapon Previous", -1, bind_wpnp, null, MENU_CSETTINGS},
+	{[0.025, 0.525, 0], "Weapon Next", -1, bind_wpnn, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.575, 0], "Weapon Previous", -1, bind_wpnp, null, MENU_CSETTINGS, 0},
 
-	{[0.025, 0.625, 0], "Interact", -1, bind_interact, null, MENU_CSETTINGS},
-	{[0.025, 0.675, 0], "Reload", -1, bind_reload, null, MENU_CSETTINGS},
-	{[0.025, 0.725, 0], "Melee", -1, bind_knife, null, MENU_CSETTINGS},
-	{[0.025, 0.775, 0], "Grenade", -1, bind_nade, null, MENU_CSETTINGS},
-	{[0.025, 0.825, 0], "Secondary Grenade", -1, bind_switchnade, null, MENU_CSETTINGS},
+	{[0.025, 0.625, 0], "Interact", -1, bind_interact, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.675, 0], "Reload", -1, bind_reload, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.725, 0], "Melee", -1, bind_knife, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.775, 0], "Grenade", -1, bind_nade, null, MENU_CSETTINGS, 0},
+	{[0.025, 0.825, 0], "Secondary Grenade", -1, bind_switchnade, null, MENU_CSETTINGS, 0},
+
+	// Custom Maps
+	{[0.025, 0.825, 0], "Next Page", -1, menu_custom_next, null, MENU_CUSTOMS, 0},
+	{[0.025, 0.875, 0], "Previous Page", -1, menu_custom_back, null, MENU_CUSTOMS, 0},
 
 	//Everything, pretty much
 	{[0.025, 0.925, 0], "Back", -1, menu_back, null, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + 
 													 MENU_IGS + MENU_GSETTINGS + MENU_CSETTINGS + MENU_CUSTOMS +
-                                                     MENU_ACHIEVEMENTS},
+                                                     MENU_ACHIEVEMENTS, 0},
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 45;
+const float BUTTONS_COUNT = 47;
 float lastActive;
 
 
@@ -685,19 +719,34 @@ void(float index) Update_Button =
 	pos_x *= g_width;
 	pos_y *= g_height;
 
-	
-	if(buttons[index].active > 0) {
-		drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
-	} else {
-		drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
-	}
+	if (next_gray_out == 1)
+		buttons[44].gray_out = 1;
+	else
+		buttons[44].gray_out = 0;
 
-	if (cursor_pos_x > pos_x && cursor_pos_x < pos_x + (g_height * 0.6) && cursor_pos_y > pos_y && cursor_pos_y < pos_y + btnscale) {
+	if (back_gray_out == 1)
+		buttons[45].gray_out = 1;
+	else
+		buttons[45].gray_out = 0;
+
+	if (buttons[index].gray_out == 0) {
+		if(buttons[index].active > 0) {
+			drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
+		} else {
+			drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		}
+	} else {
+		drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [0.5,0.5,0.5], 1, 1);
+	}
+	
+
+	if (cursor_pos_x > pos_x && cursor_pos_x < pos_x + (g_height * 0.6) && cursor_pos_y > pos_y && cursor_pos_y < pos_y + btnscale && buttons[index].gray_out == 0) {
 		if (index != lastActive)
 			sound(self, 0, "sounds/menu/navigate.wav", 1, ATTN_NONE);
 		
 		buttons[index].active = 1;
 		lastActive = index;
+		last_active_custom_select = active_custom_select = -1;
 	}
 
 	if (lastActive == -1) {
@@ -745,6 +794,9 @@ void(float index, float type) Button_Click =
 		lastActive = -1;
 		sound(self, 0, "sounds/menu/enter.wav", 1, ATTN_NONE); //FIXME - prevent sound from playing if action2 is null!
 	}
+
+	if (in_menu == MENU_CUSTOMS)
+		customs_interact = FALSE;
 };
 
 
@@ -755,6 +807,11 @@ void(float type) Menu_Click =
 	{
 		Button_Click(i, type);
 	}
+};
+
+void() Menu_Click_Custom =
+{
+	customs_interact = TRUE;
 };
 
 void() Draw_Extra_Main =
@@ -1101,51 +1158,130 @@ string(string s) strip_custominfo =
 	return s2;
 }
 
-string custom_map_name[10];
+var struct
+{
+	float 	occupied;
+	float 	map_allow_game_settings;
+	float 	map_use_thumbnail;
+	string 	map_name;
+	string 	map_name_pretty;
+	string 	map_desc_1;
+	string 	map_desc_2;
+	string 	map_desc_3;
+	string 	map_desc_4;
+	string 	map_desc_5;
+	string 	map_desc_6;
+} custom_maps[500];
+
+void() Customs_Get =
+{
+	searchhandle 	maps;
+	float 			map_count;
+
+	maps 		= search_begin("maps/*.bsp", 0, 0);
+	map_count 	= search_getsize(maps);
+
+	custom_map_pages = ceil(map_count/10);
+
+	for (float i = 0; i < map_count; i++) {
+		custom_maps[i].occupied = TRUE;
+		custom_maps[i].map_name = strip_custominfo(search_getfilename(maps, i));
+
+		float settings = fopen(strcat("maps/", custom_maps[i].map_name, ".txt"), FILE_READ);
+		if (settings != -1) {
+			custom_maps[i].map_name_pretty = fgets(settings);
+			custom_maps[i].map_desc_1 = fgets(settings);
+			custom_maps[i].map_desc_2 = fgets(settings);
+			custom_maps[i].map_desc_3 = fgets(settings);
+			custom_maps[i].map_desc_4 = fgets(settings);
+			custom_maps[i].map_desc_5 = fgets(settings);
+			custom_maps[i].map_desc_6 = fgets(settings);
+			custom_maps[i].map_use_thumbnail = stof(fgets(settings));
+			custom_maps[i].map_allow_game_settings = stof(fgets(settings));
+			fclose(settings);
+		}
+		
+	}
+
+	current_custom_map_page = 1;
+
+	search_end(maps);
+}
+
 void() Draw_Extra_Customs =
 {
-	float items;
-	float pic;
+	string 	custom_map_names[10];
+	float 	custom_map_active[10];
+	float 	multiplier;
 
-	// get all .BSPs in the maps folder
-	maps = search_begin("maps/*.bsp", 0, 0);
-
-	// the amount of maps in the folder
-	float mapcount = search_getsize(maps);
-
-	if (mapcount < 10)
-		items = mapcount;
+	if (current_custom_map_page > 1)
+		multiplier = (current_custom_map_page - 1) * 10;
 	else
-		items = 10;
+		multiplier = 0;
 
 	for (float i = 0; i < 10; i++) {
-		custom_map_name[i] = search_getfilename(maps, i);
-		custom_map_name[i] = strip_custominfo(custom_map_name[i]);
-
-		// hacky thing here to emulate the normal buttons on the menu..
-		// since they're fixed/static the current system won't work well with
-		// something dynamic like the custom maps menu, where results vary.
-		// --
-		// god this if statement is horrid - moto
-		if (cursor_pos_x > 0.025*g_width && cursor_pos_x < (0.025*g_width + g_height * 0.6) && cursor_pos_y > (0.175 + (0.05 * i))*g_height && cursor_pos_y < (0.175 + (0.05 * i))*g_height + (0.030*g_height)) {
-			lastActive = -1;
-			if (customs_interact) {
-				search_end(maps);
-				localcmd(strcat("map ", custom_map_name[i]));
-			}
-				
-			// Draw custom pic if exists
-			pic = fopen(strcat("menu/", custom_map_name[i], ".png"), FILE_READ);
-
-			if (pic != -1) {
-				drawpic([0.510*g_width, 0.150*g_height, 0], strcat("data/menu/", custom_map_name[i], ".png"), [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
-				fclose(pic);
-			}
-			
-			drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_name[i], [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
-		} else {
-			drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_name[i], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		if (custom_maps[i + multiplier].occupied) {
+			custom_map_names[i] = custom_maps[i + multiplier].map_name;
 		}
+	}
+
+	for (float i = 0; i < 10; i++) {
+		if (cursor_pos_x > 0.025*g_width && cursor_pos_x < (0.025*g_width + g_height * 0.6) && 
+			cursor_pos_y > (0.175 + (0.05 * i))*g_height && cursor_pos_y < (0.175 + (0.05 * i))*g_height + 
+			(0.030*g_height)) {
+
+			if (i != last_active_custom_select)
+				sound(self, 0, "sounds/menu/navigate.wav", 1, ATTN_NONE);
+
+			if (customs_interact)
+				localcmd(strcat("map "), custom_map_names[i]);
+			
+			if (last_active_custom_select != -1)
+				custom_map_active[last_active_custom_select] = FALSE;
+			custom_map_active[i] = TRUE;
+			last_active_custom_select = i;
+			lastActive = -1;
+		}
+	}
+
+	for (float i = 0; i < 10; i++) {
+		if (custom_map_active[i] == TRUE || last_active_custom_select == i) {
+			if (custom_maps[i + multiplier].map_name_pretty)
+				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_maps[i + multiplier].map_name_pretty, [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
+			else
+				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_names[i], [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
+
+
+			if (custom_maps[i + multiplier].map_desc_1) {
+				drawstring([0.425*g_width, 0.575*g_height, 0], custom_maps[i + multiplier].map_desc_1, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+			if (custom_maps[i + multiplier].map_desc_2) {
+				drawstring([0.425*g_width, 0.625*g_height, 0], custom_maps[i + multiplier].map_desc_2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+			if (custom_maps[i + multiplier].map_desc_3) {
+				drawstring([0.425*g_width, 0.675*g_height, 0], custom_maps[i + multiplier].map_desc_3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+			if (custom_maps[i + multiplier].map_desc_4) {
+				drawstring([0.425*g_width, 0.725*g_height, 0], custom_maps[i + multiplier].map_desc_4, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+			if (custom_maps[i + multiplier].map_desc_5) {
+				drawstring([0.425*g_width, 0.775*g_height, 0], custom_maps[i + multiplier].map_desc_5, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+			if (custom_maps[i + multiplier].map_desc_6) {
+				drawstring([0.425*g_width, 0.825*g_height, 0], custom_maps[i + multiplier].map_desc_6, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+
+			if (custom_maps[i + multiplier].map_use_thumbnail) {
+				drawpic([0.510*g_width, 0.150*g_height, 0], strcat("data/menu/", custom_map_names[i], ".png"), [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
+			}
+
+		} else {
+			if (custom_maps[i + multiplier].map_name_pretty)
+				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_maps[i + multiplier].map_name_pretty, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+			else
+				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_names[i], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		}
+			
 	}
 
 	customs_interact = FALSE;

@@ -124,6 +124,9 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 
 	cvar_set("nzp_particles", "1");
 	cvar_set("nzp_decals", "1");
+
+	// retrieve custom maps
+	Customs_Get();
 };
 
 noref void() CSQC_WorldLoaded =
@@ -617,8 +620,9 @@ noref float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent
 			{
 				if(scanx == K_MOUSE1) {
 					Menu_Click(0);
+
 					if (in_menu == MENU_CUSTOMS)
-						customs_interact = TRUE;
+						Menu_Click_Custom();
 					return TRUE;
 				} else if (scanx == K_MOUSE2) {
 					Menu_Click(1);
