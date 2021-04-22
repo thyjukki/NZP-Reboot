@@ -125,6 +125,16 @@ void() menu_graphics =
 	in_menu = MENU_GSETTINGS;
 };
 
+void() menu_consettings =
+{
+	if (in_menu == MENU_IGS)
+		wasigs = TRUE;
+	else
+		wasigs = FALSE;
+
+	in_menu = MENU_CONSETTINGS;
+}
+
 void() menu_controls =
 {
 	if (in_menu == MENU_IGS)
@@ -463,10 +473,13 @@ void() settings_re = {
 }
 
 void() settings_apply = {
-	localcmd(strcat("vid_width ", ftos(active_swidth), "\n"));
-	localcmd(strcat("vid_height ", ftos(active_sheight), "\n"));
-	localcmd(strcat("vid_fullscreen_standalone ", ftos(fullscreenval), "\n"));
-	localcmd("vid_restart\n");
+	if (in_menu == MENU_GSETTINGS) {
+		localcmd(strcat("vid_width ", ftos(active_swidth), "\n"));
+		localcmd(strcat("vid_height ", ftos(active_sheight), "\n"));
+		localcmd(strcat("vid_fullscreen_standalone ", ftos(fullscreenval), "\n"));
+		localcmd("vid_restart\n");
+	}
+
 }
 
 void() bind_walkf = {
@@ -594,6 +607,32 @@ void() menu_custom_back =
 		
 }
 
+void() settings_sens = {
+	float sens = cvar("sensitivity");
+
+	sens += 0.5;
+
+	cvar_set("sensitivity", ftos(sens));
+}
+
+void() settings_sens2 = {
+	float sens = cvar("sensitivity");
+
+	sens -= 0.5;
+
+	cvar_set("sensitivity", ftos(sens));
+}
+
+void() settings_adsmode =
+{
+	float adsmode = cvar("cl_adsmode");
+
+	if (adsmode == 0)
+		cvar_set("cl_adsmode", ftos(1));
+	else
+		cvar_set("cl_adsmode", ftos(0));
+}
+
 //rmb null
 void() null = {
 	return;
@@ -664,7 +703,7 @@ var struct
 	{[0.025, 0.625, 0], "Particles", -1, settings_pt, settings_pt, MENU_GSETTINGS, 0},
 	{[0.025, 0.675, 0], "Fullbright", -1, settings_fb, settings_fb, MENU_GSETTINGS, 0},
 	{[0.025, 0.725, 0], "Retro", -1, settings_ro, settings_ro, MENU_GSETTINGS, 0},
-	{[0.025, 0.800, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS, 0},
+	{[0.025, 0.800, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS + MENU_CONSETTINGS, 0},
 
 	//Controls
 	{[0.025, 0.175, 0], "Walk Forward", -1, bind_walkf, null, MENU_CSETTINGS, 0},
@@ -691,11 +730,15 @@ var struct
 	//Everything, pretty much
 	{[0.025, 0.925, 0], "Back", -1, menu_back, null, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + 
 													 MENU_IGS + MENU_GSETTINGS + MENU_CSETTINGS + MENU_CUSTOMS +
-                                                     MENU_ACHIEVEMENTS, 0},
+                                                     MENU_ACHIEVEMENTS + MENU_CONSETTINGS, 0},
+
+	{[0.025, 0.275, 0], "Control Settings", -1, menu_consettings, null, MENU_SETTINGS + MENU_IGS, 0}, // 47
+	{[0.025, 0.175, 0], "ADS Mode", -1, settings_adsmode, null, MENU_CONSETTINGS, 0}, // 48
+	{[0.025, 0.225, 0], "Look Sensitivity", -1, settings_sens, settings_sens2, MENU_CONSETTINGS, 0}, // 49
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 47;
+const float BUTTONS_COUNT = 50;
 float lastActive;
 
 
@@ -903,11 +946,14 @@ void() Draw_Extra_Settings =
 
 	// Descriptions
 	switch(lastActive) {
-		case 14:
+		case 15:
 			set_desc = "Adjust settings relating to Graphical Fidelity.";
 			break;
-		case 15:
+		case 16:
 			set_desc = "Customize your Control Scheme.";
+			break;
+		case 47:
+			set_desc = "Adjust settings in relation to how NZ:P Controls.";
 			break;
 		default:
 			set_desc = "";
@@ -962,6 +1008,41 @@ void() Draw_Extra_Restart =
 {
 	drawstring([0.025*g_width, 0.375*g_height, 0], "Are you sure you want to restart?", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
 	drawstring([0.02*g_width, 0.425*g_height, 0], "Your current progress will be lost!", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+}
+
+void() Draw_Extra_CSettings =
+{
+	string cset_desc;
+	cset_desc = "";
+
+	// ADS Mode
+	if (cvar("cl_adsmode") == 0)
+		drawstring([0.475*g_width, 0.175*g_height, 0], "HOLD", [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	else
+		drawstring([0.475*g_width, 0.175*g_height, 0], "TOGGLE", [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+
+	// Look Sensitivity
+	drawfill ([0.475*g_width, 0.2255*g_height, 0], [g_height * (cvar("sensitivity")/6), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1);
+
+
+	// Descriptions
+	switch(lastActive) {
+		case 48:
+			cset_desc = "Switch between Toggle/Hold to Aim Down Sight.";
+			break;
+		case 49:
+			cset_desc = "Change Look Sensitivity to change Cursor Responsiveness.";
+			break;
+		default:
+			cset_desc = "";
+			break;
+	}
+
+	// Division lines
+	drawfill ([0.025*g_width, 0.775*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+
+	// Draw desc
+	drawstring([0.025*g_width, 0.865*g_height, 0], cset_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 }
 
 void() Draw_Extra_GSettings =
@@ -1370,6 +1451,10 @@ void() Draw_Menu =
             title = "ACHIEVEMENTS";
             Draw_Extra_Achievements();
             break;
+		case MENU_CONSETTINGS:
+			title = "CONTROL SETTINGS";
+			Draw_Extra_CSettings();
+			break;
 		default:
 			title = "Nazi Zombies: Portable";
 	}

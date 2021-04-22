@@ -47,6 +47,7 @@ const float MENU_GSETTINGS = 512;
 const float MENU_CSETTINGS = 1024;
 const float MENU_CUSTOMS = 2048;
 const float MENU_ACHIEVEMENTS = 4096;
+const float MENU_CONSETTINGS = 8192;
 
 
 float useprint_type;

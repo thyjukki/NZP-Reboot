@@ -305,8 +305,6 @@ void() PlayerPostThink =
 			sound(self, CHAN_BODY, "sounds/player/land.wav", 1, 1.75);
 		self.lastsound_time = time - 0.15;
 	}
-
-	//centerprint(self, ftos(frametime));
 	
 	#ifdef PC
 	//footsteps
@@ -560,7 +558,7 @@ void() PlayerSpawn =
 	self.perks = G_PERKS;
 	SetPerk(self, self.perks);
 	
-	self.zoom = 1;			// This is to fix an aimin bug for the kar scope
+	//self.zoom = 1;			// This is to fix an aimin bug for the kar scope
 	
 	if (!self.playernum) {
 		self.playernum = player_count + 1;

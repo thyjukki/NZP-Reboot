@@ -2366,55 +2366,79 @@ void () Weapon_Logic =
 		} else {
 			self.semi = FALSE;
 		}
-		if (self.button8) {
-			if (!self.zoom) {
-				W_AimIn();
-			} 
-			#ifdef PC
-			else {
-			
-				if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
-					self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
-					if (self.viewzoom > 0.5)
-						self.viewzoom -= 0.05;
-					else 
-						self.viewzoom = 0.5;
-				} else {
-					if (self.viewzoom > 0.9)
-						self.viewzoom -= 0.01;
-					else
-						self.viewzoom = 0.89999;
-				}
-			}
-			#endif
-		} else if (!self.button8 && self.zoom) {
-		
-			#ifdef PC
-			if (self.weapon == W_KAR_SCOPE   || self.weapon == W_PTRS ||
-				self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
-				if (self.viewzoom == 0.5) {
-					self.viewzoom += 0.05;
-					ReturnWeaponModel();
-				} else {
+		if (cvar("cl_adsmode")) {
+			if (self.button8) {
+				self.ads_toggle = !self.ads_toggle;
+
+				if (self.ads_toggle == false) {
+					W_AimOut();
+					self.zoom = 0;
+
+					#ifdef PC
+					self.viewzoom = 1;
 					UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
 					UpdateV2model(self.weapon2model, 0);
-					self.viewzoom += 0.05;
-				}
-			} else {
-				if (self.viewzoom == 0.9) {
-					W_AimOut();
+					#endif
 				} else {
-					self.viewzoom += 0.015;
+					W_AimIn();
+					self.zoom = 1;
+
+					#ifdef PC
+					self.viewzoom = 0.9;
+					#endif
 				}
 			}
+		} else {
+			if (self.button8) {
+				if (!self.zoom) {
+					W_AimIn();
+				} 
+				#ifdef PC
+				else {
+				
+					if (self.weapon == W_KAR_SCOPE || self.weapon == W_PTRS ||
+						self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
+						if (self.viewzoom > 0.5)
+							self.viewzoom -= 0.05;
+						else 
+							self.viewzoom = 0.5;
+					} else {
+						if (self.viewzoom > 0.9)
+							self.viewzoom -= 0.01;
+						else
+							self.viewzoom = 0.89999;
+					}
+				}
+				#endif
+			} else if (!self.button8 && self.zoom) {
 			
-			if (self.viewzoom >= 1) {
-				self.viewzoom = 1;
-				self.zoom = 0;
+				#ifdef PC
+				if (self.weapon == W_KAR_SCOPE   || self.weapon == W_PTRS ||
+					self.weapon == W_HEADCRACKER || self.weapon == W_PENETRATOR) {
+					if (self.viewzoom == 0.5) {
+						self.viewzoom += 0.05;
+						ReturnWeaponModel();
+					} else {
+						UpdateVmodel(self.weaponmodel, GetWepSkin(self.weapon));
+						UpdateV2model(self.weapon2model, 0);
+						self.viewzoom += 0.05;
+					}
+				} else {
+					if (self.viewzoom == 0.9) {
+						W_AimOut();
+					} else {
+						self.viewzoom += 0.015;
+					}
+				}
+				
+				if (self.viewzoom >= 1) {
+					self.viewzoom = 1;
+					self.zoom = 0;
+				}
+				#else
+				W_AimOut();
+				#endif	
 			}
-			#else
-			W_AimOut();
-			#endif	
 		}
 	}
 

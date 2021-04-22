@@ -122,6 +122,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	screen_width_219[1] = 3440;
 	screen_height_219[1] = 1440;
 
+	cvar_set("cl_adsmode", "0");
 	cvar_set("nzp_particles", "1");
 	cvar_set("nzp_decals", "1");
 
