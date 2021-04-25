@@ -123,6 +123,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	screen_height_219[1] = 1440;
 
 	cvar_set("cl_adsmode", "0");
+	cvar_set("cl_cinematic", "0");
 	cvar_set("nzp_particles", "1");
 	cvar_set("nzp_decals", "1");
 
@@ -183,6 +184,11 @@ void() Update_Vmodel =
 	local vector offset, adsoffset;
 	local vector dir;
     local float ads;
+
+	if (cvar("r_drawviewmodel") == FALSE) {
+		vmodel.origin = '-10000 -10000 -10000';
+		return;
+	}
 	
 	// Motolegacy's Requiem idle bob
 
@@ -498,11 +504,14 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 			muzzlepos -= v_right * offset_y;
 			muzzlepos += v_up * (offset_z + 6);
 
-            if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))
-                dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '0.7 0 0.7' * mzlflash.alpha);
-            else
-			    dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '1.2 0.7 0.2' * mzlflash.alpha);
-			addentity(mzlflash);
+			if (cvar("r_drawviewmodel")) {
+				if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))
+					dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '0.7 0 0.7' * mzlflash.alpha);
+				else
+					dynamiclight_add(muzzlepos, 128 * mzlflash.alpha, '1.2 0.7 0.2' * mzlflash.alpha);
+
+				addentity(mzlflash);
+			}
 		}
 	}
 	
@@ -798,7 +807,7 @@ noref void() CSQC_Parse_Event =
 				muzzlepos += v_up * muzzle_offset_y;			
 				mzlflash.alpha = 1;
 
-				if (cvar("nzp_particles")) {
+				if (cvar("nzp_particles") && cvar("r_drawviewmodel")) {
 					if (IsPapWeapon(getstatf(STAT_ACTIVEWEAPON)))				
 						pointparticles(particleeffectnum("muzzle.muzzle_pap_part0"), muzzlepos, norm*24, 1);
 					else

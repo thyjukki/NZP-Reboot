@@ -8,6 +8,7 @@ float custom_map_pages;
 float last_active_custom_select;
 float active_custom_select;
 
+
 void() menu_single =
 {
 	in_menu = MENU_SINGLE;
@@ -79,6 +80,21 @@ void() menu_loadndu =
 void() menu_loadwh =
 {
 	localcmd("map warehouse\n");
+};
+
+void() menu_loadch =
+{
+	localcmd("map christmas_special\n");
+};
+
+void() menu_loadwn =
+{
+	localcmd("map wahnsinn\n");
+};
+
+void() menu_loadkn =
+{
+	localcmd("map kino\n");
 };
 
 void() menu_join =
@@ -672,8 +688,8 @@ var struct
 
 	//Solo
 	{[0.025, 0.175, 0], "Nacht der Untoten", -1, menu_loadndu, null, MENU_SINGLE, 0},
-	{[0.025, 0.225, 0], "Warehouse", -1, menu_loadwh, null, MENU_SINGLE, 0},
-	{[0.025, 0.300, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE, 0},
+	{[0.025, 0.275, 0], "Warehouse", -1, menu_loadwh, null, MENU_SINGLE, 0},
+	{[0.025, 0.450, 0], "Custom Maps", -1, menu_customs, null, MENU_SINGLE, 0},
 
 	//Pause
 	{[0.025, 0.500, 0], "Resume", -1, menu_resume, null, MENU_PAUSE, 0},
@@ -735,10 +751,14 @@ var struct
 	{[0.025, 0.275, 0], "Control Settings", -1, menu_consettings, null, MENU_SETTINGS + MENU_IGS, 0}, // 47
 	{[0.025, 0.175, 0], "ADS Mode", -1, settings_adsmode, null, MENU_CONSETTINGS, 0}, // 48
 	{[0.025, 0.225, 0], "Look Sensitivity", -1, settings_sens, settings_sens2, MENU_CONSETTINGS, 0}, // 49
+
+	{[0.025, 0.325, 0], "Wahnsinn", -1, menu_loadwn, null, MENU_SINGLE, 1}, // 50
+	{[0.025, 0.375, 0], "Christmas Special", -1, menu_loadch, null, MENU_SINGLE, 0}, // 51
+	{[0.025, 0.225, 0], "Kino der Toten", -1, menu_loadch, null, MENU_SINGLE, 1}, // 52
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 50;
+const float BUTTONS_COUNT = 53;
 float lastActive;
 
 
@@ -903,7 +923,7 @@ void() Draw_Extra_Solo =
 	local string solo_img = "";
 
 	// Division lines
-	drawfill ([0.025*g_width, 0.275*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+	drawfill ([0.025*g_width, 0.425*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
 
 	// Map descriptions
 	switch(lastActive) {
@@ -919,9 +939,27 @@ void() Draw_Extra_Solo =
 			solo_desc3 = "Switch through the Hordes!";
 			solo_img = "gfx/menu/warehouse.png";
 			break;
+		case 50:
+			solo_desc = "An abandoned and bleak mental house";
+			solo_desc2 = "surrounded by debris and fog. Teddy";
+			solo_desc3 = "is deceitful, find him.";
+			solo_img = "gfx/menu/wahnsinn.png";
+			break;
+		case 51:
+			solo_desc = "No Santa this year. Though we're";
+			solo_desc2 = "sure you will get presents from";
+			solo_desc3 = "the undead! Will you accept them?";
+			solo_img = "gfx/menu/christmas_special.png";
+			break;
+		case 52:
+			solo_desc = "A WW2-era theatre left to rot in";
+			solo_desc2 = "West Berlin. See what secrets await";
+			solo_desc3 = "in this Theatre of the Damned.";
+			solo_img = "gfx/menu/kino_der_toten.png";
+			break;
 		case 7:
-			solo_desc = "Custom Maps made by Community";
-			solo_desc2 = "on the Forum and Discord!";
+			solo_desc = "Custom Maps made by Community on";
+			solo_desc2 = "the Forum and Discord!";
 			solo_img = "gfx/menu/custom.png";
 			break;
 		default:
@@ -932,12 +970,12 @@ void() Draw_Extra_Solo =
 
 	// Map img
 	if (solo_img != "")
-		drawpic([0.510*g_width, 0.150*g_height, 0], solo_img, [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
+		drawpic([0.490*g_width, 0.115*g_height, 0], solo_img, [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
 
 	// Draw desc
-	drawstring([0.475*g_width, 0.575*g_height, 0], solo_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.475*g_width, 0.625*g_height, 0], solo_desc2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.475*g_width, 0.675*g_height, 0], solo_desc3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.425*g_width, 0.540*g_height, 0], solo_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.425*g_width, 0.580*g_height, 0], solo_desc2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.425*g_width, 0.620*g_height, 0], solo_desc3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 }
 
 void() Draw_Extra_Settings =
@@ -1252,6 +1290,9 @@ var struct
 	string 	map_desc_4;
 	string 	map_desc_5;
 	string 	map_desc_6;
+	string 	map_desc_7;
+	string 	map_desc_8;
+	string 	map_author;
 } custom_maps[500];
 
 void() Customs_Get =
@@ -1277,6 +1318,9 @@ void() Customs_Get =
 			custom_maps[i].map_desc_4 = fgets(settings);
 			custom_maps[i].map_desc_5 = fgets(settings);
 			custom_maps[i].map_desc_6 = fgets(settings);
+			custom_maps[i].map_desc_7 = fgets(settings);
+			custom_maps[i].map_desc_8 = fgets(settings);
+			custom_maps[i].map_author = fgets(settings);
 			custom_maps[i].map_use_thumbnail = stof(fgets(settings));
 			custom_maps[i].map_allow_game_settings = stof(fgets(settings));
 			fclose(settings);
@@ -1332,28 +1376,47 @@ void() Draw_Extra_Customs =
 			else
 				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_names[i], [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
 
+			float line_increment;
+			line_increment = 0;
 
-			if (custom_maps[i + multiplier].map_desc_1) {
-				drawstring([0.425*g_width, 0.575*g_height, 0], custom_maps[i + multiplier].map_desc_1, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			if (custom_maps[i + multiplier].map_desc_1 != "") {
+				drawstring([0.425*g_width, 0.540*g_height, 0], custom_maps[i + multiplier].map_desc_1, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_2) {
-				drawstring([0.425*g_width, 0.625*g_height, 0], custom_maps[i + multiplier].map_desc_2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			if (custom_maps[i + multiplier].map_desc_2 != "") {
+				line_increment++;
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_3) {
-				drawstring([0.425*g_width, 0.675*g_height, 0], custom_maps[i + multiplier].map_desc_3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			if (custom_maps[i + multiplier].map_desc_3 != "") {
+				line_increment++;
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_4) {
-				drawstring([0.425*g_width, 0.725*g_height, 0], custom_maps[i + multiplier].map_desc_4, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			if (custom_maps[i + multiplier].map_desc_4 != "") {
+				line_increment++;
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_4, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_5) {
-				drawstring([0.425*g_width, 0.775*g_height, 0], custom_maps[i + multiplier].map_desc_5, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			if (custom_maps[i + multiplier].map_desc_5 != "") {
+				line_increment++;
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_5, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_6) {
-				drawstring([0.425*g_width, 0.825*g_height, 0], custom_maps[i + multiplier].map_desc_6, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			if (custom_maps[i + multiplier].map_desc_6 != "") {
+				line_increment++;
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_6, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+			if (custom_maps[i + multiplier].map_desc_7 != "") {
+				line_increment++;
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_7, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+			if (custom_maps[i + multiplier].map_desc_8 != "") {
+				line_increment++;
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_8, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+			}
+			if (custom_maps[i + multiplier].map_author != "") {
+				line_increment++;
+				drawstring([0.425*g_width, (0.560 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_author, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0], 1, 1);
 			}
 
 			if (custom_maps[i + multiplier].map_use_thumbnail) {
-				drawpic([0.510*g_width, 0.150*g_height, 0], strcat("data/menu/", custom_map_names[i], ".png"), [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
+				drawpic([0.490*g_width, 0.115*g_height, 0], strcat("menu/custom/", custom_map_names[i], ".png"), [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
 			}
 
 		} else {

@@ -1322,6 +1322,9 @@ void(float width, float height) HUD_Waypoint =
 
 void(float width, float height) HUD_Draw = 
 {
+	if (cvar("cl_cinematic"))
+		return;
+	
 	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10) && !score_show)
 	{
         

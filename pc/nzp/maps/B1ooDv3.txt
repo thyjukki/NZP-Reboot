@@ -1,9 +1,12 @@
-B1ooD VERSION 3
-THIS IS THE 1ST DESCRIPTION LINE
-THIS IS THE 2ND DESCRIPTION LINE
-THIS IS THE 3RD DESCRIPTION LINE
-THIS IS THE 4TH DESCRIPTION LINE
-THIS IS THE 5TH DESCRIPTION LINE
-THIS IS THE 6TH DESCRIPTION LINE
+B1ooD Version 3
+My 1st proper map (for the 3rd t-
+ime). 3 rooms, the usual perks,
+mbox and pap. Good for quick cha-
+llenges and high round attempts.
+Harder than the old version (and
+better looking too).
+
+
+BCDeshiG
 1
 1
