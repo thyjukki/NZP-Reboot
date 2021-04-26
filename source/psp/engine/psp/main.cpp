@@ -57,6 +57,8 @@ qboolean depthfl = qfalse;
 extern	int  com_argc;
 extern	char **com_argv;
 
+int 	sys_psp_model;
+
 void Sys_ReadCommandLineFile (char* netpath);
 
 /*
@@ -766,7 +768,9 @@ char* Sys_GetPSPModel(void)
 
 	// normal psp models
 	char* modelstring;
-	switch(kuKernelGetModel()) {
+
+	sys_psp_model = kuKernelGetModel();
+	switch(sys_psp_model) {
 		case 0:
 			modelstring = "PSP Phat (1000)";
 			break;

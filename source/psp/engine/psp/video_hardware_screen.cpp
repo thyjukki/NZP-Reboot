@@ -102,8 +102,9 @@ extern "C"	cvar_t	crosshair;
 qboolean	scr_initialized;		// ready to draw
 
 qpic_t      *hitmark;
-qpic_t      *ls_wahnsinn;
-//qpic_t      *ls_anstieg;
+qpic_t 		*ls_ndu;
+qpic_t 		*ls_warehouse;
+qpic_t      *ls_xmas;
 
 int			scr_fullupdate;
 
@@ -603,10 +604,11 @@ void SCR_Init (void)
 //
 	Cmd_AddCommand ("screenshot",SCR_ScreenShot_f);
 
-    hitmark = Draw_CachePic("gfx/hud/hit_marker");
-	ls_wahnsinn = Draw_CachePic ("gfx/lscreen/psp_wahnsinn.lmp");
-	//ls_anstieg = Draw_CachePic ("gfx/lscreen/psp_anstieg");
-	//Sys_Error("pass");
+    hitmark 		= Draw_CachePic("gfx/hud/hit_marker");
+	//ls_wahnsinn 	= Draw_CachePic("gfx/lscreen/wahnsinn.lmp");
+	//ls_xmas 		= Draw_CachePic("gfx/lscreen/christmas_special.lmp");
+	//ls_warehouse 	= Draw_CacheImg("gfx/lscreen/warehouse");
+	//ls_ndu 			= Draw_CacheImg("gfx/lscreen/ndu");
 
 	scr_initialized = qtrue;
 }
@@ -997,8 +999,8 @@ void SCR_DrawLoadScreen (void)
         pic = Draw_CachePic ("gfx/lscreen/blstrans");
         Draw_Pic (scr_vrect.x, scr_vrect.y, pic);
 	}*/
-	if (loadingScreen == 1)
-		Draw_Pic (scr_vrect.x, scr_vrect.y, ls_wahnsinn);
+	/*if (loadingScreen == 1)
+		Draw_Pic (scr_vrect.x, scr_vrect.y, ls_wahnsinn);*/
 	//else if (loadingScreen == 2)
 		/*Draw_Pic (scr_vrect.x, scr_vrect.y, ls_anstieg);*//*
 	else if (loadingScreen == 3)
@@ -1011,6 +1013,14 @@ void SCR_DrawLoadScreen (void)
 		pic = Draw_CachePic ("gfx/lscreen/psp_warehouse");
 		Draw_Pic (scr_vrect.x, scr_vrect.y, pic);
 	}*/
+
+	// loading screens
+	switch(loadingScreen) {
+		//case 1: Draw_Pic(scr_vrect.x, scr_vrect.y, ls_ndu); break;
+		//case 2: Draw_Pic(scr_vrect.x, scr_vrect.y, ls_warehouse); break;
+		//case 3: Draw_Pic(scr_vrect.x, scr_vrect.y, ls_xmas); break;
+	}
+
 	if (loadingtimechange < Sys_FloatTime ())
 	{
         lodinglinetext = ReturnLoadingtex();
