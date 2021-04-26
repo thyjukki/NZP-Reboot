@@ -1379,38 +1379,38 @@ void() Draw_Extra_Customs =
 			float line_increment;
 			line_increment = 0;
 
-			if (custom_maps[i + multiplier].map_desc_1 != "") {
+			if (custom_maps[i + multiplier].map_desc_1 != "" && custom_maps[i + multiplier].map_desc_1 != " ") {
 				drawstring([0.425*g_width, 0.540*g_height, 0], custom_maps[i + multiplier].map_desc_1, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_2 != "") {
+			if (custom_maps[i + multiplier].map_desc_2 != "" && custom_maps[i + multiplier].map_desc_2 != " ") {
 				line_increment++;
 				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_3 != "") {
+			if (custom_maps[i + multiplier].map_desc_3 != "" && custom_maps[i + multiplier].map_desc_3 != " ") {
 				line_increment++;
 				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_4 != "") {
+			if (custom_maps[i + multiplier].map_desc_4 != "" && custom_maps[i + multiplier].map_desc_4 != " ") {
 				line_increment++;
 				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_4, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_5 != "") {
+			if (custom_maps[i + multiplier].map_desc_5 != "" && custom_maps[i + multiplier].map_desc_5 != " ") {
 				line_increment++;
 				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_5, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_6 != "") {
+			if (custom_maps[i + multiplier].map_desc_6 != "" && custom_maps[i + multiplier].map_desc_6 != " ") {
 				line_increment++;
 				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_6, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_7 != "") {
+			if (custom_maps[i + multiplier].map_desc_7 != "" && custom_maps[i + multiplier].map_desc_7 != " ") {
 				line_increment++;
 				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_7, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_desc_8 != "") {
+			if (custom_maps[i + multiplier].map_desc_8 != "" && custom_maps[i + multiplier].map_desc_8 != " ") {
 				line_increment++;
 				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_8, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
 			}
-			if (custom_maps[i + multiplier].map_author != "") {
+			if (custom_maps[i + multiplier].map_author != "" && custom_maps[i + multiplier].map_author != " ") {
 				line_increment++;
 				drawstring([0.425*g_width, (0.560 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_author, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0], 1, 1);
 			}
