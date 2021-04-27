@@ -794,12 +794,12 @@ void(float index) Update_Button =
 
 	if (buttons[index].gray_out == 0) {
 		if(buttons[index].active > 0) {
-			drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
+			drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 0);
 		} else {
-			drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+			drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 		}
 	} else {
-		drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [0.5,0.5,0.5], 1, 1);
+		drawstring(pos, buttons[index].text, [g_height * 0.030, g_height * 0.030, 1], [0.5,0.5,0.5], 1, 0);
 	}
 	
 
@@ -831,7 +831,7 @@ void() Controller_UpdateButton =
 	/*if (GPActive[0]) {
 
 	}*/
-	drawstring([0.025*g_width, 0.375*g_height, 0], ftos(GPActive[2]), [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.025*g_width, 0.375*g_height, 0], ftos(GPActive[2]), [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 0);
 }
 
 
@@ -882,12 +882,12 @@ void() Draw_Extra_Main =
 	local string main_desc = "";
 
 	// Draw darkened co-op button
-	drawstring([0.025*g_width, 0.225*g_height, 0], "Co-Op (Coming Soon!)", [g_height * 0.03, g_height * 0.03, 1], [0.5, 0.5, 0.5], 1, 1);
+	drawstring([0.025*g_width, 0.225*g_height, 0], "Co-Op (Coming Soon!)", [g_height * 0.03, g_height * 0.03, 1], [0.5, 0.5, 0.5], 1, 0);
 	
 	// Division lines
-	drawfill ([0.025*g_width, 0.275*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
-	drawfill ([0.025*g_width, 0.400*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
-	drawfill ([0.025*g_width, 0.475*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+	drawfill ([0.025*g_width, 0.275*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1, 0);
+	drawfill ([0.025*g_width, 0.400*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1, 0);
+	drawfill ([0.025*g_width, 0.475*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1, 0);
 
 	// Get description for menu option
 	switch(lastActive) {
@@ -912,7 +912,7 @@ void() Draw_Extra_Main =
 	}
 
 	// Draw desc
-	drawstring([0.025*g_width, 0.865*g_height, 0], main_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.025*g_width, 0.865*g_height, 0], main_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 }
 
 void() Draw_Extra_Solo =
@@ -923,7 +923,7 @@ void() Draw_Extra_Solo =
 	local string solo_img = "";
 
 	// Division lines
-	drawfill ([0.025*g_width, 0.425*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+	drawfill ([0.025*g_width, 0.425*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1, 0);
 
 	// Map descriptions
 	switch(lastActive) {
@@ -973,9 +973,9 @@ void() Draw_Extra_Solo =
 		drawpic([0.490*g_width, 0.115*g_height, 0], solo_img, [0.425*g_width, 0.385*g_height, 0], [1,1,1], 1);
 
 	// Draw desc
-	drawstring([0.425*g_width, 0.540*g_height, 0], solo_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.425*g_width, 0.580*g_height, 0], solo_desc2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.425*g_width, 0.620*g_height, 0], solo_desc3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.425*g_width, 0.540*g_height, 0], solo_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawstring([0.425*g_width, 0.580*g_height, 0], solo_desc2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawstring([0.425*g_width, 0.620*g_height, 0], solo_desc3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 }
 
 void() Draw_Extra_Settings =
@@ -999,53 +999,53 @@ void() Draw_Extra_Settings =
 	}
 
 	// Draw desc
-	drawstring([0.025*g_width, 0.865*g_height, 0], set_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.025*g_width, 0.865*g_height, 0], set_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 }
 
 //FIXME -- credits look ugly, font scaling & such
 void() Draw_Extra_Credits = 
 {
-	drawstring([0.03*g_width, 0.15*g_height, 0], "Blubswillrule:   Coding, Models, GFX, Sounds, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.15*g_height + g_height*0.025 + 3, 0], [strlen("Blubswillrule")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.15*g_height, 0], "Blubswillrule:   Coding, Models, GFX, Sounds, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.15*g_height + g_height*0.025 + 3, 0], [strlen("Blubswillrule")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 			
-	drawstring([0.03*g_width, 0.20*g_height, 0], "Ju[s]tice:       Maps, Models, GFX", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.20*g_height + g_height*0.025 + 3, 0], [strlen("Ju[s]tice")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.20*g_height, 0], "Ju[s]tice:       Maps, Models, GFX", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.20*g_height + g_height*0.025 + 3, 0], [strlen("Ju[s]tice")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 	
-	drawstring([0.03*g_width, 0.25*g_height, 0], "Jukki:           Coding", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.25*g_height + g_height*0.025 + 3, 0], [strlen("Jukki")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.25*g_height, 0], "Jukki:           Coding", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.25*g_height + g_height*0.025 + 3, 0], [strlen("Jukki")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 
-	drawstring([0.03*g_width, 0.30*g_height, 0], "Biodude:         Sounds", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.30*g_height + g_height*0.025 + 3, 0], [strlen("Biodude")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.30*g_height, 0], "Biodude:         Sounds", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.30*g_height + g_height*0.025 + 3, 0], [strlen("Biodude")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 
-	drawstring([0.03*g_width, 0.35*g_height, 0], "Dr_Mabuse1981:   Coding", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.35*g_height + g_height*0.025 + 3, 0], [strlen("Dr_Mabuse1981")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.35*g_height, 0], "Dr_Mabuse1981:   Coding", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.35*g_height + g_height*0.025 + 3, 0], [strlen("Dr_Mabuse1981")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 
-	drawstring([0.03*g_width, 0.40*g_height, 0], "Naievil:         Coding, NX Maintaining", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.40*g_height + g_height*0.025 + 3, 0], [strlen("Naievil")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.40*g_height, 0], "Naievil:         Coding, NX Maintaining", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.40*g_height + g_height*0.025 + 3, 0], [strlen("Naievil")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 
-	drawstring([0.03*g_width, 0.45*g_height, 0], "MotoLegacy:      Coding, GFX, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.45*g_height + g_height*0.025 + 3, 0], [strlen("MotoLegacy")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.45*g_height, 0], "MotoLegacy:      Coding, GFX, Music", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.45*g_height + g_height*0.025 + 3, 0], [strlen("MotoLegacy")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 
-	drawstring([0.03*g_width, 0.50*g_height, 0], "Derped_Crusader: Models, GFX", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.50*g_height + g_height*0.025 + 3, 0], [strlen("Derped_Crusader")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.50*g_height, 0], "Derped_Crusader: Models, GFX", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.50*g_height + g_height*0.025 + 3, 0], [strlen("Derped_Crusader")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 
-	drawstring([0.03*g_width, 0.60*g_height, 0], "Special Thanks:", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawfill ([.03*g_width, 0.60*g_height + g_height*0.025 + 3, 0], [strlen("Special Thanks")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1);
+	drawstring([0.03*g_width, 0.60*g_height, 0], "Special Thanks:", [g_height * 0.025, g_height * 0.025, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([.03*g_width, 0.60*g_height + g_height*0.025 + 3, 0], [strlen("Special Thanks")*12.5, 0.0025*g_height, 0], [0.8, 0.8, 0.8], 1, 0);
 			
-	drawstring([0.03*g_width, 0.640*g_height, 0], "- Spike:     FTEQW", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
-    drawstring([0.03*g_width, 0.660*g_height, 0], "- Shpuld:    Clean-CSQC", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
-    drawstring([0.03*g_width, 0.680*g_height, 0], "- Crow_Bar:  DQuake", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
-    drawstring([0.03*g_width, 0.700*g_height, 0], "- st1x51:    DQuakePlus", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.03*g_width, 0.720*g_height, 0], "- fgsfdsfgs: QuakespasmNX", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.03*g_width, 0.740*g_height, 0], "- Azenn:     GFX help", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1); 
-	drawstring([0.03*g_width, 0.760*g_height, 0], "- tavo:      Music help", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
-	drawstring([0.03*g_width, 0.780*g_height, 0], "- BCDeshiG:  Heavy bug testing", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.03*g_width, 0.640*g_height, 0], "- Spike:     FTEQW", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 0);
+    drawstring([0.03*g_width, 0.660*g_height, 0], "- Shpuld:    Clean-CSQC", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 0);
+    drawstring([0.03*g_width, 0.680*g_height, 0], "- Crow_Bar:  DQuake", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 0);
+    drawstring([0.03*g_width, 0.700*g_height, 0], "- st1x51:    DQuakePlus", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawstring([0.03*g_width, 0.720*g_height, 0], "- fgsfdsfgs: QuakespasmNX", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawstring([0.03*g_width, 0.740*g_height, 0], "- Azenn:     GFX help", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 0); 
+	drawstring([0.03*g_width, 0.760*g_height, 0], "- tavo:      Music help", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawstring([0.03*g_width, 0.780*g_height, 0], "- BCDeshiG:  Heavy bug testing", [g_height * 0.020, g_height * 0.020, 1], [0.8, 0.8, 0.8], 1, 0);
 }
 
 void() Draw_Extra_Restart =
 {
-	drawstring([0.025*g_width, 0.375*g_height, 0], "Are you sure you want to restart?", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
-	drawstring([0.02*g_width, 0.425*g_height, 0], "Your current progress will be lost!", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.025*g_width, 0.375*g_height, 0], "Are you sure you want to restart?", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 0);
+	drawstring([0.02*g_width, 0.425*g_height, 0], "Your current progress will be lost!", [g_height * 0.020, g_height * 0.020, 1], [0.8,0.8,0.8], 1, 0);
 }
 
 void() Draw_Extra_CSettings =
@@ -1055,12 +1055,12 @@ void() Draw_Extra_CSettings =
 
 	// ADS Mode
 	if (cvar("cl_adsmode") == 0)
-		drawstring([0.475*g_width, 0.175*g_height, 0], "HOLD", [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		drawstring([0.475*g_width, 0.175*g_height, 0], "HOLD", [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 	else
-		drawstring([0.475*g_width, 0.175*g_height, 0], "TOGGLE", [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		drawstring([0.475*g_width, 0.175*g_height, 0], "TOGGLE", [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Look Sensitivity
-	drawfill ([0.475*g_width, 0.2255*g_height, 0], [g_height * (cvar("sensitivity")/6), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1);
+	drawfill ([0.475*g_width, 0.2255*g_height, 0], [g_height * (cvar("sensitivity")/6), g_height * 0.030, 1], [0.8, 0.8, 0.8], 0, 0);
 
 
 	// Descriptions
@@ -1077,10 +1077,10 @@ void() Draw_Extra_CSettings =
 	}
 
 	// Division lines
-	drawfill ([0.025*g_width, 0.775*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+	drawfill ([0.025*g_width, 0.775*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1, 0);
 
 	// Draw desc
-	drawstring([0.025*g_width, 0.865*g_height, 0], cset_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.025*g_width, 0.865*g_height, 0], cset_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 }
 
 void() Draw_Extra_GSettings =
@@ -1098,7 +1098,7 @@ void() Draw_Extra_GSettings =
 
 	// Resolution
 	resval = strcat(ftos(active_swidth), "x", ftos(active_sheight));
-	drawstring([0.475*g_width, 0.175*g_height, 0], resval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.175*g_height, 0], resval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Aspect Ratio
 	switch(aspectratio) {
@@ -1121,7 +1121,7 @@ void() Draw_Extra_GSettings =
 			arval = "ERR";
 			break;
 	}
-	drawstring([0.475*g_width, 0.225*g_height, 0], arval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.225*g_height, 0], arval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Fullscreen
 	if (fullscreenval == 0)
@@ -1129,7 +1129,7 @@ void() Draw_Extra_GSettings =
 	else
 		sval = S_ENABLED;
 
-	drawstring([0.475*g_width, 0.275*g_height, 0], sval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.275*g_height, 0], sval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Show FPS
 	if (cvar("show_fps") == 0)
@@ -1137,14 +1137,14 @@ void() Draw_Extra_GSettings =
 	else
 		fpsval = S_ENABLED;
 
-	drawstring([0.475*g_width, 0.325*g_height, 0], fpsval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.325*g_height, 0], fpsval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Max FPS
 	// can't adjust when vsync is enabled, so grey out
 	if (!cvar("vid_vsync"))
-		drawstring([0.475*g_width, 0.375*g_height, 0], ftos(cvar("cl_maxfps")), [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		drawstring([0.475*g_width, 0.375*g_height, 0], ftos(cvar("cl_maxfps")), [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 	else 
-		drawstring([0.475*g_width, 0.375*g_height, 0], ftos(cvar("cl_maxfps")), [g_height * 0.030, g_height * 0.030, 1], [0.4,0.4,0.4], 1, 1);
+		drawstring([0.475*g_width, 0.375*g_height, 0], ftos(cvar("cl_maxfps")), [g_height * 0.030, g_height * 0.030, 1], [0.4,0.4,0.4], 1, 0);
 
 	// VSync
 	if (cvar("vid_vsync") == 0)
@@ -1152,14 +1152,14 @@ void() Draw_Extra_GSettings =
 	else
 		vsyncval = S_ENABLED;
 
-	drawstring([0.475*g_width, 0.425*g_height, 0], vsyncval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.425*g_height, 0], vsyncval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 	
 	// Field of View
-	drawstring([0.475*g_width, 0.475*g_height, 0], ftos(cvar("fov")), [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.475*g_height, 0], ftos(cvar("fov")), [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Brightness
 	// have to use a drawfill because of how gamma values are subtracted.. for some reason
-	drawfill ([0.475*g_width, 0.5255*g_height, 0], [g_height * (projBr/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1);
+	drawfill ([0.475*g_width, 0.5255*g_height, 0], [g_height * (projBr/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
 
 	// Decals
 	if (cvar("nzp_decals") == 0)
@@ -1167,7 +1167,7 @@ void() Draw_Extra_GSettings =
 	else
 		decalval = S_ENABLED;
 
-	drawstring([0.475*g_width, 0.575*g_height, 0], decalval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.575*g_height, 0], decalval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Particles
 	if (cvar("nzp_particles") == 0)
@@ -1175,7 +1175,7 @@ void() Draw_Extra_GSettings =
 	else
 		partval = S_ENABLED;
 
-	drawstring([0.475*g_width, 0.625*g_height, 0], partval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.625*g_height, 0], partval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Fullbright
 	if (cvar("r_fullbright") == 0)
@@ -1183,7 +1183,7 @@ void() Draw_Extra_GSettings =
 	else
 		fullval = S_ENABLED;
 
-	drawstring([0.475*g_width, 0.675*g_height, 0], fullval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.675*g_height, 0], fullval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Retro
 	if (cvar_string("gl_texturemode") == "gl_nearest")
@@ -1191,7 +1191,7 @@ void() Draw_Extra_GSettings =
 	else
 		retroval = S_DISABLED;
 
-	drawstring([0.475*g_width, 0.725*g_height, 0], retroval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+	drawstring([0.475*g_width, 0.725*g_height, 0], retroval, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 
 	// Descriptions
 	switch(lastActive) {
@@ -1237,10 +1237,10 @@ void() Draw_Extra_GSettings =
 	}
 
 	// Division lines
-	drawfill ([0.025*g_width, 0.775*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1);
+	drawfill ([0.025*g_width, 0.775*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1, 0);
 
 	// Draw desc
-	drawstring([0.025*g_width, 0.865*g_height, 0], gset_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.025*g_width, 0.865*g_height, 0], gset_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 }
 
 void() Draw_Extra_Controls =
@@ -1262,7 +1262,7 @@ void() Draw_Extra_Controls =
 		if (buttoncon[i] == "01")
 			buttoncon[i] = "UNBOUND";
 
-		drawstring([0.475*g_width, (0.175+(0.05*i))*g_height, 0], buttoncon[i], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+		drawstring([0.475*g_width, (0.175+(0.05*i))*g_height, 0], buttoncon[i], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 	}
 }
 
@@ -1372,47 +1372,47 @@ void() Draw_Extra_Customs =
 	for (float i = 0; i < 10; i++) {
 		if (custom_map_active[i] == TRUE || last_active_custom_select == i) {
 			if (custom_maps[i + multiplier].map_name_pretty)
-				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_maps[i + multiplier].map_name_pretty, [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
+				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_maps[i + multiplier].map_name_pretty, [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 0);
 			else
-				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_names[i], [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 1);
+				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_names[i], [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 0);
 
 			float line_increment;
 			line_increment = 0;
 
 			if (custom_maps[i + multiplier].map_desc_1 != "" && custom_maps[i + multiplier].map_desc_1 != " ") {
-				drawstring([0.425*g_width, 0.540*g_height, 0], custom_maps[i + multiplier].map_desc_1, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+				drawstring([0.425*g_width, 0.540*g_height, 0], custom_maps[i + multiplier].map_desc_1, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 			}
 			if (custom_maps[i + multiplier].map_desc_2 != "" && custom_maps[i + multiplier].map_desc_2 != " ") {
 				line_increment++;
-				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_2, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 			}
 			if (custom_maps[i + multiplier].map_desc_3 != "" && custom_maps[i + multiplier].map_desc_3 != " ") {
 				line_increment++;
-				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_3, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 			}
 			if (custom_maps[i + multiplier].map_desc_4 != "" && custom_maps[i + multiplier].map_desc_4 != " ") {
 				line_increment++;
-				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_4, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_4, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 			}
 			if (custom_maps[i + multiplier].map_desc_5 != "" && custom_maps[i + multiplier].map_desc_5 != " ") {
 				line_increment++;
-				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_5, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_5, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 			}
 			if (custom_maps[i + multiplier].map_desc_6 != "" && custom_maps[i + multiplier].map_desc_6 != " ") {
 				line_increment++;
-				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_6, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_6, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 			}
 			if (custom_maps[i + multiplier].map_desc_7 != "" && custom_maps[i + multiplier].map_desc_7 != " ") {
 				line_increment++;
-				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_7, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_7, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 			}
 			if (custom_maps[i + multiplier].map_desc_8 != "" && custom_maps[i + multiplier].map_desc_8 != " ") {
 				line_increment++;
-				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_8, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+				drawstring([0.425*g_width, (0.540 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_desc_8, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 			}
 			if (custom_maps[i + multiplier].map_author != "" && custom_maps[i + multiplier].map_author != " ") {
 				line_increment++;
-				drawstring([0.425*g_width, (0.560 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_author, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0], 1, 1);
+				drawstring([0.425*g_width, (0.560 + (0.040*line_increment))*g_height, 0], custom_maps[i + multiplier].map_author, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0], 1, 0);
 			}
 
 			if (custom_maps[i + multiplier].map_use_thumbnail) {
@@ -1421,9 +1421,9 @@ void() Draw_Extra_Customs =
 
 		} else {
 			if (custom_maps[i + multiplier].map_name_pretty)
-				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_maps[i + multiplier].map_name_pretty, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_maps[i + multiplier].map_name_pretty, [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 			else
-				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_names[i], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 1);
+				drawstring([0.025*g_width, (0.175 + (0.05 * i))*g_height, 0], custom_map_names[i], [g_height * 0.030, g_height * 0.030, 1], [0.8,0.8,0.8], 1, 0);
 		}
 			
 	}
@@ -1435,15 +1435,15 @@ void() Draw_Extra_Customs =
 void() Draw_Extra_Achievements =
 {
     for(float i = 0; i < MAX_ACHIEVEMENTS; i++) {
-        drawstring([0.200*g_width, (0.210 + (0.125 * i))*g_height, 0], achievementdesc[i], [g_height * 0.020, g_height * 0.020, 1], [1,1,1], 1, 1);
+        drawstring([0.200*g_width, (0.210 + (0.125 * i))*g_height, 0], achievementdesc[i], [g_height * 0.020, g_height * 0.020, 1], [1,1,1], 1, 0);
 
         if (achievementunlocked[i]) {
             drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], achievementimg[i], [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
-            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], achievementname[i], [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 1);
+            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], achievementname[i], [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
             
         } else {
-            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], strcat(achievementname[i], " (LOCKED)"), [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 1);
-            drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], "gfx/hud/ach/locked.tga", [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
+            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], strcat(achievementname[i], " (LOCKED)"), [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+            drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], "gfx/achievement/achievement_locked.tga", [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
         }
     }
 }
@@ -1460,12 +1460,12 @@ void() Draw_Menu =
 	}
 
 	// Darken the BG
-	drawfill ([0, 0, 0], [g_width, g_height, 1], [0, 0, 0], 0.4);
+	drawfill ([0, 0, 0], [g_width, g_height, 1], [0, 0, 0], 0.4, 0);
 
 	// version string
 	if (in_menu == MENU_MAIN || in_menu == MENU_ABOUT || in_menu == MENU_SINGLE || in_menu == MENU_ACHIEVEMENTS 
 		|| in_menu == MENU_CUSTOMS || in_menu == MENU_SETTINGS)
-		drawstring([(0.925*g_width - strlen(VERSION_STRING)*5*g_width/480), 0.025*g_height, 0], VERSION_STRING, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 1);
+		drawstring([(0.925*g_width - strlen(VERSION_STRING)*5*g_width/480), 0.025*g_height, 0], VERSION_STRING, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
 
 	//menu title
 	local string title = "";
@@ -1522,7 +1522,7 @@ void() Draw_Menu =
 			title = "Nazi Zombies: Portable";
 	}
 	
-	drawstring([0.025*g_width, 0.025*g_width, 0], title, [g_height * 0.045, g_height * 0.045, 1], [0.8, 0.8, 0.8], 1, 1);
+	drawstring([0.025*g_width, 0.025*g_width, 0], title, [g_height * 0.045, g_height * 0.045, 1], [0.8, 0.8, 0.8], 1, 0);
 
 	//Update buttons
 	local float i;

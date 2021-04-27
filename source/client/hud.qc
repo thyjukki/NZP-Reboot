@@ -72,12 +72,12 @@ void(float width, float height) HUD_Ammo =
 		float curmag2 = getstatf(STAT_CURRENTMAG2);
 		
 		ammostring = strcat(ftos(curmag2), " ", ftos(curmag), "/", ftos(ammo));
-		drawstring([width - (42/480)*width - (benis*20*width/1024), 0.96*height, 0], ammostring, [0.02*width, 0.02*width, 0], [1,1,1], 1, 1);
+		drawstring([width - (42/480)*width - (benis*20*width/1024), 0.96*height, 0], ammostring, [0.02*width, 0.02*width, 0], [1,1,1], 1, 0);
 	} else {
 		ammostring_1 = ftos(curmag);
 		ammostring_2 = strcat("/",ftos(ammo));
-		drawstring([width - (42/480)*width - (benis*20*width/1024), 0.96*height, 0], ammostring_1, [0.02*width, 0.02*width, 0], color, 1, 1);
-		drawstring([width - (42/480)*width - ((benis-strlen(ftos(curmag)))*20*width/1024), 0.96*height, 0], ammostring_2, [0.02*width, 0.02*width, 0], color_2, 1, 1);
+		drawstring([width - (42/480)*width - (benis*20*width/1024), 0.96*height, 0], ammostring_1, [0.02*width, 0.02*width, 0], color, 1, 0);
+		drawstring([width - (42/480)*width - ((benis-strlen(ftos(curmag)))*20*width/1024), 0.96*height, 0], ammostring_2, [0.02*width, 0.02*width, 0], color_2, 1, 0);
 	}
 }
 
@@ -114,7 +114,7 @@ void() HUD_AmmoString =
 			}
 		}
 
-		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], message, [0.02*g_width, 0.02*g_width, 0], textcolor, ammoopac, 1);
+		drawstring([g_width/2, g_height/2 + (30/272)*g_height, 0], message, [0.02*g_width, 0.02*g_width, 0], textcolor, ammoopac, 0);
 	} else {
 		ammoopac = 1;
 		ammoloop = 0;
@@ -172,7 +172,7 @@ void(float pwidth, float width, float height) PointUpdate =
 		}
 
 		if (changeam[i] != 0 && pmwidth[i] < g_width*0.05) {
-			drawstring([pwidth - pmwidth[i], 0.725*height - pmheight[i], 0], finalam[i], [0.022*width, 0.022*width, 0], POINTCOLOR, 1, 1);
+			drawstring([pwidth - pmwidth[i], 0.725*height - pmheight[i], 0], finalam[i], [0.022*width, 0.022*width, 0], POINTCOLOR, 1, 0);
 		}
 
 		pmwidth[i] += changew[i] * (frametime*375);
@@ -202,15 +202,15 @@ void(float width, float height) HUD_Points =
 			pointwidth = stringwidth(ftos(playerpoints[i]), 0, [0.022*width, 0.022*width, 0]);
 			x = ((width + backwidth) - pointwidth)/2;
 			drawpic([backwidth ,0.70*height - (.061*height*i),0], getImage("moneyback.tga"), [0.2*width, 0.07*height, 0], [1,1,1], 1); 
-			drawstring([x, 0.715*height - 0.06*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 1); 
+			drawstring([x, 0.715*height - 0.06*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 0); 
 			PointUpdate(backwidth * 0.95, width, height); 
 		}
 		else {
 			backwidth = 0.85*width;
 			pointwidth = stringwidth(ftos(playerpoints[i]), 0, [0.022*width*0.8, 0.022*width*0.8, 0]);
 			x = ((width + backwidth) - pointwidth)/2;
-			drawpic([backwidth, 0.70*height - (.071*height*i*0.8),0], getImage("moneyback.tga"), [0.2*width*0.8, 0.07*height*0.8, 0], [1,1,1], 1); 
-			drawstring([x, 0.715*height - 0.07*height*i*0.8, 0], ftos(playerpoints[i]), [0.022*width*0.8, 0.022*width*0.8, 0], TEXTCOLOR, 1, 1); 
+			drawpic([backwidth, 0.70*height - (.071*height*i*0.8),0], getImage("moneyback.tga"), [0.2*width*0.8, 0.07*height*0.8, 0], [1,1,1], 0); 
+			drawstring([x, 0.715*height - 0.07*height*i*0.8, 0], ftos(playerpoints[i]), [0.022*width*0.8, 0.022*width*0.8, 0], TEXTCOLOR, 1, 0); 
 		}
 	}
 }
@@ -227,11 +227,11 @@ void(float width, float height) HUD_Grenades =
 	grenades = getstatf(STAT_GRENADES);
 	betties = getstatf(STAT_SECGRENADES);
 	drawpic([0.9*width,0.825*height,0], getImage("frag.tga"), [50, 50, 0], [1,1,1], 1);
-	drawstring([0.9*width + 28, 0.825*height + 32, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.9*width + 28, 0.825*height + 32, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 0);
 	
 	if (betties != -1) {
 		drawpic([0.825*width,0.825*height,0], getImage("betty.tga"), [50, 50, 0], [1,1,1], 1);
-		drawstring([0.825*width + 28, 0.825*height + 32, 0], ftos(betties), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 1);
+		drawstring([0.825*width + 28, 0.825*height + 32, 0], ftos(betties), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 0);
 	}
 }
 
@@ -287,7 +287,7 @@ void(float width, float height) HUD_Rounds =
 		}
 
 		pwidth = (width - stringwidth("Round", 0, [0.030*width, 0.030*width, 0]))/2;
-		drawstring([pwidth, 0.35*height, 0], "Round", [0.030*width, 0.030*width, 0], [1, rcolor, rcolor], ralpha, 1);
+		drawstring([pwidth, 0.35*height, 0], "Round", [0.030*width, 0.030*width, 0], [1, rcolor, rcolor], ralpha, 0);
 
 		rcolor -= frametime/2.5;
 		if (rcolor < 0) {
@@ -306,10 +306,10 @@ void(float width, float height) HUD_Rounds =
 			}
 		}
 
-		drawstring([0.01*width, 0.66*height, 0], chaptertitle, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 1);
-		drawstring([0.01*width, 0.69*height, 0], location, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 1);
-		drawstring([0.01*width, 0.72*height, 0], date, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 1);
-		drawstring([0.01*width, 0.75*height, 0], person, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 1);
+		drawstring([0.01*width, 0.66*height, 0], chaptertitle, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 0);
+		drawstring([0.01*width, 0.69*height, 0], location, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 0);
+		drawstring([0.01*width, 0.72*height, 0], date, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 0);
+		drawstring([0.01*width, 0.75*height, 0], person, [0.015*width, 0.015*width, 0], [1, 1, 1], localpha, 0);
 	}
 
 	if (rounds_change == 1)//this is the rounds icon at the middle of the screen
@@ -848,12 +848,12 @@ void(float width, float height) HUD_Useprint =
 
 	print_width = stringwidth (usestring, 0, [0.015*width, 0.015*width, 0]);
 	x = (width - print_width)/2;
-	drawstring([x, 0.67*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([x, 0.67*height, 0], usestring, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
 
 	// Draw highlighted usebutton (or button icon in the future)
 	if (substring(usestring, 0, 4) == "Hold") {
 		button_width = x + stringwidth ("Hold ", 0, [0.015*width, 0.015*width, 0]);
-		drawstring([button_width, 0.67*height, 0], usebutton, [0.015*width, 0.015*width, 0], [1, 1, 0], 1, 1);
+		drawstring([button_width, 0.67*height, 0], usebutton, [0.015*width, 0.015*width, 0], [1, 1, 0], 1, 0);
 	}
 }
 
@@ -956,7 +956,7 @@ void(float width, float height) HUD_Weaponstring =
 	weaponstring = GetWeaponName(getstatf(STAT_ACTIVEWEAPON));
 	ws_offset = (strlen(weaponstring));
 		
-	drawstring([0.925*width + (40*width/1024) - ws_offset*20*width/1024, 0.75*height + 10, 0], weaponstring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.925*width + (40*width/1024) - ws_offset*20*width/1024, 0.75*height + 10, 0], weaponstring, [0.02*width, 0.02*width, 0], [1, 1, 1], 1, 0);
 }
 
 /*******************
@@ -981,10 +981,10 @@ void(float width, float height) HUD_Progressbar =
 	float bar_x = (width - bar_width)/2;
 	float bar_y = height*0.75;
 
-	drawfill ([bar_x - 1, bar_y - 1, 0], [bar_width+2, bar_height, 0], [0, 0, 0], 0.4);
-	drawfill ([bar_x, bar_y, 0], [bar_width * percent, bar_height-2, 0], [1, 1, 1], 0.4);
+	drawfill ([bar_x - 1, bar_y - 1, 0], [bar_width+2, bar_height, 0], [0, 0, 0], 0.4, 0);
+	drawfill ([bar_x, bar_y, 0], [bar_width * percent, bar_height-2, 0], [1, 1, 1], 0.4, 0);
 	
-	drawstring([(width - (88))/2, height*0.77 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 1); 
+	drawstring([(width - (88))/2, height*0.77 + 10, 0], "Reviving...", [0.0175*width, 0.0175*width, 0], [1, 1, 1], 1, 0); 
 }
 
 /*******************
@@ -1050,9 +1050,9 @@ void() Draw_Crosshair =
     {
 		setmodel(vmodel, "");
 		setmodel(v2model, "");
-		drawfill('0 0 0',  [g_width/2 - g_height/2, g_height, 0], '0 0 0', 1);
+		drawfill('0 0 0',  [g_width/2 - g_height/2, g_height, 0], '0 0 0', 1, 0);
 		drawpic([(g_width/2 - g_height/2),0,0], "gfx/hud/scope.tga", [g_height, g_height, 1], [1,1,1], 1);
-		drawfill([(g_width/2 + g_height/2),0,0],  [g_width, g_height, 0], '0 0 0', 1);
+		drawfill([(g_width/2 + g_height/2),0,0],  [g_width, g_height, 0], '0 0 0', 1, 0);
 	}
     
 	if (getstatf(STAT_HEALTH) < 11)
@@ -1079,7 +1079,7 @@ void() Draw_Crosshair =
 
 	if (getstatf(STAT_ACTIVEWEAPON) == W_M2 || getstatf(STAT_ACTIVEWEAPON) == W_TESLA || getstatf(STAT_ACTIVEWEAPON) == W_DG3)
 	{
-		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, 1, 1);
+		drawstring([(g_width/2 - g_width*0.0175/2), (g_height/2 - g_height*0.0175/2), 0], "O", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, 1, 0);
 	}
 	else if (getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2 && getstatf(STAT_ACTIVEWEAPON) != W_PANZER && getstatf(STAT_ACTIVEWEAPON) != W_LONGINUS) // naievil (FIXME) crosshair cvar
     {
@@ -1099,26 +1099,26 @@ void() Draw_Crosshair =
 		// Left
 		x_value = g_width/2 - crosshair_offset_step*2;
 		y_value = g_height/2;
-		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
+		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 0); 
 
 		// Right
 		x_value = g_width/2 + crosshair_offset_step*2;
 		y_value = g_height/2;
-		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
+		drawstring([x_value, y_value, 0], "-", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 0); 
 
 		// Down
 		x_value = g_width/2;
 		y_value = g_height/2 - crosshair_offset_step*2;
-		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
+		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 0); 
 
 		// Up
 		x_value = g_width/2;
 		y_value = g_height/2 + crosshair_offset_step*2;
-		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 1); 
+		drawstring([x_value, y_value, 0], "|", [0.0175*g_width, 0.0175*g_width, 0], crosshair_color, crosshair_opacity, 0); 
 
     }
     else if (/*crosshair.value && */getstatf(STAT_WEAPONZOOM) != 1 && getstatf(STAT_WEAPONZOOM) != 2) // naievil (FIXME) crosshair cvar
-		drawstring([((480 - 8)/2/480)*g_width, ((272 - 8)/2)*(g_height/272), 0], ".", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 1); 
+		drawstring([((480 - 8)/2/480)*g_width, ((272 - 8)/2)*(g_height/272), 0], ".", [0.0175*g_width, 0.0175*g_width, 0], [1, 1, 1], 1, 0); 
 }
 
 void() HUD_Powerups = {
@@ -1141,7 +1141,7 @@ void() HUD_Broadcast = {
 	float print_width = stringwidth (broadcast_msg, 0, [0.015*g_width, 0.015*g_width, 0]);
 	float x = (g_width - print_width)/2;
 	if (broadcast_type == 2 && health > 19)
-		drawstring([x, g_height/2, 0], broadcast_msg, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
+		drawstring([x, g_height/2, 0], broadcast_msg, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 0);
 }
 
 void() HUD_Scores =
@@ -1154,7 +1154,7 @@ void() HUD_Scores =
 	{
 		float print_width = stringwidth(subtext, 0, [0.015*g_width, 0.015*g_width, 0]);
 		x = (g_width - print_width)/2;
-		drawstring([x,g_height*(5/12), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 1);
+		drawstring([x,g_height*(5/12), 0], subtext, [0.015*g_width, 0.015*g_width, 0], [1, 1, 1], 1, 0);
 	
 		xback = x;
 	
@@ -1172,9 +1172,9 @@ void() HUD_Scores =
 			
 			print_width = stringwidth(ftos(playerpoints[i]), 0, [0.015*g_width, 0.015*g_width, 0]);
 			x = (g_width + (0.5*g_width) - print_width)/2;
-			drawstring([x,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1);
-			drawstring([x/1.36,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerkills[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
-			drawstring([xback,g_height*(5.75/12)+(i*g_width*0.03), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 1); 
+			drawstring([x,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerpoints[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 0);
+			drawstring([x/1.36,g_height*(5.75/12)+(i*g_width*0.03), 0], ftos(playerkills[i]), [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 0); 
+			drawstring([xback,g_height*(5.75/12)+(i*g_width*0.03), 0], playernames[i], [0.015*g_width, 0.015*g_width, 0], TEXTCOLOR, 1, 0); 
 		}
 	}
 }
@@ -1192,12 +1192,12 @@ void() HUD_Endgame = {
 	// first message
 	float print_width = stringwidth(message, 0, [(1/30)*g_width, (1/30)*g_width, 0]);
 	float x = (g_width - print_width)/2;
-	drawstring([x, g_height*(1/4), 0], message, [(1/30)*g_width, (1/30)*g_width, 0], [1, 1, 1], 1, 1);
+	drawstring([x, g_height*(1/4), 0], message, [(1/30)*g_width, (1/30)*g_width, 0], [1, 1, 1], 1, 0);
 
 	// second message
 	print_width = stringwidth(survive, 0, [0.025*g_width, 0.025*g_width, 0]);
 	x = (g_width - print_width)/2;
-	drawstring([x,g_height*(1/3), 0], survive, [0.025*g_width, 0.025*g_width, 0], [1, 1, 1], 1, 1);
+	drawstring([x,g_height*(1/3), 0], survive, [0.025*g_width, 0.025*g_width, 0], [1, 1, 1], 1, 0);
 	
 	// we can reuse our tab scores for the endgame
 	HUD_Scores();
@@ -1215,7 +1215,7 @@ void() HUD_Fade =
 			
 			alpha = invertfloat(alpha);
 						
-		drawfill ([0, 0, 0], [g_width, g_height, 0], [0, 0, 0], alpha);	// background
+		drawfill ([0, 0, 0], [g_width, g_height, 0], [0, 0, 0], alpha, 0);	// background
 		oldfade_alpha = alpha;
 	}
 	else if (fade_type == 2) {
@@ -1223,7 +1223,7 @@ void() HUD_Fade =
 		if (oldfade_alpha > 0.95)
 			alpha = 1;
 				
-		drawfill ([0, 0, 0], [g_width, g_height, 0], [0, 0, 0], alpha);	// background
+		drawfill ([0, 0, 0], [g_width, g_height, 0], [0, 0, 0], alpha, 0);	// background
 		oldfade_alpha = alpha;
 	}
 }
@@ -1232,7 +1232,7 @@ void(float width, float height) HUD_ScrollText = {
 	local float print_width = stringwidth (scrolltext, 0, [0.015*width, 0.015*width, 0]);
 	local float x = (width - print_width)/2;
 
-	drawstring([x, scrollheight*height, 0], scrolltext, [0.015*width, 0.015*width, 0], [1, 1, 1], scrollopacity, 1); //low
+	drawstring([x, scrollheight*height, 0], scrolltext, [0.015*width, 0.015*width, 0], [1, 1, 1], scrollopacity, 0); //low
 	if (scrollheight > 0.70) {
 		scrollheight -= frametime/10;
 		if (scrollopacity > 0)
@@ -1259,9 +1259,9 @@ void(float width, float height) HUD_Achievements = {
 		achinit = 1;
 	}
 
-	drawstring([0.2*width, achheight*height, 0], achievementname[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawstring([0.2*width, achdheight*height, 0], achievementdesc[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawpic([0.005*width,achimgheight*height,0], achievementimg[activeachievement], [0.16*width, 0.08*width, 0], [1,1,1], 1);
+	drawstring([0.2*width, achheight*height, 0], achievementname[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.2*width, achdheight*height, 0], achievementdesc[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawpic([0.005*width,achimgheight*height,0], achievementimg[activeachievement], [0.16*width, 0.08*width, 0], [1,1,1], 0);
 
 	if (achtime <= 120) {
 		achheight += (frametime*0.15);
@@ -1304,16 +1304,16 @@ string(float index) GetButtonString =
 
 void(float width, float height) HUD_Waypoint =
 {
-	drawstring([0.015*width, 0.015*height, 0], "WAYPOINT MODE", [0.030*width, 0.030*width, 0], [1, 1, 1], 1, 1);
-	drawfill([0.015*width, 0.035*height + height*0.035, 0], [strlen("WAYPOINT MODE")*0.030*width, 0.005*width, 0], [1, 1,1], 1);
-	drawstring([0.015*width, 0.095*height, 0], strcat("Press ", GetButtonString(100), " to Create a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawstring([0.015*width, 0.125*height, 0], strcat("Press ", GetButtonString(9), " to Select a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawstring([0.015*width, 0.155*height, 0], strcat("Press ", GetButtonString(101), " to Link a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawstring([0.015*width, 0.185*height, 0], strcat("Press ", GetButtonString(11), " to Remove a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawstring([0.015*width, 0.215*height, 0], strcat("Press ", GetButtonString(7), " to Move a Waypoint Here"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawstring([0.015*width, 0.245*height, 0], strcat("Press ", GetButtonString(10), " to Create a Special Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawstring([0.015*width, 0.275*height, 0], strcat("Press ", "=", " to load map waypoints"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
-	drawstring([0.015*width, 0.305*height, 0], strcat("Press ", "-", " to save current waypoints"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 1);
+	drawstring([0.015*width, 0.015*height, 0], "WAYPOINT MODE", [0.030*width, 0.030*width, 0], [1, 1, 1], 1, 0);
+	drawfill([0.015*width, 0.035*height + height*0.035, 0], [strlen("WAYPOINT MODE")*0.030*width, 0.005*width, 0], [1, 1,1], 1, 0);
+	drawstring([0.015*width, 0.095*height, 0], strcat("Press ", GetButtonString(100), " to Create a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.015*width, 0.125*height, 0], strcat("Press ", GetButtonString(9), " to Select a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.015*width, 0.155*height, 0], strcat("Press ", GetButtonString(101), " to Link a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.015*width, 0.185*height, 0], strcat("Press ", GetButtonString(11), " to Remove a Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.015*width, 0.215*height, 0], strcat("Press ", GetButtonString(7), " to Move a Waypoint Here"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.015*width, 0.245*height, 0], strcat("Press ", GetButtonString(10), " to Create a Special Waypoint"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.015*width, 0.275*height, 0], strcat("Press ", "=", " to load map waypoints"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.015*width, 0.305*height, 0], strcat("Press ", "-", " to save current waypoints"), [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
 }
 
 /*******************

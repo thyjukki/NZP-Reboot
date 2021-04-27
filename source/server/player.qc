@@ -593,8 +593,6 @@ void() PlayerSpawn =
 		rounds = G_STARTROUND - 1;
 	}
 
-	rounds = 4;
-
 	#ifndef PSP
 	//pushHUD(G_HUD, G_HUDHOR, self); //FIXME - breaks mp!
 	#endif
