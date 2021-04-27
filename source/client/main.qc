@@ -122,10 +122,14 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	screen_width_219[1] = 3440;
 	screen_height_219[1] = 1440;
 
+	// cvars for custom settings
 	cvar_set("cl_adsmode", "0");
 	cvar_set("cl_cinematic", "0");
 	cvar_set("nzp_particles", "1");
 	cvar_set("nzp_decals", "1");
+
+	// force nearest filtering for hud elements to avoid blur
+	cvar_set("gl_texturemode2d", "gl_nearest");
 
 	// retrieve custom maps
 	Customs_Get();

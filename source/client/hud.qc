@@ -868,7 +868,7 @@ void(float width, float height) HUD_Perks =
 {
 	
 	int i, s;
-	int y = height - 100 - 22;
+	int y = height - 100 - 34;
 	int x = 2;	
 			
 	for (i = 0; i < 9; i = i + 1)
@@ -877,68 +877,68 @@ void(float width, float height) HUD_Perks =
 		{
 			if (perk_order[i] == P_JUG)
 			{
-				drawpic([x,y,0], getImage("jug.tga"), [20, 20, 1], [1,1,1], 1);
+				drawpic([x,y,0], getImage("jug.tga"), [32, 32, 1], [1,1,1], 1);
 
 				if (G_HUDHOR)
-					x += 22;
+					x += 34;
 				else
-					y -= 22;
+					y -= 34;
 			}
 			else if (perk_order[i] == P_DOUBLE)
 			{
-				drawpic([x,y,0], getImage("double.tga"), [20, 20, 1], [1,1,1], 1);
+				drawpic([x,y,0], getImage("double.tga"), [32, 32, 1], [1,1,1], 1);
 				if (G_HUDHOR)
-					x += 22;
+					x += 34;
 				else
-					y -= 22;
+					y -= 34;
 			}
 			else if (perk_order[i] == P_SPEED)
 			{
-				drawpic([x,y,0], getImage("speed.tga"), [20, 20, 1], [1,1,1], 1);
+				drawpic([x,y,0], getImage("speed.tga"), [32, 32, 1], [1,1,1], 1);
 				if (G_HUDHOR)
-					x += 22;
+					x += 34;
 				else
-					y -= 22;
+					y -= 34;
 			}
 			else if (perk_order[i] == P_REVIVE)
 			{
-				drawpic([x,y,0], getImage("revive.tga"), [20, 20, 1], [1,1,1], 1);
+				drawpic([x,y,0], getImage("revive.tga"), [32, 32, 1], [1,1,1], 1);
 				if (G_HUDHOR)
-					x += 22;
+					x += 34;
 				else
-					y -= 22;
+					y -= 34;
 			}
 			else if (perk_order[i] == P_FLOP)
 			{
-				drawpic([x,y,0], getImage("flopper.tga"), [20, 20, 1], [1,1,1], 1);
+				drawpic([x,y,0], getImage("flopper.tga"), [32, 32, 1], [1,1,1], 1);
 				if (G_HUDHOR)
-					x += 22;
+					x += 34;
 				else
-					y -= 22;
+					y -= 34;
 			}
 			else if (perk_order[i] == P_STAMIN)
 			{
-				drawpic([x,y,0], getImage("stamin.tga"), [20, 20, 1], [1,1,1], 1);
+				drawpic([x,y,0], getImage("stamin.tga"), [32, 32, 1], [1,1,1], 1);
 				if (G_HUDHOR)
-					x += 22;
+					x += 34;
 				else
-					y -= 22;
+					y -= 34;
 			}
 			else if (perk_order[i] == P_DEAD)
 			{
-				drawpic([x,y,0], getImage("dead.tga"), [20, 20, 1], [1,1,1], 1);
+				drawpic([x,y,0], getImage("dead.tga"), [32, 32, 1], [1,1,1], 1);
 				if (G_HUDHOR)
-					x += 22;
+					x += 34;
 				else
-					y -= 22;
+					y -= 34;
 			}
 			else if (perk_order[i] == P_MULE)
 			{
-				drawpic([x,y,0], getImage("mule.tga"), [20, 20, 1], [1,1,1], 1);
+				drawpic([x,y,0], getImage("mule.tga"), [32, 32, 1], [1,1,1], 1);
 				if (G_HUDHOR)
-					x += 22;
+					x += 34;
 				else
-					y -= 22;
+					y -= 34;
 			}
 		}
 	}
