@@ -13,13 +13,13 @@ void() Achievement_Init = {
     achievementimg[1] = strcat(achievementdir, "steady.tga");
     achievementname[2] = "Go? Hell No...";
     achievementdesc[2] = "Reach Round 15";
-    achievementimg[2] = strcat(achievementdir, "go.tga");
+    achievementimg[2] = strcat(achievementdir, "go_hell_no.tga");
     achievementname[3] = "Where Did Legs Go?";
     achievementdesc[3] = "Turn a zombie into a crawler";
-    achievementimg[3] = strcat(achievementdir, "legs.tga");
+    achievementimg[3] = strcat(achievementdir, "where_legs_go.tga");
     achievementname[4] = "The F Bomb";
     achievementdesc[4] = "Use the Nuke power-up to kill a single Zombie";
-    achievementimg[4] = strcat(achievementdir, "nuke.tga");
+    achievementimg[4] = strcat(achievementdir, "the_f_bomb.tga");
 
     //unlock the achievements that we already have
     local float file, i;

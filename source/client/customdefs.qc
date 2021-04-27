@@ -91,7 +91,7 @@ float score_show;
 
 float activeachievement;
 float achievementunlocked[MAX_ACHIEVEMENTS];
-string achievementdir = "gfx/hud/ach/";
+string achievementdir = "gfx/achievement/";
 float achievementid[MAX_ACHIEVEMENTS];
 string achievementname[MAX_ACHIEVEMENTS];
 string achievementdesc[MAX_ACHIEVEMENTS];

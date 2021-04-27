@@ -355,23 +355,40 @@ void(string chaptertitle, string location, string date, string person, entity wh
 		WriteString(MSG_ALL, person);
 	}
 }
+#endif
+#endif
 
-//single = only given to the player who did the action
-void(float ach, entity who, optional float single) GiveAchievement= {
-	if (player_count == 0 || single) {
+#ifndef NX
+void (float achievement_id, optional entity who) GiveAchievement =
+{
+	// this is an achievement specific to an individual
+	if ((who && who != world) || player_count == 0) {
+		if (player_count == 0) who = find(world, classname, "player");
+#ifdef PSP
+		achievement(who, achievement_id);
+#else
 		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
 		WriteByte(MSG_MULTICAST, EVENT_ACHIEVEMENT);
-		WriteByte(MSG_MULTICAST, ach);
+		WriteByte(MSG_MULTICAST, achievement_id);
 		msg_entity = who;
 		multicast('0 0 0', MULTICAST_ONE);
+#endif // PSP
 	} else {
+#ifdef PSP
+		entity players;
+		players = find(world, classname, "player");
+		while(players != world) {
+			achievement(players, achievement_id);
+			players = find(players, classname, "player");
+		}
+#else
 		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
 		WriteByte(MSG_ALL, EVENT_ACHIEVEMENT);
-		WriteByte(MSG_ALL, ach);
+		WriteByte(MSG_ALL, achievement_id);
+#endif // PSP
 	}
 }
-#endif
-#endif
+#endif // NX
 
 // *****************************************
 // Unrelated to engine, but custom functions

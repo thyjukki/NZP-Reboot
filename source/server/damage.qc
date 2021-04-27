@@ -1,9 +1,9 @@
 //
 // damage.qc -- used for any sort of down, hit, etc that the player or entity experiences
 //
-#ifdef PC
-void(float ach, entity who, optional float single) GiveAchievement;
-#endif
+#ifndef NX
+void (float achievement_id, optional entity who) GiveAchievement;
+#endif // NX
 
 void() EndGame_Restart = 
 {
@@ -347,7 +347,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 				{
 					makeCrawler(victim);
 					#ifdef PC
-					GiveAchievement(3, attacker, 1);
+					GiveAchievement(3, attacker);
 					#endif
 				}
 				else

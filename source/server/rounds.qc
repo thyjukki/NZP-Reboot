@@ -196,22 +196,15 @@ void() NewRound =
 	}
 
 	Remaining_Zombies = Total_Zombies = getZombieTotal();
-	#ifndef NX
-	#ifdef PSP
-	local entity e = find(world, classname, "player");
+
+#ifndef NX
 	switch(rounds) {
-		case 5: achievement(e, 0); break;
-		case 10: achievement(e, 1); break;
-		case 15: achievement(e, 2); break;
+		case 5: 	GiveAchievement(0); break;
+		case 10: 	GiveAchievement(1); break;
+		case 15: 	GiveAchievement(2); break;
+		default: 	break;
 	}
-	#else
-	switch(rounds) {
-		case 5: GiveAchievement(0, pl1); break;
-		case 10: GiveAchievement(1, pl1); break;
-		case 15: GiveAchievement(2, pl1); break;
-	}
-	#endif
-	#endif
+#endif // NX
 
 	// Set up delay for zombie spawning
 	local float spawndelay;
