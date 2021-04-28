@@ -34,6 +34,8 @@ nx/nzportable/nzp/progs\.lno
 
 psp/nzportable/nzp/progs.lno
 
+psp/nzportable/nzp/data/ach.dat
+
 *.dat
 
 # Map ignores

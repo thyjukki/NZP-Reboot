@@ -414,6 +414,7 @@ void M_Start_Menu_f ()
 	m_state = m_start;
 	m_entersound = true;
 	//loadingScreen = 0;
+	Load_Achivements();
 }
 
 static void M_Start_Menu_Draw ()
@@ -1231,6 +1232,18 @@ void Achievement_Init (void)
 	strcpy(achievement_list[2].name, "Go? Hell No...");
 	strcpy(achievement_list[2].description, "Reach round 15");
 
+	achievement_list[3].img = Draw_CachePic("gfx/achievement/where_legs_go");
+	achievement_list[3].unlocked = 0;
+	achievement_list[3].progress = 0;
+	strcpy(achievement_list[3].name, "Where Did Legs Go?");
+	strcpy(achievement_list[3].description, "Turn a zombie into a crawler");
+
+	achievement_list[4].img = Draw_CachePic("gfx/achievement/the_f_bomb");
+	achievement_list[4].unlocked = 0;
+	achievement_list[4].progress = 0;
+	strcpy(achievement_list[4].name, "The F Bomb");
+	strcpy(achievement_list[4].description, "Use the Nuke power-up to kill a single Zombie");
+
 	/*achievement_list[3].img = Draw_CachePic("gfx/achievement/beast");
 	achievement_list[3].unlocked = 0;
 	achievement_list[3].progress = 0;
@@ -1360,31 +1373,42 @@ void Achievement_Init (void)
 
 void Load_Achivements (void)
 {
-    int i;
-    FILE *f;
-	f = fopen (va("%s/data/ach.dat",com_gamedir), "r");
-	if (f == NULL)
-		return;
+	int achievement_file;
+	achievement_file = sceIoOpen(va("%s/data/ach.dat",com_gamedir), PSP_O_RDONLY, 0);
 
-    for (i = 0; i < MAX_ACHIEVEMENTS; i++)
-    {
-        fscanf (f, "%i", &achievement_list[i].unlocked);
-        fscanf (f, "%i", &achievement_list[i].progress);
-    }
-	fclose (f);
+	if (achievement_file >= 0) {
+		char* buffer = (char*)calloc(2, sizeof(char));
+		for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
+			sceIoRead(achievement_file, buffer, sizeof(char)*2);
+			achievement_list[i].unlocked = atoi(buffer);
+			sceIoRead(achievement_file, buffer, sizeof(char)*2);
+			achievement_list[i].progress = atoi(buffer);
+		}
+	} else {
+		achievement_file = sceIoOpen(va("%s/data/ach.dat",com_gamedir), PSP_O_WRONLY | PSP_O_CREAT | PSP_O_TRUNC, 0);
+
+		for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
+			sceIoWrite(achievement_file, "0\n", sizeof(char)*2);
+			sceIoWrite(achievement_file, "0\n", sizeof(char)*2);
+		}
+	}
+	sceIoClose(achievement_file);
 }
 void Save_Achivements (void)
 {
-    int i;
-    FILE *f;
-	f = fopen (va("%s/data/ach.dat",com_gamedir), "w");
+	int achievement_file;
+	achievement_file = sceIoOpen(va("%s/data/ach.dat",com_gamedir), PSP_O_WRONLY, 0);
 
-    for (i = 0; i < MAX_ACHIEVEMENTS; i++)
-    {
-        fprintf (f, "%i\n", achievement_list[i].unlocked);
-        fprintf (f, "%i\n", achievement_list[i].progress);
-    }
-	fclose (f);
+	if (achievement_file >= 0) {
+		for (int i = 0; i < MAX_ACHIEVEMENTS; i++) {
+			char* buffer = va("%i\n", achievement_list[i].unlocked);
+			char* buffer2 = va("%i\n", achievement_list[i].progress);
+			sceIoWrite(achievement_file, va("%i\n", achievement_list[i].unlocked), strlen(buffer));
+			sceIoWrite(achievement_file, va("%i\n", achievement_list[i].progress), strlen(buffer2));
+		}
+	} else {
+		Load_Achivements();
+	}
 }
 
 
@@ -1393,7 +1417,7 @@ void M_Menu_Achievement_f (void)
 	key_dest = key_menu;
 	m_state = m_achievement;
 	m_entersound = true;
-	Load_Achivements();
+	//Load_Achivements();
 }
 
 void M_Achievement_Draw (void)

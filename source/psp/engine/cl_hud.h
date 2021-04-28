@@ -36,7 +36,7 @@ extern double HUD_Change_time;
 
 
 //achievement stuff
-#define MAX_ACHIEVEMENTS 3//23
+#define MAX_ACHIEVEMENTS 5//23
 typedef struct achievement_list_s
 {
     qpic_t      *img;

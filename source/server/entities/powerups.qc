@@ -93,7 +93,7 @@ void() nuke =
 		who = find(who,classname,"ai_zombie");
 	}
 
-	#ifdef PC
+	#ifndef NX
 	if (killcount == 1) {
 		GiveAchievement(4);
 	}

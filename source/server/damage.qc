@@ -346,7 +346,7 @@ void(entity victim,entity attacker, float damage, float d_style) DamageHandler =
 				if (victim.crawling != TRUE && !(victim.health <= 0) && crawler_num < 5 && victim.classname != "ai_dog")
 				{
 					makeCrawler(victim);
-					#ifdef PC
+					#ifndef NX
 					GiveAchievement(3, attacker);
 					#endif
 				}
