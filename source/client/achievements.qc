@@ -1,36 +1,43 @@
-/* ================================
-    Achievement code by MotoLegacy
-   ================================ */
+//
+// achievements.qc - main achievement code
+//
 
-void() Achievement_Init = {
-    //define all of the achivements
-    activeachievement = -1; //-1 = no achievement to display
-    achievementname[0] = "Ready..";
-    achievementdesc[0] = "Reach Round 5";
-    achievementimg[0] = strcat(achievementdir, "ready.tga");
-    achievementname[1] = "Steady..";
-    achievementdesc[1] = "Reach Round 10";
-    achievementimg[1] = strcat(achievementdir, "steady.tga");
-    achievementname[2] = "Go? Hell No...";
-    achievementdesc[2] = "Reach Round 15";
-    achievementimg[2] = strcat(achievementdir, "go_hell_no.tga");
-    achievementname[3] = "Where Did Legs Go?";
-    achievementdesc[3] = "Turn a zombie into a crawler";
-    achievementimg[3] = strcat(achievementdir, "where_legs_go.tga");
-    achievementname[4] = "The F Bomb";
-    achievementdesc[4] = "Use the Nuke power-up to kill a single Zombie";
-    achievementimg[4] = strcat(achievementdir, "the_f_bomb.tga");
+void(float id, string graphic, string name, string description) Achievement_Create =
+{
+    if (id >= MAX_ACHIEVEMENTS)
+        return;
+    
+    achievements[id].img = strcat("gfx/achievement/", graphic, ".tga");
+    achievements[id].name = name;
+    achievements[id].description = description;
+}
 
-    //unlock the achievements that we already have
+void() Achievement_Save =
+{
     local float file, i;
-    local string val;
+
+    // re-write the achievement file
+    file = fopen("ach.dat", FILE_WRITE);
+    for (i = 0; i < MAX_ACHIEVEMENTS; i++) {
+        fputs(file, strcat(ftos(achievements[i].unlocked), "\n"));
+        fputs(file, strcat(ftos(achievements[i].progress), "\n"));
+    }
+
+    fclose(file);
+}
+
+void() Achievement_Load =
+{
+    float file, i;
+    string val;
+
     file = fopen("ach.dat", FILE_READ);
 
     if (file == -1) {
         fclose(file);
         file = fopen("ach.dat", FILE_WRITE);
 
-        for (i = 0; i < MAX_ACHIEVEMENTS; i++) {
+        for (i = 0; i < MAX_ACHIEVEMENTS * 2; i++) {
             fputs(file, "0\n");
         }
 
@@ -40,27 +47,42 @@ void() Achievement_Init = {
 
     for (i = 0; i < MAX_ACHIEVEMENTS; i++) {
         val = fgets(file);
-        achievementunlocked[i] = stof(val);
+        achievements[i].unlocked = stof(val);
+        val = fgets(file);
+        achievements[i].progress = stof(val);
     }
 
     fclose(file);
 }
 
-void(float ach) Unlock_Achievement = {
+void() Achievement_Init = 
+{
+    Achievement_Create(0, "ready", "Ready..", "Reach Round 5");
+    Achievement_Create(1, "steady", "Steady..", "Reach Round 10");
+    Achievement_Create(2, "go_hell_no", "Go? Hell No...", "Reach Round 15");
+    Achievement_Create(3, "where_legs_go", "Where Did Legs Go?", "Turn a Zombie into a Crawler");
+    Achievement_Create(4, "the_f_bomb", "The F Bomb", "Use the Nuke Power-Up to kill a single Zombie");
+
+    Achievement_Load();
+
+    active_achievement = -1;
+}
+
+void(float id) Achievement_Unlock = 
+{
     local float file, i;
 
-    achievementunlocked[ach] = 1;
+    achievements[id].unlocked = 1;
 
-    file = fopen("ach.dat", FILE_WRITE);
+    // tell the HUD to start drawing
+    active_achievement = id;
 
-    for (i = 0; i < MAX_ACHIEVEMENTS; i++) {
-        if (achievementunlocked[i])
-            fputs(file, "1\n");
-        else
-            fputs(file, "0\n");
-    }
+    Achievement_Save();
+}
 
-    fclose(file);
+void(float id, float pg) Achievement_UpdateProgress =
+{
+    achievements[id].progress = pg;
 
-    activeachievement = ach;
+    Achievement_Save();
 }

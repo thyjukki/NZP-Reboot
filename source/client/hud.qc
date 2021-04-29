@@ -1242,49 +1242,49 @@ void(float width, float height) HUD_ScrollText = {
 	}
 }
 
-float achinit;
-float achheight;
-float achdheight;
-float achimgheight;
-float achtime;
+float achievement_init;
+float achievement_ypos;
+float achievement_desc_ypos;
+float achievement_img_ypos;
+float achievement_time;
 void(float width, float height) HUD_Achievements = {
-	if (activeachievement == -1)
+	if (active_achievement == -1)
 		return;
 
-	if (!achinit) {
-		achtime = 0;
-		achheight = -0.16;
-		achdheight = -0.13;
-		achimgheight = -0.164;
-		achinit = 1;
+	if (!achievement_init) {
+		achievement_time 		= 0;
+		achievement_ypos 		= -0.16;
+		achievement_desc_ypos	= -0.13;
+		achievement_img_ypos 	= -0.164;
+		achievement_init 		= true;
 	}
 
-	drawstring([0.2*width, achheight*height, 0], achievementname[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
-	drawstring([0.2*width, achdheight*height, 0], achievementdesc[activeachievement], [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
-	drawpic([0.005*width,achimgheight*height,0], achievementimg[activeachievement], [0.16*width, 0.08*width, 0], [1,1,1], 0);
+	drawstring([0.2*width, achievement_ypos*height, 0], achievements[active_achievement].name, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawstring([0.2*width, achievement_desc_ypos*height, 0], achievements[active_achievement].description, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+	drawpic([0.005*width, achievement_img_ypos*height,0], achievements[active_achievement].img, [0.16*width, 0.08*width, 0], [1,1,1], 1);
 
-	if (achtime <= 120) {
-		achheight += (frametime*0.15);
-		achdheight += (frametime*0.15);
-		achimgheight += (frametime*0.15);
+	if (achievement_time <= 120) {
+		achievement_ypos 		+= (frametime*0.15);
+		achievement_desc_ypos 	+= (frametime*0.15);
+		achievement_img_ypos	+= (frametime*0.15);
 	} else {
-		achheight -= (frametime*0.15);
-		achdheight -= (frametime*0.15);
-		achimgheight -= (frametime*0.15);
-		if (achdheight <= -0.13) {
-			achinit = 0;
-			activeachievement = -1;
+		achievement_ypos 		-= (frametime*0.15);
+		achievement_desc_ypos 	-= (frametime*0.15);
+		achievement_img_ypos 	-= (frametime*0.15);
+		if (achievement_desc_ypos <= -0.13) {
+			achievement_init 	= 0;
+			active_achievement 	= -1;
 		}
 	}
 
-	if (achdheight > 0.045) {
-		if (achtime <= 120) {
-			achheight = 0.015;
-			achdheight = 0.045;
-			achimgheight = 0.01;
+	if (achievement_desc_ypos > 0.045) {
+		if (achievement_time <= 120) {
+			achievement_ypos 		= 0.015;
+			achievement_desc_ypos 	= 0.045;
+			achievement_img_ypos 	= 0.01;
 		}
 
-		achtime += (frametime*25);
+		achievement_time += (frametime*25);
 	}
 }
 

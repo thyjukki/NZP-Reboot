@@ -1431,18 +1431,17 @@ void() Draw_Extra_Customs =
 	customs_interact = FALSE;
 }
 
-// Moto - basically everything lol
 void() Draw_Extra_Achievements =
 {
     for(float i = 0; i < MAX_ACHIEVEMENTS; i++) {
-        drawstring([0.200*g_width, (0.210 + (0.125 * i))*g_height, 0], achievementdesc[i], [g_height * 0.020, g_height * 0.020, 1], [1,1,1], 1, 0);
+        drawstring([0.200*g_width, (0.210 + (0.125 * i))*g_height, 0], achievements[i].description, [g_height * 0.020, g_height * 0.020, 1], [1,1,1], 1, 0);
 
-        if (achievementunlocked[i]) {
-            drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], achievementimg[i], [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
-            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], achievementname[i], [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+        if (achievements[i].unlocked == true) {
+            drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], achievements[i].img, [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
+            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], achievements[i].name, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
             
         } else {
-            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], strcat(achievementname[i], " (LOCKED)"), [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], strcat(achievements[i].name, " (LOCKED)"), [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
             drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], "gfx/achievement/achievement_locked.tga", [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
         }
     }

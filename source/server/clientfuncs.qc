@@ -388,6 +388,38 @@ void (float achievement_id, optional entity who) GiveAchievement =
 #endif // PSP
 	}
 }
+
+void (float achievement_id, float progress_value, optional entity who) UpdateAchievementProgress =
+{
+	// this is a progress update specific to an individual
+	if ((who && who != world) || player_count == 0) {
+		if (player_count == 0) who = find(world, classname, "player");
+#ifdef PSP
+		//achievement_progress(who, achievement_id, progress_value);
+#else
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_ACHIEVEMENTPROGRESS);
+		WriteByte(MSG_MULTICAST, achievement_id);
+		WriteFloat(MSG_MULTICAST, progress_value);
+		msg_entity = who;
+		multicast('0 0 0', MULTICAST_ONE);
+#endif // PSP
+	} else {
+#ifdef PSP
+		entity players;
+		players = find(world, classname, "player");
+		while(players != world) {
+			//achievement_progress(players, achievement_id, progress_value);
+			players = find(players, classname, "player");
+		}
+#else
+		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
+		WriteByte(MSG_ALL, EVENT_ACHIEVEMENTPROGRESS);
+		WriteByte(MSG_ALL, achievement_id);
+		WriteFloat(MSG_ALL, progress_value);
+#endif // PSP
+	}
+}
 #endif // NX
 
 // *****************************************

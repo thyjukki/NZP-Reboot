@@ -985,10 +985,20 @@ noref void() CSQC_Parse_Event =
 				chaptertitle = "'Nazi Zombies'";
 			break;
 		case EVENT_ACHIEVEMENT:
-			local float ach = readbyte();
-			if (achievementunlocked[ach])
+			float ach = readbyte();
+
+			if (achievements[ach].unlocked == true)
 				return;
-			Unlock_Achievement(ach);
+			Achievement_Unlock(ach);
+			break;
+		case EVENT_ACHIEVEMENTPROGRESS:
+			float id = readbyte();
+			float pg = readfloat();
+
+			if (achievements[id].unlocked == true)
+				return;
+			
+			Achievement_UpdateProgress(id, pg);
 			break;
 		case EVENT_PLAYERUPDATE:
 			player_count = readbyte();

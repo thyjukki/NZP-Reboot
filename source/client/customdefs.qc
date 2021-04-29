@@ -1,6 +1,10 @@
 //Various globals that are used in this FTEQW example are defined here, they are not used by the engine itself
 
 #pragma warning disable Q302
+
+#define true    1
+#define false   0
+
 vector cursor_pos; /* Current mouse cursor position, updated in csqc_inputevent */
 float g_width, g_height; /* Globals for screen width and height */
 
@@ -89,13 +93,16 @@ float score_show;
 
 #define MAX_ACHIEVEMENTS    5
 
-float activeachievement;
-float achievementunlocked[MAX_ACHIEVEMENTS];
-string achievementdir = "gfx/achievement/";
-float achievementid[MAX_ACHIEVEMENTS];
-string achievementname[MAX_ACHIEVEMENTS];
-string achievementdesc[MAX_ACHIEVEMENTS];
-string achievementimg[MAX_ACHIEVEMENTS];
+var struct achievementlist_t
+{
+    string      img;
+    float       unlocked;
+    string      name;
+    string      description;
+    float       progress;
+} achievements[MAX_ACHIEVEMENTS];
+
+float active_achievement;
 
 
 float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;

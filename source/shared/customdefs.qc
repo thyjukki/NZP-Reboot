@@ -1,26 +1,27 @@
 //shared definitions
 
-const float EVENT_WEAPONCHANGE = 9;
-const float EVENT_PISTOLFIRE = 10;
-const float EVENT_USEPRINT = 11;
-const float EVENT_NEWROUND = 12;
-const float EVENT_SETROUND = 13;
-const float EVENT_UPDATEVMODEL = 20;
-const float EVENT_UPDATEV2MODEL = 21;
-const float EVENT_PERK = 22;
-const float EVENT_UPDATE = 23;
-const float EVENT_BROADCAST = 24;
-const float EVENT_POINTUPDATE = 25;
-const float EVENT_BLACKOUT = 26;
-const float EVENT_PUNCHANGLE = 27;
-const float EVENT_SCROLLTEXT = 28;
-const float EVENT_WORLDDATA = 29;
-const float EVENT_ACHIEVEMENT = 30;
-const float EVENT_PLAYERUPDATE = 31;
-const float EVENT_WEAPONUPDATE = 32;
-const float EVENT_HUDUPDATE = 33;
-const float EVENT_EXPLOSION = 34;
-const float EVENT_BLOOD = 35;
+const float EVENT_WEAPONCHANGE 			= 9;
+const float EVENT_PISTOLFIRE 			= 10;
+const float EVENT_USEPRINT 				= 11;
+const float EVENT_NEWROUND 				= 12;
+const float EVENT_SETROUND 				= 13;
+const float EVENT_UPDATEVMODEL 			= 20;
+const float EVENT_UPDATEV2MODEL 		= 21;
+const float EVENT_PERK	 				= 22;
+const float EVENT_UPDATE 				= 23;
+const float EVENT_BROADCAST 			= 24;
+const float EVENT_POINTUPDATE 			= 25;
+const float EVENT_BLACKOUT 				= 26;
+const float EVENT_PUNCHANGLE 			= 27;
+const float EVENT_SCROLLTEXT 			= 28;
+const float EVENT_WORLDDATA 			= 29;
+const float EVENT_ACHIEVEMENT 			= 30;
+const float EVENT_PLAYERUPDATE 			= 31;
+const float EVENT_WEAPONUPDATE 			= 32;
+const float EVENT_HUDUPDATE 			= 33;
+const float EVENT_EXPLOSION 			= 34;
+const float EVENT_BLOOD 				= 35;
+const float EVENT_ACHIEVEMENTPROGRESS 	= 36;
 
 // Define our PC version if we don't have NX or PSP 
 #ifndef NX
