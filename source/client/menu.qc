@@ -601,26 +601,44 @@ float back_gray_out;
 
 void() menu_custom_next =
 {
-	if (current_custom_map_page < custom_map_pages) {
-		current_custom_map_page++;
-		back_gray_out = 0;
+	if (in_menu == MENU_CUSTOMS) {
+		if (current_custom_map_page < custom_map_pages) {
+			current_custom_map_page++;
+			back_gray_out = 0;
 
-		if (current_custom_map_page == custom_map_pages)
-			next_gray_out = 1;
+			if (current_custom_map_page == custom_map_pages)
+				next_gray_out = 1;
+		}
+	} else {
+		if (current_achievement_page < achievement_pages) {
+			current_achievement_page++;
+			back_gray_out = 0;
+
+			if (current_achievement_page == achievement_pages)
+				next_gray_out = 1;
+		}
 	}
-		
 }
 
 void() menu_custom_back =
 {
-	if (current_custom_map_page > 1) {
-		current_custom_map_page--;
-		next_gray_out = 0;
+	if (in_menu == MENU_CUSTOMS) {
+		if (current_custom_map_page > 1) {
+			current_custom_map_page--;
+			next_gray_out = 0;
 
-		if (current_custom_map_page == 1)
-			back_gray_out = 1;
-	}
-		
+			if (current_custom_map_page == 1)
+				back_gray_out = 1;
+		}
+	} else {
+		if (current_achievement_page > 1) {
+			current_achievement_page--;
+			next_gray_out = 0;
+
+			if (current_achievement_page == 1)
+				back_gray_out = 1;
+		}
+	}	
 }
 
 void() settings_sens = {
@@ -740,8 +758,8 @@ var struct
 	{[0.025, 0.825, 0], "Secondary Grenade", -1, bind_switchnade, null, MENU_CSETTINGS, 0},
 
 	// Custom Maps
-	{[0.025, 0.825, 0], "Next Page", -1, menu_custom_next, null, MENU_CUSTOMS, 0},
-	{[0.025, 0.875, 0], "Previous Page", -1, menu_custom_back, null, MENU_CUSTOMS, 0},
+	{[0.025, 0.825, 0], "Next Page", -1, menu_custom_next, null, MENU_CUSTOMS + MENU_ACHIEVEMENTS, 0},
+	{[0.025, 0.875, 0], "Previous Page", -1, menu_custom_back, null, MENU_CUSTOMS + MENU_ACHIEVEMENTS, 0},
 
 	//Everything, pretty much
 	{[0.025, 0.925, 0], "Back", -1, menu_back, null, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + 
@@ -1433,18 +1451,82 @@ void() Draw_Extra_Customs =
 
 void() Draw_Extra_Achievements =
 {
-    for(float i = 0; i < MAX_ACHIEVEMENTS; i++) {
-        drawstring([0.200*g_width, (0.210 + (0.125 * i))*g_height, 0], achievements[i].description, [g_height * 0.020, g_height * 0.020, 1], [1,1,1], 1, 0);
+	float multiplier;
 
-        if (achievements[i].unlocked == true) {
-            drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], achievements[i].img, [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
-            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], achievements[i].name, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
-            
-        } else {
-            drawstring([0.200*g_width, (0.175 + (0.125 * i))*g_height, 0], strcat(achievements[i].name, " (LOCKED)"), [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
-            drawpic([0.025*g_width, (0.150 + (0.125 * i))*g_height, 0], "gfx/achievement/achievement_locked.tga", [0.24*g_height, 0.12*g_height, 0], [1,1,1], 1);
-        }
-    }
+	if (current_achievement_page > 1) {
+		multiplier = (current_achievement_page - 1) * 3;
+	} else {
+		multiplier = 0;
+		back_gray_out = true;
+	}
+
+	for (float i = 0; i < 3; i++) {
+		if (i + multiplier > MAX_ACHIEVEMENTS - 1)
+			continue;
+
+		string name1, name2;
+		string desc1, desc2, desc3, desc4;
+		name2 = "";
+		desc2 = "";
+		desc3 = "";
+		desc4 = "";
+
+		if (strlen(achievements[i + multiplier].name) >= 33) {
+			name1 = substring(achievements[i + multiplier].name, 0, 33);
+			name2 = substring(achievements[i + multiplier].name, 33, strlen(achievements[i + multiplier].name));
+		} else {
+			name1 = achievements[i + multiplier].name;
+		}
+
+		if (substring(name2, 0, 1) == " ")
+			name2 = substring(name2, 1, strlen(name2));
+
+		desc1 = substring(achievements[i + multiplier].description, 0, 36);
+		desc2 = substring(achievements[i + multiplier].description, 36, 34);
+		desc3 = substring(achievements[i + multiplier].description, 70, 35);
+		desc4 = substring(achievements[i + multiplier].description, 105, strlen(achievements[i + multiplier].description));
+
+		if (substring(desc2, 0, 1) == " ")
+			desc2 = substring(desc2, 1, strlen(desc2));
+		
+		if (substring(desc3, 0, 1) == " ")
+			desc3 = substring(desc3, 1, strlen(desc3));
+
+		if (substring(desc4, 0, 1) == " ")
+			desc4 = substring(desc4, 1, strlen(desc4));
+
+		if (achievements[i + multiplier].unlocked == false) {
+			int lock_width_pos;
+
+			drawstring([0.450*g_height, (0.150 + (0.212 * i))*g_height, 0], name1, [g_height * 0.030, g_height * 0.030, 1], [0.5,0.5,0.5], 1, 0);
+			drawstring([0.450*g_height, (0.180 + (0.212 * i))*g_height, 0], name2, [g_height * 0.030, g_height * 0.030, 1], [0.5,0.5,0.5], 1, 0);
+
+			if (name2 == "") {
+				lock_width_pos = stringwidth(name1, 0, [g_height * 0.030, g_height * 0.030, 1]);
+				drawstring([0.450*g_height + lock_width_pos, (0.150 + (0.212 * i))*g_height, 0], " (LOCKED)", [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 0);
+			} else {
+				lock_width_pos = stringwidth(name2, 0, [g_height * 0.030, g_height * 0.030, 1]);
+				drawstring([0.450*g_height + lock_width_pos, (0.180 + (0.212 * i))*g_height, 0], " (LOCKED)", [g_height * 0.030, g_height * 0.030, 1], [1,0,0], 1, 0);
+			}
+
+			drawstring([0.450*g_height, (0.210 + (0.212 * i))*g_height, 0], desc1, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+			drawstring([0.450*g_height, (0.240 + (0.212 * i))*g_height, 0], desc2, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+			drawstring([0.450*g_height, (0.270 + (0.212 * i))*g_height, 0], desc3, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+			drawstring([0.450*g_height, (0.300 + (0.212 * i))*g_height, 0], desc4, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+
+			drawpic([0.025*g_width, (0.150 + (0.212 * i))*g_height, 0], "gfx/achievement/achievement_locked.tga", [0.38*g_height, 0.19*g_height, 0], [1,1,1], 1);
+		} else {
+			drawstring([0.450*g_height, (0.150 + (0.212 * i))*g_height, 0], name1, [g_height * 0.030, g_height * 0.030, 1], [1,1,0], 1, 0);
+			drawstring([0.450*g_height, (0.180 + (0.212 * i))*g_height, 0], name2, [g_height * 0.030, g_height * 0.030, 1], [1,1,0], 1, 0);
+
+			drawstring([0.450*g_height, (0.210 + (0.212 * i))*g_height, 0], desc1, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+			drawstring([0.450*g_height, (0.240 + (0.212 * i))*g_height, 0], desc2, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+			drawstring([0.450*g_height, (0.270 + (0.212 * i))*g_height, 0], desc3, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+			drawstring([0.450*g_height, (0.300 + (0.212 * i))*g_height, 0], desc4, [g_height * 0.030, g_height * 0.030, 1], [1,1,1], 1, 0);
+
+			drawpic([0.025*g_width, (0.150 + (0.212 * i))*g_height, 0], achievements[i + multiplier].img, [0.38*g_height, 0.19*g_height, 0], [1,1,1], 1);
+		}
+	}
 }
 
 void() Draw_Menu =

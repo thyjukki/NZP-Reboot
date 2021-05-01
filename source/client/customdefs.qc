@@ -91,7 +91,7 @@ string playernames[4]; 			// player name holders, player 1 name at index 0, play
 float player_count;
 float score_show;
 
-#define MAX_ACHIEVEMENTS    5
+#define MAX_ACHIEVEMENTS    42
 
 var struct achievementlist_t
 {
@@ -103,6 +103,8 @@ var struct achievementlist_t
 } achievements[MAX_ACHIEVEMENTS];
 
 float active_achievement;
+float current_achievement_page;
+float achievement_pages;
 
 
 float K_LEFTDOWN, K_RIGHTDOWN, K_BACKDOWN, K_FORWARDDOWN;
