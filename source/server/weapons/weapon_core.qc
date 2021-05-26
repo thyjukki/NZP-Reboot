@@ -2307,7 +2307,10 @@ void() CheckPlayer =
 		}
 
 		if (fabs(self.oldz - self.origin_z) > 90 && !(self.perks & P_FLOP)) {
-			DamageHandler (self, other, 50, S_ZOMBIE);		
+			DamageHandler (self, other, 50, S_ZOMBIE);	
+
+			if (self.health <= 10)
+				GiveAchievement(7, self);	
 		}
 		
 		self.oldz = self.origin_z;		

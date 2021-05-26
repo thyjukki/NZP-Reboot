@@ -210,9 +210,9 @@ void() place_model =
 void () buy_weapon_touch =
 {
 	entity oldent;
-	local float tempf, tempf1, tempf2, tempf3;
-	local float startframe,endframe;
-	local string modelname;
+	float tempf, tempf1, tempf2, tempf3;
+	float startframe,endframe;
+	string modelname;
 
 	if (other.classname != "player" || other.downed || other.isBuying/* || !isFacing(other, self)*/) {
 		return;
@@ -245,6 +245,8 @@ void () buy_weapon_touch =
 			centerprint(other, "You do not have enough points\n");
 			return;
 		}
+
+		other.ach_tracker_coll++;
 
 		if (self.weapon == other.weapon || (self.weapon == EqualNonPapWeapon(other.weapon))) {
 			other.currentammo = getWeaponAmmo(self.weapon);
@@ -284,6 +286,7 @@ void () buy_weapon_touch =
 		}
 		else
 		{
+			other.ach_tracker_coll++;
 			other.reload_delay = 0;
 			sound(other, 0,"sounds/misc/ching.wav", 1, 1);
 			//other.boughtweapon = true;
@@ -318,6 +321,7 @@ void () buy_weapon_touch =
 		}
 		else
 		{
+			other.ach_tracker_coll++;
 			other.reload_delay = 0;
 			sound(other, 0,"sounds/misc/ching.wav", 1, 1);
 			//other.boughtweapon = true;
@@ -340,6 +344,7 @@ void () buy_weapon_touch =
 			useprint(other, 3, self.cost2, self.weapon);
 			if (other.button7)
 			{
+				other.ach_tracker_coll++;
 				entity tempz;
 				tempz = self;
 				self = other;
@@ -364,6 +369,8 @@ void () buy_weapon_touch =
 			centerprint (other, "Not enough points\n");
 			return;
 		}
+
+		other.ach_tracker_coll++;
 
 		if (other.weapon && !other.secondaryweapon) {
 			tempf = other.currentammo;
@@ -440,6 +447,10 @@ void () buy_weapon_touch =
 		
 		self = tempe;
 	}
+
+	if (other.ach_tracker_coll == ach_tracker_col2) {
+		GiveAchievement(12, other);
+	}
 };
 
 void() buy_weapon_link_wall =
@@ -470,6 +481,8 @@ void() buy_weapon =
 	self.think = buy_weapon_link_wall;
 	self.nextthink = time + 0.2; 
 
+	ach_tracker_col2++;
+
 	precache_sound("sounds/misc/ching.wav");
 };
 
@@ -478,7 +491,7 @@ void() buy_weapon =
 void() BarrelExplode =
 {
 	sound (self, CHAN_WEAPON, "sounds/weapons/grenade/explode.wav", 1, ATTN_NORM);	
-	DamgageExplode (self, self.enemy, 500, 75, 200);//was 256 inch radius, kicked it down to 128 because 21 feet exploding radius is... a bit overkill...
+	DamgageExplode (self, self.enemy, 500, 650, 200);
 	
 	#ifdef PC
     te_customflash(self.origin, 128, 300, '1 1 1');

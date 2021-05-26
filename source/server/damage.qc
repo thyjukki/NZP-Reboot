@@ -170,6 +170,11 @@ void() GetDown =
 	float startframe;
 	float endframe;
 	local string modelname;
+
+	if (rounds <= 1 && self.currentmag == 0 && self.currentmag2 == 0 && self.currentammo == 0 && self.secondarymag == 0 &&
+	self.secondarymag2 == 0 && self.secondaryammo == 0) {
+		GiveAchievement(9, self);
+	}
 	
 	playdown();
 	
@@ -331,6 +336,9 @@ void(entity attacker, float d_style) DieHandler =
 }
 
 void(entity victim,entity attacker, float damage, float d_style) DamageHandler = {
+	// Abstinence Program
+	victim.ach_tracker_abst = 1;
+
 	entity old_self;
 	if (victim.classname == "ai_zombie" || victim.classname == "ai_dog") {
 
@@ -455,10 +463,10 @@ float(entity targ, entity inflictor) CanDamage =
 
 void(entity inflictor, entity attacker, float damage2, float mindamage, float radius) DamgageExplode =
 {
-	local	float 	final_damage;
-	local	entity	ent;
+	float 	final_damage;
+	entity	ent;
 
-	local float multi,r;
+	float 	multi, r;
 	ent = findradius(inflictor.origin, radius);
 	
 	while (ent)
@@ -498,6 +506,14 @@ void(entity inflictor, entity attacker, float damage2, float mindamage, float ra
 			// verify we aren't doin anything with a bmodel
 			if (ent.solid == SOLID_BSP || ent.movetype == MOVETYPE_PUSH)
 				return;
+
+			if (mapname == "ndu" && ent.classname == "ai_zombie" && inflictor.classname == "explosive_barrel") {
+				ach_tracker_barr++;
+
+				if (ach_tracker_barr >= 15) {
+					GiveAchievement(13);
+				}
+			}
 
 			r = rounds;
 			multi = 1.07;

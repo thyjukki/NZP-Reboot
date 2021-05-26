@@ -178,6 +178,9 @@ void GivePerk(optional float p) {
 		return;
 	}
 
+	// No Perks? No Problem tracker
+	self.ach_tracker_npnp++;
+
 	switch(perk) {
 		case P_REVIVE:
 			self.perks = self.perks | 8;
@@ -206,6 +209,9 @@ void GivePerk(optional float p) {
 		default:
 			break;
 	}
+
+	if (self.perks == 255)
+		GiveAchievement(6, self);
 
   	sound_perk_delay = time + 4.5;
 	self.isBuying = false;
@@ -251,7 +257,6 @@ void DrinkPerk(float perk) {
 		sound(self, CHAN_AUTO, self.aistatus, 0.25, ATTN_IDLE);
 		self.ltime = time + self.anim_weapon_time;
 	}
-	
 }
 
 //
@@ -1297,6 +1302,10 @@ void() Float_Change =
 			self.nextthink = time + 5;
 			self.think = remove_box;
 			sound (self, CHAN_ITEM, "sounds/pu/byebye.wav", 1, ATTN_NORM);	//naievil FIXME -- change sound
+			ach_tracker_luck++;
+
+			if (ach_tracker_luck >= 10)
+				GiveAchievement(11);
 			return;
 		}
 	}

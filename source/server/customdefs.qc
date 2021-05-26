@@ -11,6 +11,15 @@
 
 #define FL_JUMPRELEASED  4096
 
+// achievement tracking
+.float 	ach_tracker_npnp;
+.float 	ach_tracker_abst;
+float 	ach_tracker_spin;
+float 	ach_tracker_luck;
+.float 	ach_tracker_coll;
+float 	ach_tracker_col2;
+float 	ach_tracker_barr;
+
 float framecount;
 float deathmatch;
 float coop;

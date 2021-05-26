@@ -88,7 +88,7 @@ void() Achievement_Init =
     Achievement_Create(4,   "the_f_bomb",           "The F Bomb",                                   "Use the Nuke Power-Up to kill a     single Zombie");
     Achievement_Create(5,   "no_perks_no_problem",  "No Perks? No Problem",                         "Survive an entire Round without     Perks past Round 15 or higher");
     Achievement_Create(6,   "dipsomaniac",          "Dipsomaniac",                                  "Hold all Perk-A-Colas at once in a  single Game");
-    Achievement_Create(7,   "oops", "Oops!",                                                        "Die from fall damage");
+    Achievement_Create(7,   "oops",                 "Oops!",                                        "Die from fall damage");
     Achievement_Create(8,   "abstinence_program",   "Abstinence Program",                           "Survive to Round 10 without taking  any enemy damage");
     Achievement_Create(9,   "pro_gamer_move",       "Pro-Gamer Move",                               "Die on Round 1 with no Ammo         remaining");
     Achievement_Create(10,  "spinning_plates",      "Spinning Plates",                              "Keep entry points Barricaded all the way to Round 10");

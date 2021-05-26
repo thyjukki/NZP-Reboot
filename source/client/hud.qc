@@ -1259,8 +1259,9 @@ void(float width, float height) HUD_Achievements = {
 		achievement_init 		= true;
 	}
 
-	drawstring([0.2*width, achievement_ypos*height, 0], achievements[active_achievement].name, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
-	drawstring([0.2*width, achievement_desc_ypos*height, 0], achievements[active_achievement].description, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
+
+	drawstring([0.2*width, achievement_ypos*height, 0], "ACHIEVEMENT GET!", [0.015*width, 0.015*width, 0], [1, 1, 0], 1, 0);
+	drawstring([0.2*width, achievement_desc_ypos*height, 0], achievements[active_achievement].name, [0.015*width, 0.015*width, 0], [1, 1, 1], 1, 0);
 	drawpic([0.005*width, achievement_img_ypos*height,0], achievements[active_achievement].img, [0.16*width, 0.08*width, 0], [1,1,1], 1);
 
 	if (achievement_time <= 120) {
@@ -1324,6 +1325,8 @@ void(float width, float height) HUD_Draw =
 {
 	if (cvar("cl_cinematic"))
 		return;
+
+	HUD_Achievements(width, height);
 	
 	if (!getstatf(STAT_SPECTATING) && (getstatf(STAT_HEALTH) > 10) && !score_show)
 	{
@@ -1341,8 +1344,6 @@ void(float width, float height) HUD_Draw =
 
             if (vmodel.model == GetWeaponModel(getstatf(STAT_ACTIVEWEAPON), FALSE) && vmodel.model != "")
 			    HUD_AmmoString();
-
-			HUD_Achievements(width, height);
 		
 			if (HUD_Change_time > time)
 			{

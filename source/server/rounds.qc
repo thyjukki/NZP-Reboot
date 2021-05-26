@@ -98,6 +98,23 @@ void() EndRound =
 		playSoundAtPlayers("sounds/rounds/eround.wav");
 	}
 	round_changetime = time + 5;
+
+	// No Perks? No Problem & Abstinence Program
+	if (rounds >= 10) {
+		entity players;
+		players = find(world, classname, "player");
+		
+		while(players != world) {
+			if (players.ach_tracker_npnp == 0) {
+				GiveAchievement(5, players);
+			}
+			if (players.ach_tracker_abst == 0) {
+				GiveAchievement(8, players);
+			}
+			players.ach_tracker_npnp = 0;
+			players = find(players, classname, "player");
+		}
+	}
 }
 
 void() PlayerSpawn;
@@ -223,6 +240,10 @@ void() NewRound =
 
 	// Actually start the timer
 	zombie_spawn_timer = 2 + time;
+
+	if (rounds >= 10 && ach_tracker_spin == 0) {
+		GiveAchievement(10);
+	}
 }
 void() Round_Core =
 {

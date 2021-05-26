@@ -249,7 +249,6 @@ void() weapon_wall =
 	self.use = use_wall_weapon;
 	self.classname = "weapon_wall";
 	//self.effects = EF_WEPLIGHT;
-  
 }
 
 /* ===================

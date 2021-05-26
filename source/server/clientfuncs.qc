@@ -361,6 +361,12 @@ void(string chaptertitle, string location, string date, string person, entity wh
 #ifndef NX
 void (float achievement_id, optional entity who) GiveAchievement =
 {
+#ifdef PSP
+	// temp
+	if (achievement_id > 4)
+		return;
+#endif // PSP
+
 	// this is an achievement specific to an individual
 	if ((who && who != world) || player_count == 0) {
 		if (player_count == 0) who = find(world, classname, "player");
@@ -391,6 +397,11 @@ void (float achievement_id, optional entity who) GiveAchievement =
 
 void (float achievement_id, float progress_value, optional entity who) UpdateAchievementProgress =
 {
+#ifdef PSP
+	// temp
+	if (achievement_id > 4)
+		return;
+#endif // PSP
 	// this is a progress update specific to an individual
 	if ((who && who != world) || player_count == 0) {
 		if (player_count == 0) who = find(world, classname, "player");
