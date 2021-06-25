@@ -1155,7 +1155,7 @@ void() Zombie_Find_Tesla_Target =
 		return;
 
 	found_target = false;
-	while(zombs && !found_target) {
+	while(zombs != world || found_target) {
 		if (zombs == world) {
 			found_target = true;
 			return;
@@ -1323,13 +1323,13 @@ float() spawn_a_zombieA =
 	
 	FAIL = false;
 	szombie = getFreeZombieEnt(self);
-	szombie.onfire = false;
 	if(szombie == world || zombie_spawn_timer > time)
 	{
 		//bprint(PRINT_HIGH, "STOPPED AT A\n");
 		//dprint("No avaible zombie entity\n");
 		return 0;
 	}
+	szombie.onfire = false;
 	lastspawn = find(lastspawn, classname, "spawn_zombie");
 	while (random() < 0.4)
 	{

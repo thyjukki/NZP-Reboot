@@ -469,7 +469,7 @@ void(entity inflictor, entity attacker, float damage2, float mindamage, float ra
 	float 	multi, r;
 	ent = findradius(inflictor.origin, radius);
 	
-	while (ent)
+	while (ent != world)
 	{
 		if(ent.classname == "player")
 		{
