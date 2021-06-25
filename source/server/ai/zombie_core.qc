@@ -1323,6 +1323,7 @@ float() spawn_a_zombieA =
 	
 	FAIL = false;
 	szombie = getFreeZombieEnt(self);
+	szombie.onfire = false;
 	if(szombie == world || zombie_spawn_timer > time)
 	{
 		//bprint(PRINT_HIGH, "STOPPED AT A\n");
