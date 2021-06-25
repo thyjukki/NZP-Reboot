@@ -1,5 +1,5 @@
 // Dummys that should be here
-void GiveAchievement(float ach, entity who, optional float single) = {};
+void GiveAchievement(float achievement_id, optional entity who) = {};
 void print(string s) = {};
 
 float tracemove(vector start, vector min, vector max, vector end, float nomonsters, entity forent) = {return 0;};

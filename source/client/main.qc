@@ -193,8 +193,6 @@ void() Update_Vmodel =
 		vmodel.origin = '-10000 -10000 -10000';
 		return;
 	}
-	
-	// Motolegacy's Requiem idle bob
 
 	//Walk bob
 	if (getstatf(STAT_WEAPONZOOM)) { //ADS bob
@@ -348,6 +346,9 @@ void() Update_Vmodel =
 
 		vmodel.origin_y += vaccel;
 		vmodel.origin_z += vzaccel;
+
+		if (in_menu != MENU_NONE)
+			return;
 
 		if (K_LEFTDOWN) {
 			vaccel -= 0.01;
