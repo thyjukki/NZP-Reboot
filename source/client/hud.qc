@@ -125,58 +125,94 @@ void() HUD_AmmoString =
 *    HUD_Points    *
 *******************/
 
-//disgusting, find a way to store all of these changes into ONE array
-float changeam[20];
-float changew[20];
-float changeh[20];
-float pmwidth[20];
-float pmheight[20];
-string finalam[20];
-float lastchanged;
+#define MAX_POINT_ELEMENTS 		64 		// the maximum amount of point differential elements that can be spawned before
+								   		// we iterate back from 0
+
+var struct
+{
+	float 	difference; 				// the difference of points
+	float 	x_position; 				// current x position
+	float 	y_position; 				// current y position
+	float 	x_velocity; 				// how fast the element moves on the x axis
+	float 	y_velocity 					// how fast the element moves on the y axis
+	float 	opacity; 					// the opacity of the text_string as it progresses
+	float 	string_width 				// the width of text_string
+	string 	text_string; 				// either '+(difference)' or '-(difference)'
+} point_elements[MAX_POINT_ELEMENTS];
+
+float last_point_element_index;
 
 void(float amount) RegisterPointChange =
 {
-	if (lastchanged == 20)
-		lastchanged = 0;
+	if (last_point_element_index >= MAX_POINT_ELEMENTS)
+		last_point_element_index = 0;
 
-	changeam[lastchanged] = amount;
+	float index = last_point_element_index;
 
-	//tell each item how much to move and where it should start
-	float posneg = random();
-	float ch = random(10)/60;
+	// set the difference amount
+	point_elements[index].difference = amount;
 
-	if (posneg < 0.5) {
-		ch = -ch;
+	// fill our text string
+	if (point_elements[index].difference > 0) {
+		point_elements[index].text_string = strcat("+", ftos(point_elements[index].difference));
+	} else {
+		point_elements[index].text_string = ftos(point_elements[index].difference);
 	}
 
-	pmheight[lastchanged] = random(10);
-	pmwidth[lastchanged] = random(10);
-	changew[lastchanged] = 0.25;
-	changeh[lastchanged] = ch;
+	// determine the width of the text string
+	point_elements[index].string_width = stringwidth(point_elements[index].text_string, 0, [0.022*g_width, 0.022*g_width, 0]);
 
-	//move our way up
-	lastchanged++;
+	// generate a velocity
+	point_elements[index].y_velocity = random()/4;
+	while (point_elements[index].x_velocity < 0.33) {
+		point_elements[index].x_velocity = random();
+	}
+
+	if (point_elements[index].x_velocity > 0.70)
+		point_elements[index].x_velocity -= 0.2;
+
+	// should the vertical velocity be positive or negative?
+	float rng = random();
+
+	// negative
+	if (rng < 0.5) {
+		point_elements[index].y_velocity = -point_elements[index].y_velocity;
+	}
+
+	// set our x and y positions
+	point_elements[index].x_position = 0;
+	point_elements[index].y_position = 0.720 * g_height;
+
+	// start with an opacity of 1
+	point_elements[index].opacity = 1;
+
+	// iterate
+	last_point_element_index++;
 }
 
 void(float pwidth, float width, float height) PointUpdate = 
 {
-	vector POINTCOLOR;
+	vector POINT_DIFF_COLOR;
 
-	for (float i = 0; i < 20; i++) {
-		if (changeam[i] > 0) {
-			POINTCOLOR = TEXT_ORANGE;
-			finalam[i] = strcat("+", ftos(changeam[i]));
+	for (float i = 0; i < MAX_POINT_ELEMENTS; i++) {
+		// should the text be red or orange?
+		if (point_elements[i].difference > 0) {
+			POINT_DIFF_COLOR = TEXT_ORANGE;
 		} else {
-			POINTCOLOR = TEXT_RED;
-			finalam[i] = ftos(changeam[i]);
+			POINT_DIFF_COLOR = TEXT_RED;
 		}
 
-		if (changeam[i] != 0 && pmwidth[i] < g_width*0.05) {
-			drawstring([pwidth - pmwidth[i], 0.725*height - pmheight[i], 0], finalam[i], [0.022*width, 0.022*width, 0], POINTCOLOR, 1, 0);
+		if (point_elements[i].difference != 0 && point_elements[i].opacity > 0 /* &&
+		(point_elements[i].x_position - point_elements[i].string_width) < g_width * 0.05*/) {
+
+			drawstring([pwidth - point_elements[i].string_width - point_elements[i].x_position, 
+			point_elements[i].y_position, 0], point_elements[i].text_string, [0.022*width, 0.022*width, 0], 
+			POINT_DIFF_COLOR, point_elements[i].opacity, 0);
 		}
 
-		pmwidth[i] += changew[i] * (frametime*375);
-		pmheight[i] += changeh[i] * (frametime*375);
+		point_elements[i].x_position += point_elements[i].x_velocity * (frametime*375);
+		point_elements[i].y_position += point_elements[i].y_velocity * (frametime*375);
+		point_elements[i].opacity -= (frametime*4);
 	}
 }
 
@@ -203,7 +239,7 @@ void(float width, float height) HUD_Points =
 			x = ((width + backwidth) - pointwidth)/2;
 			drawpic([backwidth ,0.70*height - (.061*height*i),0], getImage("moneyback.tga"), [0.2*width, 0.07*height, 0], [1,1,1], 1); 
 			drawstring([x, 0.715*height - 0.06*height*i, 0], ftos(playerpoints[i]), [0.022*width, 0.022*width, 0], TEXTCOLOR, 1, 0); 
-			PointUpdate(backwidth * 0.95, width, height); 
+			PointUpdate(backwidth * 1.025, width, height); 
 		}
 		else {
 			backwidth = 0.85*width;
