@@ -99,7 +99,7 @@ void() menu_loadkn =
 
 void() menu_join =
 {
-	setcursormode(TRUE,"menu/cursor");
+	setcursormode(TRUE, cvar_string("cl_cursor"), __NULL__, cvar("cl_cursor_scale"));
 	in_menu = MENU_JOIN;
 };
 

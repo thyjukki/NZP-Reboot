@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>mvd</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>FTEQW.icns</string>
+			<key>CFBundleTypeName</key>
+			<string>FTEQW</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>FTEQW</string>
+	<key>CFBundleIconFile</key>
+	<string>FTEQW.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>net.sf.fteqw</string>
+	<key>CFBundleName</key>
+	<string>FTEQW</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>QW</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>qw</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>3.0.0</string>
+</dict>
+</plist>

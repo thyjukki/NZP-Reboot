@@ -13,7 +13,7 @@ void() ToggleMenu =
 			{
 				buttons[i].active = 1;
 			}
-			setcursormode(TRUE,"menu/cursor");
+			setcursormode(TRUE, cvar_string("cl_cursor"), __NULL__, cvar("cl_cursor_scale"));
 		}
 		else
 		{
@@ -25,7 +25,7 @@ void() ToggleMenu =
 	{
 		in_menu = MENU_MAIN;
 		time_in_menu = 0;
-		setcursormode(TRUE,"menu/cursor");
+		setcursormode(TRUE, cvar_string("cl_cursor"), __NULL__, cvar("cl_cursor_scale"));
 	}
 }
 
@@ -138,6 +138,7 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 
 	// force nearest filtering for hud elements to avoid blur
 	cvar_set("gl_texturemode2d", "gl_nearest");
+	cvar_set("r_font_linear", "0");
 
 	// retrieve custom maps
 	Customs_Get();

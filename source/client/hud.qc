@@ -134,9 +134,9 @@ var struct
 	float 	x_position; 				// current x position
 	float 	y_position; 				// current y position
 	float 	x_velocity; 				// how fast the element moves on the x axis
-	float 	y_velocity 					// how fast the element moves on the y axis
+	float 	y_velocity; 				// how fast the element moves on the y axis
 	float 	opacity; 					// the opacity of the text_string as it progresses
-	float 	string_width 				// the width of text_string
+	float 	string_width; 				// the width of text_string
 	string 	text_string; 				// either '+(difference)' or '-(difference)'
 } point_elements[MAX_POINT_ELEMENTS];
 
