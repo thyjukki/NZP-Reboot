@@ -52,6 +52,7 @@ const float MENU_CSETTINGS = 1024;
 const float MENU_CUSTOMS = 2048;
 const float MENU_ACHIEVEMENTS = 4096;
 const float MENU_CONSETTINGS = 8192;
+const float MENU_AUDSETTINGS = 16384;
 
 
 float useprint_type;
@@ -123,6 +124,8 @@ vector TEXT_RED       = [1, 0, 0];
 
 float fade_time;
 float fade_type;
+
+float menu_initialized;
 
 float customs_interact;
 

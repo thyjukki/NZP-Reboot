@@ -151,6 +151,16 @@ void() menu_consettings =
 	in_menu = MENU_CONSETTINGS;
 }
 
+void() menu_audsettings =
+{
+	if (in_menu == MENU_IGS)
+		wasigs = TRUE;
+	else
+		wasigs = FALSE;
+
+	in_menu = MENU_AUDSETTINGS;
+}
+
 void() menu_controls =
 {
 	if (in_menu == MENU_IGS)
@@ -667,6 +677,174 @@ void() settings_adsmode =
 		cvar_set("cl_adsmode", ftos(0));
 }
 
+void() setting_mastervol =
+{
+	float vol = cvar("volume");
+
+	vol += 0.1;
+
+	if (vol > 1)
+		vol = 1;
+
+	cvar_set("volume", ftos(vol));
+}
+
+void() setting_mastervol2 =
+{
+	float vol = cvar("volume");
+
+	vol -= 0.1;
+
+	if (vol < 0)
+		vol = 0;
+
+	cvar_set("volume", ftos(vol));
+}
+
+void() setting_chann1vol =
+{
+	float vol = cvar("snd_channel1volume");
+
+	vol += 0.1;
+
+	if (vol > 1)
+		vol = 1;
+
+	cvar_set("snd_channel1volume", ftos(vol));
+}
+
+void() setting_chann1vol2 =
+{
+	float vol = cvar("snd_channel1volume");
+
+	vol -= 0.1;
+
+	if (vol < 0)
+		vol = 0;
+
+	cvar_set("snd_channel1volume", ftos(vol));
+}
+
+void() setting_chann2vol =
+{
+	float vol = cvar("snd_channel2volume");
+
+	vol += 0.1;
+
+	if (vol > 1)
+		vol = 1;
+
+	cvar_set("snd_channel2volume", ftos(vol));
+}
+
+void() setting_chann2vol2 =
+{
+	float vol = cvar("snd_channel2volume");
+
+	vol -= 0.1;
+
+	if (vol < 0)
+		vol = 0;
+
+	cvar_set("snd_channel2volume", ftos(vol));
+}
+
+void() setting_chann3vol =
+{
+	float vol = cvar("snd_channel3volume");
+
+	vol += 0.1;
+
+	if (vol > 1)
+		vol = 1;
+
+	cvar_set("snd_channel3volume", ftos(vol));
+}
+
+void() setting_chann3vol2 =
+{
+	float vol = cvar("snd_channel3volume");
+
+	vol -= 0.1;
+
+	if (vol < 0)
+		vol = 0;
+
+	cvar_set("snd_channel3volume", ftos(vol));
+}
+
+void() setting_chann4vol =
+{
+	float vol = cvar("snd_channel4volume");
+
+	vol += 0.1;
+
+	if (vol > 1)
+		vol = 1;
+
+	cvar_set("snd_channel4volume", ftos(vol));
+}
+
+void() setting_chann4vol2 =
+{
+	float vol = cvar("snd_channel4volume");
+
+	vol -= 0.1;
+
+	if (vol < 0)
+		vol = 0;
+
+	cvar_set("snd_channel4volume", ftos(vol));
+}
+
+void() setting_chann5vol =
+{
+	float vol = cvar("snd_channel5volume");
+
+	vol += 0.1;
+
+	if (vol > 1)
+		vol = 1;
+
+	cvar_set("snd_channel5volume", ftos(vol));
+}
+
+void() setting_chann5vol2 =
+{
+	float vol = cvar("snd_channel5volume");
+
+	vol -= 0.1;
+
+	if (vol < 0)
+		vol = 0;
+
+	cvar_set("snd_channel5volume", ftos(vol));
+}
+
+void() setting_chann6vol =
+{
+	float vol = cvar("snd_channel6volume");
+
+	vol += 0.1;
+
+	if (vol > 1)
+		vol = 1;
+
+	cvar_set("snd_channel6volume", ftos(vol));
+}
+
+void() setting_chann6vol2 =
+{
+	float vol = cvar("snd_channel6volume");
+
+	vol -= 0.1;
+
+	if (vol < 0)
+		vol = 0;
+
+	cvar_set("snd_channel6volume", ftos(vol));
+}
+
 //rmb null
 void() null = {
 	return;
@@ -722,7 +900,7 @@ var struct
 
 	//Settings
 	{[0.025, 0.175, 0], "Graphics Settings", -1, menu_graphics, null, MENU_SETTINGS + MENU_IGS, 0},
-	{[0.025, 0.225, 0], "Controls", -1, menu_controls, null, MENU_SETTINGS + MENU_IGS, 0},
+	{[0.025, 0.350, 0], "Controls", -1, menu_controls, null, MENU_SETTINGS + MENU_IGS, 0},
 
 	//Graphics
 	{[0.025, 0.175, 0], "Resolution", -1, settings_re, settings_re, MENU_GSETTINGS, 0},
@@ -737,7 +915,8 @@ var struct
 	{[0.025, 0.625, 0], "Particles", -1, settings_pt, settings_pt, MENU_GSETTINGS, 0},
 	{[0.025, 0.675, 0], "Fullbright", -1, settings_fb, settings_fb, MENU_GSETTINGS, 0},
 	{[0.025, 0.725, 0], "Retro", -1, settings_ro, settings_ro, MENU_GSETTINGS, 0},
-	{[0.025, 0.800, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS + MENU_CONSETTINGS, 0},
+	{[0.025, 0.800, 0], "Save & Apply", -1, settings_apply, settings_apply, MENU_GSETTINGS + MENU_CONSETTINGS +
+																			MENU_AUDSETTINGS, 0},
 
 	//Controls
 	{[0.025, 0.175, 0], "Walk Forward", -1, bind_walkf, null, MENU_CSETTINGS, 0},
@@ -764,7 +943,7 @@ var struct
 	//Everything, pretty much
 	{[0.025, 0.925, 0], "Back", -1, menu_back, null, MENU_SINGLE + MENU_MULTI + MENU_SETTINGS + MENU_ABOUT + 
 													 MENU_IGS + MENU_GSETTINGS + MENU_CSETTINGS + MENU_CUSTOMS +
-                                                     MENU_ACHIEVEMENTS + MENU_CONSETTINGS, 0},
+                                                     MENU_ACHIEVEMENTS + MENU_CONSETTINGS + MENU_AUDSETTINGS, 0},
 
 	{[0.025, 0.275, 0], "Control Settings", -1, menu_consettings, null, MENU_SETTINGS + MENU_IGS, 0}, // 47
 	{[0.025, 0.175, 0], "ADS Mode", -1, settings_adsmode, null, MENU_CONSETTINGS, 0}, // 48
@@ -773,10 +952,19 @@ var struct
 	{[0.025, 0.325, 0], "Wahnsinn", -1, menu_loadwn, null, MENU_SINGLE, 1}, // 50
 	{[0.025, 0.375, 0], "Christmas Special", -1, menu_loadch, null, MENU_SINGLE, 0}, // 51
 	{[0.025, 0.225, 0], "Kino der Toten", -1, menu_loadch, null, MENU_SINGLE, 1}, // 52
+
+	{[0.025, 0.225, 0], "Audio Settings", -1, menu_audsettings, null, MENU_SETTINGS + MENU_IGS, 0}, // 53
+	{[0.025, 0.175, 0], "Master Volume", -1, setting_mastervol, setting_mastervol2, MENU_AUDSETTINGS, 0}, // 54
+	{[0.025, 0.225, 0], "Music Volume", -1, setting_chann1vol, setting_chann1vol2, MENU_AUDSETTINGS, 0}, // 55
+	{[0.025, 0.275, 0], "SFX Volume", -1, setting_chann2vol, setting_chann2vol2, MENU_AUDSETTINGS, 0}, // 56
+	{[0.025, 0.325, 0], "Channel 3 Volume", -1, setting_chann3vol, setting_chann3vol2, MENU_AUDSETTINGS, 0}, // 57
+	{[0.025, 0.375, 0], "Channel 4 Volume", -1, setting_chann4vol, setting_chann4vol2, MENU_AUDSETTINGS, 0}, // 58
+	{[0.025, 0.425, 0], "Channel 5 Volume", -1, setting_chann5vol, setting_chann5vol2, MENU_AUDSETTINGS, 0}, // 59
+	{[0.025, 0.475, 0], "Channel 6 Volume", -1, setting_chann6vol, setting_chann6vol2, MENU_AUDSETTINGS, 0}, // 60
 };
 
 //REMEMBER TO UPDATE THIS CONST IF YOU ADD BUTTONS
-const float BUTTONS_COUNT = 53;
+const float BUTTONS_COUNT = 61;
 float lastActive;
 
 
@@ -823,7 +1011,7 @@ void(float index) Update_Button =
 
 	if (cursor_pos_x > pos_x && cursor_pos_x < pos_x + (g_height * 0.6) && cursor_pos_y > pos_y && cursor_pos_y < pos_y + btnscale && buttons[index].gray_out == 0) {
 		if (index != lastActive)
-			sound(self, 0, "sounds/menu/navigate.wav", 1, ATTN_NONE);
+			localsound_enhanced("sounds/menu/navigate.wav", CHAN_SFX, 1);
 		
 		buttons[index].active = 1;
 		lastActive = index;
@@ -873,7 +1061,7 @@ void(float index, float type) Button_Click =
 		}
 		
 		lastActive = -1;
-		sound(self, 0, "sounds/menu/enter.wav", 1, ATTN_NONE); //FIXME - prevent sound from playing if action2 is null!
+		localsound_enhanced("sounds/menu/enter.wav", CHAN_SFX, 1);
 	}
 
 	if (in_menu == MENU_CUSTOMS)
@@ -998,6 +1186,10 @@ void() Draw_Extra_Solo =
 
 void() Draw_Extra_Settings =
 {
+
+	// Division lines
+	drawfill ([0.025*g_width, 0.325*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1, 0);
+
 	local string set_desc = "";
 
 	// Descriptions
@@ -1010,6 +1202,9 @@ void() Draw_Extra_Settings =
 			break;
 		case 47:
 			set_desc = "Adjust settings in relation to how NZ:P Controls.";
+			break;
+		case 53:
+			set_desc = "Adjust Audio Levels.";
 			break;
 		default:
 			set_desc = "";
@@ -1374,7 +1569,7 @@ void() Draw_Extra_Customs =
 			(0.030*g_height)) {
 
 			if (i != last_active_custom_select)
-				sound(self, 0, "sounds/menu/navigate.wav", 1, ATTN_NONE);
+				localsound_enhanced("sounds/menu/navigate.wav", CHAN_SFX, 1);
 
 			if (customs_interact)
 				localcmd(strcat("map "), custom_map_names[i]);
@@ -1529,9 +1724,90 @@ void() Draw_Extra_Achievements =
 	}
 }
 
+void() Draw_Extra_ASettings =
+{
+	string aset_desc = "";
+	float master_volume = cvar("volume");
+	float chann1_volume = cvar("snd_channel1volume");
+	float chann2_volume = cvar("snd_channel2volume");
+	float chann3_volume = cvar("snd_channel3volume");
+	float chann4_volume = cvar("snd_channel4volume");
+	float chann5_volume = cvar("snd_channel5volume");
+	float chann6_volume = cvar("snd_channel6volume");
+
+	// Master Volume
+	drawfill ([0.475*g_width, 0.1755*g_height, 0], [g_height * (master_volume/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
+
+	// Music Volume
+	drawfill ([0.475*g_width, 0.2255*g_height, 0], [g_height * (chann1_volume/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
+
+	// SFX Volume
+	drawfill ([0.475*g_width, 0.2755*g_height, 0], [g_height * (chann2_volume/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
+
+	// Channel 3 Volume
+	drawfill ([0.475*g_width, 0.3255*g_height, 0], [g_height * (chann3_volume/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
+
+	// Channel 4 Volume
+	drawfill ([0.475*g_width, 0.3755*g_height, 0], [g_height * (chann4_volume/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
+
+	// Channel 5 Volume
+	drawfill ([0.475*g_width, 0.4255*g_height, 0], [g_height * (chann5_volume/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
+
+	// Channel 6 Volume
+	drawfill ([0.475*g_width, 0.4755*g_height, 0], [g_height * (chann6_volume/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
+
+	// Descriptions
+	switch(lastActive) {
+		case 54:
+			aset_desc = "Adjusts the overall volume of the game.";
+			break;
+		case 55:
+			aset_desc = "Adjusts the volume of the music in the game.";
+			break;
+		case 56:
+			aset_desc = "Adjusts the volume of sound effects in the game.";
+			break;
+		case 57:
+			aset_desc = "Audio Level for Channel 3.";
+			break;
+		case 58:
+			aset_desc = "Audio Level for Channel 4.";
+			break;
+		case 59:
+			aset_desc = "Audio Level for Channel 5.";
+			break;
+		case 60:
+			aset_desc = "Audio Level for Channel 6.";
+			break;
+		default:
+			aset_desc = "";
+			break;
+	}
+
+	// Division lines
+	drawfill ([0.025*g_width, 0.775*g_height, 0], [g_height * 0.600, g_height * 0.005, 1], [0.4, 0.4, 0.4], 1, 0);
+
+	// Draw desc
+	drawstring([0.025*g_width, 0.865*g_height, 0], aset_desc, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
+}
+
+float menu_sound_length;
+
 void() Draw_Menu =
 {
-	//background
+	// main menu theme iterating
+	if (menu_initialized == false && in_menu == MENU_MAIN) {
+		localsound_enhanced("tracks/tensioned_by_the_damned.mp3", CHAN_MUSIC, 1);
+		menu_sound_length = 490; // have to hard code because soundlength() doesn't like MP3 media it seems..
+		menu_initialized = true;
+	}
+
+	// restart the track if it has ended
+	if (menu_initialized == true && (getsoundtime(self, 1) >= menu_sound_length - 1)) {
+		localsound_enhanced("tracks/tensioned_by_the_damned.mp3", CHAN_MUSIC, 1);
+	}
+	
+	// background
 	if(serverkey("constate") == "disconnected")
 	{
 		if(g_width <= g_height * 1.77778)
@@ -1598,6 +1874,10 @@ void() Draw_Menu =
 		case MENU_CONSETTINGS:
 			title = "CONTROL SETTINGS";
 			Draw_Extra_CSettings();
+			break;
+		case MENU_AUDSETTINGS:
+			title = "AUDIO SETTINGS";
+			Draw_Extra_ASettings();
 			break;
 		default:
 			title = "Nazi Zombies: Portable";

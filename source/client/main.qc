@@ -128,6 +128,14 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	cvar_set("nzp_particles", "1");
 	cvar_set("nzp_decals", "1");
 
+	// per-channel volume
+	cvar_set("snd_channel1volume", "1");
+	cvar_set("snd_channel2volume", "1");
+	cvar_set("snd_channel3volume", "1");
+	cvar_set("snd_channel4volume", "1");
+	cvar_set("snd_channel5volume", "1");
+	cvar_set("snd_channel6volume", "1");
+
 	// force nearest filtering for hud elements to avoid blur
 	cvar_set("gl_texturemode2d", "gl_nearest");
 

@@ -2,6 +2,7 @@
 
 client/csdefs.qc
 shared/customdefs.qc
+shared/sound_enhanced.qc
 shared/weapon_defines.qc
 client/customdefs.qc
 client/menu.qc
