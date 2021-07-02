@@ -205,12 +205,10 @@ void() settings_fps = {
 void() settings_brite = {
 	local float br = cvar("gamma");
 
-	br -= 0.1;
-	projBr += 0.1;
+	br += 0.1;
 
-	if (br < 0) {
+	if (br > 2) {
 		br = 2;
-		projBr = 0;
 	}
 
 	cvar_set("gamma", ftos(br));
@@ -219,12 +217,10 @@ void() settings_brite = {
 void() settings_brite2 = {
 	local float br = cvar("gamma");
 
-	br += 0.1;
-	projBr -= 0.1;
+	br -= 0.1;
 
-	if (br > 2) {
-		br = 0;
-		projBr = 2;
+	if (br < 0.5) {
+		br = 0.5;
 	}
 
 	cvar_set("gamma", ftos(br));
@@ -1372,7 +1368,7 @@ void() Draw_Extra_GSettings =
 
 	// Brightness
 	// have to use a drawfill because of how gamma values are subtracted.. for some reason
-	drawfill ([0.475*g_width, 0.5255*g_height, 0], [g_height * (projBr/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
+	drawfill ([0.475*g_width, 0.5255*g_height, 0], [g_height * (cvar("gamma")/3), g_height * 0.030, 1], [0.8, 0.8, 0.8], 1, 0);
 
 	// Decals
 	if (cvar("nzp_decals") == 0)

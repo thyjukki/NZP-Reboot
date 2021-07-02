@@ -48,8 +48,6 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 		ToggleMenu();
 	//bgpos = 0;
 
-	projBr = cvar("gamma");
-
 	// default button binds
 
 	buttonBind[0] = "+forward";

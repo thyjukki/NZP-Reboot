@@ -143,7 +143,6 @@ string huddir;
 //this just cleans up settings a bit..
 #define     S_ENABLED       "Enabled"
 #define     S_DISABLED      "Disabled"
-float projBr;
 float wasigs;
 
 //controls
