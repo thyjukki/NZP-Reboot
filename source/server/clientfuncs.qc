@@ -6,24 +6,27 @@ void SetUpdate(entity client, float type, float val1, float val2, float val3)
 {
 	#ifndef PSP
 	#ifndef NX
+
 	if (type != 2)
 	{
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_UPDATE);
+		WriteByte(MSG_MULTICAST, type); // UT_HUD
+		WriteByte(MSG_MULTICAST, val1);
+		WriteByte(MSG_MULTICAST, val2);
+		WriteByte(MSG_MULTICAST, val3); // misc flags/vars for later if needed
 		msg_entity = client;
-		WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-		WriteByte(MSG_ONE, EVENT_UPDATE);
-		WriteByte(MSG_ONE, type); // UT_HUD
-		WriteByte(MSG_ONE, val1); 
-		WriteByte(MSG_ONE, val2);
-		WriteByte(MSG_ONE, val3); // misc flags/vars for later if needed
+		multicast('0 0 0', MULTICAST_ONE);
 	}
 	else
 	{
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_UPDATE);
-		WriteByte(MSG_ALL, type); // UT_ROUNDS_CHANGE
-		WriteByte(MSG_ALL, val1); 
-		WriteByte(MSG_ALL, val2);
-		WriteByte(MSG_ALL, val3); // misc flags/vars for later if needed
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_UPDATE);
+		WriteByte(MSG_MULTICAST, type); // UT_ROUNDS_CHANGE
+		WriteByte(MSG_MULTICAST, val1);
+		WriteByte(MSG_MULTICAST, val2);
+		WriteByte(MSG_MULTICAST, val3); // misc flags/vars for later if needed
+		multicast('0 0 0', MULTICAST_ALL);
 	}
 	#endif
 	#endif
@@ -32,14 +35,13 @@ void SetUpdate(entity client, float type, float val1, float val2, float val3)
 #ifndef PSP
 #ifndef NX
 void(entity to, float type, float cost, float weapon) useprint = {
-	
-    msg_entity = to;
-	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-	WriteByte(MSG_ONE, EVENT_USEPRINT);
-	WriteByte(MSG_ONE, type);
-	WriteShort(MSG_ONE, cost);
-	WriteByte(MSG_ONE, weapon);
-	
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_USEPRINT);
+	WriteByte(MSG_MULTICAST, type);
+	WriteShort(MSG_MULTICAST, cost);
+	WriteByte(MSG_MULTICAST, weapon);
+	msg_entity = to;
+	multicast('0 0 0', MULTICAST_ONE);
 }
 #endif
 #endif
@@ -52,11 +54,12 @@ void(vector org) CallExplosion = {
 	WriteCoord (MSG_BROADCAST, org_y);
 	WriteCoord (MSG_BROADCAST, org_z);
     #else
-    WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-	WriteByte(MSG_ALL, EVENT_EXPLOSION);
-	WriteCoord(MSG_ALL, org_x);
-	WriteCoord(MSG_ALL, org_y);
-	WriteCoord(MSG_ALL, org_z);
+    WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_EXPLOSION);
+	WriteCoord(MSG_MULTICAST, org_x);
+	WriteCoord(MSG_MULTICAST, org_y);
+	WriteCoord(MSG_MULTICAST, org_z);
+	multicast('0 0 0', MULTICAST_ALL);
     #endif
 }
 
@@ -64,9 +67,10 @@ void NotifyNewRound(float to) {
 	#ifndef PSP
 	#ifndef NX
 	
-	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-	WriteByte(MSG_ALL, EVENT_NEWROUND);
-	WriteByte(MSG_ALL, to);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_NEWROUND);
+	WriteByte(MSG_MULTICAST, to);
+	multicast('0 0 0', MULTICAST_ALL);
 	
 	#endif
 	#endif
@@ -76,10 +80,11 @@ void SetRound(entity client, float to) {
 	#ifndef PSP
 	#ifndef NX
 	
-    msg_entity = client;
-	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-	WriteByte(MSG_ONE, EVENT_SETROUND);
-	WriteByte(MSG_ONE, to);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_SETROUND);
+	WriteByte(MSG_MULTICAST, to);
+	msg_entity = client;
+	multicast('0 0 0', MULTICAST_ONE);
 	
 	#endif
 	#endif
@@ -90,10 +95,11 @@ void SetPerk(entity client, float to)
 	#ifndef PSP
 	#ifndef NX
 	
-    	msg_entity = client;
-	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-	WriteByte(MSG_ONE, EVENT_PERK);
-	WriteLong(MSG_ONE, to);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_PERK);
+	WriteLong(MSG_MULTICAST, to);
+	msg_entity = client;
+	multicast('0 0 0', MULTICAST_ONE);
 	
 	#endif
 	#endif
@@ -151,10 +157,11 @@ void(float broadcast_time, float type) BroadcastMessage =
 {
 	#ifndef PSP
 	#ifndef NX
-	WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-	WriteByte(MSG_ALL, EVENT_BROADCAST);
-	WriteByte(MSG_ALL, broadcast_time);
-	WriteByte(MSG_ALL, type);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_BROADCAST);
+	WriteByte(MSG_MULTICAST, broadcast_time);
+	WriteByte(MSG_MULTICAST, type);
+	multicast('0 0 0', MULTICAST_ALL);
 	
 	#endif
 	#endif
@@ -176,13 +183,14 @@ void(float playernum, float points, float am, float kills, string name, entity p
 		multicast('0 0 0', MULTICAST_ONE);
 	}
 	else {
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_POINTUPDATE);
-		WriteByte(MSG_ALL, playernum);
-		WriteLong(MSG_ALL, points);
-		WriteLong(MSG_ALL, am);
-		WriteLong(MSG_ALL, kills);
-		WriteString(MSG_ALL, name);
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_POINTUPDATE);
+		WriteByte(MSG_MULTICAST, playernum);
+		WriteLong(MSG_MULTICAST, points);
+		WriteLong(MSG_MULTICAST, am);
+		WriteLong(MSG_MULTICAST, kills);
+		WriteString(MSG_MULTICAST, name);
+		multicast('0 0 0', MULTICAST_ALL);
 	}
 	
 	#endif
@@ -195,9 +203,10 @@ void(float count) UpdatePlayerCount = {
 	if (count == 0)
 		return;
 	else {
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_PLAYERUPDATE);
-		WriteByte(MSG_ALL, count);
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_PLAYERUPDATE);
+		WriteByte(MSG_MULTICAST, count);
+		multicast('0 0 0', MULTICAST_ALL);
 	}
 
 	#endif
@@ -226,11 +235,13 @@ void(entity who) UpdatePunchangle =
 	// naievil -- shit logic lol...but result looks clean as fuck...
 	#ifndef PSP
 	#ifndef NX
-	WriteByte(MSG_ONE, SVC_CGAMEPACKET);
-	WriteByte(MSG_ONE, EVENT_PUNCHANGLE);
-	WriteCoord(MSG_ONE, who.punchangle_x);
-	WriteCoord(MSG_ONE, who.punchangle_y);
-	WriteCoord(MSG_ONE, who.punchangle_z);
+	WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+	WriteByte(MSG_MULTICAST, EVENT_PUNCHANGLE);
+	WriteCoord(MSG_MULTICAST, who.punchangle_x);
+	WriteCoord(MSG_MULTICAST, who.punchangle_y);
+	WriteCoord(MSG_MULTICAST, who.punchangle_z);
+	msg_entity = who;
+	multicast('0 0 0', MULTICAST_ONE);
 	
 	vector tempv = who.punchangle;
 		
@@ -279,10 +290,11 @@ void(string h, float h2, entity who) pushHUD = {
 		msg_entity = who;
 		multicast('0 0 0', MULTICAST_ONE);
 	} else {
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_WEAPONUPDATE);
-		WriteString(MSG_ALL, h);
-		WriteByte(MSG_ALL, h2);
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_WEAPONUPDATE);
+		WriteString(MSG_MULTICAST, h);
+		WriteByte(MSG_MULTICAST, h2);
+		multicast('0 0 0', MULTICAST_ALL);
 	}
 }
 
@@ -330,9 +342,10 @@ void(string msg, entity who) ScrollText = {
 		msg_entity = who;
 		multicast('0 0 0', MULTICAST_ONE);
 	} else {
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_SCROLLTEXT);
-		WriteString(MSG_ALL, msg);
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_SCROLLTEXT);
+		WriteString(MSG_MULTICAST, msg);
+		multicast('0 0 0', MULTICAST_ALL);
 	}
 }
 
@@ -347,12 +360,13 @@ void(string chaptertitle, string location, string date, string person, entity wh
 		msg_entity = who;
 		multicast('0 0 0', MULTICAST_ONE);
 	} else {
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_WORLDDATA);
-		WriteString(MSG_ALL, chaptertitle);
-		WriteString(MSG_ALL, location);
-		WriteString(MSG_ALL, date);
-		WriteString(MSG_ALL, person);
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_WORLDDATA);
+		WriteString(MSG_MULTICAST, chaptertitle);
+		WriteString(MSG_MULTICAST, location);
+		WriteString(MSG_MULTICAST, date);
+		WriteString(MSG_MULTICAST, person);
+		multicast('0 0 0', MULTICAST_ALL);
 	}
 }
 #endif
@@ -388,9 +402,10 @@ void (float achievement_id, optional entity who) GiveAchievement =
 			players = find(players, classname, "player");
 		}
 #else
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_ACHIEVEMENT);
-		WriteByte(MSG_ALL, achievement_id);
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_ACHIEVEMENT);
+		WriteByte(MSG_MULTICAST, achievement_id);
+		multicast('0 0 0', MULTICAST_ALL);
 #endif // PSP
 	}
 }
@@ -424,10 +439,11 @@ void (float achievement_id, float progress_value, optional entity who) UpdateAch
 			players = find(players, classname, "player");
 		}
 #else
-		WriteByte(MSG_ALL, SVC_CGAMEPACKET);
-		WriteByte(MSG_ALL, EVENT_ACHIEVEMENTPROGRESS);
-		WriteByte(MSG_ALL, achievement_id);
-		WriteFloat(MSG_ALL, progress_value);
+		WriteByte(MSG_MULTICAST, SVC_CGAMEPACKET);
+		WriteByte(MSG_MULTICAST, EVENT_ACHIEVEMENTPROGRESS);
+		WriteByte(MSG_MULTICAST, achievement_id);
+		WriteFloat(MSG_MULTICAST, progress_value);
+		multicast('0 0 0', MULTICAST_ALL);
 #endif // PSP
 	}
 }
