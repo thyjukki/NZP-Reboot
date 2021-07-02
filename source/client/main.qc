@@ -31,6 +31,8 @@ void() ToggleMenu =
 
 noref void(float apiver, string enginename, float enginever) CSQC_Init =
 {
+	setwindowcaption("Nazi Zombies: Portable");
+	
 	precache_sound("sounds/menu/enter.wav");
 	precache_sound("sounds/menu/navigate.wav");
 
