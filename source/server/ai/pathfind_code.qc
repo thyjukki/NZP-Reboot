@@ -209,7 +209,9 @@ float Do_Pathfind(entity from, entity to) {
 	float TraceResult;
 
 	float dist, best_dist, best, best_target;
-
+	
+	best = 0;
+	best_target = 0;
 	dist = 0;
 	best_dist = 100000000;
 

@@ -434,7 +434,8 @@ void(float side) W_Reload =
 	W_SprintStop();
 
 	float endframe, startframe, reloadcancelframe, delay;
-	string modelname;
+	string modelname = "";
+	
 	if (side == S_RIGHT) {
 		modelname = GetWeaponModel(self.weapon, 0);
 	} else {
@@ -821,7 +822,7 @@ void() LungeKnifeHit =
 void(float damage, vector dir, vector org, vector plane, entity hit_ent, float side) TraceAttack =
 {
 	vector  vel;
-	float f_damage;
+	float f_damage = 0;
   
 	vel = normalize(dir);
 	vel = vel + 2*plane;
@@ -924,6 +925,8 @@ void (float shotcount, float sprd, float Damage, float side) FireTrace =
 	float count, r, ru, penetration_times, do_break;
 	vector dir, src, trace_start_org;
 	entity hitent;
+	
+	count = 0;
 	
 	makevectors(self.v_angle);
 	
@@ -1387,10 +1390,10 @@ void(float side) W_Fire =
 	float firetype;
 	float damage;
 	float shotcount;
-	string modelname;
+	string modelname = "";
 	string soundname;
 	float spread;
-	float sprdstance;
+	float sprdstance = 0;
 	float delay;
 
 	//Update the basic vectors

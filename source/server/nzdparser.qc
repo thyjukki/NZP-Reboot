@@ -14,6 +14,10 @@
 void(string weaponFile) nzd_defineweapon = {
 	float f, p, l, fnum, wepnum, framenum, fsnd;
 	string line;
+	
+	fnum = 0;
+	framenum = 0;
+	fsnd = 0;
 
 	line = strcat(strcat("data/maps/", weaponFile), ".cw");
 	f = fopen(line, FILE_READ);

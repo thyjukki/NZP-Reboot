@@ -970,154 +970,109 @@ float(float wep, float penetration_times) getWeaponPenetration =
 
 float(float wep) GetWeaponSpread =
 {
-	float Weapon_Spread, Total_Spread;
-
 	if (isCustomWeapon(wep)) {
-		Weapon_Spread = CustomWeapons[wep - 70].spread;
+		return CustomWeapons[wep - 70].spread;
 	}
 
 	switch (wep)
 	{
 		case W_COLT:
-			Weapon_Spread = 7.5;
-			break;
+			return 7.5;
 		case W_BIATCH:
-			Weapon_Spread = 7.5;
-			break;
+			return 7.5;
 		case W_KAR:
-			Weapon_Spread = 25;
-			break;
+			return 25;
 		case W_ARMAGEDDON:
-			Weapon_Spread = 25;
-			break;
+			return 25;
 		case W_THOMPSON:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_GIBS:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_RAY:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_PORTER:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_KAR_SCOPE:
-			Weapon_Spread = 25;
-			break;
+			return 25;
 		case W_HEADCRACKER:
-			Weapon_Spread = 25;
-			break;
+			return 25;
 		case W_BAR:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_WIDOW:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_M1A1:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_WIDDER:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_M2:
-			Weapon_Spread = 0;
-			break;
+			return 0;
 		case W_FIW:
-			Weapon_Spread = 0;
-			break;
+			return 0;
 		case W_TYPE:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_SAMURAI:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_SAWNOFF:
-			Weapon_Spread = 15;
-			break;
+			return 15;
 		case W_SNUFF:
-			Weapon_Spread = 15;
-			break;
+			return 15;
 		case W_PPSH:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_REAPER:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_DB:
-			Weapon_Spread = 12.5;
-			break;
+			return 12.5;
 		case W_BORE:
-			Weapon_Spread = 12.5;
-			break;
+			return 12.5;
 		case W_FG:
-			Weapon_Spread = 5;
-			break;
-		case W_IMPELLER:Weapon_Spread = 5;
-			break;
-		case W_TRENCH:Weapon_Spread = 12.5;
-			break;
-		case W_GUT:Weapon_Spread = 12.5;
-			break;
-		case W_MG:Weapon_Spread = 10;
-			break;
-		case W_BARRACUDA:Weapon_Spread = 10;
-			break;
+			return 5;
+		case W_IMPELLER:
+			return 5;
+		case W_TRENCH:
+			return 12.5;
+		case W_GUT:
+			return 12.5;
+		case W_MG:
+			return 10;
+		case W_BARRACUDA:
+			return 10;
 		case W_GEWEHR:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_COMPRESSOR:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_BROWNING:
-			Weapon_Spread = 10;
-			break;
+			return 10;
 		case W_ACCELERATOR:
-			Weapon_Spread = 10;
-			break;
+			return 10;
 		case W_357:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_KILLU:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_M1:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_M1000:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_MP40:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_AFTERBURNER:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_PTRS:
-			Weapon_Spread = 15;
-			break;
+			return 15;
 		case W_PENETRATOR:
-			Weapon_Spread = 15;
-			break;
+			return 15;
 		case W_STG:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_SPATZ:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_MP5:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_TESLA:
-			Weapon_Spread = 5;
-			break;
+			return 5;
 		case W_M14:
-			Weapon_Spread = 5;
-		break;
+			return 5;
 	}
 
-	Total_Spread = Weapon_Spread;
-	return Total_Spread;
+	return 0;
 }
 
 float(float wep, float delaytype) getWeaponDelay =
@@ -1336,6 +1291,8 @@ float GetWeaponWalkSpeed(float perks, float weapontype)
 {
 	float spd;
 
+	spd = 0;
+
 	if (isCustomWeapon(weapontype)) {
 		spd = CustomWeapons[weapontype - 70].walkspeed;
 	}
@@ -1497,14 +1454,7 @@ vector GetWeaponADSOfs_PSP(float wep) =
 			return [-12700, 2086.9, 0];
 		case W_GEWEHR:
 		case W_COMPRESSOR:
-			#ifdef PSP
 			return [-6550, 4400, 0];
-			#endif
-
-			// naievil -- NX just doesn't look right
-			#ifdef NX
-			return [-6550, 11250, 0];
-			#endif
 		case W_PPSH:
 		case W_REAPER:
 			return [-11000, 3700, 0];
@@ -1513,7 +1463,7 @@ vector GetWeaponADSOfs_PSP(float wep) =
 			return [-12320, 7600, 0];
 		case W_TYPE:
 		case W_SAMURAI:
-			return [-0400, -200, 0];
+			return [-400, -200, 0];
 		case W_STG:
 		case W_SPATZ:
 
@@ -3558,6 +3508,8 @@ float(float weapon, float stance) CrossHairWeapon =
 {
 
 	float sprd;
+	
+	sprd = 0;
 
 	if (isCustomWeapon(weapon)) {
 		sprd = CustomWeapons[weapon - 70].crossmin;
@@ -3682,6 +3634,8 @@ float(float weapon, float stance) CrossHairWeapon =
 float(float weapon, float stance) CrossHairMaxSpread =
 {
 	float sprd;
+	
+	sprd = 0;
 
 	if (isCustomWeapon(weapon)) {
 		return CustomWeapons[weapon - 70].crossmax;
@@ -3866,7 +3820,9 @@ float(float weapon, float type) GetLowAmmo = // determine what ammo value you sh
 // PSP Specific!!
 vector(float wep) GetWeaponRecoil =
 {
-	vector guaranteed, kick_change, final_kick;
+	vector guaranteed = '0 0 0';
+	vector kick_change = '0 0 0';
+	vector final_kick = '0 0 0';
 	float change_1, change_2, change_3,total_recoil, r, temp1, temp2;
 	switch (wep)
 	{

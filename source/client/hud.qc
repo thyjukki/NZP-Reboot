@@ -220,7 +220,7 @@ void(float width, float height) HUD_Points =
 {
 	local float pointlength = 0, increm = 10, i = 0, pointwidth = 0, x = 0;
 	local float backwidth = 0.8*width;
-	vector TEXTCOLOR;
+	vector TEXTCOLOR = '0 0 0';
 	
 	for (i = 3; i >= 0; i = i - 1)
 	{
@@ -364,7 +364,8 @@ void(float width, float height) HUD_Rounds =
 	}
 	else if (rounds_change == 2)//this is the rounds icon moving from middle
 	{
-		float round_center_y_offset, round_center_x_offset;
+		float round_center_y_offset = 0;
+		float round_center_x_offset = 0;
 				
 		drawpic([round_center_x + round_center_x_offset,round_center_y + round_center_y_offset,0], sb_round[0], [roundwidth,roundheight, 1], [107/255,(1/255),0], 1);
 		
@@ -805,6 +806,9 @@ void(float width, float height) HUD_Useprint =
 {
 	string usestring, usebutton, usespace;
 	float print_width, x, button_width;
+	
+	usestring = "";
+	usespace = "";
 		
 	tokenize(findkeysforcommand("+button7"));
 	usebutton = strtoupper(keynumtostring(stof(argv(0))));

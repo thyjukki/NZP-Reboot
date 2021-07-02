@@ -44,6 +44,7 @@ entity(entity blarg) find_new_enemy =
 	local float bestdist;
 	local float dist;
 	bestdist = 10000;
+	closest = 0;
 
     // FIXME - change to hellhound for old/unreleased Demo map support?
 	if(self.classname == "ai_zombie" || self.classname == "ai_dog") {
