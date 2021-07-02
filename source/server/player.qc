@@ -422,47 +422,28 @@ void() ClientConnect =
 	// Maintain old FGD values and just convert them to new ones
 	// 
 	if (world.fog) {
-		string fog_R, fog_G, fog_B;
 		// Force fog on PC
 		if (!world.PC_fog) {
 			// Don't execute more than once
 			if (!world_fog) {
-				string fog_start_end;
+				string fog_start_end, fog_R, fog_B, fog_G;
 			
 				// Tokenize our fog
 				tokenize(world.fog);
 			
 				// Get values and transmute it a bit if necessary
 				//	Originally: start | end | R | G | B
-				fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3);
+				fog_start_end = ftos(((stof(argv(0))) / stof(argv(1))) / 3.5);
 			
-				fog_R = ftos(stof(argv(2))/255 * 2);
-				fog_G = ftos(stof(argv(3))/255 * 2);
-				fog_B = ftos(stof(argv(4))/255 * 2);
+				fog_R = ftos(stof(argv(2))/255);
+				fog_G = ftos(stof(argv(3))/255);
+				fog_B = ftos(stof(argv(4))/255);
 
 				// Restore into our world.fog
 				world_fog = strcat(fog_start_end, " ", fog_R, " ", fog_G, " ", fog_B);
 			}
-		}
-
-		// set the clear color to fix hall of mirrors effect
-		if (!clearcolor_hack) {
-			if (world.PC_fog || !world_fog)
-				tokenize(world.fog);
-			else
-				tokenize(world_fog);
-
-			fog_R = argv(1);
-			fog_G = argv(2);
-			fog_B = argv(3);
-
-			clearcolor_hack = strcat(fog_R, " ", fog_G, " ", fog_B);
-		}
-
-		localcmd(strcat("r_clearcolour ", clearcolor_hack));
-
-		if (!world.PC_fog)
 			localcmd(strcat("fog ", world_fog));
+		} 
 	}
 	
 	if (mapname == "ndu")	{			// the only one we REALLY need to fix is NDU since I don't want to edit the file

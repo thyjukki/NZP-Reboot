@@ -262,12 +262,12 @@ void(float width, float height) HUD_Grenades =
 
 	grenades = getstatf(STAT_GRENADES);
 	betties = getstatf(STAT_SECGRENADES);
-	drawpic([0.9*width,0.825*height,0], getImage("frag.tga"), [50, 50, 0], [1,1,1], 1);
-	drawstring([0.9*width + 28, 0.825*height + 32, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 0);
+	drawpic([0.9*width,0.825*height,0], getImage("frag.tga"), [0.11*height, 0.11*height, 0], [1,1,1], 1);
+	drawstring([0.935*width, 0.900*height, 0], ftos(grenades), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 0);
 	
 	if (betties != -1) {
-		drawpic([0.825*width,0.825*height,0], getImage("betty.tga"), [50, 50, 0], [1,1,1], 1);
-		drawstring([0.825*width + 28, 0.825*height + 32, 0], ftos(betties), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 0);
+		drawpic([0.825*width,0.825*height,0], getImage("betty.tga"), [0.11*height, 0.11*height, 0], [1,1,1], 1);
+		drawstring([0.935*width, 0.900*height, 0], ftos(betties), [0.025*width, 0.025*width, 0], [1, 1, 1], 1, 0);
 	}
 }
 
@@ -902,80 +902,25 @@ int current_perk_order;
 	
 void(float width, float height) HUD_Perks =
 {
-	
-	int i, s;
-	int y = height - 100 - 34;
-	int x = 2;	
-			
-	for (i = 0; i < 9; i = i + 1)
-	{
-		if (perk_order[i])
-		{
-			if (perk_order[i] == P_JUG)
-			{
-				drawpic([x,y,0], getImage("jug.tga"), [32, 32, 1], [1,1,1], 1);
+	int 	i;
+	float 	y = 0.725;
+	float 	x = 0.005;
 
-				if (G_HUDHOR)
-					x += 34;
-				else
-					y -= 34;
+	for (i = 0; i < 9; i = i + 1) {
+		if (perk_order[i]) {
+			switch(perk_order[i]) {
+				case P_JUG: drawpic([x*width,y*height,0], getImage("jug.tga"), [0.075*height, 0.075*height, 1], [1,1,1], 1); break;
+				case P_DOUBLE: drawpic([x*width,y*height,0], getImage("double.tga"), [0.075*height, 0.075*height, 1], [1,1,1], 1); break;
+				case P_SPEED: drawpic([x*width,y*height,0], getImage("speed.tga"), [0.075*height, 0.075*height, 1], [1,1,1], 1); break;
+				case P_REVIVE: drawpic([x*width,y*height,0], getImage("revive.tga"), [0.075*height, 0.075*height, 1], [1,1,1], 1); break;
+				case P_FLOP: drawpic([x*width,y*height,0], getImage("flopper.tga"), [0.075*height, 0.075*height, 1], [1,1,1], 1); break;
+				case P_STAMIN: drawpic([x*width,y*height,0], getImage("stamin.tga"), [0.075*height, 0.075*height, 1], [1,1,1], 1); break;
+				case P_DEAD: drawpic([x*width,y*height,0], getImage("dead.tga"), [0.075*height, 0.075*height, 1], [1,1,1], 1); break;
+				case P_MULE: drawpic([x*width,y*height,0], getImage("mule.tga"), [0.075*height, 0.075*height, 1], [1,1,1], 1); break;
+				default: break;
 			}
-			else if (perk_order[i] == P_DOUBLE)
-			{
-				drawpic([x,y,0], getImage("double.tga"), [32, 32, 1], [1,1,1], 1);
-				if (G_HUDHOR)
-					x += 34;
-				else
-					y -= 34;
-			}
-			else if (perk_order[i] == P_SPEED)
-			{
-				drawpic([x,y,0], getImage("speed.tga"), [32, 32, 1], [1,1,1], 1);
-				if (G_HUDHOR)
-					x += 34;
-				else
-					y -= 34;
-			}
-			else if (perk_order[i] == P_REVIVE)
-			{
-				drawpic([x,y,0], getImage("revive.tga"), [32, 32, 1], [1,1,1], 1);
-				if (G_HUDHOR)
-					x += 34;
-				else
-					y -= 34;
-			}
-			else if (perk_order[i] == P_FLOP)
-			{
-				drawpic([x,y,0], getImage("flopper.tga"), [32, 32, 1], [1,1,1], 1);
-				if (G_HUDHOR)
-					x += 34;
-				else
-					y -= 34;
-			}
-			else if (perk_order[i] == P_STAMIN)
-			{
-				drawpic([x,y,0], getImage("stamin.tga"), [32, 32, 1], [1,1,1], 1);
-				if (G_HUDHOR)
-					x += 34;
-				else
-					y -= 34;
-			}
-			else if (perk_order[i] == P_DEAD)
-			{
-				drawpic([x,y,0], getImage("dead.tga"), [32, 32, 1], [1,1,1], 1);
-				if (G_HUDHOR)
-					x += 34;
-				else
-					y -= 34;
-			}
-			else if (perk_order[i] == P_MULE)
-			{
-				drawpic([x,y,0], getImage("mule.tga"), [32, 32, 1], [1,1,1], 1);
-				if (G_HUDHOR)
-					x += 34;
-				else
-					y -= 34;
-			}
+
+			y -= 0.08;
 		}
 	}
 }
