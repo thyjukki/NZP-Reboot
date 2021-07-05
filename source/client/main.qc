@@ -140,8 +140,21 @@ noref void(float apiver, string enginename, float enginever) CSQC_Init =
 	cvar_set("gl_texturemode2d", "gl_nearest");
 	cvar_set("r_font_linear", "0");
 
+	// force build date text in menu
+	cvar_set("cl_showbuildtime", "1");
+
 	// retrieve custom maps
 	Customs_Get();
+
+	//
+	// get the build date
+	//
+	float file = fopen("build_date.txt", FILE_READ);
+
+	if (file != -1) {
+		build_datetime = fgets(file);
+		fclose(file);
+	}
 };
 
 noref void() CSQC_WorldLoaded =
@@ -427,6 +440,9 @@ noref void(float width, float height, float menushown) CSQC_UpdateView =
 	//disable quake status bar and quake crosshair
 	setviewprop(VF_DRAWENGINESBAR, 0);	
 	setviewprop(VF_DRAWCROSSHAIR, 0);
+
+	setsensitivityscaler(getstatf(STAT_VIEWZOOM));
+	setviewprop(VF_AFOV, autocvar(fov,90)*getstatf(STAT_VIEWZOOM));
 	
 	//autoadd entities received from servers for drawing	
 	addentities(MASK_ENGINE);

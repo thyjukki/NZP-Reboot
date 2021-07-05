@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd source
+cd ../source
 echo ""
 echo "===================="
 echo " compiling FTE CCQC "

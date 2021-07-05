@@ -154,6 +154,8 @@ const float EVENT_ACHIEVEMENTPROGRESS 	= 36;
 #define 	P_DEAD 		64
 #define 	P_MULE 		128
 
+#define STAT_VIEWZOOM 			21
+
 #define STAT_CURRENTMAG         50
 #define STAT_CURRENTMAG2        51
 #define STAT_POINTS             52

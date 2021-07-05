@@ -1819,11 +1819,20 @@ void() Draw_Menu =
 
 	// Darken the BG
 	drawfill ([0, 0, 0], [g_width, g_height, 1], [0, 0, 0], 0.4, 0);
-	
+
 	// version string
 	if (in_menu == MENU_MAIN || in_menu == MENU_ABOUT || in_menu == MENU_SINGLE || in_menu == MENU_ACHIEVEMENTS 
-		|| in_menu == MENU_CUSTOMS || in_menu == MENU_SETTINGS)
-		drawstring([(0.925*g_width - strlen(VERSION_STRING)*5*g_width/480), 0.025*g_height, 0], VERSION_STRING, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
+		|| in_menu == MENU_CUSTOMS || in_menu == MENU_SETTINGS) {
+		string vers_string;
+
+		if (cvar("cl_showbuildtime") > 0) {
+			vers_string = build_datetime;
+		} else {
+			vers_string = VERSION_STRING;
+		}
+
+		drawstring([(0.975*g_width -  stringwidth(vers_string, 0, [0.03*g_height, 0.03*g_height, 0])), 0.025*g_height, 0], vers_string, [g_height * 0.03, g_height * 0.03, 1], [0.8, 0.8, 0.8], 1, 0);
+	}
 
 	//menu title
 	local string title = "";

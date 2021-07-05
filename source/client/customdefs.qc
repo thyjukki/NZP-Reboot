@@ -189,4 +189,5 @@ float screen_height_219[MAX_219];
 */
 float GPActive[32];
 
+string build_datetime;
 #define VERSION_STRING  "v1.0"
