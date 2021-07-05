@@ -15,7 +15,7 @@ set UTCTIME=%Hour%-%Minute%
 set UTCDATE=%Year%-%Month%-%Day%
 set relevant_shit=%UTCDATE%-%UTCTIME%
 
-echo %relevant_shit% >> ..\pc\nzp\build_date.txt
+echo %relevant_shit% > ..\pc\nzp\build_date.txt
 
 set /p commit_msg=Commit Message: 
 set /p branch_to_push=Branch to push to: 
