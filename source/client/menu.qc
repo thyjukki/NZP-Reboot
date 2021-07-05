@@ -1788,6 +1788,7 @@ void() Draw_Extra_ASettings =
 }
 
 float menu_sound_length;
+float menu_sound_time;
 
 void() Draw_Menu =
 {
@@ -1795,13 +1796,17 @@ void() Draw_Menu =
 	if (menu_initialized == false && in_menu == MENU_MAIN) {
 		localsound_enhanced("tracks/tensioned_by_the_damned.mp3", CHAN_MUSIC, 1);
 		menu_sound_length = 490; // have to hard code because soundlength() doesn't like MP3 media it seems..
+		menu_sound_time = 0;
 		menu_initialized = true;
 	}
 
 	// restart the track if it has ended
-	if (menu_initialized == true && (getsoundtime(self, 1) >= menu_sound_length - 1)) {
+	if (menu_initialized == true && (menu_sound_time >= menu_sound_length - 1)) {
 		localsound_enhanced("tracks/tensioned_by_the_damned.mp3", CHAN_MUSIC, 1);
+		menu_sound_time = 0;
 	}
+
+	menu_sound_time += frametime;
 	
 	// background
 	if(serverkey("constate") == "disconnected")
@@ -1814,7 +1819,7 @@ void() Draw_Menu =
 
 	// Darken the BG
 	drawfill ([0, 0, 0], [g_width, g_height, 1], [0, 0, 0], 0.4, 0);
-
+	
 	// version string
 	if (in_menu == MENU_MAIN || in_menu == MENU_ABOUT || in_menu == MENU_SINGLE || in_menu == MENU_ACHIEVEMENTS 
 		|| in_menu == MENU_CUSTOMS || in_menu == MENU_SETTINGS)
