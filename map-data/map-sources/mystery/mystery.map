@@ -1,0 +1,85 @@
+{
+"classname" "worldspawn"
+"sounds" "1"
+"angles" "0 0 0"
+"mapversion" "220"
+"wad" "\nzppc\NZP-Reboot\pc\nzp\textures\Example_01.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\Ceiling.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\Example_01.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\Fabrik der Untoten.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\GAOL.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\Ju[s]tice_null2.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\L4QNewest.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\Merged.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\NATURE.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\U-Bahn.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\Umod.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\WaterFall.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\Waw.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\Waw_hlwad.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\benis.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\bo2.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\carpet.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\christmas_special.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\chronic.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\de_bikinibottom.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\der_riese.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\fixed.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\jp_dev_plus.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\kurok.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\menu.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\nuketown.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\nw.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\nzphlwad.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\posterwad.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\pt_lowres.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\quake.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\sky.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\stars.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\starsperk.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\straw.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\verruckt.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\wall_wad.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\warehouse.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\waw_HLBSP.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\waww.wad;\cygwin\home\user\nzp-up\psp\nzp\textures\y_floortextures.wad"
+"_generator" "J.A.C.K. 1.1.1064 (vpHalfLife)"
+{
+( 288 256 160 ) ( 288 256 0 ) ( 288 -256 160 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 -256 160 ) ( 256 -256 0 ) ( 256 256 160 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 288 -256 160 ) ( 288 -256 0 ) ( 256 -256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 256 160 ) ( 256 256 0 ) ( 288 256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 288 -256 160 ) ( 256 -256 160 ) ( 288 256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( 256 256 0 ) ( 256 -256 0 ) ( 288 256 0 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+}
+{
+( -256 256 160 ) ( -256 256 0 ) ( -256 -256 160 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -288 -256 160 ) ( -288 -256 0 ) ( -288 256 160 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 -256 160 ) ( -256 -256 0 ) ( -288 -256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -288 256 160 ) ( -288 256 0 ) ( -256 256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 -256 160 ) ( -288 -256 160 ) ( -256 256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( -288 256 0 ) ( -288 -256 0 ) ( -256 256 0 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+}
+{
+( 256 288 160 ) ( 256 288 0 ) ( 256 256 160 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 256 160 ) ( -256 256 0 ) ( -256 288 160 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 256 160 ) ( 256 256 0 ) ( -256 256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 288 160 ) ( -256 288 0 ) ( 256 288 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 256 160 ) ( -256 256 160 ) ( 256 288 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( -256 288 0 ) ( -256 256 0 ) ( 256 288 0 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+}
+{
+( 256 -256 160 ) ( 256 -256 0 ) ( 256 -288 160 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 -288 160 ) ( -256 -288 0 ) ( -256 -256 160 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 -288 160 ) ( 256 -288 0 ) ( -256 -288 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 -256 160 ) ( -256 -256 0 ) ( 256 -256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 -288 160 ) ( -256 -288 160 ) ( 256 -256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( -256 -256 0 ) ( -256 -288 0 ) ( 256 -256 0 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+}
+{
+( 256 256 192 ) ( 256 256 160 ) ( 256 -256 192 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 -256 192 ) ( -256 -256 160 ) ( -256 256 192 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 -256 192 ) ( 256 -256 160 ) ( -256 -256 192 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 256 192 ) ( -256 256 160 ) ( 256 256 192 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 -256 192 ) ( -256 -256 192 ) ( 256 256 192 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( -256 256 160 ) ( -256 -256 160 ) ( 256 256 160 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+}
+{
+( 256 256 0 ) ( 256 256 -32 ) ( 256 -256 0 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 -256 0 ) ( -256 -256 -32 ) ( -256 256 0 ) 3TILES_GREY1 [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 -256 0 ) ( 256 -256 -32 ) ( -256 -256 0 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -256 256 0 ) ( -256 256 -32 ) ( 256 256 0 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 256 -256 0 ) ( -256 -256 0 ) ( 256 256 0 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( -256 256 -32 ) ( -256 -256 -32 ) ( 256 256 -32 ) 3TILES_GREY1 [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+}
+}
+{
+"classname" "info_player_start"
+"origin" "-192 0 33"
+}
+{
+"classname" "light"
+"style" "0"
+"wait" "1"
+"_light" "255 255 128 200"
+"light" "255 255 128 200"
+"angles" "0 0 0"
+"origin" "0 0 128"
+}
+{
+"classname" "mystery_box"
+"angles" "0 270 0"
+"spawnflags" "0"
+"origin" "244 -11 8"
+}
+{
+"classname" "mystery_box_tp_spot"
+"angles" "0 180 0"
+"origin" "2 -244 7"
+}
+{
+"classname" "mystery_box_tp_spot"
+"angles" "0 0 0"
+"origin" "1 243 7"
+}
