@@ -1,0 +1,1182 @@
+//
+// Nazi Zombies: Portable HAMMER-FGD
+// ===================================================
+// This FGD file is intended for use with Hammer-based,
+// map editors, please use tb-nzp.fgd for Trenchbroom.
+//
+
+//
+// worldspawn
+//
+
+@SolidClass = worldspawn : "World entity"
+[
+	message(string) : "Text on entering the world"
+	sounds(integer) : "CD track to play" : 1
+	sky(string) : "Skybox Name"
+	light(integer) : "Default light level"
+	WaveHeight(string) : "Default Wave Height"
+	chaptertitle(string) : "Chapter Title Message"
+	location(string) : "Location of the Map"
+	date(string) : "Time Era of the Map"
+	person(string) : "Creator or fictional character of map"
+	song(string) : "Triggered song of the map"
+]
+
+//
+// base marker definitions
+//
+
+@baseclass = Appearflags [
+	spawnflags(Flags) =
+	[
+		256 : "Not in Easy" : 0
+		512 : "Not in Normal" : 0
+		1024 : "Not in Heroic" : 0
+		2048 : "deatmatch" : 0
+	]
+]
+
+@baseclass = Targetname [ targetname(target_source) : "Name" ]
+@baseclass = Target [ 
+	target(target_destination) : "Target" 
+	target2(target_destination) : "Target2" 
+	target3(target_destination) : "Target3" 
+	target4(target_destination) : "Target4" 
+	target5(target_destination) : "Target5" 
+	target6(target_destination) : "Target6" 
+	target7(target_destination) : "Target7" 
+	target8(target_destination) : "Target8" 
+	killtarget(target_destination) : "Killtarget"
+]
+
+
+
+//
+// player starts, deathmatch, coop, teleport
+//
+
+@baseclass base(Appearflags) size(-16 -16 -32, 16 16 40) 
+	color(0 255 0) = PlayerClass []
+
+@PointClass base(PlayerClass) studio("models/player.mdl") = info_player_start : "Player 1 start" []
+
+
+@PointClass base(PlayerClass) color(0 102 0) studio("models/player.mdl") = info_player_tank : "Tank Dempsey" []
+@PointClass base(PlayerClass) color(0 102 0) studio("models/player.mdl") = info_player_doctor : "Edward Richtofen" []
+@PointClass base(PlayerClass) color(0 102 0) studio("models/player.mdl") = info_player_takeo : "Takeo Masaki" []
+@PointClass base(PlayerClass) color(0 102 0) studio("models/player.mdl") = info_player_nikolai : "Nikolai Belinski" []
+
+
+
+@PointClass = info_null : "info_null (spotlight target)"
+[
+	targetname(target_source) : "Name" 
+]
+
+@PointClass base(Target, Targetname) = info_notnull : "info_notnull (spotlight target)" // I love you
+[
+	use(string) : "self.use"
+	think(string) : "self.think"
+	nextthink(integer) : "nextthink"
+	noise(string) : "noise"
+	wait(integer) : "wait"
+]
+@PointClass base(Appearflags) = info_intermission : "Intermission camera" 
+[
+	mangle(string) : "Mangle (Pitch Yaw Roll)"
+]
+
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(107 29 20) studio("progs/props/teleporter.mdl") =  func_teleporter_entrance : "Teleporter Entrance" 
+[
+	target(target_destination) : "Destination"
+	cost(integer) : "Cost"
+	mode(choices) : "Teleporter Mode" : 0 = 
+	[
+		0: "Patch 1.0.4"
+		1: "Linked (Der Riese)"
+		2: "Timed (Kino der Toten)"
+	]
+	target2(target_destination) : "[Linked/Timed] Pad"
+	tpTimer(integer) : "[Timed] Time before return"
+]
+
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(107 29 20) studio("progs/props/mainframe_pad.mdl") = func_teleporter_destination : "Teleporter Destination" 
+[
+	targetname(target_source) : "Name" 
+]
+
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(171 73 252) studio("progs/props/mainframe_pad.mdl") = func_teleporter_timed : "Teleporter Timed Destination" 
+[
+	targetname(target_source) : "Name" 
+]
+
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(62 0 132) studio("progs/props/mainframe_pad.mdl") = func_teleporter_pad : "Teleporter Pad" 
+[
+	targetname(target_source) : "Name" 
+]
+
+@PointClass color(114 224 172) studio() = func_ending : "Buyable Ending" 
+[
+	model(studio) : "Model" : "progs/props/"
+	skin(integer) : "Skin" : 0
+	cost(integer) : "Cost" : 0
+]
+
+//
+// NZP Misc Items
+//
+@baseclass base(Target, Targetname) = Item
+[
+	message(string) : "Message"
+]
+
+@PointClass size(-9 -9 -4, 9 9 4) base(Item) color(35 67 36) studio("models/props/radio.mdl") =  item_radio : "Radio" 
+[
+	tune(string) : "tune"
+	length(integer) : "length"
+]
+
+@PointClass size(-8 -8 -8, 8 8 8) base(Item)  color(141 85 29) studio("progs/Misc/teddy.mdl") =  teddy_spawn : "Teddy spawn location" []
+
+
+@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) studio("models/machines/zapper/z_switch.mdl")  =  zapper_switch : "Electro-Shock Activation Switch"
+[
+	cost(integer) : "Cost"
+	zappername(string) : "Zapper Name"
+	spawnflags(Flags) =
+	[
+		1 : "Requires Power" : 0
+	]
+]
+@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) studio("models/machines/zapper/z_zap.mdl")  =  zapper_node : "Electro-Shock Node"
+[
+	zappername(string) : "Zapper Name"
+	targetname(target_source) : "Name"
+	target(target_destination) : "Target" 
+]
+@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) studio("models/machines/zapper/z_light.mdl")  =  zapper_light : "Electro-Shock Node"
+[
+	zappername(string) : "Zapper Name"
+]
+@SolidClass = trigger_electro : "Zapper trigger field"
+[
+	zappername(string) : "Zapper Name"
+]
+
+//
+//NZP Misc
+//
+
+@PointClass color(114 224 172) studio() = trigger_song : "Song trigger" 
+[
+	model(studio) : "Model" : "progs/props/"
+	skin(integer) : "Skin" : 0
+	tune(string) : "Trigger Sound" : "sounds/"
+	spawnflags(Flags) =
+	[
+		1 : "Fullbright" : 0
+	]
+]
+
+//
+// NZP Perk Machines
+//
+
+// Jugger-Nog
+@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(107 29 20) studio() = perk_juggernog : "Jugger-Nog" 
+[
+	model(studio) : "Model" : "models/machines/juggernog.mdl"
+	skin(integer) : "Skin" : 0
+	aistatus(string) : "Perk Sting" : ""
+	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
+	powerup_vo(string) : "Perk Jingle" : ""
+	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
+	cost(integer) : "Perk Cost" : 2500
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 1
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 0
+		32: "Purple Light" : 0
+	]
+]
+
+// PhD Flopper
+@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(131 63 148) studio() = perk_flopper : "PhD Flopper" 
+[
+	model(studio) : "Model" : "models/machines/flopper.mdl"
+	skin(integer) : "Skin" : 0
+	aistatus(string) : "Perk Sting" : ""
+	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
+	powerup_vo(string) : "Perk Jingle" : ""
+	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
+	cost(integer) : "Perk Cost" : 2000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 1
+		32: "Purple Light" : 0
+	]
+]
+
+// Double Tap Root Beer
+@PointClass size(-16 -16 -32, 16 16 40) base(Item, Appearflags) color(214 203 1) studio() = perk_double : "Double Tap Root Beer"  
+[
+	model(studio) : "Model" : "models/machines/double_tap.mdl"
+	skin(integer) : "Skin" : 0
+	aistatus(string) : "Perk Sting" : ""
+	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
+	powerup_vo(string) : "Perk Jingle" : ""
+	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
+	cost(integer) : "Perk Cost" : 2000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 1
+		32: "Purple Light" : 0
+	]
+]
+
+// Speed Cola
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio() = perk_speed : "Speed Cola" 
+[
+	model(studio) : "Model" : "models/machines/speed_cola.mdl"
+	skin(integer) : "Skin" : 0
+	aistatus(string) : "Perk Sting" : ""
+	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
+	powerup_vo(string) : "Perk Jingle" : ""
+	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
+	cost(integer) : "Perk Cost" : 3000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 1
+		8: "Blue Light" : 0
+		16: "Orange Light" : 0
+		32: "Purple Light" : 0
+	]
+]
+
+// Quick Revive
+@PointClass size(-16 -16 -32, 16 16 32) base(Item, Appearflags) color(129 172 254) studio() = perk_revive : "Quick Revive" 
+[
+	model(studio) : "Model" : "models/machines/quick_revive.mdl"
+	skin(integer) : "Skin" : 0
+	aistatus(string) : "Perk Sting" : ""
+	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
+	powerup_vo(string) : "Perk Jingle" : ""
+	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
+	cost(integer) : "Perk Cost (Solo)" : 500
+	cost2(integer) : "Perk Cost (Co-Op)" : 1500
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 1
+		16: "Orange Light" : 0
+		32: "Purple Light" : 0
+	]
+]
+
+// Stamin-Up
+@PointClass size(-24 -24 -32, 24 24 48) base(Item, Appearflags) color(254 198 65) studio() = perk_staminup : "Stamin-Up" 
+[
+	model(studio) : "Model" : "models/machines/staminup.mdl"
+	skin(integer) : "Skin" : 0
+	aistatus(string) : "Perk Sting" : ""
+	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
+	powerup_vo(string) : "Perk Jingle" : ""
+	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
+	cost(integer) : "Perk Cost" : 2000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 1
+		32: "Purple Light" : 0
+	]
+]
+
+// Deadshot Daiquiri
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 35 10) studio() = perk_deadshot : "Deadshot Daiquiri" 
+[
+	model(studio) : "Model" : "models/machines/deadshot.mdl"
+	skin(integer) : "Skin" : 0
+	aistatus(string) : "Perk Sting" : ""
+	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
+	powerup_vo(string) : "Perk Jingle" : ""
+	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
+	cost(integer) : "Perk Cost (Console)" : 1500
+	cost2(integer) : "Perk Cost (PC)" : 1000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 0
+		8: "Blue Light" : 0
+		16: "Orange Light" : 1
+		32: "Purple Light" : 0
+	]
+]
+
+// Mule Kick
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio() = perk_mule : "Mule Kick" 
+[
+	model(studio) : "Model" : "models/machines/mulekick.mdl"
+	skin(integer) : "Skin" : 0
+	aistatus(string) : "Perk Sting" : ""
+	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
+	powerup_vo(string) : "Perk Jingle" : ""
+	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
+	cost(integer) : "Perk Cost" : 4000
+	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
+	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon_animduration(integer) : "View Model Start Frame" : 0
+	weapon2_animduration(integer) : "View Model End Frame" : 22
+	spawnflags(Flags) =
+	[
+		1: "No Light": 0
+		2: "Red Light" : 0
+		4: "Green Light" : 1
+		8: "Blue Light" : 0
+		16: "Orange Light" : 0
+		32: "Purple Light" : 0
+	]
+]
+
+@PointClass size(-32 -32 -32, 32 32 56) base(Item, Appearflags) color(125 196 187) studio("models/machines/pap.mdl") = 
+	perk_pap : "Pack-A-Punch" 
+[	
+
+]
+
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/speed_cola.mdl") = 
+	perk_random : "Random Perk-a-Cola" 
+[
+	spawnflags(Flags) =
+	[
+		1 : "Enable Quick Revive" : 1
+		2 : "Enable Jugger-Nog" : 1
+		4 : "Enable Speed Cola" : 1
+		8 : "Enable Double Tap" : 1
+		16: "Enable PhD Flopper" : 1
+		32: "Enable Stamin-Up" : 1
+		64: "Enable Deadshot Daiquiri" : 1
+		128: "Enable Mule Kick" : 1
+	]
+]
+//
+// NZP Weapons
+//
+
+@PointClass size(-32 -8 -8, 32 8 8) base(Item, Appearflags) color(141 85 29) studio("models/machines/mystery.mdl") = 
+	mystery_box : "Mystery Box" 
+[	
+	spawnflags(Flags) =
+	[
+		1 : "Not here" : 0
+		2 : "No Light" : 0
+	]
+]
+@PointClass size(-32 -8 -8, 32 8 8) base(Item, Appearflags) color(151 104 34) studio("models/machines/mystery.mdl") = 
+	mystery_box_tp_spot : "Mystery Box Possible Spawn Point" []
+	
+@PointClass size(-28 -28 -64, 28 28 40 ) base(Item, Appearflags) color(114 224 172) studio() = item_barricade : "Window Boards" 
+[
+	model(studio) : "Model" : "models/misc/window.mdl"
+	skin(integer) : "Skin" : 0
+	oldmodel(string) : "Rebuild Sound" : "sounds/misc/barricade.wav"
+	aistatus(string) : "Destroy Sound" : "sounds/misc/barricade_destroy.wav"
+	spawnflags(Flags) =
+	[
+		1 : "No boards/Not Repairable" : 0
+	]
+
+]
+	
+@PointClass size(-16 -16 -16, 16 16 51 ) base(Item, Appearflags) color(147 132 108) studio("models/machines/power_switch.mdl") = 
+	power_switch : "Power Switch" []
+
+
+@PointClass color(114 224 172) studio() = place_model : "Place a Model" 
+[
+	model(studio) : "Model" : "progs/Props/"
+	skin(integer) : "Skin" : 0
+	sequence(integer) : "Frame" : 0
+	spawnflags(Flags) =
+	[
+		1 : "Fullbright" : 0
+		2 : "Not on PSP" : 0
+	]
+]
+
+
+
+@PointClass color(114 224 172) = place_fire : "Place a fire effect" 
+[
+	frame(choices) : "Size" : 111 = 
+	[
+		111: "Small"
+		112: "Big"
+	]
+]
+
+@PointClass  base(Appearflags, Targetname) color(114 224 172) studio("models/misc/chalk.mdl") = weapon_wall : "Wall weapon for buy_weapon" 
+[
+	sequence(choices) : "Weapon" : 0 = 
+	[
+		0: "M1911"
+		1: "Kar"
+		2: "Thompson"
+		3: "357"
+		4: "BAR"
+		5: "Ballistic knife"
+		6: "Browning"
+		7: "Double barrel"
+		8: "FG-42"
+		9: "Gewehr"
+		10: "Kars"
+		11: "M1 Garand"
+		12: "M1A1"
+		13: "M2 Flamer"
+		14: "MP40"
+		15: "MG-42"
+		16: "Panzer"
+		17: "PPSH"
+		18: "PTRS"
+		19: "Ray Gun"
+		20: "Sawnoff"
+		21: "Stg"
+		22: "Trench"
+		23: "type 100"
+		24: "Bowie"
+		25: "Grenade"
+		26: "Betty"
+	]
+	model(studio) : "World Model" : "progs/GModels/"
+]
+@PointClass  base(Appearflags, Targetname) color(114 224 172) studio("models/props/barrel_m.mdl") = explosive_barrel : "Barrel that can explode when shot at" 
+[
+	skin(choices) : "Color" : 0 = 
+	[
+		0: "Green"
+		1: "Grey"
+	]
+]
+
+//JUKKI DOOR
+@SolidClass base(Appearflags, Targetname) = buy_weapon : "buy_weapon" 
+[
+	weapon(choices) : "Weapon" : 0 = 
+	[
+		1: "M1911"
+		2: "Kar"
+		3: "Thompson"
+		4: "357"
+		5: "BAR"
+		6: "Ballistic knife"
+		7: "Browning"
+		8: "Double barrel"
+		9: "FG-42"
+		10: "Gewehr"
+		11: "Kars"
+		12: "M1 Garand"
+		13: "M1A1"
+		14: "M2 Flamer"
+		15: "MP40"
+		16: "MG-42"
+		17: "Panzer"
+		18: "PPSH"
+		29: "PTRS"
+		20: "Ray Gun"
+		21: "Sawnoff"
+		22: "Stg"
+		23: "Trench"
+		24: "type 100"
+		25: "Bowie"
+		26: "Grenade"
+		27: "Betty"
+	]
+	cost(integer) : "Cost" : 0
+	cost2(integer) : "Ammo Cost" : 0
+	target(target_destination) : "Target" 
+]
+
+//
+// NZP Monsters
+//
+
+@baseclass base(Appearflags, Target, Targetname) color(220 0 0) = Monster 
+[
+]
+
+//@PointClass base(Monster) size(-16 -16 -24, 16 16 40) = monster_army : //"Grunt" []
+@PointClass base(Monster) size(-16 -16 -32, 16 16 16) studio("models/ai/dog.mdl") = spawn_dog : "Hellhound" 
+[
+	spawnflags(Flags) = 
+	[
+		1 : "inactive" : 0
+	]
+]
+
+
+
+@PointClass base(Monster) size(-16 -16 -32, 16 16 40) studio("models/ai/zfull.mdl") =  spawn_zombie : "zombie respawn" 
+[
+	spawnflags(Flags) = 
+	[
+		1 : "inactive" : 0
+		2 : "ground rise" : 0
+		4 : "Start inside" : 0
+	]
+]
+
+@PointClass base(Targetname) size(-8 -8 -32, 8 8 8) color(121 130 62) = 
+	path_corner : "Zombie Path When Walking to Window"
+[
+	target(target_source) : "Next stop target"
+	wait(integer) : "Wait" : 0
+	spawnflags(Flags) = 
+	[
+		1 : "Set inside" : 0
+	]
+]
+
+
+//
+// Trigger Commands
+//
+
+@SolidClass base(Targetname) = trigger_command : "Triggered Client Command"
+[
+	message(string) : "Command"
+]
+
+@PointClass base(Targetname) color(256 256 0) = info_command : "Triggered Server Command"
+[
+	message(string) : "Command"
+]
+
+
+//
+// Misc Objects
+//
+
+@PointClass color(128 128 128) = func_model: "Custom map model" [ model(string) : "Location" ]
+
+//@SolidClass = wooden_crate: "Breakable Wooden Crate" []
+
+//
+// Lights
+//
+
+@baseclass color(255 255 40) = Light [
+	_light(integer) : "Brightness" : 300
+	_light(color255) : "Brightness" : "255 255 128 200"
+	wait(integer) : "Fade distance multiplier" : 1
+	delay(choices) : "Attenuation" =
+	[
+		0 : "Linear falloff (Default)"
+		1 : "Inverse distance falloff"
+		2 : "Inverse distance squared"
+		3 : "No falloff"
+	]
+	mangle(string) : "Spotlight angle"
+	style(Choices) : "Appearance" : 0 =
+	[
+		0 : "Normal"
+		10: "Fluorescent flicker"
+		2 : "Slow, strong pulse"
+		11: "Slow pulse, noblack"
+		5 : "Gentle pulse"
+		1 : "Flicker A"
+		6 : "Flicker B"
+		3 : "Candle A"
+		7 : "Candle B"
+		8 : "Candle C"
+		4 : "Fast strobe"
+		9 : "Slow strobe"
+	]
+]
+
+@PointClass iconsprite("sprites/light_environment.spr") = light_environment : "Environment" 
+[
+	pitch(integer) : "Pitch" : 0
+	_light(color255) : "Brightness" : "255 255 128 200"
+]
+
+@PointClass size(-8 -8 -8, 8 8 8) base(Light, Target, Targetname) iconsprite("sprites/lightbulb.spr") = 
+	light : "Invisible lightsource"
+	[
+		spawnflags(Flags) = [ 1 : "Initially dark" : 0 ]
+	]
+@PointClass size(-8 -8 -8, 8 8 8) base(Light, Target, Targetname) = 
+	light_fluoro : "Fluorescent light"
+	[
+		spawnflags(Flags) = [ 1 : "Initially dark" : 0 ]
+	]
+@PointClass size(-8 -8 -8, 8 8 8) base(Light, Target, Targetname) = 
+	light_fluorospark : "Sparking fluorescent light"
+	[
+		spawnflags(Flags) = [ 1 : "Initially dark" : 0 ]
+	]
+@PointClass size(-8 -8 -8, 8 8 8) base(Light, Target, Targetname) = 
+	light_globe : "Globe light" []
+@PointClass size(-8 -8 -12, 8 8 20) base(Light, Target, Targetname) = 
+	light_flame_large_yellow : "Large yellow flame" []
+@PointClass size(-4 -4 -12, 4 4 20) base(Light, Target, Targetname) = 
+	light_flame_small_yellow : "Small yellow flame" 
+	[
+		spawnflags(Flags) = [ 1 : "Initially dark" : 0 ]
+	]
+@PointClass size(-4 -4 -12, 4 4 20) base(Light, Target, Targetname) = 
+	light_flame_small_white : "Small white flame" 
+	[
+		spawnflags(Flags) = [ 1 : "Initially dark" : 0 ]
+	]
+@PointClass size(-4 -4 -12, 4 4 20) base(Light, Target, Targetname) = 
+	light_torch_small_walltorch : "Small walltorch" []
+
+//
+// misc
+//
+
+@SolidClass = func_illusionary : "Static model"  
+[
+	rendermode(integer) : "rendermode" : 4
+	renderamt(integer) : "renderamt" : 255
+]
+
+//@PointClass = func_illusionary2 : "Static model"  
+//[
+//	frame(integer)
+//	model(string)
+//]
+
+
+// 
+// ambient sounds
+//
+
+//@PointClass = ambient_drip : "Dripping sound" []
+//@PointClass = ambient_drone : "Engine/machinery sound" []
+//@PointClass = ambient_comp_hum : "Computer background sounds" []
+//@PointClass = ambient_flouro_buzz : "Fluorescent buzzing sound" []
+//@PointClass = ambient_light_buzz : "Buzzing sound from light" []
+//@PointClass = ambient_suck_wind : "Wind sound" []
+//@PointClass = ambient_swamp1 : "Frogs croaking" []
+//@PointClass = ambient_swamp2 : "Frogs croaking B" []
+//@PointClass = ambient_thunder : "Thunder sound" []
+
+// 
+// moving things
+//
+
+
+@SolidClass base(Appearflags, Targetname, Target) = func_door : "Basic door" 
+[
+	speed(integer) : "Speed" : 100
+	sounds(choices) : "Sound" : 0 = 
+	[
+                0: "No sounds"
+		1: "Stone"
+		2: "Machine"
+		3: "Stone Chain"
+		4: "Screechy Metal"
+		5: "Custom sounds"
+	]
+	noise2(string) : "Move sound"
+ 	noise1(string) : "Stop sound"
+	wait(string) : "Delay before close" : "4" 
+	lip(integer) : "Lip" : 8
+	dmg(integer) : "Damage inflicted when blocked" : 0
+	message(string) : "Message if triggered"
+	health(integer) : "Health (shoot open)" : 0
+	spawnflags(flags) =
+	[
+		1 : "Starts Open" : 0
+		4 : "Don't link" : 0
+		8 : "Gold Key required" : 0
+		16: "Silver Key required" : 0
+		32: "Toggle" : 0
+	]
+]
+//JUKKI DOOR
+@SolidClass base(Appearflags, Targetname, Target) = func_door_nzp : "nzp door" 
+[
+	wayTarget(string) : "Waypoint Target"
+	speed(integer) : "Speed" : 100
+	sounds(choices) : "Sound" : 0 = 
+	[
+                0: "No sounds"
+		1: "Debris"
+		2: "Wood"
+	]
+	noise2(string) : "Move sound"
+ 	noise1(string) : "Stop sound"
+	wait(string) : "Delay before close" : "4" 
+	lip(integer) : "Lip" : 8
+	distance(integer) : "Distance (deg)" : 90
+	dmg(integer) : "Damage inflicted when blocked" : 0
+	message(string) : "Message if triggered"
+	health(integer) : "Health (shoot open)" : 0
+	cost(integer) : "cost to open (0 no need)" : 0
+	spawnflags(flags) =
+	[
+		4 : "Don't link" : 0
+		8 : "Debris" : 0
+		16: "Silver Key required" : 0
+		32: "Toggle" : 0
+		64 : "Requires Power" : 0
+		128: "Dont Remove" : 0
+		256: "Rotating (ignore lip)" : 0
+	]
+]
+
+@SolidClass base(Targetname, Appearflags) = func_wall : "Wall" 
+[
+	alpha(string) : "Transparency (0.1 - 1.0)"
+	rendermode(integer) : "rendermode" : 4
+	renderamt(integer) : "renderamt" : 255
+	spawnflags(Flags) =
+	[
+		4 : "Glass" : 0
+	]
+]
+
+
+
+@PointClass size(0 0 0, 32 32 32) base(Targetname, Target, Appearflags) = func_counter : "Activation Counter"
+[
+	spawnflags(flags) =
+	[
+		1 : "Togglable" : 0
+		2 : "Looping" : 1
+		4 : "Step" : 0
+		8 : "Reset" : 0
+		16 : "Random" : 0
+		32 : "Finishcount" : 0
+		64 : "Start On" : 1
+	]
+	count(integer) : "# of entities to trigger"
+	wait(string) : "Sec. between each triggering" : "0.2"
+	delay(string) : "Delay before first trigger"
+	killtarget(string) : "Killtarget"
+	killtarget2(string) : "Killtarget #2"
+]
+
+@PointClass base(Targetname, Target) = func_oncount : "Counter Target"
+[
+	count(integer) : "# to Trigger On" : 1
+	delay(integer) : "Trigger Delay"
+]
+
+
+
+@SolidClass base(Target) = trigger_damagethreshold : "Damage Threshold Trigger"
+[
+	spawnflags(flags) =
+	[
+		1 : "Multiple Use" : 0
+		2 : "Invisible" : 0
+	]
+	health(integer) : "Damage Threshold" : 60
+]
+
+@SolidClass base(Targetname, Target, func_rubble) = func_breakawaywall : "Break Away Wall"
+[
+	spawnflags(flags) =
+	[
+		1 : "explode" : 0
+		2 : "Use Particles" : 0
+	]
+	cnt(integer) : "Ent id # for using Counter"
+]
+
+@SolidClass base(Targetname) = func_button : "Button" 
+[
+	speed(integer) : "Speed" : 40
+	lip(integer) : "Lip" : 4
+	target(target_source) : "Targetted object"
+	health(integer) : "Health (shootable if > 0)"
+	sounds(choices) : "Sounds" = 
+	[
+		0 : "Steam metal"
+		1 : "Wooden clunk"
+		2 : "Metallic clink"
+		3 : "In-out"
+	]
+	wait(string) : "Delay before reset" : "1"
+	delay(string) : "Delay before trigger"
+	message(string) : "Message" 
+]
+
+@SolidClass base(Targetname) = func_train : "Moving platform" 
+[
+	sounds(choices) : "Sound" : 1 =
+	[
+		0: "None"
+		1: "Ratchet Metal"
+	]
+	speed(integer) : "Speed (units per second)" : 64
+	target(target_source) : "First stop target"
+	dmg(integer) : "Damage on crush" : 0
+]
+
+@SolidClass base(Targetname) = func_plat : "Elevator" 
+[	
+	spawnflags(Flags) =
+	[
+		1 : "Low trigger" : 0
+	]
+	speed(integer) : "Speed" : 150
+	height(integer) : "Travel altitude (can be negative)" : 0
+	sounds(choices) : "Sound group" : 1 =
+	[
+		0: "None"
+		1: "Base fast"
+		2: "Chain Slow"
+	]
+]	
+
+
+//
+// triggers
+//
+
+@baseclass base(Target, Targetname) = Trigger
+[
+	sounds(choices) : "Sound style" : 0 =
+	[
+		0 : "None"
+		1 : "Secret sound"
+		2 : "Beep beep"
+		3 : "Large switch"
+		4 : "Set message to text string"
+	]
+	delay(string) : "Delay before trigger" : "0"
+	message(string) : "Message (set sound too!)"
+]
+
+@baseclass base(Target, Targetname) = TriggerVoice
+[
+	sounds(choices) : "Sound style" : 0 =
+	[
+		0 : "None"
+		1 : "Start"
+		2 : "e1m1_1"
+		3 : "e1m1_2"
+		4 : "e1m1_3"
+		5 : "e1m1_4"
+		6 : "e1m2_1"
+		7 : "e1m2_2"
+		8 : "e1m2_3"
+		9 : "e1m3_1"
+		10 : "e1m3_2"
+		11 : "e1m3_3"
+		12 : "e1m4_1"
+		13 : "e1m5_1"
+		14 : "e1m5_2"
+		15 : "e1m5_3"
+		16 : "e1m6_1"
+
+	]
+	delay(string) : "Delay before trigger" : "0"
+	message(string) : "Message (set sound too!)"
+]
+
+@BaseClass = Soundplaying
+[
+	speed(choices) : "Attonation" : 1 = 
+	[
+		0: "None"
+		1: "Normal"
+		2: "Idle"
+		3: "Static"
+	]
+	volume(integer) : "Volume" : 1
+	impulse(choices) : "Channel" : 0 =
+	[
+		0: "Auto"
+		1: "Weapon"
+		2: "Voice"
+		3: "Item"
+		4: "Body"
+		5: "5"
+		6: "6"
+		7: "7"
+	]
+]
+
+@PointClass = ambient_general : "Universal Ambient Sound"
+[
+	volume(integer) : "Volume" : 1
+	noise(string) : "Ambient Sound"
+]
+
+@PointClass base(Targetname, Soundplaying) = ambient_bgm : "Back Ground Music"
+[
+	spawnflags(flags) =
+	[
+		1 : "Start On" : 0
+	]
+	noise1(string) : "Intro wav"
+	button1(string) : "Intro length (in seconds)"
+	noise2(string) : "Looped wav"
+	button2(string) : "Loop length (-1 for no looping)"
+	waitmax(integer) : "Number of Loops(0 for forever)"
+	noise3(string) : "Extro wav"
+	target(string) : "Target when extro is done"
+	button0(string) : "Extro length"
+]
+
+@SolidClass= trigger_changelevel : "Trigger: Change level"
+[
+	map(string) : "New map name"
+	target(target_destination) : "Target"
+	spawnflags(flags) =
+	[
+		1: "No Intermission" : 0
+	]
+]
+
+@SolidClass base(Trigger) = trigger_once : "Trigger: Activate once"
+[
+	health(integer) : "Health"
+	spawnflags(flags) = [ 1: "Entity only" : 0 ]
+]
+
+@SolidClass base(Trigger) = trigger_activator : "Trigger: Activate spawnpoints"
+[
+]
+
+@SolidClass base(Trigger) = trigger_multiple : "Trigger: Activate multiple" 
+[
+	wait(string) : "Wait before reset" : "4"
+	health(integer) : "Health"
+	spawnflags(flags) = [ 1: "Entity only" : 0 ]
+]
+@SolidClass base(TriggerVoice) = trigger_voice : "Trigger: Activate voice" 
+[
+	wait(string) : "Wait before reset" : "4"
+	health(integer) : "Health"
+	spawnflags(flags) = [ 1: "Entity only" : 0 ]
+]
+@SolidClass base(Trigger) = trigger_onlyregistered : "Trigger: Registered only" 
+[
+	spawnflags(flags) = [ 1: "Entity only" : 0 ]
+]
+@SolidClass base(Trigger) = trigger_secret : "Trigger: Secret" 
+[
+	sounds(choices) : "Sound style" : 1 =
+	[
+		0 : "None"
+		1 : "Secret sound"
+		2 : "Beep beep"
+		3 : "Large switch"
+		4 : "Set message to text string"
+	]
+	spawnflags(flags) = [ 1: "Entity only" : 0 ]
+]
+
+@SolidClass base(Target, Targetname) = trigger_teleport : "Trigger teleport" 
+[
+	spawnflags(Flags) =
+	[
+		1 : "Player only" : 0
+		2 : "Silent" : 0
+	]
+]
+
+// need updates:
+
+@PointClass base(Trigger) = trigger_relay : "Trigger relay"
+[
+]
+@SolidClass base(Targetname) = trigger_monsterjump : "Trigger monster jump" 
+[
+	speed(integer) : "Jump Speed" : 200
+	height(integer) : "Jump Height" : 200
+]
+@PointClass base(Target, Targetname) = trigger_counter : "Trigger counter" 
+[
+	spawnflags(flags) = [ 1: "No Message" : 0 ]
+	count(integer) : "Count before activation" : 2
+]
+@SolidClass base(Targetname) = trigger_push : "Trigger player push"
+[
+	spawnflags(flags) = [ 1: "Once Only" : 0 ]
+	speed(integer) : "Speed of push" : 1000
+]
+@SolidClass  base(Targetname) = trigger_hurt : "Trigger player hurt" 
+[
+	dmg(integer) : "Damage" : 5
+	wait(integer) : "Delay before reset"
+	message(string) : "Message"
+]
+
+@SolidClass  base(Targetname) = func_rotating : "Rotateing Brush" 
+[
+]
+
+// #####################
+// # Hipnotic entities #
+// #####################
+
+@SolidClass base(Targetname, Target) = rotate_object : "Object to be rotated"[]
+
+@PointClass size(-4 -4 -4, 4 4 4) base(Targetname) = info_rotate : "Point of rotation" []
+
+@SolidClass base(Targetname, Appearflags) = func_movewall : "Movable Wall, used for rotating brush collision"
+[
+	spawnflags(flags) =
+	[
+		1: "Visible" : 0
+		2: "Dmg on Touch" : 0
+		4: "Non Blocking" : 0
+	]
+	dmg(integer) : "Damage"
+]
+
+@PointClass size(-8 -8 -8, 8 8 8) base(Targetname) = func_rotate_door : "Rotating Door"
+[
+	spawnflags(flags) =
+	[
+		1: "Stay Open" : 0
+	]
+	target(target_destination) : "Name of door parts"
+	angles(string) : "Angle to rotate door"
+	rotate(string) : "Rotate (x y z)"
+	speed(integer) : "Rotation Time" : 2
+	dmg(integer) : "Blocking Damage" : 2
+	deathtype(string) : "Death Message"
+	sounds(choices) : "Sounds" : 1 = 
+	[
+		0: "Custom/None"
+		1: "Medieval"
+		2: "Metal"
+		3: "Base"
+	]
+	noise1(string) : "Stop Sound"
+	noise2(string) : "Move Sound"
+	noise3(string) : "Blocked Sound"
+	killtarget(string) : "Killtarget"
+	killtarget2(string) : "Killtarget #2"
+]
+
+@PointClass base(Targetname) = func_rotate_entity : "func_rotate_entity"
+[
+	spawnflags(flags) =
+	[
+		1 : "Toggleable" : 0
+		2 : "Start On" : 0
+	]
+	target(target_destination) : "Rotate Object"
+	speed(integer) : "Acceleration Time" : 0
+	rotate(string) : "Rate of Rotation"
+	dmg(integer) : "Damage"
+	deathtype(string) : "Death Message"
+]
+
+@PointClass base(Targetname, Target) = path_rotate : "Path_Rotate"
+[
+	spawnflags(flags) =
+	[
+		1 : "Rotation set" : 0
+		2 : "Angles set" : 0
+		4 : "Stop" : 0
+		8 : "No Rotate" : 0
+		16 : "Cause Damage" : 0
+		32 : "Move Time" : 0
+		64 : "Set Damage" : 0
+	]
+	rotate(string) : "Rotation Speed"
+	angles(string) : "Angles"
+	speed(integer) : "Speed or Move Time"
+	wait(integer) : "Wait Time"
+	dmg(integer) : "Damage"
+	event(string) : "Event Target"
+	message(string) : "Event Message"
+	noise(string) : "Stop Noise"
+	noise1(string) : "Move Noise"
+]
+
+// I don't think that these will work without the modified QBSP
+@PointClass base(Targetname) = func_rotate_train : "Rotating Train"
+[
+	target(target_destination) : "Name of Parts"
+	path(string) : "First path_rotate"
+	rotate(string) : "Rotation Speed"
+	speed(integer) : "Speed"
+	dmg(integer) : "Damage"
+	deathtype(string) : "Death Message"
+	sounds(choices) : "Sounds" : 1 = 
+	[
+		0: "Sounds Specified"
+		1: "Ratchet Metal"
+	]
+	noise(string) : "Stop Sound"
+	noise1(string) : "Move Sound"
+]
+
+@PointClass = func_clock : "Clock Hand"
+[
+	target(target_destination) : "Rotate Object"
+	cnt(integer) : "Starting Time"
+	count(choices) : "Revolution Time" : 60 =
+	[
+		60 : "Second Hand"
+		3600 : "Minute Hand"
+		43200 : "Hour Hand"
+	]
+	event(string) : "Event to Trigger at 12"
+]
+
+// Hipnotic warns that they don't work well.
+@SolidClass = func_pushable : "Pushable Walls" []
+
+@PointClass = wallsprite : "Wall Sprite"
+[
+	model(string) : "Sprite Model" : "progs/s_blood1.spr"
+]

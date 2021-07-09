@@ -1,4 +1,10 @@
-//NZP FGD
+//
+// Nazi Zombies: Portable TRENCHBROOM-FGD
+// ===================================================
+// This FGD file is intended for use with Trenchbroom,
+// please use hl-nzp.fgd for Hammer-based map editors.
+//
+
 //
 // worldspawn
 //
@@ -53,13 +59,13 @@
 @baseclass base(Appearflags) size(-16 -16 -32, 16 16 40) 
 	color(0 255 0) = PlayerClass []
 
-@PointClass base(PlayerClass) studio("models/player.mdl") = info_player_start : "Player 1 start" []
+@PointClass base(PlayerClass) model("models/player.mdl") = info_player_start : "Player 1 start" []
 
 
-@PointClass base(PlayerClass) color(0 102 0) studio("models/player.mdl") = info_player_tank : "Tank Dempsey" []
-@PointClass base(PlayerClass) color(0 102 0) studio("models/player.mdl") = info_player_doctor : "Edward Richtofen" []
-@PointClass base(PlayerClass) color(0 102 0) studio("models/player.mdl") = info_player_takeo : "Takeo Masaki" []
-@PointClass base(PlayerClass) color(0 102 0) studio("models/player.mdl") = info_player_nikolai : "Nikolai Belinski" []
+@PointClass base(PlayerClass) color(0 102 0) model("models/player.mdl") = info_player_tank : "Tank Dempsey" []
+@PointClass base(PlayerClass) color(0 102 0) model("models/player.mdl") = info_player_doctor : "Edward Richtofen" []
+@PointClass base(PlayerClass) color(0 102 0) model("models/player.mdl") = info_player_takeo : "Takeo Masaki" []
+@PointClass base(PlayerClass) color(0 102 0) model("models/player.mdl") = info_player_nikolai : "Nikolai Belinski" []
 
 
 
@@ -81,7 +87,7 @@
 	mangle(string) : "Mangle (Pitch Yaw Roll)"
 ]
 
-@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(107 29 20) studio("progs/props/teleporter.mdl") =  func_teleporter_entrance : "Teleporter Entrance" 
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(107 29 20) model("progs/props/teleporter.mdl") =  func_teleporter_entrance : "Teleporter Entrance" 
 [
 	target(target_destination) : "Destination"
 	cost(integer) : "Cost"
@@ -95,24 +101,25 @@
 	tpTimer(integer) : "[Timed] Time before return"
 ]
 
-@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(107 29 20) studio("progs/props/mainframe_pad.mdl") = func_teleporter_destination : "Teleporter Destination" 
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(107 29 20) model("progs/props/mainframe_pad.mdl") = func_teleporter_destination : "Teleporter Destination" 
 [
 	targetname(target_source) : "Name" 
 ]
 
-@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(171 73 252) studio("progs/props/mainframe_pad.mdl") = func_teleporter_timed : "Teleporter Timed Destination" 
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(171 73 252) model("progs/props/mainframe_pad.mdl") = func_teleporter_timed : "Teleporter Timed Destination" 
 [
 	targetname(target_source) : "Name" 
 ]
 
-@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(62 0 132) studio("progs/props/mainframe_pad.mdl") = func_teleporter_pad : "Teleporter Pad" 
+@PointClass size(-16 -16 -32, 16 16 56) base(Item) color(62 0 132) model("progs/props/mainframe_pad.mdl") = func_teleporter_pad : "Teleporter Pad" 
 [
 	targetname(target_source) : "Name" 
 ]
 
-@PointClass color(114 224 172) studio() = func_ending : "Buyable Ending" 
+@PointClass color(114 224 172) model({"path" : model, "skin" : skin}) = func_ending : "Buyable Ending" 
 [
-	model(studio) : "Model" : "progs/props/"
+	model(model) : "Model" : "progs/Props/"
+	skin(integer) : "Skin" : 0
 	cost(integer) : "Cost" : 0
 ]
 
@@ -124,16 +131,16 @@
 	message(string) : "Message"
 ]
 
-@PointClass size(-9 -9 -4, 9 9 4) base(Item) color(35 67 36) studio("models/props/radio.mdl") =  item_radio : "Radio" 
+@PointClass size(-9 -9 -4, 9 9 4) base(Item) color(35 67 36) model("models/props/radio.mdl") =  item_radio : "Radio" 
 [
 	tune(string) : "tune"
 	length(integer) : "length"
 ]
 
-@PointClass size(-8 -8 -8, 8 8 8) base(Item)  color(141 85 29) studio("progs/Misc/teddy.mdl") =  teddy_spawn : "Teddy spawn location" []
+@PointClass size(-8 -8 -8, 8 8 8) base(Item)  color(141 85 29) model("progs/Misc/teddy.mdl") =  teddy_spawn : "Teddy spawn location" []
 
 
-@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) studio("models/machines/zapper/z_switch.mdl")  =  zapper_switch : "Electro-Shock Activation Switch"
+@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) model("models/machines/zapper/z_switch.mdl")  =  zapper_switch : "Electro-Shock Activation Switch"
 [
 	cost(integer) : "Cost"
 	zappername(string) : "Zapper Name"
@@ -142,13 +149,13 @@
 		1 : "Requires Power" : 0
 	]
 ]
-@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) studio("models/machines/zapper/z_zap.mdl")  =  zapper_node : "Electro-Shock Node"
+@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) model("models/machines/zapper/z_zap.mdl")  =  zapper_node : "Electro-Shock Node"
 [
 	zappername(string) : "Zapper Name"
 	targetname(target_source) : "Name"
 	target(target_destination) : "Target" 
 ]
-@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) studio("models/machines/zapper/z_light.mdl")  =  zapper_light : "Electro-Shock Node"
+@PointClass size(-12 -12 -8, 12 12 8) color(35 67 36) model("models/machines/zapper/z_light.mdl")  =  zapper_light : "Electro-Shock Node"
 [
 	zappername(string) : "Zapper Name"
 ]
@@ -161,11 +168,11 @@
 //NZP Misc
 //
 
-@PointClass color(114 224 172) studio() = trigger_song : "Song trigger" 
+@PointClass color(114 224 172) model({"path" : model, "skin" : skin}) = trigger_song : "Song trigger" 
 [
-	model(studio) : "Model" : "progs/props/"
-	tune(string) : "Trigger Sound" : "sounds/"
+	model(model) : "Model" : "progs/Props/"
 	skin(integer) : "Skin" : 0
+	tune(string) : "Trigger Sound" : "sounds/"
 	spawnflags(Flags) =
 	[
 		1 : "Fullbright" : 0
@@ -177,16 +184,17 @@
 //
 
 // Jugger-Nog
-@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(107 29 20) studio() = perk_juggernog : "Jugger-Nog" 
+@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(107 29 20) model({"path" : model, "skin" : skin}) = perk_juggernog : "Jugger-Nog" 
 [
-	model(studio) : "Model" : "models/machines/juggernog.mdl"
+	model(model) : "Model" : "models/machines/juggernog.mdl"
+	skin(integer) : "Skin" : 0
 	aistatus(string) : "Perk Sting" : ""
 	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
 	powerup_vo(string) : "Perk Jingle" : ""
 	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
 	cost(integer) : "Perk Cost" : 2500
 	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
-	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon2model(string) : "View Model" : "models/machines/v_perk.mdl"
 	weapon_animduration(integer) : "View Model Start Frame" : 0
 	weapon2_animduration(integer) : "View Model End Frame" : 22
 	spawnflags(Flags) =
@@ -201,16 +209,17 @@
 ]
 
 // PhD Flopper
-@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(131 63 148) studio() = perk_flopper : "PhD Flopper" 
+@PointClass size(-16 -16 -32, 16 16 56) base(Item, Appearflags) color(131 63 148) model({"path" : model, "skin" : skin}) = perk_flopper : "PhD Flopper" 
 [
-	model(studio) : "Model" : "models/machines/flopper.mdl"
+	model(model) : "Model" : "models/machines/flopper.mdl"
+	skin(integer) : "Skin" : 0
 	aistatus(string) : "Perk Sting" : ""
 	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
 	powerup_vo(string) : "Perk Jingle" : ""
 	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
 	cost(integer) : "Perk Cost" : 2000
 	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
-	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon2model(string) : "View Model" : "models/machines/v_perk.mdl"
 	weapon_animduration(integer) : "View Model Start Frame" : 0
 	weapon2_animduration(integer) : "View Model End Frame" : 22
 	spawnflags(Flags) =
@@ -225,16 +234,17 @@
 ]
 
 // Double Tap Root Beer
-@PointClass size(-16 -16 -32, 16 16 40) base(Item, Appearflags) color(214 203 1) studio() = perk_double : "Double Tap Root Beer"  
+@PointClass size(-16 -16 -32, 16 16 40) base(Item, Appearflags) color(214 203 1) model({"path" : model, "skin" : skin}) = perk_double : "Double Tap Root Beer"  
 [
-	model(studio) : "Model" : "models/machines/double_tap.mdl"
+	model(model) : "Model" : "models/machines/double_tap.mdl"
+	skin(integer) : "Skin" : 0
 	aistatus(string) : "Perk Sting" : ""
 	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
 	powerup_vo(string) : "Perk Jingle" : ""
 	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
 	cost(integer) : "Perk Cost" : 2000
 	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
-	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon2model(string) : "View Model" : "models/machines/v_perk.mdl"
 	weapon_animduration(integer) : "View Model Start Frame" : 0
 	weapon2_animduration(integer) : "View Model End Frame" : 22
 	spawnflags(Flags) =
@@ -249,16 +259,17 @@
 ]
 
 // Speed Cola
-@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio() = perk_speed : "Speed Cola" 
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) model({"path" : model, "skin" : skin}) = perk_speed : "Speed Cola" 
 [
-	model(studio) : "Model" : "models/machines/speed_cola.mdl"
+	model(model) : "Model" : "models/machines/speed_cola.mdl"
+	skin(integer) : "Skin" : 0
 	aistatus(string) : "Perk Sting" : ""
 	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
 	powerup_vo(string) : "Perk Jingle" : ""
 	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
 	cost(integer) : "Perk Cost" : 3000
 	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
-	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon2model(string) : "View Model" : "models/machines/v_perk.mdl"
 	weapon_animduration(integer) : "View Model Start Frame" : 0
 	weapon2_animduration(integer) : "View Model End Frame" : 22
 	spawnflags(Flags) =
@@ -273,9 +284,10 @@
 ]
 
 // Quick Revive
-@PointClass size(-16 -16 -32, 16 16 32) base(Item, Appearflags) color(129 172 254) studio() = perk_revive : "Quick Revive" 
+@PointClass size(-16 -16 -32, 16 16 32) base(Item, Appearflags) color(129 172 254) model({"path" : model, "skin" : skin}) = perk_revive : "Quick Revive" 
 [
-	model(studio) : "Model" : "models/machines/quick_revive.mdl"
+	model(model) : "Model" : "models/machines/quick_revive.mdl"
+	skin(integer) : "Skin" : 0
 	aistatus(string) : "Perk Sting" : ""
 	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
 	powerup_vo(string) : "Perk Jingle" : ""
@@ -283,7 +295,7 @@
 	cost(integer) : "Perk Cost (Solo)" : 500
 	cost2(integer) : "Perk Cost (Co-Op)" : 1500
 	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
-	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon2model(string) : "View Model" : "models/machines/v_perk.mdl"
 	weapon_animduration(integer) : "View Model Start Frame" : 0
 	weapon2_animduration(integer) : "View Model End Frame" : 22
 	spawnflags(Flags) =
@@ -298,16 +310,17 @@
 ]
 
 // Stamin-Up
-@PointClass size(-24 -24 -32, 24 24 48) base(Item, Appearflags) color(254 198 65) studio() = perk_staminup : "Stamin-Up" 
+@PointClass size(-24 -24 -32, 24 24 48) base(Item, Appearflags) color(254 198 65) model({"path" : model, "skin" : skin}) = perk_staminup : "Stamin-Up" 
 [
-	model(studio) : "Model" : "models/machines/staminup.mdl"
+	model(model) : "Model" : "models/machines/staminup.mdl"
+	skin(integer) : "Skin" : 0
 	aistatus(string) : "Perk Sting" : ""
 	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
 	powerup_vo(string) : "Perk Jingle" : ""
 	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
 	cost(integer) : "Perk Cost" : 2000
 	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
-	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon2model(string) : "View Model" : "models/machines/v_perk.mdl"
 	weapon_animduration(integer) : "View Model Start Frame" : 0
 	weapon2_animduration(integer) : "View Model End Frame" : 22
 	spawnflags(Flags) =
@@ -322,9 +335,10 @@
 ]
 
 // Deadshot Daiquiri
-@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 35 10) studio() = perk_deadshot : "Deadshot Daiquiri" 
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 35 10) model({"path" : model, "skin" : skin}) = perk_deadshot : "Deadshot Daiquiri" 
 [
-	model(studio) : "Model" : "models/machines/deadshot.mdl"
+	model(model) : "Model" : "models/machines/deadshot.mdl"
+	skin(integer) : "Skin" : 0
 	aistatus(string) : "Perk Sting" : ""
 	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
 	powerup_vo(string) : "Perk Jingle" : ""
@@ -332,7 +346,7 @@
 	cost(integer) : "Perk Cost (Console)" : 1500
 	cost2(integer) : "Perk Cost (PC)" : 1000
 	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
-	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon2model(string) : "View Model" : "models/machines/v_perk.mdl"
 	weapon_animduration(integer) : "View Model Start Frame" : 0
 	weapon2_animduration(integer) : "View Model End Frame" : 22
 	spawnflags(Flags) =
@@ -347,16 +361,17 @@
 ]
 
 // Mule Kick
-@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio() = perk_mule : "Mule Kick" 
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) model({"path" : model, "skin" : skin}) = perk_mule : "Mule Kick" 
 [
-	model(studio) : "Model" : "models/machines/mulekick.mdl"
+	model(model) : "Model" : "models/machines/mulekick.mdl"
+	skin(integer) : "Skin" : 0
 	aistatus(string) : "Perk Sting" : ""
 	anim_weapon_time(integer) : "Perk Sting Duration (s)" : 0
 	powerup_vo(string) : "Perk Jingle" : ""
 	anim_weapon2_time(integer) : "Perk Jingle Duration (s)" : 0
 	cost(integer) : "Perk Cost" : 4000
 	oldmodel(string) : "Player Trigger Sound" : "sounds/machines/perk_drink.wav"
-	weapon2model(studio) : "View Model" : "models/machines/v_perk.mdl"
+	weapon2model(string) : "View Model" : "models/machines/v_perk.mdl"
 	weapon_animduration(integer) : "View Model Start Frame" : 0
 	weapon2_animduration(integer) : "View Model End Frame" : 22
 	spawnflags(Flags) =
@@ -370,13 +385,13 @@
 	]
 ]
 
-@PointClass size(-32 -32 -32, 32 32 56) base(Item, Appearflags) color(125 196 187) studio("models/machines/pap.mdl") = 
+@PointClass size(-32 -32 -32, 32 32 56) base(Item, Appearflags) color(125 196 187) model("models/machines/pap.mdl") = 
 	perk_pap : "Pack-A-Punch" 
 [	
 
 ]
 
-@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) studio("models/machines/speed_cola.mdl") = 
+@PointClass size(-24 -24 -32, 24 24 56) base(Item, Appearflags) color(0 117 58) model("models/machines/speed_cola.mdl") = 
 	perk_random : "Random Perk-a-Cola" 
 [
 	spawnflags(Flags) =
@@ -395,7 +410,7 @@
 // NZP Weapons
 //
 
-@PointClass size(-32 -8 -8, 32 8 8) base(Item, Appearflags) color(141 85 29) studio("models/machines/mystery.mdl") = 
+@PointClass size(-32 -8 -8, 32 8 8) base(Item, Appearflags) color(141 85 29) model("models/machines/mystery.mdl") = 
 	mystery_box : "Mystery Box" 
 [	
 	spawnflags(Flags) =
@@ -404,12 +419,13 @@
 		2 : "No Light" : 0
 	]
 ]
-@PointClass size(-32 -8 -8, 32 8 8) base(Item, Appearflags) color(151 104 34) studio("models/machines/mystery.mdl") = 
+@PointClass size(-32 -8 -8, 32 8 8) base(Item, Appearflags) color(151 104 34) model("models/machines/mystery.mdl") = 
 	mystery_box_tp_spot : "Mystery Box Possible Spawn Point" []
 	
-@PointClass size(-28 -28 -64, 28 28 40 ) base(Item, Appearflags) color(114 224 172) studio() = item_barricade : "Window Boards" 
+@PointClass size(-28 -28 -64, 28 28 40 ) base(Item, Appearflags) color(114 224 172) model({"path" : model, "skin" : skin}) = item_barricade : "Window Boards" 
 [
-	model(studio) : "Model" : "models/misc/window.mdl"
+	model(model) : "Model" : "models/misc/window.mdl"
+	skin(integer) : "Skin" : 0
 	oldmodel(string) : "Rebuild Sound" : "sounds/misc/barricade.wav"
 	aistatus(string) : "Destroy Sound" : "sounds/misc/barricade_destroy.wav"
 	spawnflags(Flags) =
@@ -419,15 +435,15 @@
 
 ]
 	
-@PointClass size(-16 -16 -16, 16 16 51 ) base(Item, Appearflags) color(147 132 108) studio("models/machines/power_switch.mdl") = 
+@PointClass size(-16 -16 -16, 16 16 51 ) base(Item, Appearflags) color(147 132 108) model("models/machines/power_switch.mdl") = 
 	power_switch : "Power Switch" []
 
 
-@PointClass color(114 224 172) studio() = place_model : "Place a Model" 
+@PointClass color(114 224 172) model({"path" : model, "skin" : skin}) = place_model : "Place a Model" 
 [
-	model(studio) : "Model" : "progs/props/"
-	sequence(integer) : "Frame" : 0
+	model(model) : "Model" : "progs/Props/"
 	skin(integer) : "Skin" : 0
+	sequence(integer) : "Frame" : 0
 	spawnflags(Flags) =
 	[
 		1 : "Fullbright" : 0
@@ -446,7 +462,7 @@
 	]
 ]
 
-@PointClass  base(Appearflags, Targetname) color(114 224 172) studio("models/misc/chalk.mdl") = weapon_wall : "Wall weapon for buy_weapon" 
+@PointClass  base(Appearflags, Targetname) color(114 224 172) model("models/misc/chalk.mdl") = weapon_wall : "Wall weapon for buy_weapon" 
 [
 	sequence(choices) : "Weapon" : 0 = 
 	[
@@ -478,9 +494,9 @@
 		25: "Grenade"
 		26: "Betty"
 	]
-	model(studio) : "World Model" : "progs/GModels/"
+	model(string) : "World Model" : "progs/GModels/"
 ]
-@PointClass  base(Appearflags, Targetname) color(114 224 172) studio("models/props/barrel_m.mdl") = explosive_barrel : "Barrel that can explode when shot at" 
+@PointClass  base(Appearflags, Targetname) color(114 224 172) model("models/props/barrel_m.mdl") = explosive_barrel : "Barrel that can explode when shot at" 
 [
 	skin(choices) : "Color" : 0 = 
 	[
@@ -536,7 +552,7 @@
 ]
 
 //@PointClass base(Monster) size(-16 -16 -24, 16 16 40) = monster_army : //"Grunt" []
-@PointClass base(Monster) size(-16 -16 -32, 16 16 16) studio("models/ai/dog.mdl") = spawn_dog : "Hellhound" 
+@PointClass base(Monster) size(-16 -16 -32, 16 16 16) model("models/ai/dog.mdl") = spawn_dog : "Hellhound" 
 [
 	spawnflags(Flags) = 
 	[
@@ -546,7 +562,7 @@
 
 
 
-@PointClass base(Monster) size(-16 -16 -32, 16 16 40) studio("models/ai/zfull.mdl") =  spawn_zombie : "zombie respawn" 
+@PointClass base(Monster) size(-16 -16 -32, 16 16 40) model("models/ai/zfull.mdl") =  spawn_zombie : "zombie respawn" 
 [
 	spawnflags(Flags) = 
 	[
